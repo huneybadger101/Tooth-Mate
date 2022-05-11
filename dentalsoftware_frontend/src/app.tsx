@@ -2,7 +2,8 @@ import { Text, Window, hot, View } from "@nodegui/react-nodegui";
 import React from "react";
 import { QIcon } from "@nodegui/nodegui";
 import path from "path";
-import Homepage from "./components/homepage";
+//import Homepage from "./components/homepage";
+import Setting from "./components/setting";
 import nodeguiIcon from "../assets/nodegui.jpg";
 
 const minSize = { width: 1000, height: 520 };
@@ -12,7 +13,7 @@ class App extends React.Component<any, any> {
   constructor(props: any) {
     super(props);
     this.state = {
-      currentScreen: <Homepage/>,
+      currentScreen: <Setting/>,
     }
   }
   // Reference to this function needs to be passed to each component in order for
