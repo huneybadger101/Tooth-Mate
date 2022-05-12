@@ -4,6 +4,7 @@ import { QIcon } from "@nodegui/nodegui";
 import path from "path";
 import Homepage from "./components/homepage";
 import Calendar from "./components/calendar";
+import Bookings from "./components/bookings";
 
 const minSize = { width: 1000, height: 520 };
 class App extends React.Component<any, any> {
@@ -11,7 +12,7 @@ class App extends React.Component<any, any> {
   constructor(props: any) {
     super(props);
     this.state = {
-      currentScreen: <Calendar/>,
+      currentScreen: <Bookings/>,
     }
   }
   // Reference to this function needs to be passed to each component in order for
