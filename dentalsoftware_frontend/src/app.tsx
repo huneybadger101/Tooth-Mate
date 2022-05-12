@@ -12,7 +12,7 @@ class App extends React.Component<any, any> {
   constructor(props: any) {
     super(props);
     this.state = {
-      currentScreen: <Bookings/>,
+      currentScreen: <Calendar/>,
     }
   }
   // Reference to this function needs to be passed to each component in order for
