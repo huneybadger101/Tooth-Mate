@@ -2,7 +2,7 @@ import { Text, Window, hot, View } from "@nodegui/react-nodegui";
 import React from "react";
 import { QIcon } from "@nodegui/nodegui";
 import path from "path";
-//import Homepage from "./components/homepage";
+import Homepage from "./components/homepage";
 import Setting from "./components/setting";
 import nodeguiIcon from "../assets/nodegui.jpg";
 
