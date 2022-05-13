@@ -8,7 +8,7 @@ function TabContainer(props: any) {
         setValues(
             {
                 children: state.children,
-                view: newView,
+                view: newView
             }
         )
     }
@@ -34,7 +34,7 @@ function TabContainer(props: any) {
     state.children.forEach(function (value: any) {
         tabs.push(
             {
-                tabName: "TAB" + tabIndex++,
+                tabName: props.names[tabIndex++],
                 view: value,
             }
         )
