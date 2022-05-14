@@ -6,6 +6,7 @@ import Homepage from "./components/homepage";
 import Setting from "./components/setting";
 import Calendar from "./components/calendar";
 import Bookings from "./components/bookings";
+import TabContainer from "./components/tabContainer";
 
 const minSize = { width: 1000, height: 520 };
 class App extends React.Component<any, any> {
@@ -13,7 +14,11 @@ class App extends React.Component<any, any> {
   constructor(props: any) {
     super(props);
     this.state = {
-      currentScreen: <Setting/>,
+
+      currentScreen:  <TabContainer names={["Homepage", "Text"]}>
+                        <Homepage/>
+                        <Text>Test Text</Text>
+                      </TabContainer>,
     }
   }
   // Reference to this function needs to be passed to each component in order for
