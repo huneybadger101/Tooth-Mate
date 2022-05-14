@@ -3,6 +3,7 @@ import React from "react";
 import { QIcon } from "@nodegui/nodegui";
 import path from "path";
 import Homepage from "./components/homepage";
+import Setting from "./components/setting";
 import Calendar from "./components/calendar";
 import Bookings from "./components/bookings";
 import TabContainer from "./components/tabContainer";
@@ -13,6 +14,7 @@ class App extends React.Component<any, any> {
   constructor(props: any) {
     super(props);
     this.state = {
+
       currentScreen:  <TabContainer names={["Homepage", "Text"]}>
                         <Homepage/>
                         <Text>Test Text</Text>
