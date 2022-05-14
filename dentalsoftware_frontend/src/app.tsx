@@ -3,6 +3,8 @@ import React from "react";
 import { QIcon } from "@nodegui/nodegui";
 import path from "path";
 import Homepage from "./components/homepage";
+import Calendar from "./components/calendar";
+import Bookings from "./components/bookings";
 import TabContainer from "./components/tabContainer";
 
 const minSize = { width: 1000, height: 520 };
