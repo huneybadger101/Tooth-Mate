@@ -3,16 +3,16 @@ import React from "react";
 import { QIcon } from "@nodegui/nodegui";
 import path from "path";
 import Homepage from "./components/homepage";
-import nodeguiIcon from "../assets/nodegui.jpg";
+import Calendar from "./components/calendar";
+import Bookings from "./components/bookings";
 
 const minSize = { width: 1000, height: 520 };
-const winIcon = new QIcon(path.resolve(__dirname, nodeguiIcon));
 class App extends React.Component<any, any> {
 
   constructor(props: any) {
     super(props);
     this.state = {
-      currentScreen: <Homepage/>,
+      currentScreen: <Calendar/>,
     }
   }
   // Reference to this function needs to be passed to each component in order for
@@ -31,7 +31,6 @@ class App extends React.Component<any, any> {
     return (
       <React.Fragment> 
         <Window
-          windowIcon={winIcon}
           windowTitle="ToothMate Dental Software"
           minSize={minSize}
         >

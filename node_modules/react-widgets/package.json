@@ -1,0 +1,60 @@
+{
+  "name": "react-widgets",
+  "version": "5.8.4",
+  "description": "An à la carte set of polished, extensible, and accessible inputs built for React",
+  "main": "cjs/index.js",
+  "module": "esm/index.js",
+  "types": "cjs/index.d.js",
+  "author": {
+    "name": "Jason",
+    "email": "monastic.panic@gmail.com"
+  },
+  "keywords": [
+    "react",
+    "widgets",
+    "dropdown",
+    "combobox",
+    "calendar",
+    "datepicker",
+    "date picker",
+    "numberpicker",
+    "number picker",
+    "radio group",
+    "checkbox list",
+    "multiselect",
+    "form",
+    "input",
+    "react-ui",
+    "react-component"
+  ],
+  "homepage": "https://jquense.github.io/react-widgets/",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jquense/react-widgets.git"
+  },
+  "publishConfig": {
+    "access": "public",
+    "directory": "lib"
+  },
+  "peerDependencies": {
+    "react": ">=0.16.0",
+    "react-dom": ">=0.16.0"
+  },
+  "dependencies": {
+    "@restart/hooks": "^0.4.5",
+    "@types/classnames": "^2.3.1",
+    "@types/react-transition-group": "^4.4.4",
+    "classnames": "^2.3.1",
+    "date-arithmetic": "^4.0.1",
+    "dom-helpers": "^5.2.1",
+    "prop-types-extra": "^1.1.1",
+    "react-transition-group": "^4.4.2",
+    "tiny-warning": "^1.0.3",
+    "uncontrollable": "^7.2.1"
+  },
+  "bugs": {
+    "url": "https://github.com/jquense/react-widgets/issues"
+  },
+  "gitHead": "331456d12837a2f76cc73de04b8d3bfd07c15b9d"
+}
