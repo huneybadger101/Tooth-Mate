@@ -58,11 +58,49 @@ var dentist:string = "";
 // This will be what happens when the button is clicked.
 const buttonHandler = {
     clicked: () => {
-      console.log("Booking complete! Below are the details input...");
-      console.log("Name: " + name);
-      console.log("NHI: " + NHInumber);
-      console.log("Date: " + date);
-      console.log("Dentist: " + dentist);
+        
+        var confirm = 0;
+
+        if (name == "")
+        {
+            console.log("ERROR: Name must be filled");
+            confirm = confirm + 1;
+        }
+
+        if (NHInumber == "")
+        {
+            console.log("ERROR: NHI Number must be filled");
+            confirm = confirm + 1;
+        }
+
+        if (date == "")
+        {
+            console.log("ERROR: Date must be filled");
+            confirm = confirm + 1;
+        }
+
+        if (dentist == "")
+        {
+            console.log("ERROR: Dentist must be filled");
+            confirm = confirm + 1;
+        }
+
+        if (confirm == 0)
+        {
+            console.log("Booking complete! Below are the details input...");
+            console.log("Name: " + name);
+            console.log("NHI: " + NHInumber);
+            console.log("Date: " + date);
+            console.log("Dentist: " + dentist);
+        }
+        else if (confirm == 1)
+        {
+            console.log("Please fix the issue above");
+        }
+        else
+        {
+            console.log("Please fix the " + confirm + " issues above");
+        }
     }
 };
 
