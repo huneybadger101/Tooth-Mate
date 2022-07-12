@@ -47,6 +47,7 @@ export class Calendar extends React.Component {
         }
         const containerStyle = `
             flex: 1; 
+            background-color: "white";
         `;
         // Must wrap main App component in a React.Fragment component
         // in order to allow for sub-windows to be created later on
