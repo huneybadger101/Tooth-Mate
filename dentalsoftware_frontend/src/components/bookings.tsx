@@ -1,6 +1,8 @@
 import { Text, View, Button, CheckBox, LineEdit, BoxView } from "@nodegui/react-nodegui";
 import React from "react";
 
+
+
 export class Bookings extends React.Component {
 
     // Function that returns a component to be drawn, can have children components if the parent component supports it
@@ -22,7 +24,6 @@ export class Bookings extends React.Component {
                     <Text wordWrap={true} style="color: 'black'; font-size: 15px;">
                         Date and Time
                     </Text>
-
                 </View>
 
                 <View style="flex-direction: row; justify-content: start; align-items: start;">
@@ -43,10 +44,6 @@ export class Bookings extends React.Component {
 
                 <Button text = {"Complete Booking"} on = {buttonHandler} />
 
-                <Text wordWrap={true} style="color: 'black'; font-size: 15px;">
-                        Testing
-                </Text>
-
             </View>
         );
     }
@@ -57,54 +54,15 @@ var NHInumber:string = "";
 var date:string = "";
 var name:string = "";
 var dentist:string = "";
-var confirmText:string = "";
 
 // This will be what happens when the button is clicked.
 const buttonHandler = {
     clicked: () => {
-
-        var confirm = 0;
-
-        if (name == "")
-        {
-            console.log("ERROR: Name must be filled");
-            confirm = confirm + 1;
-        }
-
-        if (NHInumber == "")
-        {
-            console.log("ERROR: NHI Number must be filled");
-            confirm = confirm + 1;
-        }
-
-        if (date == "")
-        {
-            console.log("ERROR: Date must be filled");
-            confirm = confirm + 1;
-        }
-
-        if (dentist == "")
-        {
-            console.log("ERROR: Dentist must be filled");
-            confirm = confirm + 1;
-        }
-
-        if (confirm == 0)
-        {
-            console.log("Booking complete! Below are the details input...");
-            console.log("Name: " + name);
-            console.log("NHI: " + NHInumber);
-            console.log("Date: " + date);
-            console.log("Dentist: " + dentist);
-        }
-        else if (confirm == 1)
-        {
-            console.log("Please fix the issue above");
-        }
-        else
-        {
-            console.log("Please fix the " + confirm + " issues above");
-        }
+      console.log("Booking complete! Below are the details input...");
+      console.log("Name: " + name);
+      console.log("NHI: " + NHInumber);
+      console.log("Date: " + date);
+      console.log("Dentist: " + dentist);
     }
 };
 
@@ -119,9 +77,6 @@ const buttonHandler = {
    };
    const handleTextChangedDentist = (textValue: string) => {
     dentist = textValue;
-   };
-   const bookingConfirmText = (textValue: string) => {
-    confirmText = "Hello";
    };
 
 export default Bookings;
