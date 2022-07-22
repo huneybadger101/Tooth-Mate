@@ -122,10 +122,6 @@ function createNewPatient(res = null, patientData) {
     });
 }
 
-function prepareDatabaseQuery(query) {
-    return client.escape(query)
-}
-
 function databaseCreateTables(res = null) {
     var sql = "CREATE TABLE IF NOT EXISTS patient_data (ID INT AUTO_INCREMENT PRIMARY KEY, NHI VARCHAR(255), FirstName VARCHAR(255), LastName VARCHAR(255), MiddleName VARCHAR(255), DOB DATE, ContactNumber VARCHAR(255), Email VARCHAR(255))";
     databaseQuery(res, sql)

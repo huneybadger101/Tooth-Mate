@@ -7,10 +7,19 @@ function TabContainer(props: any) {
     const buttonHandler = (newView: any) => {
         setValues(
             {
-                children: state.children,
+                children: [state.children],
                 view: newView
             }
         )
+    }
+
+    const closeButtonHandler = (index: number) => {
+        var tempChildren = state.children;
+        tempChildren.splice(index, 1);
+        setValues({
+            children: tempChildren,
+            view: tempChildren[0]
+        })
     }
     var childrenArray = [];
     if (Object.prototype.toString.call(props.children) != '[object Array]') {
@@ -40,26 +49,35 @@ function TabContainer(props: any) {
         )
     });
     // Create header with provided tabs
-    var header = <View id="header" style="flex: 1; flex-direction: 'row'; justify-content: 'center'; align-items: 'center'; background-color: 'pink'; position: 'absolute'; top: 0px; height: 60px; right: 0px; left: 0px;">
-                    {
+    var header = <View id="header" style="flex: 'flex-shrink'; flex-direction: 'row'; background-color: 'pink'; top: 0px; height: 40px; right: 0px; left: 0px;">
+                    {   
                         tabs.map(
-                            (value: any) => {
-                                // Eventually style these to be proper tabs, buttons are fine for now
-                                return <Button text={value.tabName} on={
-                                    {
-                                        [WidgetEventTypes.MouseButtonRelease]: /*Only trigger when left click is released*/ () => buttonHandler(value.view), 
-                                        [WidgetEventTypes.MouseButtonPress]: /*Only trigger when left click is pressed*/ () => console.log("Pressed " + value.tabName)
-                                    }
-                                }/>
+                            (value: any, index: number) => {
+                                var tabWidth = "flex: auto; flex-grow: 4; height: 40px;";
+                                var closeTab = "position: 'absolute'; height: 20px; width: 20px; top: 10px; right: 0px;";
+                                return <View style="flex: auto;">
+                                    <Button style={tabWidth} text={value.tabName} on={
+                                        {
+                                            [WidgetEventTypes.MouseButtonRelease]: /*Only trigger when left click is released*/ () => buttonHandler(value.view), 
+                                            [WidgetEventTypes.MouseButtonPress]: /*Only trigger when left click is pressed*/ () => console.log("Pressed " + value.tabName)
+                                        }
+                                    }/>
+                                    <Button style={closeTab} text="X" on={
+                                        {
+                                            [WidgetEventTypes.MouseButtonRelease]: /*Only trigger when left click is released*/ () => closeButtonHandler(index), 
+                                            [WidgetEventTypes.MouseButtonPress]: /*Only trigger when left click is pressed*/ () => console.log("Closing " + value.tabName)
+                                        }
+                                    }/>
+                                </View>
                             }
                         )
                     }
                 </View>;
     // Display the view
     return (
-        <View style="flex: 1; flex-direction: 'column'; justify-content: 'center'; align-items: 'center'; background-color: 'clear';">
+        <View style="flex: auto; flex-direction: 'column';">
             {header}
-            <View style="width: '100%'; margin-top: 120px; height: '100%';">
+            <View style="flex: auto; width: '100%'; height: '100%';">
                 {state.view}
             </View>
         </View>

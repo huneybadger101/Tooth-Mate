@@ -15,8 +15,10 @@ class App extends React.Component<any, any> {
     super(props);
     this.state = {
 
-      currentScreen:  <TabContainer names={["Homepage", "Text"]}>
+      currentScreen:  <TabContainer names={["Homepage", "Text", "Text", "Text"]}>
                         <Homepage/>
+                        <Text>Test Text</Text>
+                        <Text>Test Text</Text>
                         <Text>Test Text</Text>
                       </TabContainer>,
     }
