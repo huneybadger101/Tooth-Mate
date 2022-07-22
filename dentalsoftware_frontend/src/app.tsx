@@ -1,4 +1,4 @@
-import { Text, Window, hot, View } from "@nodegui/react-nodegui";
+import { Text, Window, View } from "@nodegui/react-nodegui";
 import React from "react";
 import { QIcon } from "@nodegui/nodegui";
 import path from "path";
@@ -13,8 +13,11 @@ class App extends React.Component<any, any> {
 
   constructor(props: any) {
     super(props);
+    
     let screens = [];
     let names = [];
+    let windows = []
+
     screens.push(<Homepage/>)
     names.push("Homepage")
     screens.push(<Text>Test Screen 1</Text>)
@@ -23,37 +26,59 @@ class App extends React.Component<any, any> {
     names.push("Test Screen 2")
     screens.push(<Text>Test Screen 3</Text>)
     names.push("Test Screen 3")
-    this.state = {
 
-      currentScreen:  <TabContainer names={names}>
-                       {screens}
-                      </TabContainer>,
+    windows.push(<Window
+        windowTitle="ToothMate Dental Software"
+        minSize={minSize}
+      >
+        <View style={containerStyle}>
+          <TabContainer names={names} createNewWindow={this.createNewWindow}>
+            {screens}
+          </TabContainer>
+        </View>
+      </Window>
+    )
+
+    this.state = {
+      windows: windows
     }
+
   }
+
   // Reference to this function needs to be passed to each component in order for
-  // this App component to display sub-components
-  updateCurrentScreenComponent(newView: React.Component) {
+  // this App component to allow for new Window components to be created and displayed
+  createNewWindow = (view: any, name: string) => {
+    let tempWindows = this.state.windows;
+    let viewArray = [view]
+    let nameArray = [name]
+    tempWindows.push(
+      <Window
+        windowTitle="ToothMate Dental Software TAB 2"
+        minSize={minSize}
+      >
+        <View style={containerStyle}>
+          <TabContainer names={nameArray} createNewWindow={this.createNewWindow}>
+            {viewArray}
+          </TabContainer>
+        </View>
+      </Window>
+    )
+
     this.setState({
-      currentScreen: newView,
+      windows: tempWindows
     })
+    
   }
+
 
   // Function that returns a component to be drawn, can have children components if the parent component supports it
   render() {
 
     // Must wrap main App component in a React.Fragment component
-    // in order to allow for sub-windows to be created later on
+    // in order to allow for sub-windows to be created when needed
     return (
       <React.Fragment> 
-        <Window
-          windowTitle="ToothMate Dental Software"
-          minSize={minSize}
-        >
-          <View style={containerStyle}>
-            {this.state.currentScreen}
-          </View>
-          
-        </Window>
+        {this.state.windows}
       </React.Fragment>
     );
   }
@@ -63,4 +88,4 @@ const containerStyle = `
   flex: 1; 
 `;
 
-export default hot(App);
+export default App;

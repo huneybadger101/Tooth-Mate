@@ -22,6 +22,19 @@ function TabContainer(props: any) {
             view: tempChildren[0]
         })
     }
+
+    const dragHandler = (value: any, index: number) => {
+        // Call App.tsx's createNewWindow function to create a new window with the provided view
+        props.createNewWindow(value.view, value.tabName)
+        // Remove view from current tabContainer so it doesn't get displayed multiple times by the main App component
+        let tempChildren = state.children;
+        tempChildren.splice(index, 1);
+        props.names.splice(index, 1)
+        setValues({
+            children: tempChildren,
+            view: tempChildren[0]
+        })
+    }
     let childrenArray = [];
     if (Object.prototype.toString.call(props.children) != '[object Array]') {
         // If only one child is provided, create an array using that child
@@ -56,17 +69,25 @@ function TabContainer(props: any) {
                             (value: any, index: number) => {
                                 let tabWidth = "flex: auto; flex-grow: 4; height: 40px;";
                                 let closeTab = "position: 'absolute'; height: 20px; width: 20px; top: 10px; right: 0px;";
+                                let dragCount  = 0;
                                 return <View style="flex: auto;">
                                     <Button style={tabWidth} text={value.tabName} on={
                                         {
-                                            [WidgetEventTypes.MouseButtonRelease]: /*Only trigger when left click is released*/ () => buttonHandler(value.view), 
-                                            [WidgetEventTypes.MouseButtonPress]: /*Only trigger when left click is pressed*/ () => console.log("Pressed " + value.tabName)
+                                            // Only trigger when left click is released
+                                            [WidgetEventTypes.MouseButtonRelease]: () => buttonHandler(value.view),
+                                            // Only trigger when left click is clicked, held and moved for a given time
+                                            [WidgetEventTypes.MouseMove]: () => {
+                                                console.log("Drag called by: " + value.tabName + "/ " + dragCount)
+                                                if (dragCount == 25 && tabs.length > 1) {
+                                                    dragHandler(value, index);
+                                                }
+                                                dragCount++;
+                                            }
                                         }
                                     }/>
                                     {tabs.length > 1 ? <Button style={closeTab} text="X" on={
                                         {
                                             [WidgetEventTypes.MouseButtonRelease]: /*Only trigger when left click is released*/ () => closeButtonHandler(index), 
-                                            [WidgetEventTypes.MouseButtonPress]: /*Only trigger when left click is pressed*/ () => console.log("Closing " + value.tabName)
                                         }
                                     }/> : null}
                                 </View>
