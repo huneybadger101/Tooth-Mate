@@ -7,7 +7,7 @@ function TabContainer(props: any) {
     const buttonHandler = (newView: any) => {
         setValues(
             {
-                children: [state.children],
+                children: state.children,
                 view: newView
             }
         )
@@ -16,6 +16,7 @@ function TabContainer(props: any) {
     const closeButtonHandler = (index: number) => {
         let tempChildren = state.children;
         tempChildren.splice(index, 1);
+        props.names.splice(index, 1)
         setValues({
             children: tempChildren,
             view: tempChildren[0]
