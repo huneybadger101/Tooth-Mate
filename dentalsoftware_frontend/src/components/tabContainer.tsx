@@ -69,7 +69,7 @@ function TabContainer(props: any) {
                             (value: any, index: number) => {
                                 let tabWidth = "flex: auto; flex-grow: 4; height: 40px;";
                                 let closeTab = "position: 'absolute'; height: 20px; width: 20px; top: 10px; right: 0px;";
-                                let dragCount  = 0;
+                                let dragCount = 0;
                                 return <View style="flex: auto;">
                                     <Button style={tabWidth} text={value.tabName} on={
                                         {
@@ -87,7 +87,8 @@ function TabContainer(props: any) {
                                     }/>
                                     {tabs.length > 1 ? <Button style={closeTab} text="X" on={
                                         {
-                                            [WidgetEventTypes.MouseButtonRelease]: /*Only trigger when left click is released*/ () => closeButtonHandler(index), 
+                                            // Only trigger when left click is released
+                                            [WidgetEventTypes.MouseButtonRelease]: () => closeButtonHandler(index), 
                                         }
                                     }/> : null}
                                 </View>
