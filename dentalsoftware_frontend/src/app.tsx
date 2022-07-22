@@ -13,13 +13,20 @@ class App extends React.Component<any, any> {
 
   constructor(props: any) {
     super(props);
+    let screens = [];
+    let names = [];
+    screens.push(<Homepage/>)
+    names.push("Homepage")
+    screens.push(<Text>Test Screen 1</Text>)
+    names.push("Test Screen 1")
+    screens.push(<Text>Test Screen 2</Text>)
+    names.push("Test Screen 2")
+    screens.push(<Text>Test Screen 3</Text>)
+    names.push("Test Screen 3")
     this.state = {
 
-      currentScreen:  <TabContainer names={["Homepage", "Text", "Text", "Text"]}>
-                        <Homepage/>
-                        <Text>Test Text</Text>
-                        <Text>Test Text</Text>
-                        <Text>Test Text</Text>
+      currentScreen:  <TabContainer names={names}>
+                       {screens}
                       </TabContainer>,
     }
   }
