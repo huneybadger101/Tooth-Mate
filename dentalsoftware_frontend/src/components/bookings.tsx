@@ -9,13 +9,13 @@ export class Bookings extends React.Component<any, any> {
             NHINumber: "",
             Date: "",
             Name: "",
-            Dentist: ""
+            Dentist: "",
+            confirmMessage: "",
         }
       }
 
     // Function that returns a component to be drawn, can have children components if the parent component supports it
     render() {
-
         const buttonHandler = {
             clicked: () => {
         
@@ -50,6 +50,10 @@ export class Bookings extends React.Component<any, any> {
         
                 if (confirm == 0)
                 {
+                    this.setState({
+                        confirmMessage: "Booking complete"
+                    });
+
                     console.log("Booking complete! Below are the details input...");
                     console.log("Name: " + this.state.Name);
                     console.log("NHI: " + this.state.NHINumber);
@@ -58,10 +62,18 @@ export class Bookings extends React.Component<any, any> {
                 }
                 else if (confirm == 1)
                 {
+                    this.setState({
+                        confirmMessage: "There are one or more issues, please fix them before submitting"
+                    });
+
                     console.log("Please fix the issue above");
                 }
                 else
                 {
+                    this.setState({
+                        confirmMessage: "There are one or more issues, please fix them before submitting"
+                    });
+
                     console.log("Please fix the " + confirm + " issues above");
                 }
             }
@@ -74,7 +86,9 @@ export class Bookings extends React.Component<any, any> {
                 <View style="flex-direction: row; justify-content: start; align-items: start;">
                     <LineEdit on={{ textChanged: (textValue) => {
                         this.setState({
-                            NHINumber: textValue
+
+
+                            NHINumber: textValue.replace(/[^a-zA-Z0-9! ]+/g, '')
                         })
                     } }} text={this.state.NHINumber} placeholderText={"NHI Number"} />
                 </View>
@@ -90,7 +104,7 @@ export class Bookings extends React.Component<any, any> {
                 <View style="flex-direction: row; justify-content: start; align-items: start;">
                     <LineEdit on={{ textChanged: (textValue) => {
                         this.setState({
-                            Name: textValue
+                            Name: textValue.replace(/[^a-zA-Z! ]+/g, '')
                         })
                     } }} text={this.state.Name} placeholderText={"Name"} />
                 </View>
@@ -98,12 +112,14 @@ export class Bookings extends React.Component<any, any> {
                 <View style="flex-direction: row; justify-content: start; align-items: start;">
                     <LineEdit on={{ textChanged: (textValue) => {
                         this.setState({
-                            Dentist: textValue
+                            Dentist: textValue.replace(/[^a-zA-Z! ]+/g, '')
                         })
                     } }} text={this.state.Dentist} placeholderText={"Dentist"} />
                 </View>
 
                 <Button text = {"Complete Booking"} on = {buttonHandler} id={"btn"}/>
+
+                <Text>{this.state.confirmMessage}</Text>
 
             </View>
         );
