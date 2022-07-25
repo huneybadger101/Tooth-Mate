@@ -5,6 +5,14 @@ export class Calendar extends React.Component {
 
     render() {
 
+      const buttonHandler = {
+        clicked: (textValue: string) => {
+          console.log("Text value: " + textValue);
+        }
+      }
+
+      
+
       //NOTE: This is for testing purposes and should be removed eventually.
       const WEEK_DAYS = {
         Monday: 0,
@@ -16,19 +24,19 @@ export class Calendar extends React.Component {
         Sunday: 6
       }
         //monthEnd is the amount of days in the month
-        var monthEnd:number = 28;
+        var monthEnd:number = 31;
         //StartPoint is the day (Mon, Tue, Wed etc) that the month starting node will begin on
-        var startPoint:number = 0;
+        var startPoint:number = 3;
 
+        //Will hold the calendar days to be printed out later
         var calendar1:any = [];
         var calendar2:any = [];
         var calendar3:any = [];
         var calendar4:any = [];
         var calendar5:any = [];
-
         var calendar6:any = [];
 
-        
+        //<Text>{i + (1 - startPoint)}</Text>
 
 
         for (var i = 0; i < 7; i++) {
@@ -37,8 +45,8 @@ export class Calendar extends React.Component {
           if (i >= startPoint)
           {
             calendar1.push( 
-              <View style="border: 1px solid black; height: 100px; width: 100px;">
-                <Text>{i + (1 - startPoint)}</Text>
+              <View style="border: 0px solid black; height: 100px; width: 100px;">
+                <Button text={ (i + (1 - startPoint)).toString() } style="height: 100px; width: 100px;"></Button>
               </View>
               )
           }
