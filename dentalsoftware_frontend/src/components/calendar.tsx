@@ -15,9 +15,10 @@ export class Calendar extends React.Component {
         Saturday: 5,
         Sunday: 6
       }
-
-        var monthEnd:number = 31;
-        var startPoint:number = 4;
+        //monthEnd is the amount of days in the month
+        var monthEnd:number = 28;
+        //StartPoint is the day (Mon, Tue, Wed etc) that the month starting node will begin on
+        var startPoint:number = 0;
 
         var calendar1:any = [];
         var calendar2:any = [];
@@ -44,7 +45,7 @@ export class Calendar extends React.Component {
           else
           {
             calendar1.push( 
-              <View style="border: 1px solid black; height: 100px; width: 100px;">
+              <View style="border: 1px solid black; height: 100px; width: 100px; background-color: 'grey';">
                 <Text></Text>
               </View>
               )
@@ -62,6 +63,7 @@ export class Calendar extends React.Component {
               <Text>{i + (8 - startPoint)}</Text>
             </View>
           )
+
           calendar3.push( 
             <View style="border: 1px solid black; height: 100px; width: 100px;">
               <Text>{i + (15 - startPoint)}</Text>
@@ -69,20 +71,45 @@ export class Calendar extends React.Component {
           )
 
           if (i + (22 - startPoint) <= monthEnd){
-          calendar4.push( 
-            <View style="border: 1px solid black; height: 100px; width: 100px;">
-              <Text>{i + (22 - startPoint)}</Text>
-            </View>
+            calendar4.push( 
+              <View style="border: 1px solid black; height: 100px; width: 100px;">
+                <Text>{i + (22 - startPoint)}</Text>
+              </View>
             )
           }
 
           if (i + (29 - startPoint) <= monthEnd){
-          calendar5.push( 
+            calendar5.push( 
               <View style="border: 1px solid black; height: 100px; width: 100px;">
                 <Text>{i + (29 - startPoint)}</Text>
               </View>
             )
           }
+          else
+          {
+            calendar5.push( 
+              <View style="border: 1px solid black; height: 100px; width: 100px; background-color: 'grey';">
+                <Text></Text>
+              </View>
+              )
+          }
+
+          if (i + (36 - startPoint) <= monthEnd){
+            calendar6.push( 
+              <View style="border: 1px solid black; height: 100px; width: 100px;">
+                <Text>{i + (36 - startPoint)}</Text>
+              </View>
+            )
+          }
+          else
+          {
+            calendar6.push( 
+              <View style="border: 1px solid black; height: 100px; width: 100px; background-color: 'grey';">
+                <Text></Text>
+              </View>
+              )
+          }
+          
         }
         const containerStyle = `
             flex: 1; 
@@ -111,13 +138,13 @@ export class Calendar extends React.Component {
 
 
           <View style={containerStyle}>
-              <View style="flex: 0; flex-direction: 'row'; justify-content: 'left'; align-items: 'left'; ">
+              <View style="flex: 0; flex-direction: 'row'; justify-content: 'left'; align-items: 'center'; ">
                   <Button style="width: 200px;"/>
                       <Text style="flex: 0; justify-content: 'left'; align-items: 'left'; border: 1px solid black; width: 300px;">Month</Text>
                   <Button style="width: 200px;"/>
               </View>
 
-              <View style="flex: 0; flex-direction: 'row'; justify-content: 'left'; align-items: 'left';">
+              <View style="flex: 0; flex-direction: 'row'; justify-content: 'left'; align-items: 'center';">
                   <Text style="flex: 0; justify-content: 'center'; align-items: 'center'; border: 1px solid black; width: 100px;">Monday</Text>
                   <Text style="flex: 0; justify-content: 'center'; align-items: 'center'; border: 1px solid black; width: 100px;">Tuesday</Text>
                   <Text style="flex: 0; justify-content: 'center'; align-items: 'center'; border: 1px solid black; width: 100px;">Wednesday</Text>
@@ -127,20 +154,23 @@ export class Calendar extends React.Component {
                   <Text style="flex: 0; justify-content: 'center'; align-items: 'center'; border: 1px solid black; width: 100px;">Sunday</Text>
               </View>
 
-              <View style="flex: 0.5; flex-direction: 'row'; justify-content: 'left'; align-items: 'left';">
+              <View style="flex: 0; flex-direction: 'row'; justify-content: 'left'; align-items: 'center';">
                   {calendar1}
               </View>
-              <View style="flex: 0; flex-direction: 'row'; justify-content: 'left'; align-items: 'left';">
+              <View style="flex: 0; flex-direction: 'row'; justify-content: 'left'; align-items: 'center';">
                   {calendar2}
               </View>
-              <View style="flex: 0; flex-direction: 'row'; justify-content: 'left'; align-items: 'left';">
+              <View style="flex: 0; flex-direction: 'row'; justify-content: 'left'; align-items: 'center';">
                   {calendar3}
               </View>
-              <View style="flex: 0; flex-direction: 'row'; justify-content: 'left'; align-items: 'left';">
+              <View style="flex: 0; flex-direction: 'row'; justify-content: 'left'; align-items: 'center';">
                   {calendar4}
               </View>
-              <View style="flex: 0; flex-direction: 'row'; justify-content: 'left'; align-items: 'left';">
+              <View style="flex: 0; flex-direction: 'row'; justify-content: 'left'; align-items: 'center';">
                   {calendar5}
+              </View>
+              <View style="flex: 0; flex-direction: 'row'; justify-content: 'left'; align-items: 'center';">
+                  {calendar6}
               </View>
 
 
