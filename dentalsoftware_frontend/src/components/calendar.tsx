@@ -52,11 +52,12 @@ export class Calendar extends React.Component<any, any> {
 
           if (i >= startPoint)
           {
+            let buttonName = (i + (1 - startPoint)).toString();
             calendar1.push( 
               <View style="border: 1px solid black; height: 100px; width: 100px;">
-                <Button text={ (i + (1 - startPoint)).toString() } style="height: 100px; width: 100px;" id={"1"} on=
+                <Button text={ buttonName } style="height: 100px; width: 100px;" id={"1"} on=
                 //TODO: I want to print the ID
-                  {{clicked: () => console.log()}}
+                  {{clicked: () => console.log(buttonName)}}
                 ></Button>
               </View>
               )
