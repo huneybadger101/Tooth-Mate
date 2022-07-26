@@ -1,39 +1,51 @@
-import { Text, View, Button, useEventHandler } from "@nodegui/react-nodegui";
-import { release } from "process";
-import React, { createRef } from "react";
-import { QLabelSignals, QMouseEvent, WidgetEventTypes } from "@nodegui/nodegui";
-import { get } from "http";
-import { eventNames } from "cluster";
+import { Text, View, Button, ScrollArea } from "@nodegui/react-nodegui";
+import React from "react";
+import internal from "stream";
 
 export class Calendar extends React.Component<any, any> {
 
   constructor(props: any) {
     super(props);
     this.state = {
-        testArray: []
+        month: [],
+        day: [],
+        year: 2022,
+        daySelected: 0,
+        monthSelected: 0
     }
   }
 
     render() {
 
-      this.state.testArray[0] = "";
+      //Sets the day values in a state based array
+      this.state.day[0] = "Monday";
+      this.state.day[1] = "Tuesday";
+      this.state.day[2] = "Wednesday";
+      this.state.day[3] = "Thursday";
+      this.state.day[4] = "Friday";
+      this.state.day[5] = "Saturday";
+      this.state.day[6] = "Sunday";
+      
+      //Sets the months in a state based array
+      this.state.month[0] = "January";
+      this.state.month[1] = "February";
+      this.state.month[2] = "March";
+      this.state.month[3] = "April";
+      this.state.month[4] = "May";
+      this.state.month[5] = "June";
+      this.state.month[6] = "July";
+      this.state.month[7] = "August";
+      this.state.month[8] = "September";
+      this.state.month[9] = "October";
+      this.state.month[10] = "November";
+      this.state.month[11] = "December";
 
-      const plainTextRef = React.createRef();
-
-      //NOTE: This is for testing purposes and should be removed eventually.
-      const WEEK_DAYS = {
-        Monday: 0,
-        Tuesday: 1,
-        Wednesday: 2,
-        Thursday: 3,
-        Friday: 4,
-        Saturday: 5,
-        Sunday: 6
-      }
+      //NOTE: THE VALUES BELOW ARE 1 BEHIND THE ACTUAL ASSOCIATION DUE TO IT BEING AN ARRAY HELPER
+      //i.e. JANUARY = 0 rather than 1
+      
+      var weekDaySelected:number = 3;
         //monthEnd is the amount of days in the month
         var monthEnd:number = 31;
-        //StartPoint is the day (Mon, Tue, Wed etc) that the month starting node will begin on
-        var startPoint:number = 3;
 
         //Will hold the calendar days to be printed out later
         var calendar1:any = [];
@@ -43,22 +55,65 @@ export class Calendar extends React.Component<any, any> {
         var calendar5:any = [];
         var calendar6:any = [];
 
-        //<Text>{i + (1 - startPoint)}</Text>
-        //on={{ textChanged: handleTextChangedNHI }}
-        //<Button text={ (i + (1 - startPoint)).toString() } style="height: 100px; width: 100px;" on={buttonHandler}></Button>
+
+
+
+
+
+
+
+        const buttonHandlerIncreaseMonth = {
+          clicked: () => {
+              //INCREASE THE MONTH OR YEAR
+
+              if (this.state.monthSelected == 11)
+              {
+                  this.setState({year: this.state.year + 1})
+                  this.setState({monthSelected: 0})
+              }
+              else
+              {
+                  this.setState({monthSelected: this.state.monthSelected + 1})
+              }
+          }
+        }
+
+        const buttonHandlerDecreaseMonth = {
+          clicked: () => {
+              //TODO: DECREASE THE MONTH OR YEAR
+
+              if (this.state.monthSelected == 0)
+              {
+                  this.setState({year: this.state.year - 1})
+                  this.setState({monthSelected: 11})
+              }
+              else
+              {
+                  this.setState({monthSelected: this.state.monthSelected - 1})
+              }
+          }
+        }
+
+
+
+
+
+
+
+
+
+
+
 
         for (var i = 0; i < 7; i++) {
 
 
-          if (i >= startPoint)
+          if (i >= weekDaySelected)
           {
-            let buttonName = (i + (1 - startPoint)).toString();
+            let buttonName_0 = (i + (1 - weekDaySelected)).toString();
             calendar1.push( 
               <View style="border: 1px solid black; height: 100px; width: 100px;">
-                <Button text={ buttonName } style="height: 100px; width: 100px;" id={"1"} on=
-                //TODO: I want to print the ID
-                  {{clicked: () => console.log(buttonName)}}
-                ></Button>
+                <Button text={ buttonName_0 } style="height: 100px; width: 100px;" on={{clicked: () => this.setState({daySelected: buttonName_0})}} />
               </View>
               )
           }
@@ -70,38 +125,35 @@ export class Calendar extends React.Component<any, any> {
               </View>
               )
           }
-
-
           
-
-
-
-
-
+          let buttonName_1 = (i + (8 - weekDaySelected)).toString();
           calendar2.push( 
             <View style="border: 1px solid black; height: 100px; width: 100px;">
-              <Text>{i + (8 - startPoint)}</Text>
+              <Button text={ buttonName_1 } style="height: 100px; width: 100px;" on={{clicked: () => this.setState({daySelected: buttonName_1})}} />
             </View>
           )
 
+          let buttonName_2 = (i + (15 - weekDaySelected)).toString();
           calendar3.push( 
             <View style="border: 1px solid black; height: 100px; width: 100px;">
-              <Text>{i + (15 - startPoint)}</Text>
+              <Button text={ buttonName_2 } style="height: 100px; width: 100px;" on={{clicked: () => this.setState({daySelected: buttonName_2})}} />
             </View>
           )
 
-          if (i + (22 - startPoint) <= monthEnd){
+          if (i + (22 - weekDaySelected) <= monthEnd){
+            let buttonName_3 = (i + (22 - weekDaySelected)).toString();
             calendar4.push( 
               <View style="border: 1px solid black; height: 100px; width: 100px;">
-                <Text>{i + (22 - startPoint)}</Text>
+                <Button text={ buttonName_3 } style="height: 100px; width: 100px;" on={{clicked: () => this.setState({daySelected: buttonName_3})}} />
               </View>
             )
           }
 
-          if (i + (29 - startPoint) <= monthEnd){
+          if (i + (29 - weekDaySelected) <= monthEnd){
+            let buttonName_4 = (i + (29 - weekDaySelected)).toString();
             calendar5.push( 
               <View style="border: 1px solid black; height: 100px; width: 100px;">
-                <Text>{i + (29 - startPoint)}</Text>
+                <Button text={ buttonName_4 } style="height: 100px; width: 100px;" on={{clicked: () => this.setState({daySelected: buttonName_4})}} />
               </View>
             )
           }
@@ -114,10 +166,11 @@ export class Calendar extends React.Component<any, any> {
               )
           }
 
-          if (i + (36 - startPoint) <= monthEnd){
+          if (i + (36 - weekDaySelected) <= monthEnd){
+            let buttonName_5 = (i + (36 - weekDaySelected)).toString();
             calendar6.push( 
               <View style="border: 1px solid black; height: 100px; width: 100px;">
-                <Text>{i + (36 - startPoint)}</Text>
+                <Button text={ buttonName_5 } style="height: 100px; width: 100px;" on={{clicked: () => this.setState({daySelected: buttonName_5})}} />
               </View>
             )
           }
@@ -132,83 +185,66 @@ export class Calendar extends React.Component<any, any> {
           
         }
         const containerStyle = `
-            flex: 1; 
+            
             background: 'white';
         `;
+
+        const containerStyle2 = `
+            flex-grow: auto 0 0;
+            background: 'white';
+        `;
+
         // Must wrap main App component in a React.Fragment component
         // in order to allow for sub-windows to be created later on
         return (
-          
 
+          <View style="flex-direction: 'row';">
+              <View style={containerStyle}>
 
+                <View style="flex: 0; flex-direction: 'row';">
+                    <Button style="width: 200px;" text={"<<"} on={buttonHandlerDecreaseMonth}/>
+                        <Text style="border: 1px solid black; width: 300px;">{this.state.month[this.state.monthSelected] + ", " + this.state.year}</Text>
+                    <Button style="width: 200px;" text={">>"} on={buttonHandlerIncreaseMonth}/>
+                </View>
 
+                <View style="flex: 0; flex-direction: 'row';">
+                    <Text style="flex: 0; border: 1px solid black; width: 100px;">{this.state.day[0]}</Text>
+                    <Text style="flex: 0; border: 1px solid black; width: 100px;">{this.state.day[1]}</Text>
+                    <Text style="flex: 0; border: 1px solid black; width: 100px;">{this.state.day[2]}</Text>
+                    <Text style="flex: 0; border: 1px solid black; width: 100px;">{this.state.day[3]}</Text>
+                    <Text style="flex: 0; border: 1px solid black; width: 100px;">{this.state.day[4]}</Text>
+                    <Text style="flex: 0; border: 1px solid black; width: 100px;">{this.state.day[5]}</Text>
+                    <Text style="flex: 0; border: 1px solid black; width: 100px;">{this.state.day[6]}</Text>
+                </View>
 
-
-
-
-
-
-
-          
-
-          
-
-
-
-
-
-          <View style={containerStyle}>
-              <View style="flex: 0; flex-direction: 'row'; justify-content: 'left'; align-items: 'center'; ">
-                  <Button style="width: 200px;"/>
-                      <Text style="flex: 0; justify-content: 'left'; align-items: 'left'; border: 1px solid black; width: 300px;">Month</Text>
-                  <Button style="width: 200px;"/>
-              </View>
-
-              <View style="flex: 0; flex-direction: 'row'; justify-content: 'left'; align-items: 'center';">
-                  <Text style="flex: 0; justify-content: 'center'; align-items: 'center'; border: 1px solid black; width: 100px;">Monday</Text>
-                  <Text style="flex: 0; justify-content: 'center'; align-items: 'center'; border: 1px solid black; width: 100px;">Tuesday</Text>
-                  <Text style="flex: 0; justify-content: 'center'; align-items: 'center'; border: 1px solid black; width: 100px;">Wednesday</Text>
-                  <Text style="flex: 0; justify-content: 'center'; align-items: 'center'; border: 1px solid black; width: 100px;">Thursday</Text>
-                  <Text style="flex: 0; justify-content: 'center'; align-items: 'center'; border: 1px solid black; width: 100px;">Friday</Text>
-                  <Text style="flex: 0; justify-content: 'center'; align-items: 'center'; border: 1px solid black; width: 100px;">Saturday</Text>
-                  <Text style="flex: 0; justify-content: 'center'; align-items: 'center'; border: 1px solid black; width: 100px;">Sunday</Text>
-              </View>
-
-              <View style="flex: 0; flex-direction: 'row'; justify-content: 'left'; align-items: 'center';">
-                  {calendar1}
-              </View>
-              <View style="flex: 0; flex-direction: 'row'; justify-content: 'left'; align-items: 'center';">
-                  {calendar2}
-              </View>
-              <View style="flex: 0; flex-direction: 'row'; justify-content: 'left'; align-items: 'center';">
-                  {calendar3}
-              </View>
-              <View style="flex: 0; flex-direction: 'row'; justify-content: 'left'; align-items: 'center';">
-                  {calendar4}
-              </View>
-              <View style="flex: 0; flex-direction: 'row'; justify-content: 'left'; align-items: 'center';">
-                  {calendar5}
-              </View>
-              <View style="flex: 0; flex-direction: 'row'; justify-content: 'left'; align-items: 'center';">
-                  {calendar6}
-              </View>
-
-
-              <View style="flex: 0; flex-direction: 'row'; justify-content: 'right'; align-items: 'right';">
-
-                  <Text style="flex: 0; justify-content: 'center'; align-items: 'center'; border: 1px solid black; width: 100px;">Date sent</Text>
+                <View style="flex: 0; flex-direction: 'row';">
+                    {calendar1}
+                </View>
+                <View style="flex: 0; flex-direction: 'row';">
+                    {calendar2}
+                </View>
+                <View style="flex: 0; flex-direction: 'row';">
+                    {calendar3}
+                </View>
+                <View style="flex: 0; flex-direction: 'row';">
+                    {calendar4}
+                </View>
+                <View style="flex: 0; flex-direction: 'row';">
+                    {calendar5}
+                </View>
+                <View style="flex: 0; flex-direction: 'row';">
+                    {calendar6}
+                </View>
 
               </View>
 
+              <View style={containerStyle2}>
+                  <Button text={"+"}></Button>
+                  <Text style="border: 1px solid black;">{"Date selected: " + this.state.daySelected}</Text>
+                  <Text style="border: 1px solid black;">This is where the meeting information will go...</Text>
+              </View>
 
-
-          </View>
-
-
-
-
-
-
+            </View>
 
           
           
