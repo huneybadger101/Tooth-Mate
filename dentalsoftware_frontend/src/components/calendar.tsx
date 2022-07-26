@@ -1,17 +1,24 @@
-import { Text, View, Button } from "@nodegui/react-nodegui";
-import React from "react";
+import { Text, View, Button, useEventHandler } from "@nodegui/react-nodegui";
+import { release } from "process";
+import React, { createRef } from "react";
+import { QLabelSignals, QMouseEvent, WidgetEventTypes } from "@nodegui/nodegui";
+import { get } from "http";
+import { eventNames } from "cluster";
 
-export class Calendar extends React.Component {
+export class Calendar extends React.Component<any, any> {
+
+  constructor(props: any) {
+    super(props);
+    this.state = {
+        testArray: []
+    }
+  }
 
     render() {
 
-      const buttonHandler = {
-        clicked: (textValue: string) => {
-          console.log("Text value: " + textValue);
-        }
-      }
+      this.state.testArray[0] = "";
 
-      
+      const plainTextRef = React.createRef();
 
       //NOTE: This is for testing purposes and should be removed eventually.
       const WEEK_DAYS = {
@@ -37,7 +44,8 @@ export class Calendar extends React.Component {
         var calendar6:any = [];
 
         //<Text>{i + (1 - startPoint)}</Text>
-
+        //on={{ textChanged: handleTextChangedNHI }}
+        //<Button text={ (i + (1 - startPoint)).toString() } style="height: 100px; width: 100px;" on={buttonHandler}></Button>
 
         for (var i = 0; i < 7; i++) {
 
@@ -45,8 +53,11 @@ export class Calendar extends React.Component {
           if (i >= startPoint)
           {
             calendar1.push( 
-              <View style="border: 0px solid black; height: 100px; width: 100px;">
-                <Button text={ (i + (1 - startPoint)).toString() } style="height: 100px; width: 100px;"></Button>
+              <View style="border: 1px solid black; height: 100px; width: 100px;">
+                <Button text={ (i + (1 - startPoint)).toString() } style="height: 100px; width: 100px;" id={"1"} on=
+                //TODO: I want to print the ID
+                  {{clicked: () => console.log()}}
+                ></Button>
               </View>
               )
           }
