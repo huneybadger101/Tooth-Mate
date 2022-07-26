@@ -8,7 +8,7 @@ import Calendar from "./components/calendar";
 import Bookings from "./components/bookings";
 import TabContainer from "./components/tabContainer";
 
-const minSize = { width: 1000, height: 520 };
+const minSize = { width: 1000, height: 750 };
 class App extends React.Component<any, any> {
 
   constructor(props: any) {
