@@ -1,8 +1,8 @@
-var express = require('express');
-var mysql = require('mysql'); 
-var app = express();
+const express = require('express');
+const mysql = require('mysql'); 
+const app = express();
 
-var client;
+let client;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -11,23 +11,102 @@ app.get('/getAllPatientData', (req, res) => {
     databaseQuery(res, "select * from patient_data")
 })
 
+app.post('/deletePatientData', (req, res) => {
+
+    let NHINumber = req.headers['nhiNumber'];
+    let sql = "DELETE FROM patient_data WHERE NHI = " + NHINumber + ";";
+    databaseQuery(res, sql);
+
+})
+
+app.post('/updatePatientData', (req, res) => {
+
+    let NHINumber = req.headers['nhiNumber'];
+    let cols = req.headers['cols'];
+    let vals = req.headers['vals'];
+    let setString = "";
+
+    for (let i = 0; i < cols.length; i++) {
+        setString += cols[i] + " = " + vals[i] + ", ";
+    }
+
+    setString = setString.slice(0,  -2)
+
+    let sql = "UPDATE patient_data SET " + setString + " WHERE NHI = " + NHINumber + ";";
+    databaseQuery(res, sql);
+
+})
+
 app.get('/getAllBookings', (req, res) => {
     databaseQuery(res, "select * from bookings")
+})
+
+app.post('/deleteBooking', (req, res) => {
+    
+    let bookingID = req.headers['bookingID'];
+    let sql = "DELETE FROM bookings WHERE ID = " + bookingID + ";";
+    databaseQuery(res, sql);
+
+})
+
+app.post('/updateBooking', (req, res) => {
+
+    let bookingID = req.headers['bookingID'];
+    let cols = req.headers['cols'];
+    let vals = req.headers['vals'];
+    let setString = "";
+
+    for (let i = 0; i < cols.length; i++) {
+        setString += cols[i] + " = " + vals[i] + ", ";
+    }
+
+    setString = setString.slice(0,  -2)
+
+    let sql = "UPDATE bookings SET " + setString + " WHERE ID = " + bookingID + ";";
+    databaseQuery(res, sql);
+
 })
 
 app.get('/getAllAccounts', (req, res) => {
     databaseQuery(res, "select * from accounts")
 })
 
+app.post('/deleteAccount', (req, res) => {
+
+    let accountID = req.headers['accountID'];
+    let sql = "DELETE FROM accounts WHERE ID = " + accountID + ";";
+    databaseQuery(res, sql);
+    
+})
+
+app.post('/updateAccount', (req, res) => {
+
+    let accountID = req.headers['accountID'];
+    let cols = req.headers['cols'];
+    let vals = req.headers['vals'];
+    let setString = "";
+
+    for (let i = 0; i < cols.length; i++) {
+        setString += cols[i] + " = " + vals[i] + ", ";
+    }
+
+    setString = setString.slice(0,  -2)
+
+    let sql = "UPDATE accounts SET " + setString + " WHERE ID = " + accountID + ";";
+    databaseQuery(res, sql);
+
+})
+
 app.post('/createNewPatient', (req, res) => {
-    json = req.body
+    let json = req.body
     createNewPatient(res, json)
 })
 
-function databaseConnect(res = null, host = "localhost", username = "root", password = null, database = "toothmate") {
+function databaseConnect(res = null, host = "localhost", username = "root", password = null, database = "toothmate", port = 3306) {
     client = mysql.createConnection({
         host: "localhost",
-        user: "root", // Will change, no password for testing
+        user: username, // Will change, no password for testing
+        port: port,
         ...(password != null && {password: password}),
         database: database
       });
@@ -52,8 +131,8 @@ function databaseQuery(res = null, query) {
 }
 
 function createNewPatient(res = null, patientData) {
-    numMissing = 0
-    errorMessage = "Error: Missing "
+    let numMissing = 0
+    let errorMessage = "Error: Missing "
     if (patientData.patient_NHI === undefined) {
         errorMessage += "Patient NHI Number, "
         numMissing++
@@ -85,8 +164,8 @@ function createNewPatient(res = null, patientData) {
         return
     }
     // No missing data, time to check if patient already exists
-    sql = "SELECT * FROM patient_data WHERE NHI='" + patientData.patient_NHI + "'"
-    patientExists = 0
+    let sql = "SELECT * FROM patient_data WHERE NHI='" + patientData.patient_NHI + "'"
+    let patientExists = 0
     client.query(sql, function (err, result) {
         if (err) {
             console.log(err)
@@ -123,7 +202,7 @@ function createNewPatient(res = null, patientData) {
 }
 
 function databaseCreateTables(res = null) {
-    var sql = "CREATE TABLE IF NOT EXISTS patient_data (ID INT AUTO_INCREMENT PRIMARY KEY, NHI VARCHAR(255), FirstName VARCHAR(255), LastName VARCHAR(255), MiddleName VARCHAR(255), DOB DATE, ContactNumber VARCHAR(255), Email VARCHAR(255))";
+    let sql = "CREATE TABLE IF NOT EXISTS patient_data (ID INT AUTO_INCREMENT PRIMARY KEY, NHI VARCHAR(255), FirstName VARCHAR(255), LastName VARCHAR(255), MiddleName VARCHAR(255), DOB DATE, ContactNumber VARCHAR(255), Email VARCHAR(255))";
     databaseQuery(res, sql)
     sql = "CREATE TABLE IF NOT EXISTS accounts (ID INT AUTO_INCREMENT PRIMARY KEY, AccountName VARCHAR(255), AccountPasswordHash VARCHAR(255), AccountPasswordSalt VARCHAR(255), AccountAccessLevel INT, DentistNumber INT, DOB DATE, Email VARCHAR(255), PhoneNumber VARCHAR(255))";
     databaseQuery(null, sql) 
