@@ -1,6 +1,7 @@
 import { Text, View, Button, ScrollArea } from "@nodegui/react-nodegui";
 import React from "react";
 import internal from "stream";
+import { getWeekdayStart } from "./helpers/calendarHelper";
 
 export class Calendar extends React.Component<any, any> {
 
@@ -11,6 +12,7 @@ export class Calendar extends React.Component<any, any> {
         day: [],
         year: 2022,
         daySelected: 0,
+        weekDaySelected: 3,
         monthSelected: 0
     }
   }
@@ -43,7 +45,8 @@ export class Calendar extends React.Component<any, any> {
       //NOTE: THE VALUES BELOW ARE 1 BEHIND THE ACTUAL ASSOCIATION DUE TO IT BEING AN ARRAY HELPER
       //i.e. JANUARY = 0 rather than 1
       
-      var weekDaySelected:number = 3;
+      //var weekDaySelected:number = 3;
+
         //monthEnd is the amount of days in the month
         var monthEnd:number = 31;
 
@@ -55,16 +58,11 @@ export class Calendar extends React.Component<any, any> {
         var calendar5:any = [];
         var calendar6:any = [];
 
-
-
-
-
-
-
-
         const buttonHandlerIncreaseMonth = {
           clicked: () => {
               //INCREASE THE MONTH OR YEAR
+
+              
 
               if (this.state.monthSelected == 11)
               {
@@ -75,12 +73,15 @@ export class Calendar extends React.Component<any, any> {
               {
                   this.setState({monthSelected: this.state.monthSelected + 1})
               }
+
+              //Sets the weekday start for each month using a function from another file (calendayHelper.tsx)
+              this.setState({weekDaySelected:getWeekdayStart(this.state.daySelected, this.state.monthSelected, this.state.year)});
           }
         }
 
         const buttonHandlerDecreaseMonth = {
           clicked: () => {
-              //TODO: DECREASE THE MONTH OR YEAR
+              //DECREASE THE MONTH OR YEAR
 
               if (this.state.monthSelected == 0)
               {
@@ -91,6 +92,10 @@ export class Calendar extends React.Component<any, any> {
               {
                   this.setState({monthSelected: this.state.monthSelected - 1})
               }
+
+              //Sets the weekday start for each month using a function from another file (calendayHelper.tsx)
+              this.setState({weekDaySelected:getWeekdayStart(this.state.daySelected, this.state.monthSelected, this.state.year)});
+              
           }
         }
 
@@ -108,9 +113,9 @@ export class Calendar extends React.Component<any, any> {
         for (var i = 0; i < 7; i++) {
 
 
-          if (i >= weekDaySelected)
+          if (i >= this.state.weekDaySelected)
           {
-            let buttonName_0 = (i + (1 - weekDaySelected)).toString();
+            let buttonName_0 = (i + (1 - this.state.weekDaySelected)).toString();
             calendar1.push( 
               <View style="border: 1px solid black; height: 100px; width: 100px;">
                 <Button text={ buttonName_0 } style="height: 100px; width: 100px;" on={{clicked: () => this.setState({daySelected: buttonName_0})}} />
@@ -126,22 +131,22 @@ export class Calendar extends React.Component<any, any> {
               )
           }
           
-          let buttonName_1 = (i + (8 - weekDaySelected)).toString();
+          let buttonName_1 = (i + (8 - this.state.weekDaySelected)).toString();
           calendar2.push( 
             <View style="border: 1px solid black; height: 100px; width: 100px;">
               <Button text={ buttonName_1 } style="height: 100px; width: 100px;" on={{clicked: () => this.setState({daySelected: buttonName_1})}} />
             </View>
           )
 
-          let buttonName_2 = (i + (15 - weekDaySelected)).toString();
+          let buttonName_2 = (i + (15 - this.state.weekDaySelected)).toString();
           calendar3.push( 
             <View style="border: 1px solid black; height: 100px; width: 100px;">
               <Button text={ buttonName_2 } style="height: 100px; width: 100px;" on={{clicked: () => this.setState({daySelected: buttonName_2})}} />
             </View>
           )
 
-          if (i + (22 - weekDaySelected) <= monthEnd){
-            let buttonName_3 = (i + (22 - weekDaySelected)).toString();
+          if (i + (22 - this.state.weekDaySelected) <= monthEnd){
+            let buttonName_3 = (i + (22 - this.state.weekDaySelected)).toString();
             calendar4.push( 
               <View style="border: 1px solid black; height: 100px; width: 100px;">
                 <Button text={ buttonName_3 } style="height: 100px; width: 100px;" on={{clicked: () => this.setState({daySelected: buttonName_3})}} />
@@ -149,8 +154,8 @@ export class Calendar extends React.Component<any, any> {
             )
           }
 
-          if (i + (29 - weekDaySelected) <= monthEnd){
-            let buttonName_4 = (i + (29 - weekDaySelected)).toString();
+          if (i + (29 - this.state.weekDaySelected) <= monthEnd){
+            let buttonName_4 = (i + (29 - this.state.weekDaySelected)).toString();
             calendar5.push( 
               <View style="border: 1px solid black; height: 100px; width: 100px;">
                 <Button text={ buttonName_4 } style="height: 100px; width: 100px;" on={{clicked: () => this.setState({daySelected: buttonName_4})}} />
@@ -166,8 +171,8 @@ export class Calendar extends React.Component<any, any> {
               )
           }
 
-          if (i + (36 - weekDaySelected) <= monthEnd){
-            let buttonName_5 = (i + (36 - weekDaySelected)).toString();
+          if (i + (36 - this.state.weekDaySelected) <= monthEnd){
+            let buttonName_5 = (i + (36 - this.state.weekDaySelected)).toString();
             calendar6.push( 
               <View style="border: 1px solid black; height: 100px; width: 100px;">
                 <Button text={ buttonName_5 } style="height: 100px; width: 100px;" on={{clicked: () => this.setState({daySelected: buttonName_5})}} />
@@ -240,7 +245,9 @@ export class Calendar extends React.Component<any, any> {
 
               <View style={containerStyle2}>
                   <Button text={"+"}></Button>
-                  <Text style="border: 1px solid black;">{"Date selected: " + this.state.daySelected}</Text>
+                  <Text style="border: 1px solid black;">{"Date selected: " + this.state.daySelected + "/" + 
+                              (this.state.monthSelected + 1) + "/" + this.state.year + " - " + this.state.day[this.state.weekDaySelected]}</Text>
+                              
                   <Text style="border: 1px solid black;">This is where the meeting information will go...</Text>
               </View>
 
