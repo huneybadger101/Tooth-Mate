@@ -1,6 +1,7 @@
 import { View, Button} from "@nodegui/react-nodegui";
 import {  WidgetEventTypes } from "@nodegui/nodegui";
 import React, { useState } from "react";
+import TimeStamp from "./timestamp";
 
 function TabContainer(props: any) {
 
@@ -23,7 +24,19 @@ function TabContainer(props: any) {
         })
     }
 
-    const dragHandler = (value: any, index: number) => {
+    function dragHandler(value: any, index: number) {
+
+        let currentTime = new Date().getTime();
+
+        if (TimeStamp.timeStamp == undefined) {
+            TimeStamp.timeStamp = new Date().getTime();
+        } else {
+            if (currentTime - TimeStamp.timeStamp < 1000) {
+                return;
+            }
+            TimeStamp.timeStamp = new Date().getTime();
+        }
+
         // Call App.tsx's createNewWindow function to create a new window with the provided view
         props.createNewWindow(value.view, value.tabName)
         // Remove view from current tabContainer so it doesn't get displayed multiple times by the main App component
@@ -35,6 +48,7 @@ function TabContainer(props: any) {
             view: tempChildren[0]
         })
     }
+
     let childrenArray = [];
     if (Object.prototype.toString.call(props.children) != '[object Array]') {
         // If only one child is provided, create an array using that child
@@ -77,7 +91,6 @@ function TabContainer(props: any) {
                                             [WidgetEventTypes.MouseButtonRelease]: () => buttonHandler(value.view),
                                             // Only trigger when left click is clicked, held and moved for a given time
                                             [WidgetEventTypes.MouseMove]: () => {
-                                                console.log("Drag called by: " + value.tabName + "/ " + dragCount)
                                                 if (dragCount == 25 && tabs.length > 1) {
                                                     dragHandler(value, index);
                                                 }
