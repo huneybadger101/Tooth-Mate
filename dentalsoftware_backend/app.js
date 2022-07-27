@@ -9,8 +9,8 @@ app.use(express.urlencoded({ extended: false }));
 
 app.post('/getAllPatientData', (req, res) => {
     let searchItem = "*";
-    if (req.headers['searchItem']) {
-        searchItem = req.headers['searchItem'];
+    if (req.headers['searchitem'] != undefined) {
+        searchItem = req.headers['searchitem'];
     }
     let sql = "SELECT " + searchItem + " FROM patient_data";
     databaseQuery(res, sql);
@@ -44,8 +44,8 @@ app.post('/updatePatientData', (req, res) => {
 
 app.get('/getAllBookings', (req, res) => {
     let searchItem = "*";
-    if (req.headers['searchItem']) {
-        searchItem = req.headers['searchItem'];
+    if (req.headers['searchitem'] != undefined) {
+        searchItem = req.headers['searchitem'];
     }
     let sql = "SELECT " + searchItem + " FROM bookings";
     databaseQuery(res, sql);
@@ -79,8 +79,8 @@ app.post('/updateBooking', (req, res) => {
 
 app.get('/getAllAccounts', (req, res) => {
     let searchItem = "*";
-    if (req.headers['searchItem']) {
-        searchItem = req.headers['searchItem'];
+    if (req.headers['searchitem'] != undefined) {
+        searchItem = req.headers['searchitem'];
     }
     let sql = "SELECT " + searchItem + " FROM accounts";
     databaseQuery(res, sql);
