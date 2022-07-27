@@ -87,6 +87,8 @@ export const getWeekdayStart = (day:number, month:number, year:number) =>{
                         }
                         referenceWeekday[num] = referenceWeekday[num] - 2;
                     }
+                    //Checks for a post leap year
+                    //This is because the first two months of a year post leapyear are still ahead by 2 days.
                     else if (((refYear - 1) % 4 == 0 && (refYear - 1) % 100 != 0) && num < 2)
                     {
                         referenceWeekday[num] = referenceWeekday[num] - 2;
@@ -107,7 +109,7 @@ export const getWeekdayStart = (day:number, month:number, year:number) =>{
         }
 
         //NOTE: I HAVE NO IDEA WHY, BUT THIS IS REQUIRED (DESPITE IT EXISTING ABOVE) TO
-            //ALLOW THE LEAP YEARS TO WORK... EVERYTHING ELSE WORKS FINE
+            //ALLOW THE LEAP YEARS TO WORK WHEN THE MONTH/ YEAR IS BEING CHANGED BACK (2022 -> 2021).
         if ((year % 4 == 0 && year % 100 != 0) && (currentWeekday > 1))
         {
             console.log("Running fix 1 " + year);
@@ -120,5 +122,6 @@ export const getWeekdayStart = (day:number, month:number, year:number) =>{
         }
     }
 
+    //Returns the current weeday start point for the calendar to use as reference.
     return referenceWeekday[currentWeekday];
 }
