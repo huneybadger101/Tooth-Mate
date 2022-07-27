@@ -102,9 +102,9 @@ app.post('/createNewPatient', (req, res) => {
     createNewPatient(res, json)
 })
 
-function databaseConnect(res = null, host = "localhost", username = "root", password = null, database = "toothmate", port = 3306) {
+function databaseConnect(host = "localhost", username = "root", password = null, database = "toothmate", port = 3306) {
     client = mysql.createConnection({
-        host: "localhost",
+        host: host,
         user: username, // Will change, no password for testing
         port: port,
         ...(password != null && {password: password}),
