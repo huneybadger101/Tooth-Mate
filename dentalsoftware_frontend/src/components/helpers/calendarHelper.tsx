@@ -2,7 +2,7 @@
 //I.e. 1/1/2012 falls on a Sunday
 //It is used so the calendar will have the selectable dates accuratly show weekdays they fall on.
 
-export const getWeekdayStart = (day:number, month:number, year:number) =>{
+export const getWeekdayStart = (month:number, year:number) =>{
 
     //Will set the default value for 2022 months to weekdays calculations
     var referenceWeekday = [12];
@@ -68,9 +68,6 @@ export const getWeekdayStart = (day:number, month:number, year:number) =>{
     //Sets the weekday the calendar should start on 
     if (referenceYear > year)
     {
-        console.log("Less than year");
-        console.log("Reference year: " + referenceYear + ", Year: " + year);
-
         for (var refYear = referenceYear; refYear >= year; refYear--)
         {
             for (var num = 0; num < 12; num++)
@@ -112,12 +109,10 @@ export const getWeekdayStart = (day:number, month:number, year:number) =>{
             //ALLOW THE LEAP YEARS TO WORK WHEN THE MONTH/ YEAR IS BEING CHANGED BACK (2022 -> 2021).
         if ((year % 4 == 0 && year % 100 != 0) && (currentWeekday > 1))
         {
-            console.log("Running fix 1 " + year);
             referenceWeekday[currentWeekday] = referenceWeekday[currentWeekday] + 1;
         }
         else if (((year - 1) % 4 == 0 && (year - 1) % 100 != 0) && currentWeekday < 2)
         {
-            console.log("Running fix 2 " + year);
             referenceWeekday[currentWeekday] = referenceWeekday[currentWeekday] + 1;
         }
     }

@@ -2,7 +2,7 @@ import { Text, View, Button, ScrollArea } from "@nodegui/react-nodegui";
 import React from "react";
 import internal from "stream";
 import { getWeekdayStart } from "./helpers/calendarHelper";
-
+import { getMonthDayCount } from "./helpers/calendarMonthDayCount";
 export class Calendar extends React.Component<any, any> {
 
   constructor(props: any) {
@@ -13,7 +13,8 @@ export class Calendar extends React.Component<any, any> {
         year: 2022,
         daySelected: 0,
         weekDaySelected: 3,
-        monthSelected: 0
+        monthSelected: 0,
+        monthDayCount: 0
     }
   }
 
@@ -42,13 +43,8 @@ export class Calendar extends React.Component<any, any> {
       this.state.month[10] = "November";
       this.state.month[11] = "December";
 
-      //NOTE: THE VALUES BELOW ARE 1 BEHIND THE ACTUAL ASSOCIATION DUE TO IT BEING AN ARRAY HELPER
+      //NOTE: THE VALUES ABOVE ARE 1 BEHIND THE ACTUAL ASSOCIATION DUE TO IT BEING AN ARRAY HELPER
       //i.e. JANUARY = 0 rather than 1
-      
-      //var weekDaySelected:number = 3;
-
-        //monthEnd is the amount of days in the month
-        var monthEnd:number = 31;
 
         //Will hold the calendar days to be printed out later
         var calendar1:any = [];
@@ -58,12 +54,9 @@ export class Calendar extends React.Component<any, any> {
         var calendar5:any = [];
         var calendar6:any = [];
 
+        //Button handler for when increasing the month or year
         const buttonHandlerIncreaseMonth = {
           clicked: () => {
-              //INCREASE THE MONTH OR YEAR
-
-              
-
               if (this.state.monthSelected == 11)
               {
                   this.setState({year: this.state.year + 1})
@@ -75,14 +68,14 @@ export class Calendar extends React.Component<any, any> {
               }
 
               //Sets the weekday start for each month using a function from another file (calendayHelper.tsx)
-              this.setState({weekDaySelected:getWeekdayStart(this.state.daySelected, this.state.monthSelected, this.state.year)});
+              this.setState({weekDaySelected:getWeekdayStart(this.state.monthSelected, this.state.year)});
+              this.setState({getMonthDayCount: getMonthDayCount(this.state.monthSelected, this.state.year)});
           }
         }
-
+        
+        //Button handler for when decreasing the month or year
         const buttonHandlerDecreaseMonth = {
           clicked: () => {
-              //DECREASE THE MONTH OR YEAR
-
               if (this.state.monthSelected == 0)
               {
                   this.setState({year: this.state.year - 1})
@@ -94,24 +87,14 @@ export class Calendar extends React.Component<any, any> {
               }
 
               //Sets the weekday start for each month using a function from another file (calendayHelper.tsx)
-              this.setState({weekDaySelected:getWeekdayStart(this.state.daySelected, this.state.monthSelected, this.state.year)});
-              
+              this.setState({weekDaySelected:getWeekdayStart(this.state.monthSelected, this.state.year)});
+              this.setState({getMonthDayCount: getMonthDayCount(this.state.monthSelected, this.state.year)});
           }
         }
 
-
-
-
-
-
-
-
-
-
-
+        
 
         for (var i = 0; i < 7; i++) {
-
 
           if (i >= this.state.weekDaySelected)
           {
@@ -145,7 +128,7 @@ export class Calendar extends React.Component<any, any> {
             </View>
           )
 
-          if (i + (22 - this.state.weekDaySelected) <= monthEnd){
+          if (i + (22 - this.state.weekDaySelected) <= this.state.getMonthDayCount){
             let buttonName_3 = (i + (22 - this.state.weekDaySelected)).toString();
             calendar4.push( 
               <View style="border: 1px solid black; height: 100px; width: 100px;">
@@ -154,7 +137,7 @@ export class Calendar extends React.Component<any, any> {
             )
           }
 
-          if (i + (29 - this.state.weekDaySelected) <= monthEnd){
+          if (i + (29 - this.state.weekDaySelected) <= this.state.getMonthDayCount){
             let buttonName_4 = (i + (29 - this.state.weekDaySelected)).toString();
             calendar5.push( 
               <View style="border: 1px solid black; height: 100px; width: 100px;">
@@ -171,7 +154,7 @@ export class Calendar extends React.Component<any, any> {
               )
           }
 
-          if (i + (36 - this.state.weekDaySelected) <= monthEnd){
+          if (i + (36 - this.state.weekDaySelected) <= this.state.getMonthDayCount){
             let buttonName_5 = (i + (36 - this.state.weekDaySelected)).toString();
             calendar6.push( 
               <View style="border: 1px solid black; height: 100px; width: 100px;">
