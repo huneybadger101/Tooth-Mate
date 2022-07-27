@@ -7,8 +7,13 @@ let client;
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-app.get('/getAllPatientData', (req, res) => {
-    databaseQuery(res, "select * from patient_data")
+app.post('/getAllPatientData', (req, res) => {
+    let searchItem = "*";
+    if (req.headers['searchItem']) {
+        searchItem = req.headers['searchItem'];
+    }
+    let sql = "SELECT " + searchItem + " FROM patient_data";
+    databaseQuery(res, sql);
 })
 
 app.post('/deletePatientData', (req, res) => {
@@ -38,7 +43,12 @@ app.post('/updatePatientData', (req, res) => {
 })
 
 app.get('/getAllBookings', (req, res) => {
-    databaseQuery(res, "select * from bookings")
+    let searchItem = "*";
+    if (req.headers['searchItem']) {
+        searchItem = req.headers['searchItem'];
+    }
+    let sql = "SELECT " + searchItem + " FROM bookings";
+    databaseQuery(res, sql);
 })
 
 app.post('/deleteBooking', (req, res) => {
@@ -68,7 +78,12 @@ app.post('/updateBooking', (req, res) => {
 })
 
 app.get('/getAllAccounts', (req, res) => {
-    databaseQuery(res, "select * from accounts")
+    let searchItem = "*";
+    if (req.headers['searchItem']) {
+        searchItem = req.headers['searchItem'];
+    }
+    let sql = "SELECT " + searchItem + " FROM accounts";
+    databaseQuery(res, sql);
 })
 
 app.post('/deleteAccount', (req, res) => {
