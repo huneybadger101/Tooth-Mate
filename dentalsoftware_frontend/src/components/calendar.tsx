@@ -108,13 +108,7 @@ export class Calendar extends React.Component<any, any> {
             calendar1.push( 
               <View style="border: 1px solid black; height: 100px; width: 100px;">
                 <Button text={ buttonName_0 } style="height: 100px; width: 100px;" on={{clicked: () => this.setState(
-                  {daySelected: buttonName_0,
-                    rightHandDateInfo: true,
-                    rightHandMessage: false,
-                    currentDaySelected: this.state.daySelected,
-                    currentMonthSelected: this.state.monthSelected + 1,
-                    currentYearSelected: this.state.year,
-                    currentWeekdaySelected: this.state.day[this.state.weekDaySelected]}
+                  {daySelected: buttonName_0, rightHandDateInfo: true, rightHandMessage: false}
                   )}} />
               </View>
               )
@@ -132,13 +126,7 @@ export class Calendar extends React.Component<any, any> {
           calendar2.push( 
             <View style="border: 1px solid black; height: 100px; width: 100px;">
               <Button text={ buttonName_1 } style="height: 100px; width: 100px;" on={{clicked: () => this.setState(
-                {daySelected: buttonName_1,
-                  rightHandDateInfo: true,
-                  rightHandMessage: false,
-                  currentDaySelected: this.state.daySelected,
-                  currentMonthSelected: this.state.monthSelected + 1,
-                  currentYearSelected: this.state.year,
-                  currentWeekdaySelected: this.state.day[this.state.weekDaySelected]}
+                {daySelected: buttonName_1, rightHandDateInfo: true, rightHandMessage: false}
                 )}} />
             </View>
           )
@@ -147,13 +135,7 @@ export class Calendar extends React.Component<any, any> {
           calendar3.push( 
             <View style="border: 1px solid black; height: 100px; width: 100px;">
               <Button text={ buttonName_2 } style="height: 100px; width: 100px;" on={{clicked: () => this.setState(
-                {daySelected: buttonName_2,
-                  rightHandDateInfo: true,
-                  rightHandMessage: false,
-                  currentDaySelected: this.state.daySelected,
-                  currentMonthSelected: this.state.monthSelected + 1,
-                  currentYearSelected: this.state.year,
-                  currentWeekdaySelected: this.state.day[this.state.weekDaySelected]}
+                {daySelected: buttonName_2, rightHandDateInfo: true, rightHandMessage: false}
                 )}} />
             </View>
           )
@@ -163,13 +145,7 @@ export class Calendar extends React.Component<any, any> {
             calendar4.push( 
               <View style="border: 1px solid black; height: 100px; width: 100px;">
                 <Button text={ buttonName_3 } style="height: 100px; width: 100px;" on={{clicked: () => this.setState(
-                  {daySelected: buttonName_3,
-                    rightHandDateInfo: true,
-                    rightHandMessage: false,
-                    currentDaySelected: this.state.daySelected,
-                    currentMonthSelected: this.state.monthSelected + 1,
-                    currentYearSelected: this.state.year,
-                    currentWeekdaySelected: this.state.day[this.state.weekDaySelected]}
+                  {daySelected: buttonName_3, rightHandDateInfo: true, rightHandMessage: false}
                   )}} />
               </View>
             )
@@ -183,10 +159,13 @@ export class Calendar extends React.Component<any, any> {
                   {daySelected: buttonName_4, 
                   rightHandDateInfo: true,
                   rightHandMessage: false,
+
                   currentDaySelected: this.state.daySelected,
                   currentMonthSelected: this.state.monthSelected + 1,
                   currentYearSelected: this.state.year,
-                  currentWeekdaySelected: this.state.day[this.state.weekDaySelected]}
+                  currentWeekdaySelected: this.state.day[this.state.weekDaySelected],
+
+                }
                   )}} />
               </View>
             )
@@ -205,13 +184,7 @@ export class Calendar extends React.Component<any, any> {
             calendar6.push( 
               <View style="border: 1px solid black; height: 100px; width: 100px;">
                 <Button text={ buttonName_5 } style="height: 100px; width: 100px;" on={{clicked: () => this.setState(
-                  {daySelected: buttonName_5,
-                    rightHandDateInfo: true,
-                    rightHandMessage: false,
-                    currentDaySelected: this.state.daySelected,
-                    currentMonthSelected: this.state.monthSelected + 1,
-                    currentYearSelected: this.state.year,
-                    currentWeekdaySelected: this.state.day[this.state.weekDaySelected]}
+                  {daySelected: buttonName_5, rightHandDateInfo: true, rightHandMessage: false}
                   )}} />
               </View>
             )
@@ -282,12 +255,14 @@ export class Calendar extends React.Component<any, any> {
 
               <View style={containerStyle2}>
                   <Button text={"+"} visible={this.state.rightHandDateInfo}></Button>
-                  <Text style="border: 1px solid black; padding: 10px" visible={this.state.rightHandDateInfo}>{"Date selected: " + this.state.currentDaySelected + "/" + 
-                              (this.state.currentMonthSelected + 1) + "/" + this.state.currentYearSelected + " - " + this.state.day[this.state.currentWeekdaySelected]}</Text>
+                  <Text style="border: 1px solid black; padding: 10px" visible={this.state.rightHandDateInfo}>{"Date selected: " + this.state.daySelected + "/" + 
+                              (this.state.monthSelected + 1) + "/" + this.state.year + " - " + this.state.day[this.state.weekDaySelected]}</Text>
                               
                   <Text style="border: 0px solid black; padding: 10px" visible={this.state.rightHandDateInfo}>This is where the meeting information will go...</Text>
 
+                  
 
+          
 
 
 
