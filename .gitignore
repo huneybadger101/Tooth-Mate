@@ -1,5 +1,10 @@
 dentalsoftware_frontend/node_modules/
 dentalsoftware_backend/node_modules/
 */node_modules/
+dentalsoftware_frontend/package-lock.json
+dentalsoftware_frontend/package-lock.json
+dentalsoftware_frontend/package.json
+dentalsoftware_frontend/package.json
+dentalsoftware_frontend/package-lock.json
 *.DS_Store
 dentalsoftware_frontend/deploy

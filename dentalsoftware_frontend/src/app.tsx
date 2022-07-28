@@ -9,8 +9,7 @@ import Bookings from "./components/bookings";
 import TabContainer from "./components/tabContainer";
 var resolution = require("screen-resolution");
 
-const minSize = { width: 1000, height: 520 };
-
+const minSize = { width: 1000, height: 750 };
 class App extends React.Component<any, any> {
 
   constructor(props: any) {
