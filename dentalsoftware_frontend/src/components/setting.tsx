@@ -1,49 +1,93 @@
-import { Text, View, Button } from "@nodegui/react-nodegui";
-import React from "react";
+import {
+    Renderer,
+    View,
+    Button,
+    Window,
+    Image,
+    LineEdit
+  } from "@nodegui/react-nodegui";
+import React, { useEffect, useRef, useMemo, useState } from "react";
+import {
+    AspectRatioMode,
+    QMainWindow,
+    QLineEditEvents,
+    QPushButtonEvents
+  } from "@nodegui/nodegui";
 import Homepage from "./homepage";
 
-export class Setting extends React.Component {
+function Setting(props: any) {
 
-    // Function that returns a component to be drawn, can have children components if the parent component supports it
-    render() {
-        
-        return (
-            <View style="flex: 1; background-color: 'white';">
-                <View style="justify-content: 'top'; align-items: 'center'; background-color: 'grey'; width:'fixed'">
-                    <Text wordWrap={true} style="color: 'black'; font-size: 35px;">
-                        Setting
-                    </Text>
-                </View>
-                {/* <Button style="align-items: 'left'; color: 'blue'; background: 'green';">
-                    setting1
-                </Button> */}
-                <View id="sidebar" style="width:100px">
-                    <Text/>
-                    <Button
-                    id="1"
-                    text="setting1"
-                    style="height:100px"
-                    />
-                    <Button
-                    id="2"
-                    text="setting2"
-                    style="height:100px"
-                    />
-                    <Button
-                    id="3"
-                    text="setting3"
-                    style="height:100px"
-                    />
-                    <Button
-                    id="4"
-                    text="setting4"
-                    style="height:100px"
-                    />
-                </View>
-            </View>
+    const App = () => {
+        const winRef = useRef<QMainWindow>(null);
+        const [fileUrl, setFileUrl] = useState();
+        const [imageSrc, setImageSrc] = useState();
+        useEffect(() => {
+          if (winRef.current) {
+            winRef.current.resize(800, 450);
+          }
+        }, []);
+        const lineEditHandler = useMemo(
+          () => ({
+            [QLineEditEvents.textChanged]: (text: string) => {
+              setFileUrl(text);
+            }
+          }),
+          []
         );
-    }
-} 
-
+      
+        const loadButtonHandler = useMemo(
+          () => ({
+            [QPushButtonEvents.clicked]: () => {
+              setImageSrc(fileUrl);
+            }
+          }),
+          [fileUrl]
+        );
+      
+        return (
+          <>
+            <Window ref={winRef} styleSheet={StyleSheet}>
+              <View id="container">
+                <View id="controls">
+                  <LineEdit
+                    on={lineEditHandler}
+                    id="textField"
+                    text={fileUrl}
+                    placeholderText="Absolute path to an image"
+                  />
+                  <Button text="Load Image" on={loadButtonHandler} />
+                </View>
+                <Image
+                  id="img"
+                  aspectRatioMode={AspectRatioMode.KeepAspectRatio}
+                  src={imageSrc}
+                />
+              </View>
+            </Window>
+          </>
+        );
+      };
+      const styleSheet = `
+        #container {
+            flex: 1;
+            min-height: '100%';
+        }
+        #controls {
+            flex-direction: 'row';
+            justify-content: 'space-around';
+            align-items: 'center';
+            padding-horizontal: 20;
+            padding-vertical: 10;
+        }
+        #img {
+            flex: 1;
+            qproperty-alignment: 'AlignCenter';
+        }
+        #textField {
+            flex: 1;
+        }
+        `;
+      Renderer.render(<App />);
+}
+// Export the function so it can be accessed elsewhere
 export default Setting;
-
