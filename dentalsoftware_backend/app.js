@@ -116,16 +116,16 @@ app.post('/updateAccount', (req, res) => {
 })
 
 app.post('/createNewPatient', (req, res) => {
-    let json = req.body
+    let json = JSON.parse(req.headers['data'])['data']
     createNewPatient(res, json)
 })
 
 function databaseConnect(host = "localhost", username = "root", password = null, database = "toothmate", port = 3306) {
     client = mysql.createConnection({
         host: host,
-        user: username, // Will change, no password for testing
+        user: username,
         port: port,
-        ...(password != null && {password: password}),
+        ...(password != null && {password: password}), // Will change, no password for testing
         database: database
       });
 }
