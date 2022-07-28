@@ -6,3 +6,5 @@ dentalsoftware_frontend/package-lock.json
 dentalsoftware_frontend/package.json
 dentalsoftware_frontend/package.json
 dentalsoftware_frontend/package-lock.json
+*.DS_Store
+dentalsoftware_frontend/deploy
