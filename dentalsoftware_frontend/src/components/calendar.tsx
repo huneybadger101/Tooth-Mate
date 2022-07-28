@@ -1,20 +1,20 @@
 import { Text, View, Button, ScrollArea } from "@nodegui/react-nodegui";
 import React from "react";
-import internal from "stream";
 import { getWeekdayStart } from "./helpers/calendarHelper";
 import { getMonthDayCount } from "./helpers/calendarMonthDayCount";
 export class Calendar extends React.Component<any, any> {
 
   constructor(props: any) {
+    var date = new Date();
     super(props);
     this.state = {
         month: [],
         day: [],
-        year: 2022,
+        year: date.getFullYear(),
         daySelected: 0,
-        weekDaySelected: 3,
-        monthSelected: 0,
-        monthDayCount: 0
+        weekDaySelected: getWeekdayStart(date.getMonth(), date.getFullYear()),
+        monthSelected: date.getMonth(),
+        monthDayCount: getMonthDayCount(date.getMonth(), date.getFullYear())
     }
   }
 
@@ -68,8 +68,8 @@ export class Calendar extends React.Component<any, any> {
               }
 
               //Sets the weekday start for each month using a function from another file (calendayHelper.tsx)
-              this.setState({weekDaySelected:getWeekdayStart(this.state.monthSelected, this.state.year)});
-              this.setState({getMonthDayCount: getMonthDayCount(this.state.monthSelected, this.state.year)});
+              this.setState({weekDaySelected: getWeekdayStart(this.state.monthSelected, this.state.year)});
+              this.setState({monthDayCount: getMonthDayCount(this.state.monthSelected, this.state.year)});
           }
         }
         
@@ -87,12 +87,10 @@ export class Calendar extends React.Component<any, any> {
               }
 
               //Sets the weekday start for each month using a function from another file (calendayHelper.tsx)
-              this.setState({weekDaySelected:getWeekdayStart(this.state.monthSelected, this.state.year)});
-              this.setState({getMonthDayCount: getMonthDayCount(this.state.monthSelected, this.state.year)});
+              this.setState({weekDaySelected: getWeekdayStart(this.state.monthSelected, this.state.year)});
+              this.setState({monthDayCount: getMonthDayCount(this.state.monthSelected, this.state.year)});
           }
         }
-
-        
 
         for (var i = 0; i < 7; i++) {
 
@@ -128,7 +126,7 @@ export class Calendar extends React.Component<any, any> {
             </View>
           )
 
-          if (i + (22 - this.state.weekDaySelected) <= this.state.getMonthDayCount){
+          if (i + (22 - this.state.weekDaySelected) <= this.state.monthDayCount){
             let buttonName_3 = (i + (22 - this.state.weekDaySelected)).toString();
             calendar4.push( 
               <View style="border: 1px solid black; height: 100px; width: 100px;">
@@ -137,7 +135,7 @@ export class Calendar extends React.Component<any, any> {
             )
           }
 
-          if (i + (29 - this.state.weekDaySelected) <= this.state.getMonthDayCount){
+          if (i + (29 - this.state.weekDaySelected) <= this.state.monthDayCount){
             let buttonName_4 = (i + (29 - this.state.weekDaySelected)).toString();
             calendar5.push( 
               <View style="border: 1px solid black; height: 100px; width: 100px;">
@@ -154,7 +152,7 @@ export class Calendar extends React.Component<any, any> {
               )
           }
 
-          if (i + (36 - this.state.weekDaySelected) <= this.state.getMonthDayCount){
+          if (i + (36 - this.state.weekDaySelected) <= this.state.monthDayCount){
             let buttonName_5 = (i + (36 - this.state.weekDaySelected)).toString();
             calendar6.push( 
               <View style="border: 1px solid black; height: 100px; width: 100px;">
@@ -170,7 +168,6 @@ export class Calendar extends React.Component<any, any> {
               </View>
               )
           }
-          
         }
         const containerStyle = `
             
@@ -235,10 +232,6 @@ export class Calendar extends React.Component<any, any> {
               </View>
 
             </View>
-
-          
-          
-          
         );
     }
 } 

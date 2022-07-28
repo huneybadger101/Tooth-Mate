@@ -26,6 +26,6 @@ export const getMonthDayCount = (month:number, year:number) =>{
     monthDayCount[9] = 31;
     monthDayCount[10] = 30;
     monthDayCount[11] = 31;
-
+    
     return monthDayCount[month];
 }
