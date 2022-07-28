@@ -1,3 +1,5 @@
 dentalsoftware_frontend/node_modules/
 dentalsoftware_backend/node_modules/
 */node_modules/
+*.DS_Store
+dentalsoftware_frontend/deploy
