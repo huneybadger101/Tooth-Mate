@@ -77,7 +77,7 @@ export class Calendar extends React.Component<any, any> {
 
               //Sets the weekday start for each month using a function from another file (calendayHelper.tsx)
               this.setState({weekDaySelected: getWeekdayStart(this.state.monthSelected, this.state.year)});
-              this.setState({monthDayCount: getMonthDayCount(this.state.monthSelected, this.state.year)});
+              this.setState({monthDayCount: getMonthDayCount(this.state.monthSelected, this.state.year)}); 
           }
         }
         
@@ -108,7 +108,13 @@ export class Calendar extends React.Component<any, any> {
             calendar1.push( 
               <View style="border: 1px solid black; height: 100px; width: 100px;">
                 <Button text={ buttonName_0 } style="height: 100px; width: 100px;" on={{clicked: () => this.setState(
-                  {daySelected: buttonName_0, rightHandDateInfo: true, rightHandMessage: false}
+                  {daySelected: buttonName_0,
+                    rightHandDateInfo: true,
+                    rightHandMessage: false,
+                  
+                    currentMonthSelected: this.state.monthSelected,
+                    currentYearSelected: this.state.year,
+                    currentWeekdaySelected: this.state.day[this.state.weekDaySelected]}
                   )}} />
               </View>
               )
@@ -126,7 +132,13 @@ export class Calendar extends React.Component<any, any> {
           calendar2.push( 
             <View style="border: 1px solid black; height: 100px; width: 100px;">
               <Button text={ buttonName_1 } style="height: 100px; width: 100px;" on={{clicked: () => this.setState(
-                {daySelected: buttonName_1, rightHandDateInfo: true, rightHandMessage: false}
+                {daySelected: buttonName_1,
+                  rightHandDateInfo: true,
+                  rightHandMessage: false,
+                
+                  currentMonthSelected: this.state.monthSelected,
+                  currentYearSelected: this.state.year,
+                  currentWeekdaySelected: this.state.day[this.state.weekDaySelected]}
                 )}} />
             </View>
           )
@@ -135,7 +147,13 @@ export class Calendar extends React.Component<any, any> {
           calendar3.push( 
             <View style="border: 1px solid black; height: 100px; width: 100px;">
               <Button text={ buttonName_2 } style="height: 100px; width: 100px;" on={{clicked: () => this.setState(
-                {daySelected: buttonName_2, rightHandDateInfo: true, rightHandMessage: false}
+                {daySelected: buttonName_2,
+                  rightHandDateInfo: true,
+                  rightHandMessage: false,
+                
+                  currentMonthSelected: this.state.monthSelected,
+                  currentYearSelected: this.state.year,
+                  currentWeekdaySelected: this.state.day[this.state.weekDaySelected]}
                 )}} />
             </View>
           )
@@ -145,7 +163,13 @@ export class Calendar extends React.Component<any, any> {
             calendar4.push( 
               <View style="border: 1px solid black; height: 100px; width: 100px;">
                 <Button text={ buttonName_3 } style="height: 100px; width: 100px;" on={{clicked: () => this.setState(
-                  {daySelected: buttonName_3, rightHandDateInfo: true, rightHandMessage: false}
+                  {daySelected: buttonName_3,
+                    rightHandDateInfo: true,
+                    rightHandMessage: false,
+                  
+                    currentMonthSelected: this.state.monthSelected,
+                    currentYearSelected: this.state.year,
+                    currentWeekdaySelected: this.state.day[this.state.weekDaySelected]}
                   )}} />
               </View>
             )
@@ -160,10 +184,9 @@ export class Calendar extends React.Component<any, any> {
                   rightHandDateInfo: true,
                   rightHandMessage: false,
 
-                  currentDaySelected: this.state.daySelected,
-                  currentMonthSelected: this.state.monthSelected + 1,
+                  currentMonthSelected: this.state.monthSelected,
                   currentYearSelected: this.state.year,
-                  currentWeekdaySelected: this.state.day[this.state.weekDaySelected],
+                  currentWeekdaySelected: this.state.day[this.state.weekDaySelected]
 
                 }
                   )}} />
@@ -184,7 +207,13 @@ export class Calendar extends React.Component<any, any> {
             calendar6.push( 
               <View style="border: 1px solid black; height: 100px; width: 100px;">
                 <Button text={ buttonName_5 } style="height: 100px; width: 100px;" on={{clicked: () => this.setState(
-                  {daySelected: buttonName_5, rightHandDateInfo: true, rightHandMessage: false}
+                  {daySelected: buttonName_5,
+                    rightHandDateInfo: true,
+                    rightHandMessage: false,
+                  
+                    currentMonthSelected: this.state.monthSelected,
+                    currentYearSelected: this.state.year,
+                    currentWeekdaySelected: this.state.day[this.state.weekDaySelected]}
                   )}} />
               </View>
             )
@@ -256,16 +285,14 @@ export class Calendar extends React.Component<any, any> {
               <View style={containerStyle2}>
                   <Button text={"+"} visible={this.state.rightHandDateInfo}></Button>
                   <Text style="border: 1px solid black; padding: 10px" visible={this.state.rightHandDateInfo}>{"Date selected: " + this.state.daySelected + "/" + 
-                              (this.state.monthSelected + 1) + "/" + this.state.year + " - " + this.state.day[this.state.weekDaySelected]}</Text>
+                              (this.state.currentMonthSelected + 1) + "/" + this.state.currentYearSelected + " - " + this.state.day[this.state.weekDaySelected]}</Text>
                               
                   <Text style="border: 0px solid black; padding: 10px" visible={this.state.rightHandDateInfo}>This is where the meeting information will go...</Text>
 
+
+
+
                   
-
-          
-
-
-
                   <Text style="border: 1px solid black; margin: auto;" visible={this.state.rightHandMessage}>Get started by slecting a date...</Text>
 
               </View>
