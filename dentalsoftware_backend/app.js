@@ -18,26 +18,27 @@ app.post('/getAllPatientData', (req, res) => {
 
 app.post('/deletePatientData', (req, res) => {
 
-    let NHINumber = req.headers['nhiNumber'];
-    let sql = "DELETE FROM patient_data WHERE NHI = " + NHINumber + ";";
+    let NHINumber = req.headers['nhinumber'];
+    let sql = "DELETE FROM patient_data WHERE NHI = '" + NHINumber + "';";
     databaseQuery(res, sql);
 
 })
 
 app.post('/updatePatientData', (req, res) => {
 
-    let NHINumber = req.headers['nhiNumber'];
-    let cols = req.headers['cols'];
-    let vals = req.headers['vals'];
+    let NHINumber = req.headers['nhinumber'];
+    let cols = JSON.parse(req.headers['cols'])['cols'];
+    let vals = JSON.parse(req.headers['vals'])['vals'];
+
     let setString = "";
 
     for (let i = 0; i < cols.length; i++) {
-        setString += cols[i] + " = " + vals[i] + ", ";
+        setString += cols[i] + " = '" + vals[i] + "', ";
     }
 
     setString = setString.slice(0,  -2)
 
-    let sql = "UPDATE patient_data SET " + setString + " WHERE NHI = " + NHINumber + ";";
+    let sql = "UPDATE patient_data SET " + setString + " WHERE NHI = '" + NHINumber + "';";
     databaseQuery(res, sql);
 
 })
@@ -53,26 +54,27 @@ app.get('/getAllBookings', (req, res) => {
 
 app.post('/deleteBooking', (req, res) => {
     
-    let bookingID = req.headers['bookingID'];
-    let sql = "DELETE FROM bookings WHERE ID = " + bookingID + ";";
+    let bookingID = req.headers['bookingid'];
+    let sql = "DELETE FROM bookings WHERE ID = '" + bookingID + "';";
     databaseQuery(res, sql);
 
 })
 
 app.post('/updateBooking', (req, res) => {
 
-    let bookingID = req.headers['bookingID'];
-    let cols = req.headers['cols'];
-    let vals = req.headers['vals'];
+    let bookingID = req.headers['bookingid'];
+    let cols = JSON.parse(req.headers['cols'])['cols'];
+    let vals = JSON.parse(req.headers['vals'])['vals'];
+
     let setString = "";
 
     for (let i = 0; i < cols.length; i++) {
-        setString += cols[i] + " = " + vals[i] + ", ";
+        setString += cols[i] + " = '" + vals[i] + "', ";
     }
 
     setString = setString.slice(0,  -2)
 
-    let sql = "UPDATE bookings SET " + setString + " WHERE ID = " + bookingID + ";";
+    let sql = "UPDATE bookings SET " + setString + " WHERE ID = '" + bookingID + "';";
     databaseQuery(res, sql);
 
 })
@@ -88,26 +90,27 @@ app.get('/getAllAccounts', (req, res) => {
 
 app.post('/deleteAccount', (req, res) => {
 
-    let accountID = req.headers['accountID'];
-    let sql = "DELETE FROM accounts WHERE ID = " + accountID + ";";
+    let accountID = req.headers['accountid'];
+    let sql = "DELETE FROM accounts WHERE ID = '" + accountID + "';";
     databaseQuery(res, sql);
     
 })
 
 app.post('/updateAccount', (req, res) => {
 
-    let accountID = req.headers['accountID'];
-    let cols = req.headers['cols'];
-    let vals = req.headers['vals'];
+    let accountID = req.headers['accountid'];
+    let cols = JSON.parse(req.headers['cols'])['cols'];
+    let vals = JSON.parse(req.headers['vals'])['vals'];
+
     let setString = "";
 
     for (let i = 0; i < cols.length; i++) {
-        setString += cols[i] + " = " + vals[i] + ", ";
+        setString += cols[i] + " = '" + vals[i] + "', ";
     }
 
     setString = setString.slice(0,  -2)
 
-    let sql = "UPDATE accounts SET " + setString + " WHERE ID = " + accountID + ";";
+    let sql = "UPDATE accounts SET " + setString + " WHERE ID = '" + accountID + "';";
     databaseQuery(res, sql);
 
 })

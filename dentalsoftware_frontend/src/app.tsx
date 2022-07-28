@@ -28,8 +28,8 @@ class App extends React.Component<any, any> {
 
       screens.push(<Homepage/>)
       names.push("Homepage")
-      screens.push(<Text>Test Screen 1</Text>)
-      names.push("Test Screen 1")
+      screens.push(<Calendar/>)
+      names.push("Calendar")
       screens.push(<Text>Test Screen 2</Text>)
       names.push("Test Screen 2")
       screens.push(<Text>Test Screen 3</Text>)
