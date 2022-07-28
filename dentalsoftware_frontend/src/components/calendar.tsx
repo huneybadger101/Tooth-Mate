@@ -293,7 +293,7 @@ export class Calendar extends React.Component<any, any> {
 
 
 
-                  <Text style="border: 1px solid black; margin: auto;" visible={this.state.rightHandMessage}>Get started by slecting a date...</Text>
+                  <Text style="border: 1px solid black; margin: auto;" visible={this.state.rightHandMessage}>Get started by selecting a date...</Text>
 
               </View>
 
