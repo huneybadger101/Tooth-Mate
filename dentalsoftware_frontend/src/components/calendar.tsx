@@ -261,7 +261,7 @@ export class Calendar extends React.Component<any, any> {
 
         //Goes through the data base and saves the data to be displayed
         //TODO: Have the database return the length of the table being sent back so the for loop below wont go over or under the amount needed.
-        for (var num = 0; num < 10; num++)
+        for (var num = 0; num < 20; num++)
         {
 
           //Assigns the variables from the database into the bookingVariables array for later use.
@@ -271,12 +271,16 @@ export class Calendar extends React.Component<any, any> {
           }
           
           bookingList.push(
-            <View>
-                <Text style="border: 1px solid black; padding: 10px" visible={this.state.rightHandDateInfo}>
-                  {
-                    "Name: " + bookingVariables[0] + ", Dentist: " + bookingVariables[2]
-                  }
-                </Text>
+            <View style={"flex-grow: 1;"}>
+                
+                
+                <Button 
+                    text={"Name: " + bookingVariables[0] + ", Dentist: " + bookingVariables[2]} 
+                    visible={this.state.rightHandDateInfo} 
+                    on={buttonHandlerOpenBookingNew} 
+                    style={"flex-grow: 1; height: '80px';"} />
+                  
+                
             </View>
           );
         }
@@ -315,11 +319,19 @@ export class Calendar extends React.Component<any, any> {
             background: 'white';
         `;
 
+        const containerStyle3 = `
+            flex-grow: auto 0 0;
+            background: 'green';
+        `;
+
         // Must wrap main App component in a React.Fragment component
         // in order to allow for sub-windows to be created later on
         return (
 
-          <View style="flex-direction: 'row';">
+          <View style={"flex-grow: 1; flex-direction: 'column';"}>
+            <View style="flex-direction: 'row';">
+
+              {/*Container area one will be for displaying the calendar*/}
               <View style={containerStyle}>
 
                 <View style="flex: 0; flex-direction: 'row';">
@@ -359,42 +371,57 @@ export class Calendar extends React.Component<any, any> {
 
               </View>
 
+
+              {/*Container area two will be for displaying the booking made on the day selected*/}
               <View style={containerStyle2}>
 
-
-
-                  <View style={"flex-direction: 'row';"}>
-
+                <View style={"flex-direction: 'row';"}>
                   <Button text={"Add booking"} visible={this.state.rightHandDateInfo} on={buttonHandlerOpenBookingNew} style={"flex-grow: auto 0 0;"}/>
-
                   <Button text={"Edit selected booking"} visible={this.state.rightHandDateInfo} on={buttonHandlerOpenBookingNew} style={"flex-grow: auto 0 0;"} enabled={false}/>
-
-                  
-
-                  </View>
-
-                  
-
-
-
-
-
-                  <Text style="border: 1px solid black; padding: 10px" visible={this.state.rightHandDateInfo}>{"Date selected: " + this.state.daySelected + "/" + 
-                              (this.state.currentMonthSelected + 1) + "/" + this.state.currentYearSelected + " - " + this.state.day[this.state.currentWeekdaySelected]}</Text>
-                              
-                  {/* <Text style="border: 0px solid black; padding: 10px" visible={this.state.rightHandDateInfo}>This is where the meeting information will go...</Text> */}
-
-
-                  <View>
-                      {bookingList}
-                  </View>
-
-
-                  <Text style="border: 1px solid black; margin: auto;" visible={this.state.rightHandMessage}>Get started by selecting a date...</Text>
+                </View>
+                <Text 
+                style="border: 1px solid black; padding: 10px" 
+                  visible={this.state.rightHandDateInfo}>
+                    {"Date selected: " + this.state.daySelected + "/" + (this.state.currentMonthSelected + 1) + "/" + 
+                    this.state.currentYearSelected + " - " + this.state.day[this.state.currentWeekdaySelected]}
+                </Text>
+                
+                {/* <ScrollArea style={"flex-grow: 1;"}>
+                <View style={"flex-grow: 1; width: 500px;"}>
+                  {bookingList}
+                </View>
+                </ScrollArea> */}
 
               </View>
+            </View>
+
+
+            {/**/}
+            <View style={containerStyle3}>
+
+              {/* <View style={"flex-grow: 1;"}>
+                <View style={"flex-direction: 'column'; flex-grow: 1;"}>
+              <View style={"flex-direction: 'row';"}>
+                  <Button text={"Add booking"} visible={this.state.rightHandDateInfo} on={buttonHandlerOpenBookingNew} style={"flex-grow: 1;"}/>
+                  <Button text={"Edit selected booking"} visible={this.state.rightHandDateInfo} on={buttonHandlerOpenBookingNew} style={"flex-grow: 1;"} enabled={false}/>
+                </View>
+                <Text 
+                style="border: 1px solid black; padding: 10px" 
+                  visible={this.state.rightHandDateInfo}>
+                    {"Date selected: " + this.state.daySelected + "/" + (this.state.currentMonthSelected + 1) + "/" + 
+                    this.state.currentYearSelected + " - " + this.state.day[this.state.currentWeekdaySelected]}
+                </Text>
+                </View>
+              </View> */}
+
+                {/* <ScrollArea style={"flex-grow: 1;"}>
+                <View style={"flex-grow: 1; width: 500px;"}>
+                  {bookingList}
+                </View>
+                </ScrollArea> */}
 
             </View>
+          </View>
         );
     }
 } 
