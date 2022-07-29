@@ -1,18 +1,13 @@
-import { Text, View, Button, ScrollArea, Window } from "@nodegui/react-nodegui";
+import { Text, View, Button, ScrollArea } from "@nodegui/react-nodegui";
 import React from "react";
 import { getWeekdayStart } from "./helpers/calendarHelper";
 import { getMonthDayCount } from "./helpers/calendarMonthDayCount";
 import { getWeekdaySelected } from "./helpers/calendarDisplaySelectedDate";
-import Bookings from "./bookings";
-import { pullFromDataBase } from "./helpers/calendarPullFromDB";
 
 export class Calendar extends React.Component<any, any> {
 
   constructor(props: any) {
     var date = new Date();
-
-    
-
     super(props);
     this.state = {
         month: [],
@@ -22,10 +17,12 @@ export class Calendar extends React.Component<any, any> {
         weekDaySelected: getWeekdayStart(date.getMonth(), date.getFullYear()),
         monthSelected: date.getMonth(),
         monthDayCount: getMonthDayCount(date.getMonth(), date.getFullYear()),
+
         currentDaySelected: 0,
         currentMonthSelected: 0,
         currentYearSelected: 0,
         currentWeekdaySelected: 0,
+
         rightHandMessage: true,
         rightHandDateInfo: false
     }
@@ -66,8 +63,6 @@ export class Calendar extends React.Component<any, any> {
         var calendar4:any = [];
         var calendar5:any = [];
         var calendar6:any = [];
-        var bookingList:any = [];
-        var bookingPage:any;
 
         //Button handler for when increasing the month or year
         const buttonHandlerIncreaseMonth = {
@@ -104,14 +99,6 @@ export class Calendar extends React.Component<any, any> {
               //Sets the weekday start for each month using a function from another file (calendayHelper.tsx)
               this.setState({weekDaySelected: getWeekdayStart(this.state.monthSelected, this.state.year)});
               this.setState({monthDayCount: getMonthDayCount(this.state.monthSelected, this.state.year)});
-          }
-        }
-
-        const buttonHandlerOpenBookingNew = {
-          clicked: () =>{
-            console.log("Loading booking page");
-
-            //TODO: Have the booking page open
           }
         }
 
@@ -241,70 +228,6 @@ export class Calendar extends React.Component<any, any> {
           }
         }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        var bookingVariables = [4];
-
-
-        //Goes through the data base and saves the data to be displayed
-        //TODO: Have the database return the length of the table being sent back so the for loop below wont go over or under the amount needed.
-        for (var num = 0; num < 10; num++)
-        {
-
-          //Assigns the variables from the database into the bookingVariables array for later use.
-          for (var i = 0; i < 4; i++)
-          {
-              bookingVariables[i] = pullFromDataBase(i);
-          }
-          
-          bookingList.push(
-            <View>
-                <Text style="border: 1px solid black; padding: 10px" visible={this.state.rightHandDateInfo}>
-                  {
-                    "Name: " + bookingVariables[0] + ", Dentist: " + bookingVariables[2]
-                  }
-                </Text>
-            </View>
-          );
-        }
-
-
-
-
-
-
-
-
-
-
-
-
-        
-
-      
-
-
-
-
-
-
-
-
-
-
         const containerStyle = `
             
             background: 'white';
@@ -360,34 +283,14 @@ export class Calendar extends React.Component<any, any> {
               </View>
 
               <View style={containerStyle2}>
-
-
-
-                  <View style={"flex-direction: 'row';"}>
-
-                  <Button text={"Add booking"} visible={this.state.rightHandDateInfo} on={buttonHandlerOpenBookingNew} style={"flex-grow: auto 0 0;"}/>
-
-                  <Button text={"Edit selected booking"} visible={this.state.rightHandDateInfo} on={buttonHandlerOpenBookingNew} style={"flex-grow: auto 0 0;"} enabled={false}/>
-
-                  
-
-                  </View>
-
-                  
-
-
-
-
-
+                  <Button text={"+"} visible={this.state.rightHandDateInfo}></Button>
                   <Text style="border: 1px solid black; padding: 10px" visible={this.state.rightHandDateInfo}>{"Date selected: " + this.state.daySelected + "/" + 
                               (this.state.currentMonthSelected + 1) + "/" + this.state.currentYearSelected + " - " + this.state.day[this.state.currentWeekdaySelected]}</Text>
                               
-                  {/* <Text style="border: 0px solid black; padding: 10px" visible={this.state.rightHandDateInfo}>This is where the meeting information will go...</Text> */}
+                  <Text style="border: 0px solid black; padding: 10px" visible={this.state.rightHandDateInfo}>This is where the meeting information will go...</Text>
 
 
-                  <View>
-                      {bookingList}
-                  </View>
+
 
 
                   <Text style="border: 1px solid black; margin: auto;" visible={this.state.rightHandMessage}>Get started by selecting a date...</Text>
