@@ -310,17 +310,21 @@ export class Calendar extends React.Component<any, any> {
 
 
         const containerStyle = `
-            
+            flex-grow: 0 0 0;
             background: 'white';
         `;
 
         const containerStyle2 = `
-            flex-grow: auto 0 0;
+            flex-grow: 2 2 2;
+            
+            flex-direction: 'row';
             background: 'white';
         `;
 
         const containerStyle3 = `
-            flex-grow: auto 0 0;
+            flex-shrink: 2;
+            bottom: 10px;
+            flex-direction: 'column';
             background: 'green';
         `;
 
@@ -375,7 +379,7 @@ export class Calendar extends React.Component<any, any> {
               {/*Container area two will be for displaying the booking made on the day selected*/}
               <View style={containerStyle2}>
 
-                <View style={"flex-direction: 'row';"}>
+                {/* <View style={"flex-direction: 'row';"}>
                   <Button text={"Add booking"} visible={this.state.rightHandDateInfo} on={buttonHandlerOpenBookingNew} style={"flex-grow: auto 0 0;"}/>
                   <Button text={"Edit selected booking"} visible={this.state.rightHandDateInfo} on={buttonHandlerOpenBookingNew} style={"flex-grow: auto 0 0;"} enabled={false}/>
                 </View>
@@ -384,13 +388,13 @@ export class Calendar extends React.Component<any, any> {
                   visible={this.state.rightHandDateInfo}>
                     {"Date selected: " + this.state.daySelected + "/" + (this.state.currentMonthSelected + 1) + "/" + 
                     this.state.currentYearSelected + " - " + this.state.day[this.state.currentWeekdaySelected]}
-                </Text>
+                </Text> */}
                 
-                {/* <ScrollArea style={"flex-grow: 1;"}>
+                <ScrollArea style={"flex-grow: 1;"}>
                 <View style={"flex-grow: 1; width: 500px;"}>
                   {bookingList}
                 </View>
-                </ScrollArea> */}
+                </ScrollArea>
 
               </View>
             </View>
@@ -399,7 +403,7 @@ export class Calendar extends React.Component<any, any> {
             {/**/}
             <View style={containerStyle3}>
 
-              {/* <View style={"flex-grow: 1;"}>
+              <View style={"flex-grow: 1;"}>
                 <View style={"flex-direction: 'column'; flex-grow: 1;"}>
               <View style={"flex-direction: 'row';"}>
                   <Button text={"Add booking"} visible={this.state.rightHandDateInfo} on={buttonHandlerOpenBookingNew} style={"flex-grow: 1;"}/>
@@ -412,7 +416,7 @@ export class Calendar extends React.Component<any, any> {
                     this.state.currentYearSelected + " - " + this.state.day[this.state.currentWeekdaySelected]}
                 </Text>
                 </View>
-              </View> */}
+              </View>
 
                 {/* <ScrollArea style={"flex-grow: 1;"}>
                 <View style={"flex-grow: 1; width: 500px;"}>
