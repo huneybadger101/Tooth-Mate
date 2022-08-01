@@ -43,7 +43,7 @@ app.post('/updatePatientData', (req, res) => {
 
 })
 
-app.get('/getAllBookings', (req, res) => {
+app.post('/getAllBookings', (req, res) => {
     let searchItem = "*";
     if (req.headers['searchitem'] != undefined) {
         searchItem = req.headers['searchitem'];
@@ -79,7 +79,7 @@ app.post('/updateBooking', (req, res) => {
 
 })
 
-app.get('/getAllAccounts', (req, res) => {
+app.post('/getAllAccounts', (req, res) => {
     let searchItem = "*";
     if (req.headers['searchitem'] != undefined) {
         searchItem = req.headers['searchitem'];
