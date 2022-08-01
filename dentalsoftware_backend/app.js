@@ -205,7 +205,7 @@ function createNewPatient(res = null, patientData) {
             }
         }
         // Verified that patient doesn't already exist, time to add them
-        sql = "INSERT INTO patient_data (NHI, FirstName, " + (patientData.patient_Middle_Name != undefined ? "MiddleName, " : "") + "LastName, DOB, ContactNumber, Email) " 
+        sql = "INSERT INTO patient_data (NHI, FirstName, " + (patientData.patient_Middle_Name != undefined ? "MiddleName, " : "") + "LastName, DOB, ContactNumber, Email" + (patientData.patient_Notes != undefined ? ", Notes" : " ") + ") " 
         + "VALUES ('" 
         + patientData.patient_NHI + "', " 
         + "'" + patientData.patient_First_Name + "', " 
@@ -213,14 +213,16 @@ function createNewPatient(res = null, patientData) {
         + "'" + patientData.patient_Last_Name + "', " 
         + "'" + patientData.patient_DOB + "', "
         + "'" + patientData.patient_Contact_Number + "', " 
-        + "'" + patientData.patient_Email_Address + "')"
+        + "'" + patientData.patient_Email_Address + "'"
+        + (patientData.patient_Notes != undefined ? ", '" + patientData.patient_Notes + "'" : "") 
+        + ")"
     
         databaseQuery(res, sql)
     });
 }
 
 function databaseCreateTables(res = null) {
-    let sql = "CREATE TABLE IF NOT EXISTS patient_data (ID INT AUTO_INCREMENT PRIMARY KEY, NHI VARCHAR(255), FirstName VARCHAR(255), LastName VARCHAR(255), MiddleName VARCHAR(255), DOB DATE, ContactNumber VARCHAR(255), Email VARCHAR(255))";
+    let sql = "CREATE TABLE IF NOT EXISTS patient_data (ID INT AUTO_INCREMENT PRIMARY KEY, NHI VARCHAR(255), FirstName VARCHAR(255), LastName VARCHAR(255), MiddleName VARCHAR(255), DOB DATE, ContactNumber VARCHAR(255), Email VARCHAR(255), Notes MEDIUMTEXT)";
     databaseQuery(res, sql)
     sql = "CREATE TABLE IF NOT EXISTS accounts (ID INT AUTO_INCREMENT PRIMARY KEY, AccountName VARCHAR(255), AccountPasswordHash VARCHAR(255), AccountPasswordSalt VARCHAR(255), AccountAccessLevel INT, DentistNumber INT, DOB DATE, Email VARCHAR(255), PhoneNumber VARCHAR(255))";
     databaseQuery(null, sql) 

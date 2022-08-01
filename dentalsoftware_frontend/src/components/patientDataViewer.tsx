@@ -1,4 +1,5 @@
 import { Text, View, Button } from "@nodegui/react-nodegui";
+import {  WidgetEventTypes } from "@nodegui/nodegui";
 import React from "react";
 import axios from 'axios';
 
@@ -13,7 +14,6 @@ export class PatientDataViewer extends React.Component<any, any> {
 
         axios.post('http://localhost:3000/getAllPatientData')
         .then((res) => {
-            console.log(res.data.result);
             this.setState({
                 patients: res.data.result,
                 selectedPatientNHI: null,
@@ -31,7 +31,16 @@ export class PatientDataViewer extends React.Component<any, any> {
     }
 
     buttonHandler = (index: number) => {
-        console.log("Called by index: " + index)
+        const patient = this.state.patients[index];
+
+        this.setState({
+            selectedPatientNHI: patient['NHI'],
+            selectedPatientName: patient['FirstName'] + " " + patient['LastName'],
+            selectedPatientDOB: patient['DOB'],
+            selectedPatientNumber: patient['ContactNumber'],
+            selectedPatientEmail: patient['Email'],
+            selectedPatientNotes: patient['Notes']
+        })
     }
 
     // Function that returns a component to be drawn, can have children components if the parent component supports it
@@ -41,7 +50,13 @@ export class PatientDataViewer extends React.Component<any, any> {
         let patientListStrings = [];
 
         for (let i in patientList) {
-            patientListStrings.push(<Button style="width: 50px;" text={patientList[i].FirstName + " " + patientList[i].LastName} on={this.buttonHandler}/>)
+            patientListStrings.push(<Button style="flex: 1; width: 100px; color: 'black'; font-size: 35px;" text={patientList[i].FirstName + " " + patientList[i].LastName} on={
+                    {
+                        // Only trigger when left click is released
+                        [WidgetEventTypes.MouseButtonRelease]: () => this.buttonHandler(Number(i)),
+                    }
+                }/>
+            )
         }
 
         const selectedPatientNHI = this.state.selectedPatientNHI;
@@ -51,19 +66,30 @@ export class PatientDataViewer extends React.Component<any, any> {
         const selectedPatientEmail = this.state.selectedPatientEmail;
         const selectedPatientNotes = this.state.selectedPatientNotes;
 
+        const textStyle = "color: 'black'; font-size: 35px;";
 
         return (
             <View style="flex: auto;">
-                <View style="flex: auto; flex-direction: 'column';">
-                    <Text>Selectable List of Patients: </Text>
-                    {patientListStrings}
-                    <View style="flex: auto; flex-direction: 'column';">
-                        <Text>Patient NHI: {selectedPatientNHI}</Text>
-                        <Text>Patient Name: {selectedPatientName}</Text>
-                        <Text>Patient Date of Birth: {selectedPatientDOB}</Text>
-                        <Text>Patient Contact Number: {selectedPatientNumber}</Text>
-                        <Text>Patient Email Address: {selectedPatientEmail}</Text>
-                        <Text>Patient Notes: {selectedPatientNotes}</Text>
+                <View style="flex: auto; flex-direction: 'row';">
+                    <View style="flex: 1; background-color: 'grey';">
+                        <Text style={textStyle}>Selectable List of Patients: </Text>
+                        <View style="flex: auto;">
+                            {patientListStrings}
+                        </View>
+                    </View>
+
+                    <View style="flex: 2; flex-direction: 'column';">
+                        <Text style={textStyle}>Patient NHI: {selectedPatientNHI}</Text>
+                        <Text style={textStyle}>Patient Name: {selectedPatientName}</Text>
+                        <Text style={textStyle}>Patient Date of Birth: {selectedPatientDOB}</Text>
+                        <Text style={textStyle}>Patient Contact Number: {selectedPatientNumber}</Text>
+                        <Text style={textStyle}>Patient Email Address: {selectedPatientEmail}</Text>
+                        <Text style={textStyle}>Patient Notes: {selectedPatientNotes}</Text>
+                    </View>
+
+                    <View style="flex: 2; flex-direction: 'column';">
+                        <Text style={textStyle}>Details here about patients last visit:</Text>
+                        <Text style={textStyle}>Details here about patients next booking:</Text>
                     </View>
                 </View>
             </View>
