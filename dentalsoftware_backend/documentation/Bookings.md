@@ -54,7 +54,7 @@ axios.post('http://localhost:3000/deleteBooking', {
 `/updateBooking` -> Updates an existing item in the Bookings table.
 
 - Request type: Post
-- Required Headers: String - `bookingid`, JSON Dictionary - `cols`, JSON Dictionary - `vals`
+- Required Headers: String - `bookingid`, JSON String - `cols`, JSON String - `vals`
 - Optional Headers: None
 - Error: In the `response.data` dictionary, `result` will be equal to `1` and `error` will contain the full error logs
 
