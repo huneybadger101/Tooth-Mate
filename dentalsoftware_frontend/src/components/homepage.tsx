@@ -22,26 +22,30 @@ export class Homepage extends React.Component<any, any> {
 
         let pagesRow1 = [];
         let pagesRow2 = [];
+
+        let buttonStyle = "width: 400%; height: 200%; color: 'black'; font-size: 20px;";
         
-        pagesRow1.push(<Button text="Bookings Page" on={
+        pagesRow1.push(<Button style={buttonStyle} text="Bookings Page" on={
                 {
                     // Only trigger when left click is released
                     [WidgetEventTypes.MouseButtonRelease]: () => this.newTab(<Bookings/>, "Bookings"),
                 }
             }/>)
-        pagesRow1.push(<Button text="Calendar Page" on={
+        pagesRow1.push(<View style="width: 100%;"></View>)
+        pagesRow1.push(<Button style={buttonStyle} text="Calendar Page" on={
                 {
                     // Only trigger when left click is released
                     [WidgetEventTypes.MouseButtonRelease]: () => this.newTab(<Calendar/>, "Calendar"),
                 }
             }/>)
-        pagesRow2.push(<Button text="Patient Data Viewer" on={
+        pagesRow2.push(<Button style={buttonStyle} text="Patient Data Viewer" on={
                 {
                     // Only trigger when left click is released
                     [WidgetEventTypes.MouseButtonRelease]: () => this.newTab(<PatientDataViewer/>, "Patient Data Viewer"),
                 }
             }/>)
-        pagesRow2.push(<Button text="Settings Page" on={
+        pagesRow2.push(<View style="width: 100%;"></View>)
+        pagesRow2.push(<Button style={buttonStyle} text="Settings Page" on={
                 {
                     // Only trigger when left click is released
                     [WidgetEventTypes.MouseButtonRelease]: () => this.newTab(<Setting/>, "Settings"),
@@ -50,7 +54,8 @@ export class Homepage extends React.Component<any, any> {
 
         return (
             <View style="flex: 1; justify-content: 'center'; align-items: 'center'; background-color: 'grey';">
-
+                <View style="flex: 1; flex-direction: 'row';">
+                </View>
                 <View style="flex: 2; flex-direction: 'row';">
                     {pagesRow1}
                 </View>
