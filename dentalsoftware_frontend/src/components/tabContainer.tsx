@@ -9,9 +9,27 @@ function TabContainer(props: any) {
         setValues(
             {
                 children: state.children,
-                view: newView
+                view: newView,
+                names: state.names
             }
         )
+    }
+
+    const AddExtraProps = (Component: JSX.Element, extraProps: any) =>  {
+        return <Component.type {...Component.props} {...extraProps} />;
+    }
+
+    const createNewtab = (component: JSX.Element, name: string) => {
+        console.log(name)
+        let tempChildren = state.children;
+        let tempNames = state.names;
+        tempChildren.push(component)
+        tempNames.push(name)
+        setValues({
+            children: tempChildren,
+            view: tempChildren[tempChildren.length - 1],
+            names: tempNames
+        })
     }
 
     const closeButtonHandler = (index: number) => {
@@ -20,7 +38,8 @@ function TabContainer(props: any) {
         props.names.splice(index, 1)
         setValues({
             children: tempChildren,
-            view: tempChildren[0]
+            view: tempChildren[0],
+            names: state.names
         })
     }
 
@@ -41,11 +60,13 @@ function TabContainer(props: any) {
         props.createNewWindow(value.view, value.tabName)
         // Remove view from current tabContainer so it doesn't get displayed multiple times by the main App component
         let tempChildren = state.children;
+        let tempNames = state.names;
         tempChildren.splice(index, 1);
-        props.names.splice(index, 1)
+        tempNames.splice(index, 1)
         setValues({
             children: tempChildren,
-            view: tempChildren[0]
+            view: tempChildren[0],
+            names: tempNames
         })
     }
 
@@ -62,6 +83,7 @@ function TabContainer(props: any) {
         {
             children: childrenArray,
             view: childrenArray[0],
+            names: props.names
         }
     );
 
@@ -71,7 +93,7 @@ function TabContainer(props: any) {
     state.children.forEach(function (value: any) {
         tabs.push(
             {
-                tabName: props.names[tabIndex++],
+                tabName: state.names[tabIndex++],
                 view: value,
             }
         )
@@ -98,7 +120,7 @@ function TabContainer(props: any) {
                                             }
                                         }
                                     }/>
-                                    {tabs.length > 1 ? <Button style={closeTab} text="X" on={
+                                    {tabs.length > 1 && value.tabName != "Homepage" ? <Button style={closeTab} text="X" on={
                                         {
                                             // Only trigger when left click is released
                                             [WidgetEventTypes.MouseButtonRelease]: () => closeButtonHandler(index), 
@@ -114,7 +136,7 @@ function TabContainer(props: any) {
         <View style="flex: auto; flex-direction: 'column';">
             {header}
             <View style="flex: auto; width: '100%'; height: '100%';">
-                {state.view}
+                {AddExtraProps(state.view, {newTab: createNewtab})}
             </View>
         </View>
     );
