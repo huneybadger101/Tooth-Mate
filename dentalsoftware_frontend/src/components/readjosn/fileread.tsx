@@ -9,7 +9,8 @@ export class Reading extends React.Component<any, any> {
         this.state = {
           Numa: 0,
           Numb: 0,
-          text: ''
+          text: '',
+          path:''
         }
       }
     render() {
@@ -20,15 +21,24 @@ export class Reading extends React.Component<any, any> {
               fileDialog.setFileMode(FileMode.AnyFile);
               fileDialog.setNameFilter('text (*txt)');
               fileDialog.exec();
-              
+              const fs = require('fs');
               const selectedFiles = fileDialog.selectedFiles();
+              selectedFiles.map((file)=>{
+                let rawdata = fs.readFileSync(file);
+                console.log(rawdata.toString('utf8'));
+                
+                this.setState({
+                  path:selectedFiles,
+                  text: rawdata.toString('utf8')
+                });
+              })
               // const result = fileDialog.accessibleDescription();
-              console.log(selectedFiles.map); 
+              // console.log(fileDialog); 
               // console.log(result); 
 
-              this.setState({
-                text: selectedFiles
-              });
+              // this.setState({
+              //   text: selectedFiles
+              // });
             }
         };
 
@@ -85,7 +95,10 @@ export class Reading extends React.Component<any, any> {
                 </View>
 
                 <Button text = {"Add('+')"} on = {MainWindow} id={"btn"}/>
-                <Text>{this.state.text}</Text>
+                <Text>path:{this.state.path}</Text>
+                <Text>content:</Text>
+                <Text style="height: 100px;">{this.state.text}</Text>
+                <Text>end</Text>
 
             </View>
         );
