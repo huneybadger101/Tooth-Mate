@@ -1,11 +1,27 @@
 const express = require('express');
 const mysql = require('mysql'); 
 const app = express();
+const sjcl = require('sjcl');
 
 let client;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+
+function sha256(message) {
+    let myBitArray = sjcl.hash.sha256.hash(message)
+    return sjcl.codec.hex.fromBits(myBitArray)
+}
+
+function makeid(length) {
+    var result           = '';
+    var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    var charactersLength = characters.length;
+    for ( var i = 0; i < length; i++ ) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+   }
+   return result;
+}
 
 app.post('/getAllPatientData', (req, res) => {
     let searchItem = "*";
@@ -96,6 +112,11 @@ app.post('/deleteAccount', (req, res) => {
     
 })
 
+app.post('/createNewAccount', (req, res) => {
+    let json = JSON.parse(req.headers['data'])['data']
+    createNewAccount(res, json)
+})
+
 app.post('/updateAccount', (req, res) => {
 
     let accountID = req.headers['accountid'];
@@ -112,6 +133,65 @@ app.post('/updateAccount', (req, res) => {
 
     let sql = "UPDATE accounts SET " + setString + " WHERE ID = '" + accountID + "';";
     databaseQuery(res, sql);
+
+})
+
+app.post('/loginAccount', (req, res) => {
+
+    let username = req.headers['username'];
+    let password = req.headers['password'];
+
+    let sql = "SELECT AccountPasswordSalt FROM Accounts WHERE AccountName = '" + username + "';";
+
+    client.query(sql, function (err, result) {
+        if (err) {
+            console.log(err)
+            if (res) {
+                res.send({result: 1, error: err})
+                return
+            } else {
+                return {result: 1, error: err}
+            }
+        }
+
+        if (Object.keys(result).length == 0) {
+            if (res) {
+                res.send({result: 1, error: "Username or password was incorrect, please try again!"})
+                return
+            } else {
+                return {result: 1, error: "Username or password was incorrect, please try again!"}
+            }
+        }
+
+        let passwordSalt = result[0]['AccountPasswordSalt'];
+        let hashedPassword = sha256(password + passwordSalt);
+
+        sql = "SELECT * FROM Accounts WHERE AccountName = '" + username + "' AND AccountPasswordHash = '" + hashedPassword + "';";
+
+        client.query(sql, function (err, result) {
+            if (err) {
+                console.log(err)
+                if (res) {
+                    res.send({result: 1, error: err})
+                    return
+                } else {
+                    return {result: 1, error: err}
+                }
+            }
+            userPasswordMatches = Object.keys(result).length
+    
+            if (userPasswordMatches == 0) {
+                if (res) {
+                    res.send({result: 1, error: "Username or password was incorrect, please try again!"})
+                    return
+                } else {
+                    return {result: 1, error: "Username or password was incorrect, please try again!"}
+                }
+            }
+            res.send({result: result[0], success: 1})
+        });        
+
+    });
 
 })
 
@@ -216,6 +296,84 @@ function createNewPatient(res = null, patientData) {
         + "'" + patientData.patient_Email_Address + "'"
         + (patientData.patient_Notes != undefined ? ", '" + patientData.patient_Notes + "'" : "") 
         + ")"
+    
+        databaseQuery(res, sql)
+    });
+}
+
+
+function createNewAccount(res = null, accountData) {
+    let numMissing = 0
+    let errorMessage = "Error: Missing "
+    if (accountData.username === undefined) {
+        errorMessage += "Account Username, "
+        numMissing++
+    }
+    if (accountData.password === undefined) {
+        errorMessage += "Account Password, "
+        numMissing++
+    }
+    if (accountData.password === undefined) {
+        errorMessage += "Account Access Level, "
+        numMissing++
+    }
+    if (accountData.password === undefined) {
+        errorMessage += "Dentist Number, "
+        numMissing++
+    }
+    if (accountData.password === undefined) {
+        errorMessage += "Date of Birth, "
+        numMissing++
+    }
+    if (accountData.password === undefined) {
+        errorMessage += "Email Address, "
+        numMissing++
+    }
+    if (accountData.password === undefined) {
+        errorMessage += "Contact Phone Number, "
+        numMissing++
+    }
+
+    if (numMissing > 0) {
+        errorMessage = errorMessage.slice(0, -2) + "."
+        res.send({result: 1, error: errorMessage})
+        return
+    }
+    // No missing data, time to check if account already exists
+    let sql = "SELECT * FROM accounts WHERE AccountName='" + accountData.username + "'"
+    let accountExists = 0
+    client.query(sql, function (err, result) {
+        if (err) {
+            console.log(err)
+            if (res) {
+                res.send({result: 1, error: err})
+                return
+            } else {
+                return {result: 1, error: err}
+            }
+        }
+        accountExists = Object.keys(result).length
+
+        if (accountExists > 0) {
+            if (res) {
+                res.send({result: 1, error: "Account with given username already exists!"})
+                return
+            } else {
+                return {result: 1, error: "Account with given username already exists!"}
+            }
+        }
+        let accountPasswordSalt = makeid(15);
+        // Verified that account doesn't already exist, time to add them
+        sql = "INSERT INTO accounts (AccountName, AccountPasswordHash, AccountPasswordSalt, AccountAccessLevel, DentistNumber, DOB, Email, PhoneNumber) " 
+        + "VALUES ('" 
+        + accountData.username + "', " 
+        + "'" + sha256(accountData.password + accountPasswordSalt) + "', " 
+        + "'" + accountPasswordSalt + "', " 
+        + "'" + accountData.accessLevel + "', " 
+        + "'" + accountData.dentistNumber + "', " 
+        + "'" + accountData.DOB + "', "
+        + "'" + accountData.Email_Address + "', " 
+        + "'" + accountData.Contact_Number + "')"
     
         databaseQuery(res, sql)
     });

@@ -8,6 +8,7 @@ import Calendar from "./components/calendar";
 import Bookings from "./components/bookings";
 import TabContainer from "./components/tabContainer";
 import PatientDataViewer from "./components/PatientDataViewer";
+import Login from "./components/login";
 
 var resolution = require("screen-resolution");
 
@@ -28,12 +29,8 @@ class App extends React.Component<any, any> {
       let names = [];
       let windows = [];
 
-      screens.push(<Homepage/>)
-      names.push("Homepage")
-      screens.push(<Calendar/>)
-      names.push("Calendar")
-      screens.push(<PatientDataViewer/>)
-      names.push("Patient View")
+      screens.push(<Login/>)
+      names.push("Login")
 
       const maxSize = {width: result.width, height: result.height}
       windows.push(<Window
