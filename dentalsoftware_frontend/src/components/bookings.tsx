@@ -298,11 +298,12 @@ export class Bookings extends React.Component<any, any> {
 
                 //Creates the bookings to view, will also create an edit button for each booking
                 bookingList.push(
-                    <View style={"flex-direction: 'row';"}>
+                    <View style="margin: 3px; flex-direction: 'row';">
 
-                        <Text>{"Booking ID: " + bookingVariables[num].split(".")[0] + ", Booking date" + dateFull}</Text>
+                        <Text style={"flex: 8; border: 1px solid black;"}>{"Booking ID: " + bookingVariables[num].split(".")[0] + ", Booking date" + dateFull}</Text>
 
                         <Button 
+                            style={"flex: 2;"}
                             text={"Edit"}
                             id={bookingSelected}
                             on={{clicked: () => {
@@ -315,6 +316,8 @@ export class Bookings extends React.Component<any, any> {
                                 })
                             }}}
                         />
+
+                        <Button style={"flex: 2;"} text={"Info"}></Button>
 
                     </View>
                 );
@@ -367,7 +370,7 @@ export class Bookings extends React.Component<any, any> {
             flex-grow: auto 0 0;
             background: 'white';
             border: 0px solid black;
-            margin: 10px;
+            margin: 0px;
             height: '100%';
         `;
         
@@ -435,7 +438,7 @@ export class Bookings extends React.Component<any, any> {
 
                 
                 <View style={containerStyle2}>
-                <Text style="border: 1px solid black; padding: 10px">
+                <Text style="border: 1px solid black; padding: 10px;">
                     {"Date selected: " + dateFull}
                 </Text>
 
@@ -451,7 +454,7 @@ export class Bookings extends React.Component<any, any> {
             <View>
                 
                 <View>
-                    <Button text = {this.state.bookingOrCancelButtonText} style={"margin: 10px;"} on = {buttonHandlerBookingOrCancel} />
+                    <Button text = {this.state.bookingOrCancelButtonText} style={""} on = {buttonHandlerBookingOrCancel} />
                 </View>
 
                 {pageDiplay[this.state.bookingCreateOrEditDisplay]}
