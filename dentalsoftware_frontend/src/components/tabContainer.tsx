@@ -2,6 +2,7 @@ import { View, Button} from "@nodegui/react-nodegui";
 import {  WidgetEventTypes } from "@nodegui/nodegui";
 import React, { useState } from "react";
 import TimeStamp from "./timestamp";
+import Homepage from "./homepage";
 
 function TabContainer(props: any) {
 
@@ -19,8 +20,15 @@ function TabContainer(props: any) {
         return <Component.type {...Component.props} {...extraProps} />;
     }
 
+    const createHomepageAfterLogin = () => {
+        setValues({
+            children: [],
+            view: <Homepage newTab={createNewtab}/>,
+            names: ["Homepage"]
+        })
+    }
+
     const createNewtab = (component: JSX.Element, name: string) => {
-        console.log(name)
         let tempChildren = state.children;
         let tempNames = state.names;
         tempChildren.push(component)
@@ -136,7 +144,7 @@ function TabContainer(props: any) {
         <View style="flex: auto; flex-direction: 'column';">
             {header}
             <View style="flex: auto; width: '100%'; height: '100%';">
-                {AddExtraProps(state.view, {newTab: createNewtab})}
+                {AddExtraProps(state.view, {newTab: createNewtab, postLogin: createHomepageAfterLogin})}
             </View>
         </View>
     );

@@ -113,7 +113,7 @@ app.post('/deleteAccount', (req, res) => {
 })
 
 app.post('/createNewAccount', (req, res) => {
-    let json = JSON.parse(req.headers['data'])['data']
+    let json = JSON.parse(req.headers['data'])
     createNewAccount(res, json)
 })
 

@@ -33,7 +33,7 @@ axios.post('http://localhost:3000/getAllBookings')
 
 Example Code -> 
 ```
-axios.post('http://localhost:3000/deleteBooking', {
+axios.post('http://localhost:3000/deleteBooking', null, {
     headers: {
         'bookingid': '2'
     })
@@ -60,7 +60,7 @@ axios.post('http://localhost:3000/deleteBooking', {
 
 Example Code -> 
 ```
-axios.post('http://localhost:3000/deleteBooking', {
+axios.post('http://localhost:3000/deleteBooking', null, {
     headers: {
         'bookingid': '2',
         'cols': '{"cols": [DATA_HERE]}',
