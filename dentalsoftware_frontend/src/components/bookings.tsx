@@ -19,15 +19,11 @@ export class Bookings extends React.Component<any, any> {
             confirmMessage: "",
             currentBookingSelected: "",
             editBookingButton: false,
-            
-            //If 0 then show the bookings list, if 1 then showe the create/ edit booking
             bookingCreateOrEditDisplay: 0,
             bookingOrCancelButtonText: "New Booking",
             editButtonClicked: false,
             completeClickedEdit: false,
             completeClickedCreate: false,
-            
-
             bookingID: [],
             NHInum: [],
             patientName: [],
@@ -45,17 +41,13 @@ export class Bookings extends React.Component<any, any> {
     // Function that returns a component to be drawn, can have children components if the parent component supports it
     render() {
         
+        //Pulls data from the calendar component
         var splitBookingString = this.props.data.split(".");
         var day = splitBookingString[0];
         var month = splitBookingString[1];
         var year = splitBookingString[2];
         var weekday = splitBookingString[3];
         var bookingDate = splitBookingString[0] + "/" + splitBookingString[1] + "/" + splitBookingString[2];
-        
-        if (bookingDate == "0/1/0")
-        {
-            bookingDate = "";
-        }
 
         //Handles and changes the text for the NHI number during booking edit and creation
         const textHandlerNHI = {
