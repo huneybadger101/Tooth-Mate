@@ -1,7 +1,9 @@
 import { Text, View, Button, LineEdit, ComboBox, SpinBox } from "@nodegui/react-nodegui";
 import React from "react";
 import { treatmentList, timeAMorPM, timeHourRange, timeMinuteRange } from "./Calendarhelpers/comboBoxVariables";
-import { pullFromDataBase, editFromDB } from "./Calendarhelpers/calendarPullFromDB";
+import { pullFromDataBase } from "./Calendarhelpers/calendarPullFromDB";
+import { createBooking } from "./Calendarhelpers/createBooking";
+import { editFromDB } from "./Calendarhelpers/editBooking";
 import { addLeadingZeros } from "./Calendarhelpers/leadingZeros";
 
 export class Bookings extends React.Component<any, any> {
@@ -312,8 +314,7 @@ export class Bookings extends React.Component<any, any> {
                             this.state.oldValues[5],
                             this.state.oldValues[6],
                             this.state.oldValues[7],
-                            this.state.oldValues[8]
-                        )
+                            this.state.oldValues[8])
                     });
 
                     //Checks that 'bookingCreateOrEditDisplay' is set back to zero before allowing booking list loading
@@ -326,30 +327,41 @@ export class Bookings extends React.Component<any, any> {
                     }
                     else
                     {
-                        console.log("The edit was not done correctly....");
+                        console.log("The edit was not done correctly...");
                     }
 
                 }
                 //Activates when the complete button was clicked during a booking creation
                 else if (this.state.completeClickedCreate == true)
                 {
-                    //TODO: Have below moved to a function in calendarPullFromDB file
-                    console.log("---BOOKING CREATED---");
-                    console.log(this.state.bookingID[this.state.currentBookingSelected]);
-                    console.log(this.state.NHInum[this.state.currentBookingSelected]);
-                    console.log(this.state.patientName[this.state.currentBookingSelected]);
-                    console.log(dateFull);
-
-                    console.log(
+                    this.setState({
+                        bookingCreateOrEditDisplay: createBooking(
+                        this.state.bookingID[this.state.currentBookingSelected],
+                        this.state.NHInum[this.state.currentBookingSelected],
+                        this.state.patientName[this.state.currentBookingSelected],
+                        dateFull,
+                        //Time is sent together so it is easier to handle on the other end
                         addLeadingZeros(this.state.timeHour[this.state.currentBookingSelected], 2) + ":" +
                         addLeadingZeros(this.state.timeMinute[this.state.currentBookingSelected], 2) + "" +
-                        this.state.timeAM_PM[this.state.currentBookingSelected]
-                        );
+                        this.state.timeAM_PM[this.state.currentBookingSelected],
+                        this.state.dentistName[this.state.currentBookingSelected],
+                        this.state.procedure[this.state.currentBookingSelected],
+                        this.state.areasAffected[this.state.currentBookingSelected],
+                        this.state.patientNotes[this.state.currentBookingSelected])
+                    });
 
-                    console.log(this.state.dentistName[this.state.currentBookingSelected]);
-                    console.log(this.state.procedure[this.state.currentBookingSelected]);
-                    console.log(this.state.areasAffected[this.state.currentBookingSelected]);
-                    console.log(this.state.patientNotes[this.state.currentBookingSelected]);
+                    //Checks that 'bookingCreateOrEditDisplay' is set back to zero before allowing booking list loading
+                    if (this.state.bookingCreateOrEditDisplay == 0)
+                    {
+                        this.setState({
+                            //Set back to 'false' to continue update of the date
+                            editButtonClicked: false
+                        });
+                    }
+                    else
+                    {
+                        console.log("The booking creation was not done correctly...");
+                    }
                 }
             }
         }
