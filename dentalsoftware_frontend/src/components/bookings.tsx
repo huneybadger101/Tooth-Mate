@@ -4,7 +4,7 @@ import { treatmentList, timeAMorPM, timeHourRange, timeMinuteRange } from "./Cal
 import { pullFromDataBase } from "./Calendarhelpers/calendarPullFromDB";
 import { createBooking } from "./Calendarhelpers/createBooking";
 import { editFromDB } from "./Calendarhelpers/editBooking";
-import { addLeadingZeros } from "./Calendarhelpers/leadingZeros";
+import { addLeadingZeros, replaceStringAtLength } from "./Calendarhelpers/leadingZeros";
 
 export class Bookings extends React.Component<any, any> {
 
@@ -63,13 +63,15 @@ export class Bookings extends React.Component<any, any> {
             textChanged: (textValue:any) =>{
 
                 this.state.NHInum[this.state.currentBookingSelected] = textValue.replace(/[^a-zA-Z0-9! ]+/g, '');
+                this.state.NHInum[this.state.currentBookingSelected] = replaceStringAtLength(textValue, 7);
+
                 this.setState({
                     editButtonClicked: false,
-                    NHINumber: textValue.replace(/[^a-zA-Z0-9! ]+/g, '')
+                    NHINumber: textValue.replace(/[^a-zA-Z0-9! ]+/g, '').substr(5, textValue.length)
                 })
 
                 this.setState({
-                    //TODO: replace past a specific length
+                    
                 })
             }
         }
@@ -260,7 +262,7 @@ export class Bookings extends React.Component<any, any> {
                         <Text style={"flex: 8; border: 1px solid black;"}>{"Booking ID: " + bookingVariables[num].split(".")[0] + ", Booking date" + dateFull}</Text>
 
                         <Button 
-                            style={"flex: 2;"}
+                            style={"flex: 1;"}
                             text={"Edit"}
                             id={bookingSelected}
                             on={{clicked: () => {
@@ -276,7 +278,8 @@ export class Bookings extends React.Component<any, any> {
                         />
                         
                         {/*TODO: Have the info button bring up a window (or change the screen) to view detailed version of selected booking*/}
-                        <Button style={"flex: 2;"} text={"Info"}></Button>
+                        <Button style={"flex: 1;"} text={"Info"}></Button>
+                        <Button style={"flex: 1;"} text={"Delete"}></Button>
 
                     </View>
                 );

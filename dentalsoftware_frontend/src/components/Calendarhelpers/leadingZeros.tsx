@@ -4,3 +4,19 @@
 export const addLeadingZeros = (num:number, totalLength:number) =>{
     return String(num).padStart(totalLength, '0');
 }
+
+//Will take in a string and replace any characters past the index point with the newValue
+export const replaceStringAtLength = (string:any, index:any) =>{
+
+    if (string.length > index)
+    {
+        let temp = string.substr(index - index, index);
+        return temp;
+    }
+    else
+    {
+        return string;
+    }
+    
+    
+}
