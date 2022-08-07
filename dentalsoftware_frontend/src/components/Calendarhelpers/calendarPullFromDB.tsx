@@ -114,6 +114,7 @@ export const editFromDB = (newBookingID:any, newNHInum:any, newPatientName:any, 
     console.log("Ares affected:   " + newAreasAffected);
     console.log("Patient notes:   " + newPatientNotes);
 
+    //TODO: Send 0 if the edit was successful and 1 if it was not
         return 0;
 
 }
