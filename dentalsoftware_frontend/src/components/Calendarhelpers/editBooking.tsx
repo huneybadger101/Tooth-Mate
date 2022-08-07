@@ -6,9 +6,9 @@ export const editFromDB = (newBookingID:any, newNHInum:any, newPatientName:any, 
 
         
 
-    
+    //NOTE:The old booking info will still use the newe booking ID otherwise it will be updated to use another one
     console.log("--OLD BOOKING--");
-    console.log("Booking number:  " + oldBookingID);
+    console.log("Booking number:  " + newBookingID);
     console.log("NHI Number:      " + oldNHInum);
     console.log("Patient name:    " + oldPatientName);
     console.log("Date:            " + oldDate);
@@ -27,7 +27,7 @@ export const editFromDB = (newBookingID:any, newNHInum:any, newPatientName:any, 
     //Have the main screen return to the booking page
 
     console.log("--NEW BOOKING--");
-    console.log("Booking number:  " + newBookingID);
+    console.log("Booking number:  " + oldBookingID);
     console.log("NHI Number:      " + newNHInum);
     console.log("Patient name:    " + newPatientName);
     console.log("Date:            " + newDate);

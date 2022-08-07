@@ -34,7 +34,16 @@ export class Bookings extends React.Component<any, any> {
             procedure: [],
             areasAffected: [],
             patientNotes: [],
-            oldValues: []
+
+            oldValuesBookingID: [],
+            oldValuesNHInumber: [],
+            oldValuesDate: [],
+            oldValuesPatientName: [],
+            oldValuesTime: [],
+            oldValuesDentistName: [],
+            oldValuesProcedure: [],
+            oldValuesAreasAffected: [],
+            oldValuesPatientNotes: [],
         }
     }
 
@@ -228,19 +237,19 @@ export class Bookings extends React.Component<any, any> {
                     this.state.patientNotes[num] = bookingVariables[num].split(".")[10];
 
                     //Sets the old variables to be used when the edit is complete for comparison
-                    this.state.oldValues[0] = bookingVariables[num].split(".")[0];
-                    this.state.oldValues[1] = bookingVariables[num].split(".")[1];
-                    this.state.oldValues[2] = bookingVariables[num].split(".")[2];
-                    this.state.oldValues[3] = bookingVariables[num].split(".")[3];
+                    this.state.oldValuesBookingID[num] = bookingVariables[num].split(".")[0];
+                    this.state.oldValuesNHInumber[num] = bookingVariables[num].split(".")[1];
+                    this.state.oldValuesDate[num] = bookingVariables[num].split(".")[2];
+                    this.state.oldValuesPatientName[num] = bookingVariables[num].split(".")[3];
                     //Mixes time together for easier handling when being sent to other functions
-                    this.state.oldValues[4] = (
+                    this.state.oldValuesTime[num] = (
                         bookingVariables[num].split(".")[4] + ":" +
                         bookingVariables[num].split(".")[5] + "" +
                         bookingVariables[num].split(".")[6]);
-                    this.state.oldValues[5] = bookingVariables[num].split(".")[7];
-                    this.state.oldValues[6] = bookingVariables[num].split(".")[8];
-                    this.state.oldValues[7] = bookingVariables[num].split(".")[9];
-                    this.state.oldValues[8] = bookingVariables[num].split(".")[10];
+                    this.state.oldValuesDentistName[num] = bookingVariables[num].split(".")[7];
+                    this.state.oldValuesProcedure[num] = bookingVariables[num].split(".")[8];
+                    this.state.oldValuesAreasAffected[num] = bookingVariables[num].split(".")[9];
+                    this.state.oldValuesPatientNotes[num] = bookingVariables[num].split(".")[10];
                 }
                 
 
@@ -298,15 +307,15 @@ export class Bookings extends React.Component<any, any> {
                             this.state.patientNotes[this.state.currentBookingSelected],
 
                             //Sending the old variables to compare with at the end of the edit
-                            this.state.oldValues[0],
-                            this.state.oldValues[1],
-                            this.state.oldValues[2],
-                            this.state.oldValues[3],
-                            this.state.oldValues[4],
-                            this.state.oldValues[5],
-                            this.state.oldValues[6],
-                            this.state.oldValues[7],
-                            this.state.oldValues[8])
+                            this.state.oldValuesBookingID[this.state.currentBookingSelected],
+                            this.state.oldValuesNHInumber[this.state.currentBookingSelected],
+                            this.state.oldValuesDate[this.state.currentBookingSelected],
+                            this.state.oldValuesPatientName[this.state.currentBookingSelected],
+                            this.state.oldValuesTime[this.state.currentBookingSelected],
+                            this.state.oldValuesDentistName[this.state.currentBookingSelected],
+                            this.state.oldValuesProcedure[this.state.currentBookingSelected],
+                            this.state.oldValuesAreasAffected[this.state.currentBookingSelected],
+                            this.state.oldValuesPatientNotes[this.state.currentBookingSelected])
                     });
 
                     //Checks that 'bookingCreateOrEditDisplay' is set back to zero before allowing booking list loading
