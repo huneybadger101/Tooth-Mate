@@ -1,7 +1,7 @@
-import { Text, View, Button, LineEdit, Tabs, TabItem, ComboBox, SpinBox } from "@nodegui/react-nodegui";
+import { Text, View, Button, LineEdit, ComboBox, SpinBox } from "@nodegui/react-nodegui";
 import React from "react";
 import { treatmentList, timeAMorPM, timeHourRange, timeMinuteRange } from "./Calendarhelpers/comboBoxVariables";
-import { pullFromDataBase } from "./Calendarhelpers/calendarPullFromDB";
+import { pullFromDataBase, editFromDB } from "./Calendarhelpers/calendarPullFromDB";
 import { addLeadingZeros } from "./Calendarhelpers/leadingZeros";
 
 export class Bookings extends React.Component<any, any> {
@@ -15,7 +15,6 @@ export class Bookings extends React.Component<any, any> {
             dentist: "",
             notes: "",
             confirmMessage: "",
-            bookingDateVars: this.props.data.split("."),
             currentBookingSelected: "",
             editBookingButton: false,
             
@@ -24,7 +23,8 @@ export class Bookings extends React.Component<any, any> {
             bookingOrCancelButtonText: "New Booking",
             editButtonClicked: false,
             completeClickedEdit: false,
-            cpmpleteClickedCreate: false,
+            completeClickedCreate: false,
+            
 
             bookingID: [],
             NHInum: [],
@@ -35,7 +35,8 @@ export class Bookings extends React.Component<any, any> {
             dentistName: [],
             procedure: [],
             areasAffected: [],
-            patientNotes: []
+            patientNotes: [],
+            oldValues: []
         }
     }
 
@@ -194,10 +195,15 @@ export class Bookings extends React.Component<any, any> {
         var bookingList:any = [];
         var bookingVariables:any = [];
         var dateFull = (day + "/" + month + "/" + year);
-        var valuesBeforeEdit: any = [];
         //Assigns the variables from the database into the bookingVariables array for later use.
         
-        bookingVariables = pullFromDataBase(dateFull);
+
+    
+        if (this.state.editButtonClicked == false)
+        {
+            bookingVariables = pullFromDataBase(dateFull);
+        }
+        // bookingVariables = pullFromDataBase(dateFull);
 
         if (day != 0)
         {
@@ -206,13 +212,13 @@ export class Bookings extends React.Component<any, any> {
                 //Sets a reference point for the button that is clicked
                 let bookingSelected = bookingVariables[num].split(".")[0].toString();
 
-                if (this.state.editButtonClicked == true)
+                if (this.state.editButtonClicked == false)
                 {
                     //Sets all the variables to allow for editing the booking
                     this.state.bookingID[num] = bookingVariables[num].split(".")[0];
                     this.state.NHInum[num] = bookingVariables[num].split(".")[1];
                     this.state.patientName[num] = bookingVariables[num].split(".")[2];
-                        //NOTE: Date is already given via this class
+                        //NOTE: Date is not required as it will be changed via the calendar
                     this.state.timeHour[num] = bookingVariables[num].split(".")[4];
                     this.state.timeMinute[num] = bookingVariables[num].split(".")[5];
                     this.state.timeAM_PM[num] = bookingVariables[num].split(".")[6];
@@ -222,19 +228,20 @@ export class Bookings extends React.Component<any, any> {
                     this.state.areasAffected[num] = bookingVariables[num].split(".")[9];
                     this.state.patientNotes[num] = bookingVariables[num].split(".")[10];
 
-                    //Stores currently saved values into variables to display changes at the end of edit
-                    valuesBeforeEdit[0] = bookingVariables[num].split(".")[0];
-                    valuesBeforeEdit[1] = bookingVariables[num].split(".")[1];
-                    valuesBeforeEdit[2] = bookingVariables[num].split(".")[2];
-                    valuesBeforeEdit[3] = dateFull;
-                    valuesBeforeEdit[4] = bookingVariables[num].split(".")[4];
-                    valuesBeforeEdit[5] = bookingVariables[num].split(".")[4];
-                    valuesBeforeEdit[6] = bookingVariables[num].split(".")[4];
+                    this.state.oldValues[0] = bookingVariables[num].split(".")[0];
+                    this.state.oldValues[1] = bookingVariables[num].split(".")[1];
+                    this.state.oldValues[2] = bookingVariables[num].split(".")[2];
+                    this.state.oldValues[3] = bookingVariables[num].split(".")[3];
 
-                    valuesBeforeEdit[7] = bookingVariables[num].split(".")[5];
-                    valuesBeforeEdit[8] = bookingVariables[num].split(".")[6];
-                    valuesBeforeEdit[9] = bookingVariables[num].split(".")[7];
-                    valuesBeforeEdit[10] = bookingVariables[num].split(".")[8];
+                    this.state.oldValues[4] = (
+                        bookingVariables[num].split(".")[4] + ":" +
+                        bookingVariables[num].split(".")[5] + "" +
+                        bookingVariables[num].split(".")[6]);
+
+                    this.state.oldValues[5] = bookingVariables[num].split(".")[7];
+                    this.state.oldValues[6] = bookingVariables[num].split(".")[8];
+                    this.state.oldValues[7] = bookingVariables[num].split(".")[9];
+                    this.state.oldValues[8] = bookingVariables[num].split(".")[10];
                 }
                 
 
@@ -266,48 +273,57 @@ export class Bookings extends React.Component<any, any> {
                 );
             }
         }
-
+    
         const buttonHandlerCompleteEditOrCreation = {
             clicked: () => {
                 //TODO: Have a confirm screen showing what will be changed
-                //Do this by using the value printed via console.log's below
 
+                
+                
+                
                 //Activates when the complete button was clicked while editing an existing booking
                 if (this.state.completeClickedEdit == true)
                 {
-                    console.log("---BEFORE EDIT---");
-                    console.log(bookingVariables[this.state.currentBookingSelected].split(".")[0]);
-                    console.log(bookingVariables[this.state.currentBookingSelected].split(".")[1]);
-                    console.log(bookingVariables[this.state.currentBookingSelected].split(".")[2]);
-                    console.log(bookingVariables[this.state.currentBookingSelected].split(".")[3]);
-                    
-                    console.log(
-                        bookingVariables[this.state.currentBookingSelected].split(".")[4] + ":" +
-                        bookingVariables[this.state.currentBookingSelected].split(".")[5] + "" +
-                        bookingVariables[this.state.currentBookingSelected].split(".")[6]
-                        );
+                    this.setState({
+                        bookingCreateOrEditDisplay: editFromDB(
+                                //Sending the updated variables to compare with at the end of the edit
+                                this.state.bookingID[this.state.currentBookingSelected],
+                                this.state.NHInum[this.state.currentBookingSelected],
+                                this.state.patientName[this.state.currentBookingSelected],
+                                dateFull,
+                                //Time is sent together so it is easier to handle on the other end
+                                addLeadingZeros(this.state.timeHour[this.state.currentBookingSelected], 2) + ":" +
+                                addLeadingZeros(this.state.timeMinute[this.state.currentBookingSelected], 2) + "" +
+                                this.state.timeAM_PM[this.state.currentBookingSelected],
+                                this.state.dentistName[this.state.currentBookingSelected],
+                                this.state.procedure[this.state.currentBookingSelected],
+                                this.state.areasAffected[this.state.currentBookingSelected],
+                                this.state.patientNotes[this.state.currentBookingSelected],
 
-                    console.log(bookingVariables[this.state.currentBookingSelected].split(".")[7]);
-                    console.log(bookingVariables[this.state.currentBookingSelected].split(".")[8]);
-                    console.log(bookingVariables[this.state.currentBookingSelected].split(".")[9]);
-                    console.log(bookingVariables[this.state.currentBookingSelected].split(".")[10]);
+                                //Sending the old variables to compare with at the end of the edit
+                                this.state.oldValues[0],
+                                this.state.oldValues[1],
+                                this.state.oldValues[2],
+                                this.state.oldValues[3],
+                                this.state.oldValues[4],
+                                this.state.oldValues[5],
+                                this.state.oldValues[6],
+                                this.state.oldValues[7],
+                                this.state.oldValues[8]
+                            ),
 
-                    console.log("---AFTER EDIT---");
-                    console.log(this.state.bookingID[this.state.currentBookingSelected]);
-                    console.log(this.state.NHInum[this.state.currentBookingSelected]);
-                    console.log(this.state.patientName[this.state.currentBookingSelected]);
-                    console.log(dateFull);
+                            editButtonClicked: false
+                    });
 
-                    console.log(
-                        addLeadingZeros(this.state.timeHour[this.state.currentBookingSelected], 2) + ":" +
-                        addLeadingZeros(this.state.timeMinute[this.state.currentBookingSelected], 2) + "" +
-                        this.state.timeAM_PM[this.state.currentBookingSelected]
-                        );
-                    //TODO: TIME
-                    console.log(this.state.dentistName[this.state.currentBookingSelected]);
-                    console.log(this.state.procedure[this.state.currentBookingSelected]);
-                    console.log(this.state.areasAffected[this.state.currentBookingSelected]);
-                    console.log(this.state.patientNotes[this.state.currentBookingSelected]);
+
+
+
+
+
+
+
+
+
                 }
                 else if (this.state.completeClickedCreate == true)
                 {
