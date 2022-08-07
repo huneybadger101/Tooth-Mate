@@ -1,6 +1,8 @@
-import { Text, View, Button, LineEdit } from "@nodegui/react-nodegui";
+import { Text, View, Button, LineEdit, Tabs, TabItem, ComboBox, SpinBox } from "@nodegui/react-nodegui";
 import React from "react";
+import { treatmentList, timeAMorPM, timeHourRange, timeMinuteRange } from "./Calendarhelpers/comboBoxVariables";
 import { pullFromDataBase } from "./Calendarhelpers/calendarPullFromDB";
+import { addLeadingZeros } from "./Calendarhelpers/leadingZeros";
 
 export class Bookings extends React.Component<any, any> {
 
@@ -21,102 +23,36 @@ export class Bookings extends React.Component<any, any> {
             bookingCreateOrEditDisplay: 0,
             bookingOrCancelButtonText: "New Booking",
             editButtonClicked: false,
+            completeClickedEdit: false,
+            cpmpleteClickedCreate: false,
 
             bookingID: [],
             NHInum: [],
             patientName: [],
-            time: [],
+            timeHour: [],
+            timeMinute: [],
+            timeAM_PM: [],
             dentistName: [],
             procedure: [],
             areasAffected: [],
             patientNotes: []
         }
     }
-    
+
     // Function that returns a component to be drawn, can have children components if the parent component supports it
     render() {
-
+        
         var splitBookingString = this.props.data.split(".");
         var day = splitBookingString[0];
         var month = splitBookingString[1];
         var year = splitBookingString[2];
         var weekday = splitBookingString[3];
         var bookingDate = splitBookingString[0] + "/" + splitBookingString[1] + "/" + splitBookingString[2];
-
+        
         if (bookingDate == "0/1/0")
         {
             bookingDate = "";
         }
-
-         var editExistingBooking = true;
-
-        const buttonHandler = {
-            clicked: () => {
-
-                var confirm = 0;
-        
-                //Input validation for the name field
-                if (this.state.name == "")
-                {
-                    console.log("ERROR: Name invalid. Please make sure field is filled");
-                    confirm = confirm + 1;
-                }
-        
-                //Input validation for the NHI Number field
-                if (this.state.NHINumber == "")
-                {
-                    console.log("ERROR: NHI Number must be filled");
-                    confirm = confirm + 1;
-                }
-        
-                //Input validation for the date field
-                if (this.state.date)
-                {
-                    //TODO: Add validation for the date.
-                }
-        
-                //Input validation for the dentist name field
-                if (this.state.dentist == "")
-                {
-                    console.log("ERROR: Dentist must be filled");
-                    confirm = confirm + 1;
-                }
-        
-                if (confirm == 0)
-                {
-                    this.setState({
-                        confirmMessage: "Booking complete"
-                    });
-
-                    console.log("Booking complete! Below are the details input...");
-                    console.log("Name: " + this.state.name);
-                    console.log("NHI: " + this.state.NHINumber);
-                    console.log("Date: " + this.state.date);
-                    console.log("Dentist: " + this.state.dentist);
-                }
-                else if (confirm == 1)
-                {
-                    this.setState({
-                        confirmMessage: "There are one or more issues, please fix them before submitting"
-                    });
-
-                    console.log("Please fix the issue above");
-                }
-                else
-                {
-                    this.setState({
-                        confirmMessage: "There are one or more issues, please fix them before submitting"
-                    });
-
-                    console.log("Please fix the " + confirm + " issues above");
-                }
-            }
-        };
-
-
-
-
-        
 
         const textHandlerNHI = {
             textChanged: (textValue:any) =>{
@@ -147,17 +83,23 @@ export class Bookings extends React.Component<any, any> {
             }
         }
 
-        const textHandlerTime = {
-            textChanged: (textValue:any) =>{
+        const textHandlerTimeHour = {
+            valueChanged: (newValue:any) =>{
+                //TODO: LIMIT THE TIME TO 12
 
-                this.state.time[this.state.currentBookingSelected] = textValue.replace(/[^0-9! ]+/g, '');
-                this.setState({
-                    editButtonClicked: false,
-                })
+                this.state.timeHour[this.state.currentBookingSelected] = newValue;
+            }
+        }
 
-                this.setState({
-                    //replace past a specific length
-                })
+        const textHandlerTimeMinute = {
+            valueChanged: (newValue:any) =>{    
+                this.state.timeMinute[this.state.currentBookingSelected] = newValue;
+            }
+        }
+
+        const textHandlerTimeA_P = {
+            currentTextChanged: (currentText:any) =>{
+                this.state.timeAM_PM[this.state.currentBookingSelected] = currentText;
             }
         }
 
@@ -176,16 +118,8 @@ export class Bookings extends React.Component<any, any> {
         }
 
         const textHandlerProcedure = {
-            textChanged: (textValue:any) =>{
-
-                this.state.procedure[this.state.currentBookingSelected] = textValue.replace(/[^a-zA-Z! ]+/g, '');
-                this.setState({
-                    editButtonClicked: false,
-                })
-
-                this.setState({
-                    //replace past a specific length
-                })
+            currentTextChanged: (currentText:any) =>{
+                this.state.procedure[this.state.currentBookingSelected] = currentText;
             }
         }
 
@@ -217,43 +151,45 @@ export class Bookings extends React.Component<any, any> {
             }
         }
 
-        
-
-
-
-
-
         const buttonHandlerBookingOrCancel = {
             clicked: () => {
 
                 if (this.state.bookingCreateOrEditDisplay == 1)
                 {
-                    this.setState({
-                        bookingCreateOrEditDisplay: 0,
-                        bookingOrCancelButtonText: "Create Booking",
-                        editButtonClicked: false
-                    });
-
                     this.state.bookingID[this.state.currentBookingSelected] = "";
                     this.state.NHInum[this.state.currentBookingSelected] = "";
                     this.state.patientName[this.state.currentBookingSelected] = "";
-                    this.state.time[this.state.currentBookingSelected] = "";
+
+                    this.state.timeHour[this.state.currentBookingSelected] = "10";
+                    this.state.timeMinute[this.state.currentBookingSelected] = "00";
+                    this.state.timeAM_PM[this.state.currentBookingSelected] = "AM";
+
                     this.state.dentistName[this.state.currentBookingSelected] = "";
                     this.state.procedure[this.state.currentBookingSelected] = "";
                     this.state.areasAffected[this.state.currentBookingSelected] = "";
                     this.state.patientNotes[this.state.currentBookingSelected] = "";
+
+                    this.setState({
+                        bookingCreateOrEditDisplay: 0,
+                        bookingOrCancelButtonText: "Create Booking",
+                        editButtonClicked: false,
+                        completeClickedCreate: false
+                    });
                 }
                 else
                 {
+                    this.state.timeHour[this.state.currentBookingSelected] = "10";
+                    this.state.timeMinute[this.state.currentBookingSelected] = "00";
+                    this.state.timeAM_PM[this.state.currentBookingSelected] = "AM";
+
                     this.setState({
                         bookingCreateOrEditDisplay: 1,
-                        bookingOrCancelButtonText: "Cancel"
+                        bookingOrCancelButtonText: "Cancel",
+                        completeClickedCreate: true
                     });
                 } 
             }
         }
-
-        
 
         var bookingList:any = [];
         var bookingVariables:any = [];
@@ -277,11 +213,14 @@ export class Bookings extends React.Component<any, any> {
                     this.state.NHInum[num] = bookingVariables[num].split(".")[1];
                     this.state.patientName[num] = bookingVariables[num].split(".")[2];
                         //NOTE: Date is already given via this class
-                    this.state.time[num] = bookingVariables[num].split(".")[4];
-                    this.state.dentistName[num] = bookingVariables[num].split(".")[5];
-                    this.state.procedure[num] = bookingVariables[num].split(".")[6];
-                    this.state.areasAffected[num] = bookingVariables[num].split(".")[7];
-                    this.state.patientNotes[num] = bookingVariables[num].split(".")[8];
+                    this.state.timeHour[num] = bookingVariables[num].split(".")[4];
+                    this.state.timeMinute[num] = bookingVariables[num].split(".")[5];
+                    this.state.timeAM_PM[num] = bookingVariables[num].split(".")[6];
+
+                    this.state.dentistName[num] = bookingVariables[num].split(".")[7];
+                    this.state.procedure[num] = bookingVariables[num].split(".")[8];
+                    this.state.areasAffected[num] = bookingVariables[num].split(".")[9];
+                    this.state.patientNotes[num] = bookingVariables[num].split(".")[10];
 
                     //Stores currently saved values into variables to display changes at the end of edit
                     valuesBeforeEdit[0] = bookingVariables[num].split(".")[0];
@@ -289,10 +228,13 @@ export class Bookings extends React.Component<any, any> {
                     valuesBeforeEdit[2] = bookingVariables[num].split(".")[2];
                     valuesBeforeEdit[3] = dateFull;
                     valuesBeforeEdit[4] = bookingVariables[num].split(".")[4];
-                    valuesBeforeEdit[5] = bookingVariables[num].split(".")[5];
-                    valuesBeforeEdit[6] = bookingVariables[num].split(".")[6];
-                    valuesBeforeEdit[7] = bookingVariables[num].split(".")[7];
-                    valuesBeforeEdit[8] = bookingVariables[num].split(".")[8];
+                    valuesBeforeEdit[5] = bookingVariables[num].split(".")[4];
+                    valuesBeforeEdit[6] = bookingVariables[num].split(".")[4];
+
+                    valuesBeforeEdit[7] = bookingVariables[num].split(".")[5];
+                    valuesBeforeEdit[8] = bookingVariables[num].split(".")[6];
+                    valuesBeforeEdit[9] = bookingVariables[num].split(".")[7];
+                    valuesBeforeEdit[10] = bookingVariables[num].split(".")[8];
                 }
                 
 
@@ -312,6 +254,7 @@ export class Bookings extends React.Component<any, any> {
                                     editBookingButton: true, 
                                     bookingCreateOrEditDisplay: 1, 
                                     editButtonClicked: true,
+                                    completeClickedEdit: true,
                                     bookingOrCancelButtonText: "Cancel"
                                 })
                             }}}
@@ -323,40 +266,70 @@ export class Bookings extends React.Component<any, any> {
                 );
             }
         }
-        
-
-
 
         const buttonHandlerCompleteEditOrCreation = {
             clicked: () => {
                 //TODO: Have a confirm screen showing what will be changed
                 //Do this by using the value printed via console.log's below
 
-                console.log("---BEFORE EDIT---");
-                console.log(bookingVariables[this.state.currentBookingSelected].split(".")[0]);
-                console.log(bookingVariables[this.state.currentBookingSelected].split(".")[1]);
-                console.log(bookingVariables[this.state.currentBookingSelected].split(".")[2]);
-                console.log(bookingVariables[this.state.currentBookingSelected].split(".")[3]);
-                console.log(bookingVariables[this.state.currentBookingSelected].split(".")[4]);
-                console.log(bookingVariables[this.state.currentBookingSelected].split(".")[5]);
-                console.log(bookingVariables[this.state.currentBookingSelected].split(".")[6]);
-                console.log(bookingVariables[this.state.currentBookingSelected].split(".")[7]);
-                console.log(bookingVariables[this.state.currentBookingSelected].split(".")[8]);
+                //Activates when the complete button was clicked while editing an existing booking
+                if (this.state.completeClickedEdit == true)
+                {
+                    console.log("---BEFORE EDIT---");
+                    console.log(bookingVariables[this.state.currentBookingSelected].split(".")[0]);
+                    console.log(bookingVariables[this.state.currentBookingSelected].split(".")[1]);
+                    console.log(bookingVariables[this.state.currentBookingSelected].split(".")[2]);
+                    console.log(bookingVariables[this.state.currentBookingSelected].split(".")[3]);
+                    
+                    console.log(
+                        bookingVariables[this.state.currentBookingSelected].split(".")[4] + ":" +
+                        bookingVariables[this.state.currentBookingSelected].split(".")[5] + "" +
+                        bookingVariables[this.state.currentBookingSelected].split(".")[6]
+                        );
 
-                console.log("---AFTER EDIT---");
-                console.log(this.state.bookingID[this.state.currentBookingSelected]);
-                console.log(this.state.NHInum[this.state.currentBookingSelected]);
-                console.log(this.state.patientName[this.state.currentBookingSelected]);
-                console.log(dateFull);
-                console.log(this.state.time[this.state.currentBookingSelected]);
-                console.log(this.state.dentistName[this.state.currentBookingSelected]);
-                console.log(this.state.procedure[this.state.currentBookingSelected]);
-                console.log(this.state.areasAffected[this.state.currentBookingSelected]);
-                console.log(this.state.patientNotes[this.state.currentBookingSelected]);
+                    console.log(bookingVariables[this.state.currentBookingSelected].split(".")[7]);
+                    console.log(bookingVariables[this.state.currentBookingSelected].split(".")[8]);
+                    console.log(bookingVariables[this.state.currentBookingSelected].split(".")[9]);
+                    console.log(bookingVariables[this.state.currentBookingSelected].split(".")[10]);
+
+                    console.log("---AFTER EDIT---");
+                    console.log(this.state.bookingID[this.state.currentBookingSelected]);
+                    console.log(this.state.NHInum[this.state.currentBookingSelected]);
+                    console.log(this.state.patientName[this.state.currentBookingSelected]);
+                    console.log(dateFull);
+
+                    console.log(
+                        addLeadingZeros(this.state.timeHour[this.state.currentBookingSelected], 2) + ":" +
+                        addLeadingZeros(this.state.timeMinute[this.state.currentBookingSelected], 2) + "" +
+                        this.state.timeAM_PM[this.state.currentBookingSelected]
+                        );
+                    //TODO: TIME
+                    console.log(this.state.dentistName[this.state.currentBookingSelected]);
+                    console.log(this.state.procedure[this.state.currentBookingSelected]);
+                    console.log(this.state.areasAffected[this.state.currentBookingSelected]);
+                    console.log(this.state.patientNotes[this.state.currentBookingSelected]);
+                }
+                else if (this.state.completeClickedCreate == true)
+                {
+                    console.log("---BOOKING CREATED---");
+                    console.log(this.state.bookingID[this.state.currentBookingSelected]);
+                    console.log(this.state.NHInum[this.state.currentBookingSelected]);
+                    console.log(this.state.patientName[this.state.currentBookingSelected]);
+                    console.log(dateFull);
+
+                    console.log(
+                        addLeadingZeros(this.state.timeHour[this.state.currentBookingSelected], 2) + ":" +
+                        addLeadingZeros(this.state.timeMinute[this.state.currentBookingSelected], 2) + "" +
+                        this.state.timeAM_PM[this.state.currentBookingSelected]
+                        );
+
+                    console.log(this.state.dentistName[this.state.currentBookingSelected]);
+                    console.log(this.state.procedure[this.state.currentBookingSelected]);
+                    console.log(this.state.areasAffected[this.state.currentBookingSelected]);
+                    console.log(this.state.patientNotes[this.state.currentBookingSelected]);
+                }
             }
         }
-
-
 
         const containerStyle = `
             
@@ -373,7 +346,6 @@ export class Bookings extends React.Component<any, any> {
             margin: 0px;
             height: '100%';
         `;
-        
 
         var pageDiplay: any = [];
 
@@ -402,9 +374,15 @@ export class Bookings extends React.Component<any, any> {
                     </View>
 
                     <View style="margin: 10px; flex-direction: 'row';">
-                        <Text style={"flex: 1; border: 1px solid black;"}>Time</Text>
-                        <LineEdit style={"flex: 2;"} on={textHandlerTime} text={this.state.time[this.state.currentBookingSelected]} />
+                        <Text style={"flex: 2; border: 1px solid black;"}>Time</Text>
+                        <SpinBox style={"flex: 1;"} value={this.state.timeHour[this.state.currentBookingSelected]} on={textHandlerTimeHour} range={timeHourRange()}/>
+                        <SpinBox style={"flex: 1;"} value={this.state.timeMinute[this.state.currentBookingSelected]} on={textHandlerTimeMinute} range={timeMinuteRange()}/>
+                        <ComboBox style={"flex: 1;"} items={timeAMorPM()} currentText={this.state.timeAM_PM[this.state.currentBookingSelected]} on={textHandlerTimeA_P} />
                     </View>
+
+                    {/* this.state.timeHour[this.state.currentBookingSelected]
+                    this.state.timeMinute[this.state.currentBookingSelected]
+                    this.state.timeAM_PM[this.state.currentBookingSelected] */}
 
                     <View style="margin: 10px; flex-direction: 'row';">
                         <Text style={"flex: 1; border: 1px solid black;"}>Dentist name</Text>
@@ -413,7 +391,7 @@ export class Bookings extends React.Component<any, any> {
 
                     <View style="margin: 10px; flex-direction: 'row';">
                         <Text style={"flex: 1; border: 1px solid black;"}>Procedure</Text>
-                        <LineEdit style={"flex: 2;"} on={textHandlerProcedure} text={this.state.procedure[this.state.currentBookingSelected]} />
+                        <ComboBox style={"flex: 2;"} items={treatmentList()} currentText={this.state.procedure[this.state.currentBookingSelected]} on={textHandlerProcedure} />
                     </View>
 
                     <View style="margin: 10px; flex-direction: 'row';">
@@ -427,11 +405,10 @@ export class Bookings extends React.Component<any, any> {
                     </View>
 
                     <Button text={"Complete"} on={buttonHandlerCompleteEditOrCreation}></Button>
+                    
                 </View>
                 </View>
         );
-
-
 
         pageDiplay[0] = (
             <View style="flex-direction: 'row';">
@@ -450,9 +427,8 @@ export class Bookings extends React.Component<any, any> {
         );
 
         return (
-
             <View>
-                
+
                 <View>
                     <Button text = {this.state.bookingOrCancelButtonText} style={""} on = {buttonHandlerBookingOrCancel} />
                 </View>
@@ -460,10 +436,7 @@ export class Bookings extends React.Component<any, any> {
                 {pageDiplay[this.state.bookingCreateOrEditDisplay]}
 
             </View>
-
-        );
-        
-        
+        );  
     }
 } 
 

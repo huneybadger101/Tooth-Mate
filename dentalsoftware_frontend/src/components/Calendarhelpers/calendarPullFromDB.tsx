@@ -23,7 +23,9 @@ export const pullFromDataBase = (dateSelected:any) =>{
             "NHInumberPlaceholder" + "." +
             "Patient name placeholder" + "." +
             dateSelected + "." +
-            "Time placeholder" + "." +
+            "11" + "." +
+            "00" + "." +
+            "AM" + "." +
             "Dentist placeholder" + "." + 
             "Procedure placeholder" + "." +
             "Areas affected placeholder" + "." +
