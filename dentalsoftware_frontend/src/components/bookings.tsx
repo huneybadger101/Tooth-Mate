@@ -63,15 +63,10 @@ export class Bookings extends React.Component<any, any> {
             textChanged: (textValue:any) =>{
 
                 this.state.NHInum[this.state.currentBookingSelected] = textValue.replace(/[^a-zA-Z0-9! ]+/g, '');
-                this.state.NHInum[this.state.currentBookingSelected] = replaceStringAtLength(textValue, 7);
+                //this.state.NHInum[this.state.currentBookingSelected] = replaceStringAtLength(textValue, 7);
 
                 this.setState({
                     editButtonClicked: false,
-                    NHINumber: textValue.replace(/[^a-zA-Z0-9! ]+/g, '').substr(5, textValue.length)
-                })
-
-                this.setState({
-                    
                 })
             }
         }
@@ -81,12 +76,10 @@ export class Bookings extends React.Component<any, any> {
             textChanged: (textValue:any) =>{
 
                 this.state.patientName[this.state.currentBookingSelected] = textValue.replace(/[^a-zA-Z! ]+/g, '');
-                this.setState({
-                    editButtonClicked: false,
-                })
+                //this.state.patientName[this.state.currentBookingSelected] = replaceStringAtLength(textValue, 30);
 
                 this.setState({
-                    //TODO: replace past a specific length
+                    editButtonClicked: false,
                 })
             }
         }
@@ -117,12 +110,10 @@ export class Bookings extends React.Component<any, any> {
             textChanged: (textValue:any) =>{
 
                 this.state.dentistName[this.state.currentBookingSelected] = textValue.replace(/[^a-zA-Z! ]+/g, '');
-                this.setState({
-                    editButtonClicked: false,
-                })
+                //this.state.dentistName[this.state.currentBookingSelected] = replaceStringAtLength(textValue, 30);
 
                 this.setState({
-                    //TODO: replace past a specific length
+                    editButtonClicked: false,
                 })
             }
         }
@@ -141,10 +132,6 @@ export class Bookings extends React.Component<any, any> {
                 this.state.areasAffected[this.state.currentBookingSelected] = textValue.replace(/[^0-9,! ]+/g, '');
                 this.setState({
                     editButtonClicked: false,
-                })
-
-                this.setState({
-                    //TODO: replace past a specific length
                 })
             }
         }
