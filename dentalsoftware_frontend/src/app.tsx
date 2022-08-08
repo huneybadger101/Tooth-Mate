@@ -7,7 +7,7 @@ import Login from "./components/login";
 
 var resolution = require("screen-resolution");
 
-const minSize = { width: 1000, height: 750 };
+const minSize = { width: 1000, height: 760 };
 class App extends React.Component<any, any> {
 
   constructor(props: any) {
