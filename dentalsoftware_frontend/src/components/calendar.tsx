@@ -1,13 +1,20 @@
-import { Text, View, Button, ScrollArea } from "@nodegui/react-nodegui";
+import { Text, View, Button } from "@nodegui/react-nodegui";
 import React from "react";
-import { getWeekdayStart } from "./helpers/calendarHelper";
-import { getMonthDayCount } from "./helpers/calendarMonthDayCount";
-import { getWeekdaySelected } from "./helpers/calendarDisplaySelectedDate";
+import { getWeekdayStart } from "./Calendarhelpers/calendarHelper";
+import { getMonthDayCount } from "./Calendarhelpers/calendarMonthDayCount";
+import { getWeekdaySelected } from "./Calendarhelpers/calendarDisplaySelectedDate";
+import Bookings from "./bookings";
 
 export class Calendar extends React.Component<any, any> {
 
   constructor(props: any) {
+
+    //Creates a date object
     var date = new Date();
+
+    //Creates several state variables
+    //NOTE: State variables will allow for dynamic content loading in the application
+      //i.e., if a state variable is changed and connected to a buttons text, the button will reload with the text updated automatically
     super(props);
     this.state = {
         month: [],
@@ -17,14 +24,14 @@ export class Calendar extends React.Component<any, any> {
         weekDaySelected: getWeekdayStart(date.getMonth(), date.getFullYear()),
         monthSelected: date.getMonth(),
         monthDayCount: getMonthDayCount(date.getMonth(), date.getFullYear()),
-
         currentDaySelected: 0,
         currentMonthSelected: 0,
         currentYearSelected: 0,
         currentWeekdaySelected: 0,
-
         rightHandMessage: true,
-        rightHandDateInfo: false
+        rightHandDateInfo: false,
+        currentBookingSelected: "",
+        editBookingButton: false
     }
   }
 
@@ -63,8 +70,11 @@ export class Calendar extends React.Component<any, any> {
         var calendar4:any = [];
         var calendar5:any = [];
         var calendar6:any = [];
+        var bookingList:any = [];
+        var bookingPage:any;
 
         //Button handler for when increasing the month or year
+        //When clicked and the month is december, the year will be increased by 1 and the month will restart from Jan
         const buttonHandlerIncreaseMonth = {
           clicked: () => {
               if (this.state.monthSelected == 11)
@@ -102,6 +112,9 @@ export class Calendar extends React.Component<any, any> {
           }
         }
 
+        //This for loop contains the code to create date nodes in rows of 7.
+        //These will be displayed on the actual calendar and will be in the form of buttons
+        //When clicked, the chosen date will be saved to a state based variable for use
         for (var i = 0; i < 7; i++) {
 
           if (i >= this.state.weekDaySelected)
@@ -169,6 +182,8 @@ export class Calendar extends React.Component<any, any> {
                     rightHandDateInfo: true,
                     rightHandMessage: false,
                   
+
+                    
                     currentMonthSelected: this.state.monthSelected,
                     currentYearSelected: this.state.year,
                     currentWeekdaySelected: getWeekdaySelected(this.state.monthSelected, this.state.year, buttonName_3)}
@@ -210,7 +225,7 @@ export class Calendar extends React.Component<any, any> {
                   {daySelected: buttonName_5,
                     rightHandDateInfo: true,
                     rightHandMessage: false,
-                  
+                    
                     currentMonthSelected: this.state.monthSelected,
                     currentYearSelected: this.state.year,
                     currentWeekdaySelected: getWeekdaySelected(this.state.monthSelected, this.state.year, buttonName_5)}
@@ -220,7 +235,7 @@ export class Calendar extends React.Component<any, any> {
           }
           else
           {
-            calendar6.push( 
+            calendar6.push(
               <View style="border: 1px solid black; height: 100px; width: 100px; background-color: 'grey';">
                 <Text></Text>
               </View>
@@ -228,13 +243,29 @@ export class Calendar extends React.Component<any, any> {
           }
         }
 
+
+
+
+
+
+
+
         const containerStyle = `
-            
+            flex-grow: 0 0 0;
             background: 'white';
         `;
 
         const containerStyle2 = `
-            flex-grow: auto 0 0;
+            flex-grow: 2 2 2;
+            
+            flex-direction: 'column';
+            background: 'white';
+        `;
+
+        const containerStyle3 = `
+            flex-shrink: 2;
+            bottom: 10px;
+            flex-direction: 'column';
             background: 'white';
         `;
 
@@ -242,7 +273,10 @@ export class Calendar extends React.Component<any, any> {
         // in order to allow for sub-windows to be created later on
         return (
 
-          <View style="flex-direction: 'row';">
+          <View style={"flex-grow: 1; flex-direction: 'column';"}>
+            <View style="flex-direction: 'row';">
+
+              {/*This container will hold the calendar*/}
               <View style={containerStyle}>
 
                 <View style="flex: 0; flex-direction: 'row';">
@@ -282,22 +316,35 @@ export class Calendar extends React.Component<any, any> {
 
               </View>
 
+
+              {/**/}
               <View style={containerStyle2}>
-                  <Button text={"+"} visible={this.state.rightHandDateInfo}></Button>
-                  <Text style="border: 1px solid black; padding: 10px" visible={this.state.rightHandDateInfo}>{"Date selected: " + this.state.daySelected + "/" + 
-                              (this.state.currentMonthSelected + 1) + "/" + this.state.currentYearSelected + " - " + this.state.day[this.state.currentWeekdaySelected]}</Text>
-                              
-                  <Text style="border: 0px solid black; padding: 10px" visible={this.state.rightHandDateInfo}>This is where the meeting information will go...</Text>
 
 
-
-
-
-                  <Text style="border: 1px solid black; margin: auto;" visible={this.state.rightHandMessage}>Get started by selecting a date...</Text>
+                {/*Will call the bookings component to be diplayed on the calendar page and send several variables for use in the bookings page*/}
+                <Bookings data={
+                  this.state.daySelected + "." + 
+                  (this.state.currentMonthSelected + 1) + "." +
+                  this.state.currentYearSelected + "." +
+                  this.state.day[this.state.currentWeekdaySelected]
+                }/>
+                
 
               </View>
+            </View>
+
+
+            {/**/}
+            <View style={containerStyle3}>
+
+                {/* <ScrollArea style={"flex-grow: 1;"}>
+                <View style={"flex-grow: 1; width: 500px;"}>
+                  {bookingList}
+                </View>
+                </ScrollArea> */}
 
             </View>
+          </View>
         );
     }
 } 
