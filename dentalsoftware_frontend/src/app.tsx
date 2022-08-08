@@ -3,6 +3,7 @@ import React from "react";
 import { QIcon, QScreen } from "@nodegui/nodegui";
 import path from "path";
 import Homepage from "./components/homepage";
+import Fileread from "./components/readjosn/fileread";
 import Setting from "./components/setting";
 import Calendar from "./components/calendar";
 import Bookings from "./components/bookings";
@@ -30,8 +31,10 @@ class App extends React.Component<any, any> {
       names.push("Homepage")
       screens.push(<Calendar/>)
       names.push("Calendar")
-      screens.push(<Text>Test Screen 3</Text>)
-      names.push("Test Screen 3")
+      screens.push(<Bookings/>)
+      names.push("Booking")
+      screens.push(<Fileread/>)
+      names.push("Fileread")
 
       const maxSize = {width: result.width, height: result.height}
       windows.push(<Window
