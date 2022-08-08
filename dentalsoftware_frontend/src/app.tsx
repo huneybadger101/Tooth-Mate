@@ -1,13 +1,8 @@
-import { Text, Window, View } from "@nodegui/react-nodegui";
+import { Window, View } from "@nodegui/react-nodegui";
 import React from "react";
 import { QIcon, QScreen } from "@nodegui/nodegui";
 import path from "path";
-import Homepage from "./components/homepage";
-import Setting from "./components/setting";
-import Calendar from "./components/calendar";
-import Bookings from "./components/bookings";
 import TabContainer from "./components/tabContainer";
-import PatientDataViewer from "./components/PatientDataViewer";
 import Login from "./components/login";
 
 var resolution = require("screen-resolution");
