@@ -1,13 +1,10 @@
-import { Text, Window, View } from "@nodegui/react-nodegui";
+import { Window, View } from "@nodegui/react-nodegui";
 import React from "react";
 import { QIcon, QScreen } from "@nodegui/nodegui";
 import path from "path";
-import Homepage from "./components/homepage";
-import Fileread from "./components/readjosn/fileread";
-import Setting from "./components/setting";
-import Calendar from "./components/calendar";
-import Bookings from "./components/bookings";
 import TabContainer from "./components/tabContainer";
+import Login from "./components/login";
+
 var resolution = require("screen-resolution");
 
 const minSize = { width: 1000, height: 760 };
@@ -27,14 +24,8 @@ class App extends React.Component<any, any> {
       let names = [];
       let windows = [];
 
-      screens.push(<Homepage/>)
-      names.push("Homepage")
-      screens.push(<Calendar/>)
-      names.push("Calendar")
-      screens.push(<Bookings/>)
-      names.push("Booking")
-      screens.push(<Fileread/>)
-      names.push("Fileread")
+      screens.push(<Login/>)
+      names.push("Login")
 
       const maxSize = {width: result.width, height: result.height}
       windows.push(<Window
