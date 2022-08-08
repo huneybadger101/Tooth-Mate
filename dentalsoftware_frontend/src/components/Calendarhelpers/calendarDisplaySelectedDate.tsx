@@ -6,8 +6,6 @@ export const getWeekdaySelected = (monthSelected: any, year: any, daySelected: a
 
     var monthDayCount = getMonthDayCount(monthSelected, year);
     var monthWeekdayStart = getWeekdayStart(monthSelected, year);
-
-    console.log("MONTH WEEDAY START VAR: " + monthWeekdayStart);
     var returnValue = monthWeekdayStart - 2;
 
     for (var num = 0; num <= daySelected; num++)
@@ -20,6 +18,5 @@ export const getWeekdaySelected = (monthSelected: any, year: any, daySelected: a
         }
     }
 
-    console.log("BEING SENT: " + returnValue);
     return returnValue;
 }

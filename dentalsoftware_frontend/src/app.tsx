@@ -9,7 +9,7 @@ import Bookings from "./components/bookings";
 import TabContainer from "./components/tabContainer";
 var resolution = require("screen-resolution");
 
-const minSize = { width: 1000, height: 750 };
+const minSize = { width: 1000, height: 760 };
 class App extends React.Component<any, any> {
 
   constructor(props: any) {
@@ -28,10 +28,8 @@ class App extends React.Component<any, any> {
 
       screens.push(<Homepage/>)
       names.push("Homepage")
-      screens.push(<Text>Test Screen 1</Text>)
-      names.push("Test Screen 1")
-      screens.push(<Text>Test Screen 2</Text>)
-      names.push("Test Screen 2")
+      screens.push(<Calendar/>)
+      names.push("Calendar")
       screens.push(<Text>Test Screen 3</Text>)
       names.push("Test Screen 3")
 
