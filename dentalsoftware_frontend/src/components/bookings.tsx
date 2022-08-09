@@ -1,10 +1,11 @@
 import { Text, View, Button, LineEdit, ComboBox, SpinBox } from "@nodegui/react-nodegui";
 import React from "react";
 import { treatmentList, timeAMorPM, timeHourRange, timeMinuteRange } from "./Calendarhelpers/comboBoxVariables";
-import { pullFromDataBase } from "./Calendarhelpers/calendarPullFromDB";
+import { pullFromDataBase, deleteFromDataBase } from "./Calendarhelpers/calendarPullFromDB";
 import { createBooking } from "./Calendarhelpers/createBooking";
 import { editFromDB } from "./Calendarhelpers/editBooking";
 import { addLeadingZeros, replaceStringAtLength } from "./Calendarhelpers/leadingZeros";
+import { viewBooking } from "./Calendarhelpers/viewBookingSelected";
 
 export class Bookings extends React.Component<any, any> {
 
@@ -57,6 +58,9 @@ export class Bookings extends React.Component<any, any> {
         var year = splitBookingString[2];
         var weekday = splitBookingString[3];
         var bookingDate = splitBookingString[0] + "/" + splitBookingString[1] + "/" + splitBookingString[2];
+
+        //Required to toggle the edit, create booking, and delete button being displayed. Will also be used to determinen what bookings are displayed
+        var userType:any = "admin";
 
         //Handles and changes the text for the NHI number during booking edit and creation
         const textHandlerNHI = {
@@ -193,13 +197,15 @@ export class Bookings extends React.Component<any, any> {
         }
 
         var bookingList:any = [];
+        var bookingListEditButton:any = [];
+        var bookingListDeleteButton:any = [];
         var bookingVariables:any = [];
         var dateFull = (day + "/" + month + "/" + year);
         //Assigns the variables from the database into the bookingVariables array for later use.
     
         if (this.state.editButtonClicked == false)
         {
-            bookingVariables = pullFromDataBase(dateFull);
+            bookingVariables = pullFromDataBase(dateFull, userType);
         }
 
         //Will go through and assign the variables from 'bookingVariables' to be displayed when editing a booking
@@ -240,33 +246,62 @@ export class Bookings extends React.Component<any, any> {
                     this.state.oldValuesAreasAffected[num] = bookingVariables[num].split(".")[9];
                     this.state.oldValuesPatientNotes[num] = bookingVariables[num].split(".")[10];
                 }
-                
 
-                //Creates the bookings to view, will also create an edit button for each booking and a info button to get more details
+                bookingListEditButton.push(
+                    <Button 
+                        style={"flex: 1;"}
+                        text={"Edit"}
+                        id={bookingSelected}
+                        on={{clicked: () => {
+                            this.setState({
+                                currentBookingSelected: bookingSelected, 
+                                editBookingButton: true, 
+                                bookingCreateOrEditDisplay: 1, 
+                                editButtonClicked: true,
+                                completeClickedEdit: true,
+                                bookingOrCancelButtonText: "Cancel"
+                            })
+                        }}}/>
+                );
+
+                bookingListDeleteButton.push(
+                    <Button style={"flex: 1;"} text={"Delete"} id={bookingSelected} on={{clicked: ()=>{deleteFromDataBase(bookingSelected)}}}/>
+                );
+
+                //Creates the bookings to view
+                //will also create an edit button for each booking, an info button to get more details, and a delete button to remove the selected booking
+                //NOTE: Will only add the edit and delete buttons if the user type has said abilities
                 bookingList.push(
                     <View style="margin: 3px; flex-direction: 'row';">
 
                         <Text style={"flex: 8; border: 1px solid black;"}>{"Booking ID: " + bookingVariables[num].split(".")[0] + ", Booking date" + dateFull}</Text>
 
-                        <Button 
-                            style={"flex: 1;"}
-                            text={"Edit"}
-                            id={bookingSelected}
-                            on={{clicked: () => {
-                                this.setState({
-                                    currentBookingSelected: bookingSelected, 
-                                    editBookingButton: true, 
-                                    bookingCreateOrEditDisplay: 1, 
-                                    editButtonClicked: true,
-                                    completeClickedEdit: true,
-                                    bookingOrCancelButtonText: "Cancel"
-                                })
-                            }}}
-                        />
+                        <Button style={"flex: 1;"} text={"Info"} id={bookingSelected} on={{clicked: ()=>{
+                            
+                            this.setState({
+                                currentBookingSelected: bookingSelected
+                            }),
+
+                            viewBooking(
+                            this.state.bookingID[this.state.currentBookingSelected],
+                            this.state.NHInum[this.state.currentBookingSelected],
+                            this.state.patientName[this.state.currentBookingSelected],
+                            dateFull,
+                            //Time is sent together so it is easier to handle on the other end
+                            addLeadingZeros(this.state.timeHour[this.state.currentBookingSelected], 2) + ":" +
+                            addLeadingZeros(this.state.timeMinute[this.state.currentBookingSelected], 2) + "" +
+                            this.state.timeAM_PM[this.state.currentBookingSelected],
+                            this.state.dentistName[this.state.currentBookingSelected],
+                            this.state.procedure[this.state.currentBookingSelected],
+                            this.state.areasAffected[this.state.currentBookingSelected],
+                            this.state.patientNotes[this.state.currentBookingSelected])
+                        
+                        
+                        }}} />
                         
                         {/*TODO: Have the info button bring up a window (or change the screen) to view detailed version of selected booking*/}
-                        <Button style={"flex: 1;"} text={"Info"}></Button>
-                        <Button style={"flex: 1;"} text={"Delete"}></Button>
+                        {bookingListEditButton[num]}
+                        {bookingListDeleteButton[num]}
 
                     </View>
                 );
@@ -313,7 +348,7 @@ export class Bookings extends React.Component<any, any> {
                     {
                         this.setState({
                             //Set back to 'false' to continue update of the date
-                            editButtonClicked: false
+                            editButtonClicked: false,
                         });
                     }
                     else
@@ -338,7 +373,8 @@ export class Bookings extends React.Component<any, any> {
                         this.state.dentistName[this.state.currentBookingSelected],
                         this.state.procedure[this.state.currentBookingSelected],
                         this.state.areasAffected[this.state.currentBookingSelected],
-                        this.state.patientNotes[this.state.currentBookingSelected])
+                        this.state.patientNotes[this.state.currentBookingSelected]),
+                        bookingOrCancelButtonText: "Create Booking"
                     });
 
                     //Checks that 'bookingCreateOrEditDisplay' is set back to zero before allowing booking list loading
@@ -452,14 +488,22 @@ export class Bookings extends React.Component<any, any> {
             </View>
         );
 
+        //TODO: Impliment this feature properly
+        var bookingCreateButton:any = [];
+
+        if (userType == "admin")
+        bookingCreateButton.push(
+            <View>
+                <Button text = {this.state.bookingOrCancelButtonText} style={""} on={buttonHandlerBookingOrCancel} visible={true}/>
+            </View>
+        );
+
         //Returs the booking page section to be displayed in the calendar
         //Note that the majority of the section is created above
         return (
             <View>
 
-                <View>
-                    <Button text = {this.state.bookingOrCancelButtonText} style={""} on = {buttonHandlerBookingOrCancel} />
-                </View>
+                {bookingCreateButton}
 
                 {pageDiplay[this.state.bookingCreateOrEditDisplay]}
 

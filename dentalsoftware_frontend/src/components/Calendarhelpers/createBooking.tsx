@@ -12,6 +12,19 @@ export const createBooking = (BookingID:any, NHInum:any, PatientName:any, Date:a
         console.log("Ares affected: " + AreasAffected);
         console.log("Notes:         " + PatientNotes);
 
+        
+
+
+
+
+
+
+
+
+
+
+
+
         //TODO: Send 0 if the creation was successful and 1 if it was not
         return 0;
 }

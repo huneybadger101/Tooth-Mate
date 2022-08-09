@@ -2,10 +2,11 @@
 
 //TODO: Have this file integrated with the DB
 
-export const pullFromDataBase = (dateSelected:any) =>{
+export const pullFromDataBase = (dateSelected:any, userType:any) =>{
     
     //TODO: Pulls from database
     //Get the count for the booking for 'dateSelected'
+    //Get the bookings based on userType
     //Loop through the bookings and save all relevant info to an array (note below)
     //Send the array through 'return'
     //The other side should automatically display everything
@@ -23,12 +24,12 @@ export const pullFromDataBase = (dateSelected:any) =>{
             bookingDisplayed[num] = (
                 num + "." +
                 "ABC123" + "." +
-                "Hayley" + "." +
+                "Jane Doe" + "." +
                 "21/08/2022" + "." +
                 "11" + "." +
                 "00" + "." +
                 "AM" + "." +
-                "Someone scary..." + "." + 
+                "Hades" + "." + 
                 "Crown" + "." +
                 "" + "." +
                 ""
@@ -42,12 +43,12 @@ export const pullFromDataBase = (dateSelected:any) =>{
             bookingDisplayed[num] = (
                 num + "." +
                 "ABC123" + "." +
-                "Liam" + "." +
+                "John Doe" + "." +
                 "26/08/2022" + "." +
                 "6" + "." +
                 "00" + "." +
                 "PM" + "." +
-                "Someone scary..." + "." + 
+                "Kratos" + "." + 
                 "Crown" + "." +
                 "" + "." +
                 ""
@@ -61,6 +62,6 @@ export const pullFromDataBase = (dateSelected:any) =>{
 export const deleteFromDataBase = (ID:any) =>{
 
     //TODO: Deletes the data from the database based on the ID given
-    
+    console.log("BOOKING WITH ID " + ID + " WAS DELETED...");
     return 0;
 }
