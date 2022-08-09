@@ -4,6 +4,7 @@ import { getWeekdayStart } from "./Calendarhelpers/calendarHelper";
 import { getMonthDayCount } from "./Calendarhelpers/calendarMonthDayCount";
 import { getWeekdaySelected } from "./Calendarhelpers/calendarDisplaySelectedDate";
 import Bookings from "./bookings";
+import { testButtons } from "./Calendarhelpers/calendarDayButtonDisable";
 
 export class Calendar extends React.Component<any, any> {
 
@@ -122,15 +123,18 @@ export class Calendar extends React.Component<any, any> {
             let buttonName_0 = (i + (1 - this.state.weekDaySelected)).toString();
             calendar1.push( 
               <View style="border: 1px solid black; height: 100px; width: 100px;">
-                <Button text={ buttonName_0 } style="height: 100px; width: 100px;" on={{clicked: () => this.setState(
+                <Button text={ buttonName_0 } 
+                style="height: 100px; width: 100px;" 
+                enabled={testButtons(buttonName_0, this.state.daySelected, this.state.monthSelected, this.state.currentMonthSelected)}
+                on={{clicked: () => {
+                  this.setState(
                   {daySelected: buttonName_0,
                     rightHandDateInfo: true,
                     rightHandMessage: false,
-                  
                     currentMonthSelected: this.state.monthSelected,
                     currentYearSelected: this.state.year,
                     currentWeekdaySelected: getWeekdaySelected(this.state.monthSelected, this.state.year, buttonName_0)}
-                  )}} />
+                  )}}} />
               </View>
               )
           }
@@ -146,11 +150,13 @@ export class Calendar extends React.Component<any, any> {
           let buttonName_1 = (i + (8 - this.state.weekDaySelected)).toString();
           calendar2.push( 
             <View style="border: 1px solid black; height: 100px; width: 100px;">
-              <Button text={ buttonName_1 } style="height: 100px; width: 100px;" on={{clicked: () => this.setState(
+              <Button text={ buttonName_1 } 
+              style="height: 100px; width: 100px;" 
+              enabled={testButtons(buttonName_1, this.state.daySelected, this.state.monthSelected, this.state.currentMonthSelected)} 
+              on={{clicked: () => this.setState(
                 {daySelected: buttonName_1,
                   rightHandDateInfo: true,
                   rightHandMessage: false,
-                
                   currentMonthSelected: this.state.monthSelected,
                   currentYearSelected: this.state.year,
                   currentWeekdaySelected: getWeekdaySelected(this.state.monthSelected, this.state.year, buttonName_1)}
@@ -161,11 +167,13 @@ export class Calendar extends React.Component<any, any> {
           let buttonName_2 = (i + (15 - this.state.weekDaySelected)).toString();
           calendar3.push( 
             <View style="border: 1px solid black; height: 100px; width: 100px;">
-              <Button text={ buttonName_2 } style="height: 100px; width: 100px;" on={{clicked: () => this.setState(
+              <Button text={ buttonName_2 } 
+              style="height: 100px; width: 100px;" 
+              enabled={testButtons(buttonName_2, this.state.daySelected, this.state.monthSelected, this.state.currentMonthSelected)} 
+              on={{clicked: () => this.setState(
                 {daySelected: buttonName_2,
                   rightHandDateInfo: true,
                   rightHandMessage: false,
-                
                   currentMonthSelected: this.state.monthSelected,
                   currentYearSelected: this.state.year,
                   currentWeekdaySelected: getWeekdaySelected(this.state.monthSelected, this.state.year, buttonName_2)}
@@ -177,13 +185,13 @@ export class Calendar extends React.Component<any, any> {
             let buttonName_3 = (i + (22 - this.state.weekDaySelected)).toString();
             calendar4.push( 
               <View style="border: 1px solid black; height: 100px; width: 100px;">
-                <Button text={ buttonName_3 } style="height: 100px; width: 100px;" on={{clicked: () => this.setState(
+                <Button text={ buttonName_3 } 
+                style="height: 100px; width: 100px;" 
+                enabled={testButtons(buttonName_3, this.state.daySelected, this.state.monthSelected, this.state.currentMonthSelected)} 
+                on={{clicked: () => this.setState(
                   {daySelected: buttonName_3,
                     rightHandDateInfo: true,
                     rightHandMessage: false,
-                  
-
-                    
                     currentMonthSelected: this.state.monthSelected,
                     currentYearSelected: this.state.year,
                     currentWeekdaySelected: getWeekdaySelected(this.state.monthSelected, this.state.year, buttonName_3)}
@@ -196,11 +204,13 @@ export class Calendar extends React.Component<any, any> {
             let buttonName_4 = (i + (29 - this.state.weekDaySelected)).toString();
             calendar5.push( 
               <View style="border: 1px solid black; height: 100px; width: 100px;">
-                <Button text={ buttonName_4 } style="height: 100px; width: 100px;" on={{clicked: () => this.setState(
+                <Button text={ buttonName_4 } 
+                style="height: 100px; width: 100px;" 
+                enabled={testButtons(buttonName_4, this.state.daySelected, this.state.monthSelected, this.state.currentMonthSelected)} 
+                on={{clicked: () => this.setState(
                   {daySelected: buttonName_4, 
                   rightHandDateInfo: true,
                   rightHandMessage: false,
-
                   currentMonthSelected: this.state.monthSelected,
                   currentYearSelected: this.state.year,
                   currentWeekdaySelected: getWeekdaySelected(this.state.monthSelected, this.state.year, buttonName_4)}
@@ -221,11 +231,13 @@ export class Calendar extends React.Component<any, any> {
             let buttonName_5 = (i + (36 - this.state.weekDaySelected)).toString();
             calendar6.push( 
               <View style="border: 1px solid black; height: 100px; width: 100px;">
-                <Button text={ buttonName_5 } style="height: 100px; width: 100px;" on={{clicked: () => this.setState(
+                <Button text={ buttonName_5 } 
+                style="height: 100px; width: 100px;" 
+                enabled={testButtons(buttonName_5, this.state.daySelected, this.state.monthSelected, this.state.currentMonthSelected)}
+                on={{clicked: () => this.setState(
                   {daySelected: buttonName_5,
                     rightHandDateInfo: true,
                     rightHandMessage: false,
-                    
                     currentMonthSelected: this.state.monthSelected,
                     currentYearSelected: this.state.year,
                     currentWeekdaySelected: getWeekdaySelected(this.state.monthSelected, this.state.year, buttonName_5)}

@@ -4,6 +4,7 @@ import { QIcon, QScreen } from "@nodegui/nodegui";
 import path from "path";
 import TabContainer from "./components/tabContainer";
 import Login from "./components/login";
+import Calendar from "./components/calendar";
 
 var resolution = require("screen-resolution");
 
@@ -24,8 +25,8 @@ class App extends React.Component<any, any> {
       let names = [];
       let windows = [];
 
-      screens.push(<Login/>)
-      names.push("Login")
+      screens.push(<Calendar/>)
+      names.push("Calendar")
 
       const maxSize = {width: result.width, height: result.height}
       windows.push(<Window

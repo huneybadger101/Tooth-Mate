@@ -4,7 +4,7 @@ import React from "react";
 import Bookings from "./bookings";
 import Calendar from "./calendar";
 import PatientDataViewer from "./PatientDataViewer";
-import Setting from "./setting";
+//import Setting from "./setting";
 
 
 export class Homepage extends React.Component<any, any> {
@@ -45,12 +45,12 @@ export class Homepage extends React.Component<any, any> {
                 }
             }/>)
         pagesRow2.push(<View style="width: 100%;"></View>)
-        pagesRow2.push(<Button style={buttonStyle} text="Settings Page" on={
-                {
-                    // Only trigger when left click is released
-                    [WidgetEventTypes.MouseButtonRelease]: () => this.newTab(<Setting/>, "Settings"),
-                }
-            }/>)
+        // pagesRow2.push(<Button style={buttonStyle} text="Settings Page" on={
+        //         {
+        //             // Only trigger when left click is released
+        //             [WidgetEventTypes.MouseButtonRelease]: () => this.newTab(<Setting/>, "Settings"),
+        //         }
+        //     }/>)
 
         return (
             <View style="flex: 1; justify-content: 'center'; align-items: 'center'; background-color: 'grey';">
