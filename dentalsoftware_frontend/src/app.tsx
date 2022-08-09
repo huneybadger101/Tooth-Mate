@@ -3,7 +3,7 @@ import React from "react";
 import { QIcon, QScreen } from "@nodegui/nodegui";
 import path from "path";
 import TabContainer from "./components/tabContainer";
-import Login from "./components/login";
+import Homepage from "./components/homepage";
 
 var resolution = require("screen-resolution");
 
@@ -24,8 +24,8 @@ class App extends React.Component<any, any> {
       let names = [];
       let windows = [];
 
-      screens.push(<Login/>)
-      names.push("Login")
+      screens.push(<Homepage/>)
+      names.push("Homepage")
 
       const maxSize = {width: result.width, height: result.height}
       windows.push(<Window
@@ -60,9 +60,28 @@ class App extends React.Component<any, any> {
         minSize={minSize}
       >
         <View style={containerStyle}>
-          <TabContainer names={nameArray} createNewWindow={this.createNewWindow}>
+          <TabContainer names={nameArray} createNewWindow={this.createNewWindow} createNewBlankWindow={this.createNewBlankWindow}>
             {viewArray}
           </TabContainer>
+        </View>
+      </Window>
+    )
+
+    this.setState({
+      windows: tempWindows
+    })
+    
+  }
+
+  createNewBlankWindow = (view: any) => {
+    let tempWindows = this.state.windows;
+    tempWindows.push(
+      <Window
+        windowTitle="ToothMate Dental Software TAB 2"
+        minSize={minSize}
+      >
+        <View style={containerStyle}>
+            {view}
         </View>
       </Window>
     )
