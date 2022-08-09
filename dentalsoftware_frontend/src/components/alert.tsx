@@ -7,11 +7,19 @@ export class Alert extends React.Component<any, any> {
     constructor(props: any) {
         super(props);
 
+        let subView = null
+
+        if (props.subView) {
+            subView = props.subView;
+        }
+
         this.state = {
 
             visible: true,
             title: props.title,
-            message: props.message
+            message: props.message,
+            subView: subView,
+            style: props.style
 
         }
     }
@@ -32,11 +40,12 @@ export class Alert extends React.Component<any, any> {
             }
         }/>
 
-        let mainView = <View style="position: 'absolute'; top: 20; right: 20; width: 50px; height: 100px; border: 1px solid black;">
-                            <Text>{this.state.title}</Text>
-                            <Text>{this.state.message}</Text>
-                            {dismissButton}
-                        </View>
+        let mainView: any = <View style={"position: 'absolute'; justify-content: 'space-evenly'; align-items: 'center'; top: 20; right: 20; " + this.state.style}>
+                                <Text style="font-size: 20px;">{this.state.title}</Text>
+                                <Text>{this.state.message}</Text>
+                                {(this.state.subView != null ? this.state.subView : null)}
+                                {dismissButton}
+                            </View>
         if (!this.state.visible) {
             mainView = null
         }
