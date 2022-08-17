@@ -1,3 +1,7 @@
+import { Button, View } from "@nodegui/react-nodegui";
+import React from "react";
+import Alert from "../alert";
+
 export const createBooking = (BookingID:any, NHInum:any, PatientName:any, Date:any, Time:any, 
     DentistName:any, Procedure:any, AreasAffected:any, PatientNotes:any,) =>{
 
@@ -17,8 +21,8 @@ export const createBooking = (BookingID:any, NHInum:any, PatientName:any, Date:a
 
 
 
-
-
+        
+        
 
 
 
@@ -26,5 +30,10 @@ export const createBooking = (BookingID:any, NHInum:any, PatientName:any, Date:a
 
 
         //TODO: Send 0 if the creation was successful and 1 if it was not
+
         return 0;
+
+        // return (
+        //         <Alert title={"Hello"} message={"World"} subView={<Button>Test button</Button>} style={"background-color: 'green'; width: 600px; height: 400px;"}></Alert>
+        // );
 }

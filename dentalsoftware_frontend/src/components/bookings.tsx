@@ -6,6 +6,7 @@ import { createBooking } from "./Calendarhelpers/createBooking";
 import { editFromDB } from "./Calendarhelpers/editBooking";
 import { addLeadingZeros, replaceStringAtLength, NHIcorrectFormatCheck } from "./Calendarhelpers/textFormatFunctions";
 import { viewBooking } from "./Calendarhelpers/viewBookingSelected";
+import Alert from "./alert";
 
 export class Bookings extends React.Component<any, any> {
 
@@ -389,8 +390,7 @@ export class Bookings extends React.Component<any, any> {
                         this.state.dentistName[this.state.currentBookingSelected],
                         this.state.procedure[this.state.currentBookingSelected],
                         this.state.areasAffected[this.state.currentBookingSelected],
-                        this.state.patientNotes[this.state.currentBookingSelected]),
-                        bookingOrCancelButtonText: "Create Booking"
+                        this.state.patientNotes[this.state.currentBookingSelected])
                     });
 
                     //Checks that 'bookingCreateOrEditDisplay' is set back to zero before allowing booking list loading
@@ -398,10 +398,11 @@ export class Bookings extends React.Component<any, any> {
                     {
                         this.setState({
                             //Set back to 'false' to continue update of the date
-                            editButtonClicked: false
+                            editButtonClicked: false,
+                            bookingOrCancelButtonText: "Create Booking"
                         });
                     }
-                    else
+                    else if (this.state.bookingCreateOrEditDisplay == 1)
                     {
                         console.log("The booking creation was not done correctly...");
                     }
@@ -465,7 +466,7 @@ export class Bookings extends React.Component<any, any> {
                     
 
 
-
+                    
 
 
 
@@ -509,8 +510,9 @@ export class Bookings extends React.Component<any, any> {
                     <View style="margin: 10px;"></View>
 
                     <Button text={"Complete"} on={buttonHandlerCompleteEditOrCreation}></Button>
-                    
+
                 </View>
+                
                 </View>
         );
 
@@ -527,6 +529,8 @@ export class Bookings extends React.Component<any, any> {
                     <Text style={"margin: 10px;"}>{this.state.confirmMessage}</Text>
 
                 </View>
+
+                
             </View>
         );
 
@@ -543,7 +547,8 @@ export class Bookings extends React.Component<any, any> {
         //Returs the booking page section to be displayed in the calendar
         //Note that the majority of the section is created above
         return (
-            <View>
+            <View style={containerStyle2}>
+                
 
                 {bookingCreateButton}
 

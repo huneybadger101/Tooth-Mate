@@ -5,6 +5,7 @@ import { getMonthDayCount } from "./Calendarhelpers/calendarMonthDayCount";
 import { getWeekdaySelected } from "./Calendarhelpers/calendarDisplaySelectedDate";
 import Bookings from "./bookings";
 import { testButtons } from "./Calendarhelpers/calendarDayButtonDisable";
+import Alert from "./alert";
 
 export class Calendar extends React.Component<any, any> {
 
@@ -286,6 +287,7 @@ export class Calendar extends React.Component<any, any> {
         return (
 
           <View style={"flex-grow: 1; flex-direction: 'column';"}>
+
             <View style="flex-direction: 'row';">
 
               {/*This container will hold the calendar*/}
@@ -356,6 +358,8 @@ export class Calendar extends React.Component<any, any> {
                 </ScrollArea> */}
 
             </View>
+
+            <Alert title={"Hello"} message={"World"} subView={<Button>Test button</Button>} style={"background-color: 'green'; width: 600px; height: 400px;"}></Alert>
           </View>
         );
     }
