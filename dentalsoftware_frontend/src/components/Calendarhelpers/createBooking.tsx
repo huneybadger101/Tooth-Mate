@@ -1,39 +1,48 @@
 import { Button, View } from "@nodegui/react-nodegui";
 import React from "react";
 import Alert from "../alert";
+import axios from 'axios';
 
-export const createBooking = (BookingID:any, NHInum:any, PatientName:any, Date:any, Time:any, 
-    DentistName:any, Procedure:any, AreasAffected:any, PatientNotes:any,) =>{
+export const createBooking = async (PatientID:Number, Date:string, Time:string, 
+    DentistID:Number, Procedure:string, AreasAffected:string, PatientNotes:string) => {
 
-        console.log("--CREATED A BOOKING--");
-        console.log("Booking ID:    " + BookingID);
-        console.log("NHI Number:    " + NHInum);
-        console.log("Patient name:  " + PatientName);
-        console.log("Date:          " + Date);
-        console.log("Time:          " + Time);
-        console.log("Dentist name:  " + DentistName);
-        console.log("Procedure:     " + Procedure);
-        console.log("Ares affected: " + AreasAffected);
-        console.log("Notes:         " + PatientNotes);
+        let bookingData = {
+            patientID: PatientID,
+            date: Date,
+            time: Time,
+            dentistID: DentistID,
+            procedure: Procedure,
+            affectedAreas: AreasAffected,
+            notes: PatientNotes
+        }
 
-        
-
-
-
-
-        
-        
-
-
-
-
-
-
-        //TODO: Send 0 if the creation was successful and 1 if it was not
-
-        return 0;
-
-        // return (
-        //         <Alert title={"Hello"} message={"World"} subView={<Button>Test button</Button>} style={"background-color: 'green'; width: 600px; height: 400px;"}></Alert>
-        // );
-}
+        let result: any = null;
+        let view: any = null;
+        return(await 
+            axios.post('http://localhost:3000/createNewBooking', null, {
+                headers: {
+                    'data': JSON.stringify(bookingData)
+                }
+            })
+            .then((res) => {
+                if (res.data.error) {
+                    result = 1
+                    view = <Alert title={"Error"} message={res.data.error} style={"background-color: 'red'; width: 600px; height: 400px;"}></Alert>
+                } else {
+                    result = 0
+                    view = <Alert title={"Success"} message={"Added booking to database!"} style={"background-color: 'green'; width: 300px; height: 100px;"}></Alert>
+                }
+                return (
+                    {res: result, view: view}
+                );
+            })
+            .catch((err) => {
+                console.log(err)
+                result = 1
+                view = <Alert title={"Error"} message={err} style={"background-color: 'red'; width: 600px; height: 400px;"}></Alert>
+                return (
+                    {res: result, view: view}
+                );
+            })
+        )
+    }

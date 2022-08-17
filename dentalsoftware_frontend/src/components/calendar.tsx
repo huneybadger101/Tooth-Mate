@@ -33,13 +33,10 @@ export class Calendar extends React.Component<any, any> {
         rightHandMessage: true,
         rightHandDateInfo: false,
         currentBookingSelected: "",
-        editBookingButton: false
+        editBookingButton: false,
+        bookingsAlert: null
     }
   }
-
-    bookingsCallback(value: any) {
-      console.log("Called back to calendar: " + value)
-    }
 
     render() {
 
@@ -78,6 +75,12 @@ export class Calendar extends React.Component<any, any> {
         var calendar6:any = [];
         var bookingList:any = [];
         var bookingPage:any;
+
+        const bookingsCallback = (alert: any) => {
+          this.setState({
+            bookingsAlert: alert
+          })
+        }
 
         //Button handler for when increasing the month or year
         //When clicked and the month is december, the year will be increased by 1 and the month will restart from Jan
@@ -261,12 +264,6 @@ export class Calendar extends React.Component<any, any> {
         }
 
 
-
-
-
-
-
-
         const containerStyle = `
             flex-grow: 0 0 0;
             background: 'white';
@@ -345,7 +342,7 @@ export class Calendar extends React.Component<any, any> {
                   (this.state.currentMonthSelected + 1) + "." +
                   this.state.currentYearSelected + "." +
                   this.state.day[this.state.currentWeekdaySelected]
-                } callback={this.bookingsCallback}/>
+                } callback={bookingsCallback}/>
                 
 
               </View>
@@ -362,8 +359,7 @@ export class Calendar extends React.Component<any, any> {
                 </ScrollArea> */}
 
             </View>
-
-            <Alert title={"Hello"} message={"World"} subView={<Button>Test button</Button>} style={"background-color: 'green'; width: 600px; height: 400px;"}></Alert>
+            {this.state.bookingsAlert}
           </View>
         );
     }

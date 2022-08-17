@@ -1,62 +1,50 @@
+import axios from 'axios';
 //This file will pull information from the database to use in the Calendar component
 
 //TODO: Have this file integrated with the DB
 
 export const pullFromDataBase = (dateSelected:any, userType:any) =>{
-    
-    //TODO: Pulls from database
-    //Get the count for the booking for 'dateSelected'
-    //Get the bookings based on userType
-    //Loop through the bookings and save all relevant info to an array (note below)
-    //Send the array through 'return'
-    //The other side should automatically display everything
-    //Make sure to change the array order etc in this component
 
-
-    //Temporary until the databse is ready to go
-    var bookingDisplayed: any = [];
-    var bookingAmount: any = 6;
-
-    if (dateSelected == "21/8/2022")
-    {
-        for (var num = 0; num < bookingAmount; num++)
-        {
-            bookingDisplayed[num] = (
-                num + "." +
-                "ABC123" + "." +
-                "Jane Doe" + "." +
-                "21/08/2022" + "." +
-                "11" + "." +
-                "00" + "." +
-                "AM" + "." +
-                "Hades" + "." + 
-                "Crown" + "." +
-                "" + "." +
-                ""
-                );
-        }
-    }
-    else if (dateSelected == "26/8/2022")
-    {
-        for (var num = 0; num < bookingAmount; num++)
-        {
-            bookingDisplayed[num] = (
-                num + "." +
-                "ABC123" + "." +
-                "John Doe" + "." +
-                "26/08/2022" + "." +
-                "6" + "." +
-                "00" + "." +
-                "PM" + "." +
-                "Kratos" + "." + 
-                "Crown" + "." +
-                "" + "." +
-                ""
-                );
-        }
-    }
-    
-    return bookingDisplayed;
+    return(axios.post('http://localhost:3000/getAllBookings')
+        .then((res) => {
+            if (res.data.error) {
+                return res.data.error
+            } else {
+                var bookingDisplayed: any = [];
+                axios.post('http://localhost:3000/getAllPatientData')
+                .then((resPatient) => {
+                    for (let i = 0; i < res.data.result.length; i++) {
+                        let patient = null;
+                        for (let k = 0; k < resPatient.data.result.length; k++) {
+                            if (res.data.result[i]['Patient'] == resPatient.data.result[k]['ID']) {
+                                patient = resPatient.data.result[k];
+                                break;
+                            }
+                        }
+                        bookingDisplayed[i] = (
+                            {
+                                index: i,
+                                nhi: patient['NHI'],
+                                patientName: patient["FirstName"] + " " + patient["LastName"],
+                                date: res.data.result[i]['Date'],
+                                time: res.data.result[i]['Time'],
+                                location: res.data.result[i]['Location'],
+                                Procedure: res.data.result[i]['ProcedureName'],
+                                AffectedAreas: res.data.result[i]['AffectedAreas']
+                            }
+                        );
+                    }
+                    return bookingDisplayed;
+                })
+                .catch((err) => {
+                    return err
+                })
+            }
+        })
+        .catch((err) => {
+            return err
+        })
+    )
 }
 
 export const deleteFromDataBase = (ID:any) =>{
