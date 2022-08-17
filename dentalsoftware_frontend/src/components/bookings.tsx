@@ -392,6 +392,8 @@ export class Bookings extends React.Component<any, any> {
                         this.state.areasAffected[this.state.currentBookingSelected],
                         this.state.patientNotes[this.state.currentBookingSelected])
                     });
+                    
+                    this.props.callback(this.state.bookingCreateOrEditDisplay)
 
                     //Checks that 'bookingCreateOrEditDisplay' is set back to zero before allowing booking list loading
                     if (this.state.bookingCreateOrEditDisplay == 0)

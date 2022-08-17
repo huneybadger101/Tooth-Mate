@@ -37,6 +37,10 @@ export class Calendar extends React.Component<any, any> {
     }
   }
 
+    bookingsCallback(value: any) {
+      console.log("Called back to calendar: " + value)
+    }
+
     render() {
 
       //Sets the day values in a state based array
@@ -341,7 +345,7 @@ export class Calendar extends React.Component<any, any> {
                   (this.state.currentMonthSelected + 1) + "." +
                   this.state.currentYearSelected + "." +
                   this.state.day[this.state.currentWeekdaySelected]
-                }/>
+                } callback={this.bookingsCallback}/>
                 
 
               </View>
