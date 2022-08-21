@@ -29,8 +29,8 @@ class App extends React.Component<any, any> {
 
       screens.push(<Homepage/>)
       names.push("Homepage")
-      screens.push(<Calendar/>)
-      names.push("Calendar")
+      screens.push(<Setting/>)
+      names.push("Setting")
       screens.push(<Bookings/>)
       names.push("Booking")
       screens.push(<Fileread/>)

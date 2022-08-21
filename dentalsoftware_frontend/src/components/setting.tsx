@@ -1,93 +1,167 @@
-import {
-    Renderer,
-    View,
-    Button,
-    Window,
-    Image,
-    LineEdit
-  } from "@nodegui/react-nodegui";
-import React, { useEffect, useRef, useMemo, useState } from "react";
-import {
-    AspectRatioMode,
-    QMainWindow,
-    QLineEditEvents,
-    QPushButtonEvents
-  } from "@nodegui/nodegui";
-import Homepage from "./homepage";
+import { Text, View, Button } from "@nodegui/react-nodegui";
+import React from "react";
 
-function Setting(props: any) {
+export class Calendar extends React.Component<any, any> {
 
-    const App = () => {
-        const winRef = useRef<QMainWindow>(null);
-        const [fileUrl, setFileUrl] = useState();
-        const [imageSrc, setImageSrc] = useState();
-        useEffect(() => {
-          if (winRef.current) {
-            winRef.current.resize(800, 450);
-          }
-        }, []);
-        const lineEditHandler = useMemo(
-          () => ({
-            [QLineEditEvents.textChanged]: (text: string) => {
-              setFileUrl(text);
-            }
-          }),
-          []
-        );
-      
-        const loadButtonHandler = useMemo(
-          () => ({
-            [QPushButtonEvents.clicked]: () => {
-              setImageSrc(fileUrl);
-            }
-          }),
-          [fileUrl]
-        );
-      
-        return (
-          <>
-            <Window ref={winRef} styleSheet={StyleSheet}>
-              <View id="container">
-                <View id="controls">
-                  <LineEdit
-                    on={lineEditHandler}
-                    id="textField"
-                    text={fileUrl}
-                    placeholderText="Absolute path to an image"
-                  />
-                  <Button text="Load Image" on={loadButtonHandler} />
-                </View>
-                <Image
-                  id="img"
-                  aspectRatioMode={AspectRatioMode.KeepAspectRatio}
-                  src={imageSrc}
-                />
+  constructor(props: any) {
+    super(props);
+    this.state = {
+      color1:0,
+      color2:0,
+      color3:0,
+      color4:0,
+      color5:0,
+      color6:0,
+      color7:0,
+      color8:0,
+      color9:0,
+      status1:false,
+      status2:false,
+      status3:false,
+      status4:false,
+      status5:false,
+      status6:false,
+      status7:false,
+      status8:false,
+      status9:false
+    }
+  }
+
+    render() {
+
+        var calendar1:any = [];
+        var calendar2:any = [];
+        var calendar3:any = [];
+
+        // var newList = this.state.newstatus.slice();
+
+        for (var i = 1; i <= 3; i++) {
+
+          let buttonName_0 = (i).toString();
+            calendar1.push( 
+              <View style="border: 1px solid black; height: 100px; width: 100px;">
+                <Button text={ buttonName_0 } style={((this.state.color1==parseInt(buttonName_0)&&this.state.status1)
+                ||(this.state.color2==parseInt(buttonName_0)&&this.state.status2)
+                ||(this.state.color3==parseInt(buttonName_0)&&this.state.status3))
+                ?"height: 100px; width: 100px;background: 'grey';":"height: 100px; width: 100px;"}  on={{clicked: () => {
+              if (parseInt(buttonName_0) == 1)
+              {
+                  this.setState({status1: !this.state.status1,
+                    color1:1
+                  })
+              }
+              else if(parseInt(buttonName_0) == 2)
+              {
+                  this.setState({status2: !this.state.status2,
+                    color2:2
+                  })
+              }
+              else if(parseInt(buttonName_0) == 3)
+              {
+                  this.setState({status3: !this.state.status3,
+                    color3:3
+                  })
+              }
+          }}} />
               </View>
-            </Window>
-          </>
-        );
-      };
-      const styleSheet = `
-        #container {
-            flex: 1;
-            min-height: '100%';
+              )
+          
+          let buttonName_1 = (i + 3).toString();
+          calendar2.push( 
+            <View style="border: 1px solid black; height: 100px; width: 100px;">
+              <Button text={ buttonName_1 } style={((this.state.color4==parseInt(buttonName_1)&&this.state.status4)
+              ||(this.state.color5==parseInt(buttonName_1)&&this.state.status5)
+              ||(this.state.color6==parseInt(buttonName_1))&&this.state.status6)
+              ?"height: 100px; width: 100px;background: 'grey';":"height: 100px; width: 100px;"} on={{clicked: () => {
+              if (parseInt(buttonName_1) == 4)
+              {
+                  this.setState({status4: !this.state.status4,
+                    color4:4
+                  })
+              }
+              else if(parseInt(buttonName_1) == 5)
+              {
+                  this.setState({status5: !this.state.status5,
+                    color5:5
+                  })
+              }
+              else if(parseInt(buttonName_1) == 6)
+              {
+                  this.setState({status6: !this.state.status6,
+                    color6:6
+                  })
+              }
+          }}} />
+            </View>
+          )
+
+          let buttonName_2 = (i + 6).toString();
+          calendar3.push( 
+            <View style="border: 1px solid black; height: 100px; width: 100px;">
+              <Button text={ buttonName_2 } style={((this.state.color7==parseInt(buttonName_2)&&this.state.status7)
+              ||(this.state.color8==parseInt(buttonName_2)&&this.state.status8)
+              ||(this.state.color9==parseInt(buttonName_2))&&this.state.status9)
+              ?"height: 100px; width: 100px;background: 'grey';":"height: 100px; width: 100px;"} on={{clicked: () => {
+              if (parseInt(buttonName_2) == 7)
+              {
+                  this.setState({status7: !this.state.status7,
+                    color7:7
+                  })
+              }
+              else if(parseInt(buttonName_2) == 8)
+              {
+                  this.setState({status8: !this.state.status8,
+                    color8:8
+                  })
+              }
+              else if(parseInt(buttonName_2) == 9)
+              {
+                  this.setState({status9: !this.state.status9,
+                    color9:9
+                  })
+              }
+          }}} />
+            </View>
+          )
         }
-        #controls {
-            flex-direction: 'row';
-            justify-content: 'space-around';
-            align-items: 'center';
-            padding-horizontal: 20;
-            padding-vertical: 10;
-        }
-        #img {
-            flex: 1;
-            qproperty-alignment: 'AlignCenter';
-        }
-        #textField {
-            flex: 1;
-        }
+
+        const containerStyle = `
+            
+            background: 'white';
         `;
-      Renderer.render(<App />);
-}
-// Export the function so it can be accessed elsewhere
-export default Setting;
+
+        const Sendanarray = {
+          clicked: () => {
+            console.log(this.state.status1+"/"+this.state.status2+"/"+
+            this.state.status3+"/"+this.state.status4+"/"+this.state.status5+"/"+
+            this.state.status6+"/"+this.state.status7+"/"+this.state.status8+"/"+this.state.status9);
+          }
+        };
+        return (
+
+          <View>
+              <View style={containerStyle}>
+
+                <View style="flex: 0; flex-direction: 'row';">
+                    {calendar1}
+                </View>
+                <View style="flex: 0; flex-direction: 'row';">
+                    {calendar2}
+                </View>
+                <View style="flex: 0; flex-direction: 'row';">
+                    {calendar3}
+                </View>
+              </View>
+              <View>
+                {/* <Text style="border: 1px solid black; width: 300px;">{this.state.color}</Text> */}
+                <Text style="border: 1px solid black; width: 600px;">{this.state.status1+"/"+this.state.status2+"/"+
+                this.state.status3+"/"+this.state.status4+"/"+this.state.status5+"/"+
+                this.state.status6+"/"+this.state.status7+"/"+this.state.status8+"/"+this.state.status9}</Text>
+                <Button text = {"confirm(console)"} on = {Sendanarray} id={"btn"}/>
+              </View>
+            </View>
+        );
+    }
+} 
+
+export default Calendar;
