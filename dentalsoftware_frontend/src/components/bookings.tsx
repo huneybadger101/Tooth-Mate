@@ -1,7 +1,7 @@
 import { Text, View, Button, LineEdit, ComboBox, SpinBox } from "@nodegui/react-nodegui";
 import React from "react";
 import { treatmentList, timeAMorPM, timeHourRange, timeMinuteRange } from "./Calendarhelpers/comboBoxVariables";
-import { pullFromDataBase, deleteFromDataBase } from "./Calendarhelpers/calendarPullFromDB";
+import { deleteFromDataBase } from "./Calendarhelpers/calendarPullFromDB";
 import { createBooking } from "./Calendarhelpers/createBooking";
 import { editFromDB } from "./Calendarhelpers/editBooking";
 import { addLeadingZeros, replaceStringAtLength, NHIcorrectFormatCheck } from "./Calendarhelpers/textFormatFunctions";
@@ -46,6 +46,8 @@ export class Bookings extends React.Component<any, any> {
             patientsData: null,
             dentistsData: null,
 
+            bookings: null,
+
             oldValuesBookingID: [],
             oldValuesNHInumber: [],
             oldValuesDate: [],
@@ -73,12 +75,43 @@ export class Bookings extends React.Component<any, any> {
                     dentists.push({text: resAccount.data.result[i]['AccountName']})
                 }
 
-                this.setState({
-                    patients: patients,
-                    patientsData: res.data.result,
-                    dentistsData: resAccount.data.result,
-                    dentists: dentists
+                axios.post('http://localhost:3000/getAllBookings')
+                .then((res) => {
+                    var bookingDisplayed: any = [];
+                    for (let i = 0; i < res.data.result.length; i++) {
+                        let patient = null;
+                        for (let k = 0; k < res.data.result.length; k++) {
+                            if (res.data.result[i]['Patient'] == res.data.result[k]['ID']) {
+                                patient = res.data.result[k];
+                                break;
+                            }
+                        }
+                        console.log(patient['Notes'])
+                        bookingDisplayed[i] = (
+                            {
+                                index: i,
+                                nhi: patient['NHI'],
+                                patientName: patient["FirstName"] + " " + patient["LastName"],
+                                date: res.data.result[i]['Date'],
+                                time: res.data.result[i]['Time'],
+                                location: res.data.result[i]['Location'],
+                                Procedure: res.data.result[i]['ProcedureName'],
+                                AffectedAreas: res.data.result[i]['AffectedAreas'],
+                                notes: patient['Notes']
+                            }
+                        );
+                    }
+                    this.setState({
+                        patients: patients,
+                        patientsData: res.data.result,
+                        dentistsData: resAccount.data.result,
+                        dentists: dentists,
+                        bookings: bookingDisplayed
+                    })
                 })
+                .catch((err) => {
+                    console.log(err)
+                });
             })
             .catch((err) => {
                 console.log(err)
@@ -283,51 +316,44 @@ export class Bookings extends React.Component<any, any> {
             dateFull = "---";
         }
 
-        //Assigns the variables from the database into the bookingVariables array for later use.
-    
-        if (this.state.editButtonClicked == false)
-        {
-            bookingVariables = pullFromDataBase(dateFull, userType);
-            console.log(bookingVariables)
-        }
-
         //Will go through and assign the variables from 'bookingVariables' to be displayed when editing a booking
-        if (day != 0)
+        if (day != 0 && this.state.bookings != undefined)
         {
-            for (var num = 0; num < bookingVariables.length; num++)
+            for (var num = 0; num < this.state.bookings.length; num++)
             {
                 //Sets a reference point for the button that is clicked
-                let bookingSelected = bookingVariables[num].split(".")[0].toString();
+                let bookingSelected = num.toString();
 
                 if (this.state.editButtonClicked == false)
                 {
                     //Sets all the variables to allow for editing the booking
-                    this.state.bookingID[num] = bookingVariables[num].split(".")[0];
-                    this.state.NHInum[num] = bookingVariables[num].split(".")[1];
-                    this.state.patientName[num] = bookingVariables[num].split(".")[2];
+                    this.state.bookingID[num] = num;
+                    this.state.NHInum[num] = this.state.bookings[num]['nhi'];
+                    this.state.patientName[num] = this.state.bookings[num]['patientName'];
                         //NOTE: Date is not required as it will be changed via the calendar
-                    this.state.timeHour[num] = bookingVariables[num].split(".")[4];
-                    this.state.timeMinute[num] = bookingVariables[num].split(".")[5];
-                    this.state.timeAM_PM[num] = bookingVariables[num].split(".")[6];
-                    this.state.dentistName[num] = bookingVariables[num].split(".")[7];
-                    this.state.procedure[num] = bookingVariables[num].split(".")[8];
-                    this.state.areasAffected[num] = bookingVariables[num].split(".")[9];
-                    this.state.patientNotes[num] = bookingVariables[num].split(".")[10];
+                    this.state.timeHour[num] = this.state.bookings[num]['time'].split(":")[0];
+                    this.state.timeMinute[num] = this.state.bookings[num]['time'].split(":")[1];
+                    this.state.timeAM_PM[num] = (Number(this.state.timeHour[num]) > 12 ? "PM" : "AM");
+                    this.state.dentistName[num] = "NEED TO ADD";
+                    this.state.procedure[num] = this.state.bookings[num]['Procedure'];
+                    this.state.areasAffected[num] = this.state.bookings[num]['AffectedAreas'];
+                    this.state.patientNotes[num] = this.state.bookings[num]['notes'];
 
                     //Sets the old variables to be used when the edit is complete for comparison
-                    this.state.oldValuesBookingID[num] = bookingVariables[num].split(".")[0];
-                    this.state.oldValuesNHInumber[num] = bookingVariables[num].split(".")[1];
-                    this.state.oldValuesDate[num] = bookingVariables[num].split(".")[2];
-                    this.state.oldValuesPatientName[num] = bookingVariables[num].split(".")[3];
+                    this.state.oldValuesBookingID[num] = this.state.bookingID[num];
+                    this.state.oldValuesNHInumber[num] = this.state.NHInum[num];
+                    this.state.oldValuesDate[num] = this.state.bookings[num]['date'];
+                    this.state.oldValuesPatientName[num] = this.state.patientName[num];
                     //Mixes time together for easier handling when being sent to other functions
                     this.state.oldValuesTime[num] = (
-                        bookingVariables[num].split(".")[4] + ":" +
-                        bookingVariables[num].split(".")[5] + "" +
-                        bookingVariables[num].split(".")[6]);
-                    this.state.oldValuesDentistName[num] = bookingVariables[num].split(".")[7];
-                    this.state.oldValuesProcedure[num] = bookingVariables[num].split(".")[8];
-                    this.state.oldValuesAreasAffected[num] = bookingVariables[num].split(".")[9];
-                    this.state.oldValuesPatientNotes[num] = bookingVariables[num].split(".")[10];
+                        this.state.timeHour[num] + ":" +
+                        this.state.timeMinute[num] + "" +
+                        this.state.timeAM_PM[num]);
+                    this.state.oldValuesDentistName[num] = this.state.dentistName[num];
+                    this.state.oldValuesProcedure[num] = this.state.procedure[num];
+                    this.state.oldValuesAreasAffected[num] = this.state.areasAffected[num];
+                    this.state.oldValuesPatientNotes[num] = this.state.patientNotes[num];
+
                 }
 
                 if (userType == "admin")
@@ -360,7 +386,7 @@ export class Bookings extends React.Component<any, any> {
                 bookingList.push(
                     <View style="margin: 3px; flex-direction: 'row';">
 
-                        <Text style={"flex: 8; border: 1px solid black;"}>{"Booking ID: " + bookingVariables[num].split(".")[0] + ", Booking date" + dateFull}</Text>
+                        <Text style={"flex: 8; border: 1px solid black;"}>{"Booking ID: " + this.state.bookingID[num] + ", Booking date" + dateFull}</Text>
 
                         <Button style={"flex: 1;"} text={"Info"} id={bookingSelected} on={{clicked: ()=>{
                             
