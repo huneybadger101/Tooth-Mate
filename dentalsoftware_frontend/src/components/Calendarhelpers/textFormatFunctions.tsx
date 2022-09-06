@@ -21,8 +21,6 @@ export const replaceStringAtLength = (string:any, index:any) =>{
 
 export const NHIcorrectFormatCheck = (string:any) =>{
     
-    console.log("String 1 " + string);
-
     var stringArray:any = [];
     var returnedString = "";
 

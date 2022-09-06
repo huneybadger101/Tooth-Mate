@@ -26,8 +26,8 @@ class App extends React.Component<any, any> {
       let names = [];
       let windows = [];
 
-      screens.push(<Calendar/>)
-      names.push("Calendar")
+      screens.push(<Homepage/>)
+      names.push("Homepage")
 
       const maxSize = {width: result.width, height: result.height}
       windows.push(<Window

@@ -28,6 +28,7 @@ export class Alert extends React.Component<any, any> {
         this.setState({
             visible: false
         })
+        this.props.dismissAlert()
     }
 
     // Function that returns a component to be drawn, can have children components if the parent component supports it

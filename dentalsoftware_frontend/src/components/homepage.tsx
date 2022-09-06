@@ -4,6 +4,7 @@ import React from "react";
 import Bookings from "./bookings";
 import Calendar from "./calendar";
 import PatientDataViewer from "./PatientDataViewer";
+import PatientCreator from "./patientCreator";
 //import Setting from "./setting";
 
 
@@ -38,10 +39,10 @@ export class Homepage extends React.Component<any, any> {
                     [WidgetEventTypes.MouseButtonRelease]: () => this.newTab(<Calendar/>, "Calendar"),
                 }
             }/>)
-        pagesRow2.push(<Button style={buttonStyle} text="Patient Data Viewer" on={
+        pagesRow2.push(<Button style={buttonStyle} text="Patient Creator" on={
                 {
                     // Only trigger when left click is released
-                    [WidgetEventTypes.MouseButtonRelease]: () => this.newTab(<PatientDataViewer/>, "Patient Data Viewer"),
+                    [WidgetEventTypes.MouseButtonRelease]: () => this.newTab(<PatientCreator/>, "Patient Creator"),
                 }
             }/>)
         pagesRow2.push(<View style="width: 100%;"></View>)

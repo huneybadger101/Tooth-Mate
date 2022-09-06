@@ -275,7 +275,7 @@ app.post('/loginAccount', (req, res) => {
 })
 
 app.post('/createNewPatient', (req, res) => {
-    let json = JSON.parse(req.headers['data'])['data']
+    let json = JSON.parse(req.headers['data'])
     createNewPatient(res, json)
 })
 
@@ -308,6 +308,7 @@ function databaseQuery(res = null, query) {
 }
 
 function createNewPatient(res = null, patientData) {
+    
     let numMissing = 0
     let errorMessage = "Error: Missing "
     if (patientData.patient_NHI === undefined) {
