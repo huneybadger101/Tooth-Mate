@@ -59,6 +59,79 @@ app.post('/updatePatientData', (req, res) => {
 
 })
 
+app.post('/getAllQuotes', (req, res) => {
+    let searchItem = "*";
+    if (req.headers['searchitem'] != undefined) {
+        searchItem = req.headers['searchitem'];
+    }
+    let sql = "SELECT " + searchItem + " FROM quotes";
+    databaseQuery(res, sql);
+})
+
+app.post('/deleteQuote', (req, res) => {
+
+    let quoteID = req.headers['quoteid'];
+    let sql = "DELETE FROM quotes WHERE ID = '" + quoteID + "';";
+    databaseQuery(res, sql);
+
+})
+
+app.post('/deleteAllQuotesForPatient', (req, res) => {
+
+    let patientID = req.headers['patientid'];
+    let sql = "DELETE FROM quotes WHERE PATIENT = '" + patientID + "';";
+    databaseQuery(res, sql);
+
+})
+
+app.post('/createNewQuote', (req, res) => {
+    let json = JSON.parse(req.headers['data'])
+    createNewQuote(res, json)
+})
+
+app.post('/updateQuote', (req, res) => {
+
+    let quoteID = req.headers['quoteid'];
+    let cols = JSON.parse(req.headers['cols'])['cols'];
+    let vals = JSON.parse(req.headers['vals'])['vals'];
+
+    let setString = "";
+
+    for (let i = 0; i < cols.length; i++) {
+        setString += cols[i] + " = '" + vals[i] + "', ";
+    }
+
+    setString = setString.slice(0,  -2)
+
+    let sql = "UPDATE quotes SET " + setString + " WHERE ID = '" + quoteID + "';";
+    databaseQuery(res, sql);
+
+})
+
+
+app.post('/getAllImagesForPatient', (req, res) => {
+    let searchItem = "*";
+    let patientID = req.headers['id']
+    if (req.headers['searchitem'] != undefined) {
+        searchItem = req.headers['searchitem'];
+    }
+    let sql = "SELECT " + searchItem + " FROM patient_images WHERE ID = '" + patientID + "'";
+    databaseQuery(res, sql);
+})
+
+app.post('/deleteImage', (req, res) => {
+
+    let imageID = req.headers['imageid'];
+    let sql = "DELETE FROM patient_images WHERE ID = '" + imageID + "';";
+    databaseQuery(res, sql);
+
+})
+
+app.post('/createNewImage', (req, res) => {
+    let json = JSON.parse(req.headers['data'])
+    createNewImage(res, json)
+})
+
 app.post('/getAllBookings', (req, res) => {
     let searchItem = "*";
     if (req.headers['searchitem'] != undefined) {
@@ -470,6 +543,82 @@ function createNewBooking(res = null, bookingData) {
     });
 }
 
+function createNewQuote(res = null, quoteData) {
+
+    let numMissing = 0
+    let errorMessage = "Error: Missing "
+    if (quoteData.patientID === undefined) {
+        errorMessage += "Patient ID, "
+        numMissing++
+    }
+    if (quoteData.dentistID === undefined) {
+        errorMessage += "Dentist ID, "
+        numMissing++
+    }
+    if (quoteData.bookingID === undefined) {
+        errorMessage += "Booking ID, "
+        numMissing++
+    }
+
+    if (numMissing > 0) {
+        errorMessage = errorMessage.slice(0, -2) + "."
+        res.send({result: 1, error: errorMessage})
+        return
+    }
+
+    let sql = "SELECT * FROM quotes WHERE Booking='" + quoteData.bookingID + "'"
+    client.query(sql, function (err, result) {
+        if (err) {
+            console.log(err)
+            if (res) {
+                res.send({result: 1, error: err})
+                return
+            } else {
+                return {result: 1, error: err}
+            }
+        }
+
+        if (Object.keys(result).length > 0) {
+
+            if (res) {
+                res.send({result: 1, error: "A quote for the given Booking already exists!"})
+                return
+            } else {
+                return {result: 1, error: "A quote for the given Booking already exists!"}
+            }
+        }
+
+        sql = "INSERT INTO `quotes` (`Patient`, `Dentist`, `Booking`, `QuoteCreationDate`, `QuotePaymentStatus`, `QuotePaymentDeadline`) "
+        + "VALUES (" + quoteData.patientID + ", " + quoteData.dentistID + ", " + quoteData.bookingID + ", '" + new Date().toISOString().slice(0, 19).replace('T', ' ') + "', 'UNPAID', '" + addDays(new Date(), 30).toISOString().slice(0, 19).replace('T', ' ') + "')"
+    
+        databaseQuery(res, sql)
+    });
+}
+
+function createNewImage(res = null, imageData) {
+
+    let numMissing = 0
+    let errorMessage = "Error: Missing "
+    if (imageData.patientID === undefined) {
+        errorMessage += "Patient ID, "
+        numMissing++
+    }
+    if (imageData.imagePath === undefined) {
+        errorMessage += "Image Path, "
+        numMissing++
+    }
+    if (numMissing > 0) {
+        errorMessage = errorMessage.slice(0, -2) + "."
+        res.send({result: 1, error: errorMessage})
+        return
+    }
+
+    let sql = "INSERT INTO `patient_images` (`Patient`, `ImagePath`) " 
+    + "VALUES (" + imageData.patientID + ", '" + imageData.imagePath + "')"
+    
+    databaseQuery(res, sql)
+}
+
 function databaseCreateTables(res = null) {
     let sql = "CREATE TABLE IF NOT EXISTS patient_data (ID INT AUTO_INCREMENT PRIMARY KEY, NHI VARCHAR(255), FirstName VARCHAR(255), LastName VARCHAR(255), MiddleName VARCHAR(255), DOB DATE, ContactNumber VARCHAR(255), Email VARCHAR(255), Notes MEDIUMTEXT)";
     databaseQuery(res, sql)
@@ -477,7 +626,17 @@ function databaseCreateTables(res = null) {
     databaseQuery(null, sql) 
     sql = "CREATE TABLE IF NOT EXISTS bookings (ID INT AUTO_INCREMENT PRIMARY KEY, Date DATE, Time TIME, Patient INT, Dentist INT, Type VARCHAR(255), FeeDollars INT, FeeCents INT, Location VARCHAR(255), Notes VARCHAR(255), ProcedureName VARCHAR(255), AffectedAreas VARCHAR(255), FOREIGN KEY (Patient) REFERENCES patient_data(ID), FOREIGN KEY (Dentist) REFERENCES accounts(ID))";
     databaseQuery(res, sql)
+    sql = "CREATE TABLE IF NOT EXISTS quotes (ID INT AUTO_INCREMENT PRIMARY KEY, Patient INT, Dentist INT, Booking INT, QuoteCreationDate DATE, QuotePaymentStatus VARCHAR(255), QuotePaymentDeadline DATE, FOREIGN KEY (Patient) REFERENCES patient_data(ID), FOREIGN KEY (Dentist) REFERENCES accounts(ID), FOREIGN KEY (Booking) REFERENCES bookings(ID))";
+    databaseQuery(res, sql)
+    sql = "CREATE TABLE IF NOT EXISTS patient_images (ID INT AUTO_INCREMENT PRIMARY KEY, Patient INT, ImagePath VARCHAR(255), FOREIGN KEY (Patient) REFERENCES patient_data(ID))";
+    databaseQuery(res, sql)
 }
+
+function addDays(date, days) {
+    var result = new Date(date);
+    result.setDate(result.getDate() + days);
+    return result;
+  }
 
 databaseConnect()
 // Tables are only created if they currently do not exist, will not be created on every launch
