@@ -87,10 +87,6 @@ export class Bookings extends React.Component<any, any> {
                             }
                         }
 
-                        let yearIndex = resBooking.data.result[i]['Date'].split("-")[0]
-                        let monthIndex = resBooking.data.result[i]['Date'].split("-")[1]
-                        let dayIndex = resBooking.data.result[i]['Date'].split("-")[2]
-
                         bookingDisplayed[i] = (
                             {
                                 index: i,
@@ -309,6 +305,23 @@ export class Bookings extends React.Component<any, any> {
             }
         }
 
+        const deleteBookingFromDatabase = (id:any) => {
+            axios.post('http://localhost:3000/deleteBooking', null, {
+                headers: {
+                    'bookingid': Number(id),
+                }
+            })
+            .then((res) => {
+                console.log(res)
+                this.props.callback(<Alert title={"Success"} message={"Deleted booking from database!"} style={"background-color: 'green'; width: 300px; height: 100px;"}></Alert>)
+            })
+            .catch((err) => {
+                console.log(err)
+                this.props.callback(<Alert title={"Error"} message={err} style={"background-color: 'red'; width: 600px; height: 400px;"}></Alert>)
+            });
+
+        }
+
         var bookingList:any = [];
         var bookingListEditButton:any = [];
         var bookingListDeleteButton:any = [];
@@ -321,7 +334,7 @@ export class Bookings extends React.Component<any, any> {
         }
 
         //Will go through and assign the variables from 'bookingVariables' to be displayed when editing a booking
-        if (day != 0)
+        if (day != 0 && this.state.bookings.length > 0)
         {
             for (var num = 0; num < this.state.bookings.length; num++)
             {
@@ -389,10 +402,8 @@ export class Bookings extends React.Component<any, any> {
                                 }}}/>
 
                         bookingListDeleteButton[num] =
-                            <Button style={"flex: 1;"} text={"Delete"} id={bookingSelected} on={{clicked: ()=>{deleteFromDataBase(bookingSelected)}}}/>
+                            <Button style={"flex: 1;"} text={"Delete"} id={bookingSelected} on={{clicked: ()=>{deleteBookingFromDatabase(bookingSelected)}}}/>
                     }
-
-                    console.log(bookingListEditButton[num])
 
                     //Creates the bookings to view
                     //will also create an edit button for each booking, an info button to get more details, and a delete button to remove the selected booking
@@ -442,35 +453,23 @@ export class Bookings extends React.Component<any, any> {
                 if (this.state.completeClickedEdit == true)
                 {
                     this.setState({
-                        bookingCreateOrEditDisplay: editFromDB(
+                        bookingCreateOrEditDisplay: await editFromDB(
                             //Sending the updated variables to compare with at the end of the edit
                             this.state.bookingID[this.state.currentBookingSelected],
-                            this.state.NHInum[this.state.currentBookingSelected],
-                            this.state.patientName[this.state.currentBookingSelected],
                             dateFull,
                             //Time is sent together so it is easier to handle on the other end
                             addLeadingZeros(this.state.timeHour[this.state.currentBookingSelected], 2) + ":" +
                             addLeadingZeros(this.state.timeMinute[this.state.currentBookingSelected], 2) + "" +
                             this.state.timeAM_PM[this.state.currentBookingSelected],
-                            this.state.dentistName[this.state.currentBookingSelected],
                             this.state.procedure[this.state.currentBookingSelected],
                             this.state.areasAffected[this.state.currentBookingSelected],
-                            this.state.patientNotes[this.state.currentBookingSelected],
-
-                            //Sending the old variables to compare with at the end of the edit
-                            this.state.oldValuesBookingID[this.state.currentBookingSelected],
-                            this.state.oldValuesNHInumber[this.state.currentBookingSelected],
-                            this.state.oldValuesDate[this.state.currentBookingSelected],
-                            this.state.oldValuesPatientName[this.state.currentBookingSelected],
-                            this.state.oldValuesTime[this.state.currentBookingSelected],
-                            this.state.oldValuesDentistName[this.state.currentBookingSelected],
-                            this.state.oldValuesProcedure[this.state.currentBookingSelected],
-                            this.state.oldValuesAreasAffected[this.state.currentBookingSelected],
-                            this.state.oldValuesPatientNotes[this.state.currentBookingSelected])
+                            this.state.patientNotes[this.state.currentBookingSelected])
                     });
 
+                    this.props.callback(this.state.bookingCreateOrEditDisplay['view'])
+
                     //Checks that 'bookingCreateOrEditDisplay' is set back to zero before allowing booking list loading
-                    if (this.state.bookingCreateOrEditDisplay == 0)
+                    if (this.state.bookingCreateOrEditDisplay['res'] == 0)
                     {
                         this.setState({
                             //Set back to 'false' to continue update of the date
