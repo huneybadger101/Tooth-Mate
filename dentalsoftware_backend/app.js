@@ -561,6 +561,16 @@ function createNewQuote(res = null, quoteData) {
         numMissing++
     }
 
+    if (quoteData.totalCostDollars === undefined) {
+        errorMessage += "Total Cost (Dollars), "
+        numMissing++
+    }
+
+    if (quoteData.totalCostCents === undefined) {
+        errorMessage += "Total Cost (Cents), "
+        numMissing++
+    }
+
     if (numMissing > 0) {
         errorMessage = errorMessage.slice(0, -2) + "."
         res.send({result: 1, error: errorMessage})
@@ -589,8 +599,8 @@ function createNewQuote(res = null, quoteData) {
             }
         }
 
-        sql = "INSERT INTO `quotes` (`Patient`, `Dentist`, `Booking`, `QuoteCreationDate`, `QuotePaymentStatus`, `QuotePaymentDeadline`) "
-        + "VALUES (" + quoteData.patientID + ", " + quoteData.dentistID + ", " + quoteData.bookingID + ", '" + new Date().toISOString().slice(0, 19).replace('T', ' ') + "', 'UNPAID', '" + addDays(new Date(), 30).toISOString().slice(0, 19).replace('T', ' ') + "')"
+        sql = "INSERT INTO `quotes` (`Patient`, `Dentist`, `Booking`, `QuoteCreationDate`, `QuotePaymentStatus`, `QuotePaymentDeadline`, `QuoteTotalCostDollars`, `QuoteTotalCostCents`) "
+        + "VALUES (" + quoteData.patientID + ", " + quoteData.dentistID + ", " + quoteData.bookingID + ", '" + new Date().toISOString().slice(0, 19).replace('T', ' ') + "', 'UNPAID', '" + addDays(new Date(), 30).toISOString().slice(0, 19).replace('T', ' ') + "', " + quoteData.totalCostDollars + ", " + quoteData.totalCostCents + ")"
     
         databaseQuery(res, sql)
     });
@@ -627,7 +637,7 @@ function databaseCreateTables(res = null) {
     databaseQuery(null, sql) 
     sql = "CREATE TABLE IF NOT EXISTS bookings (ID INT AUTO_INCREMENT PRIMARY KEY, Date DATE, Time VARCHAR(255), Patient INT, Dentist INT, Type VARCHAR(255), FeeDollars INT, FeeCents INT, Location VARCHAR(255), Notes VARCHAR(255), ProcedureName VARCHAR(255), AffectedAreas VARCHAR(255), FOREIGN KEY (Patient) REFERENCES patient_data(ID), FOREIGN KEY (Dentist) REFERENCES accounts(ID))";
     databaseQuery(res, sql)
-    sql = "CREATE TABLE IF NOT EXISTS quotes (ID INT AUTO_INCREMENT PRIMARY KEY, Patient INT, Dentist INT, Booking INT, QuoteCreationDate DATE, QuotePaymentStatus VARCHAR(255), QuotePaymentDeadline DATE, FOREIGN KEY (Patient) REFERENCES patient_data(ID), FOREIGN KEY (Dentist) REFERENCES accounts(ID), FOREIGN KEY (Booking) REFERENCES bookings(ID))";
+    sql = "CREATE TABLE IF NOT EXISTS quotes (ID INT AUTO_INCREMENT PRIMARY KEY, Patient INT, Dentist INT, Booking INT, QuoteCreationDate DATE, QuotePaymentStatus VARCHAR(255), QuotePaymentDeadline DATE, QuoteTotalCostDollars INT, QuoteTotalCostCents INT, FOREIGN KEY (Patient) REFERENCES patient_data(ID), FOREIGN KEY (Dentist) REFERENCES accounts(ID), FOREIGN KEY (Booking) REFERENCES bookings(ID))";
     databaseQuery(res, sql)
     sql = "CREATE TABLE IF NOT EXISTS patient_images (ID INT AUTO_INCREMENT PRIMARY KEY, Patient INT, ImagePath VARCHAR(255), FOREIGN KEY (Patient) REFERENCES patient_data(ID))";
     databaseQuery(res, sql)
