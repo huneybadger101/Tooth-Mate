@@ -220,7 +220,7 @@ app.post('/loginAccount', (req, res) => {
     let username = req.headers['username'];
     let password = req.headers['password'];
 
-    let sql = "SELECT AccountPasswordSalt FROM Accounts WHERE AccountName = '" + username + "';";
+    let sql = "SELECT AccountPasswordSalt FROM accounts WHERE AccountName = '" + username + "';";
 
     client.query(sql, function (err, result) {
         if (err) {
@@ -245,7 +245,7 @@ app.post('/loginAccount', (req, res) => {
         let passwordSalt = result[0]['AccountPasswordSalt'];
         let hashedPassword = sha256(password + passwordSalt);
 
-        sql = "SELECT * FROM Accounts WHERE AccountName = '" + username + "' AND AccountPasswordHash = '" + hashedPassword + "';";
+        sql = "SELECT * FROM accounts WHERE AccountName = '" + username + "' AND AccountPasswordHash = '" + hashedPassword + "';";
 
         client.query(sql, function (err, result) {
             if (err) {
@@ -284,7 +284,7 @@ function databaseConnect(host = "localhost", username = "root", password = null,
         host: host,
         user: username,
         port: port,
-        ...(password != null && {password: password}), // Will change, no password for testing
+        password: password,
         database: database
       });
 }
@@ -639,7 +639,7 @@ function addDays(date, days) {
     return result;
   }
 
-databaseConnect()
+databaseConnect("103.204.131.211", "toothmate", "SuperSecurePassword!?123", "toothmate", 33306)
 // Tables are only created if they currently do not exist, will not be created on every launch
 databaseCreateTables()
 
