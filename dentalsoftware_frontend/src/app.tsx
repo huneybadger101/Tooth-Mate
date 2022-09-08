@@ -3,6 +3,8 @@ import React from "react";
 import { QIcon, QScreen } from "@nodegui/nodegui";
 import path from "path";
 import TabContainer from "./components/tabContainer";
+import Login from "./components/login";
+import Calendar from "./components/calendar";
 import Homepage from "./components/homepage";
 
 var resolution = require("screen-resolution");
@@ -24,8 +26,8 @@ class App extends React.Component<any, any> {
       let names = [];
       let windows = [];
 
-      screens.push(<Homepage/>)
-      names.push("Homepage")
+      screens.push(<Login/>)
+      names.push("Login")
 
       const maxSize = {width: result.width, height: result.height}
       windows.push(<Window
@@ -56,7 +58,7 @@ class App extends React.Component<any, any> {
     let nameArray = [name]
     tempWindows.push(
       <Window
-        windowTitle="ToothMate Dental Software TAB 2"
+        windowTitle="ToothMate Dental Software"
         minSize={minSize}
       >
         <View style={containerStyle}>
@@ -77,7 +79,7 @@ class App extends React.Component<any, any> {
     let tempWindows = this.state.windows;
     tempWindows.push(
       <Window
-        windowTitle="ToothMate Dental Software TAB 2"
+        windowTitle="ToothMate Dental Software"
         minSize={minSize}
       >
         <View style={containerStyle}>
