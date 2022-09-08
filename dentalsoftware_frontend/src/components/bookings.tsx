@@ -341,11 +341,9 @@ export class Bookings extends React.Component<any, any> {
 
                 let bookingYear = this.state.bookings[num]['date'].split("T")[0].split("-")[0]
                 let bookingMonth = Number(this.state.bookings[num]['date'].split("T")[0].split("-")[1]).toString()
-                let bookingDay = Number(this.state.bookings[num]['date'].split("T")[0].split("-")[2]).toString()
+                let bookingDay = (Number(this.state.bookings[num]['date'].split("T")[0].split("-")[2]) + 1).toString()
 
                 let bookingDateString = bookingYear + "/" + bookingMonth + "/" + bookingDay;
-
-                console.log(bookingDateRev + " VS " + bookingDateString)
                 if (bookingDateRev == bookingDateString) {
                     
                     //Sets a reference point for the button that is clicked
@@ -452,11 +450,16 @@ export class Bookings extends React.Component<any, any> {
                 //Activates when the complete button was clicked while editing an existing booking
                 if (this.state.completeClickedEdit == true)
                 {
+                    let bookingDay = this.state.bookings[this.state.currentBookingSelected]['date'].split("T")[0].split("-")[0]
+                    let bookingMonth = Number(this.state.bookings[this.state.currentBookingSelected]['date'].split("T")[0].split("-")[1]).toString()
+                    let bookingYear = (Number(this.state.bookings[this.state.currentBookingSelected]['date'].split("T")[0].split("-")[2])).toString()
+
+                    let bookingDateString = bookingYear + "/" + bookingMonth + "/" + bookingDay;
                     this.setState({
                         bookingCreateOrEditDisplay: await editFromDB(
                             //Sending the updated variables to compare with at the end of the edit
                             this.state.bookingID[this.state.currentBookingSelected],
-                            dateFull,
+                            bookingDateString,
                             //Time is sent together so it is easier to handle on the other end
                             addLeadingZeros(this.state.timeHour[this.state.currentBookingSelected], 2) + ":" +
                             addLeadingZeros(this.state.timeMinute[this.state.currentBookingSelected], 2) + "" +
@@ -485,10 +488,15 @@ export class Bookings extends React.Component<any, any> {
                 //Activates when the complete button was clicked during a booking creation
                 else if (this.state.completeClickedCreate == true)
                 {
+                    let bookingDay = this.state.bookings[this.state.currentBookingSelected]['date'].split("T")[0].split("-")[0]
+                    let bookingMonth = Number(this.state.bookings[this.state.currentBookingSelected]['date'].split("T")[0].split("-")[1]).toString()
+                    let bookingYear = (Number(this.state.bookings[this.state.currentBookingSelected]['date'].split("T")[0].split("-")[2])).toString()
+
+                    let bookingDateString = bookingYear + "/" + bookingMonth + "/" + bookingDay;
                     this.setState({
                         bookingCreateOrEditDisplay: await createBooking(
                         Number(this.state.patientName[this.state.currentBookingSelected]),
-                        dateFull,
+                        bookingDateString,
                         //Time is sent together so it is easier to handle on the other end
                         addLeadingZeros(this.state.timeHour[this.state.currentBookingSelected], 2) + ":" +
                         addLeadingZeros(this.state.timeMinute[this.state.currentBookingSelected], 2) + "" +
