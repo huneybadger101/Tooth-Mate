@@ -309,21 +309,6 @@ export class Bookings extends React.Component<any, any> {
             }
         }
 
-        //TODO
-        const textHandlerNotes = {
-            textChanged: (textValue:any) =>{
-
-                this.state.patientNotes[this.state.currentBookingSelected] = textValue.replace(/[^a-zA-Z0-9,! ]+/g, '');
-                this.setState({
-                    editButtonClicked: true
-                })
-
-                this.setState({
-                    //TODO: replace past a specific length
-                })
-            }
-        }
-
         //Handles what happens with the top button (it will switch between booking and cancel) and will reset variables if canceled
         const buttonHandlerBookingOrCancel = {
             clicked: () => {
@@ -649,17 +634,13 @@ export class Bookings extends React.Component<any, any> {
                         <LineEdit style={"flex: 2;"} on={textHandlerAreasAffected} text={this.state.areasAffected[this.state.currentBookingSelected]} />
                     </View>
 
-                    <View style="margin: 0px; flex-direction: 'row';">
-                        <Text style={"flex: 1; border: 1px solid black; background: 'LightGrey';"}>Patient notes</Text>
-                        <LineEdit style={"flex: 2;"} on={textHandlerNotes} text={this.state.patientNotes[this.state.currentBookingSelected]} />
-                    </View>
+                    
 
                     <View style="margin: 10px;"></View>
 
                     <Button text={"Complete"} on={buttonHandlerCompleteEditOrCreation}></Button>
 
                 </View>
-                
                 </View>
         );
 
