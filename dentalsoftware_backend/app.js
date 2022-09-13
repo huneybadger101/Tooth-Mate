@@ -23,6 +23,69 @@ function makeid(length) {
     return result;
 }
 
+function getPaitientDataByID(id, res) {
+    let patientID = id;
+
+    let patientData;
+    let patientToothData;
+    let patientToothQuadrantData;
+
+    let sql = "SELECT * FROM patient_data WHERE ID = '" + patientID + "';"
+    client.query(sql, function (err, result) {
+        if (err) {
+            console.log(err)
+            if (res) {
+                res.send({result: 1, error: err})
+            } else {
+                return {result: 1}
+            }
+        }
+
+        patientData = result;
+
+        sql = "SELECT * FROM patient_tooth_data WHERE Patient = '" + patientID + "';"
+        client.query(sql, function (err, result) {
+            if (err) {
+                console.log(err)
+                if (res) {
+                    res.send({result: 1, error: err})
+                } else {
+                    return {result: 1}
+                }
+            }
+    
+            patientToothData = result;
+    
+            sql = "SELECT * FROM patient_tooth_quadrant_data WHERE Patient = '" + patientID + "';"
+            client.query(sql, function (err, result) {
+                if (err) {
+                    console.log(err)
+                    if (res) {
+                        res.send({result: 1, error: err})
+                    } else {
+                        return {result: 1}
+                    }
+                }
+        
+                patientToothQuadrantData = result;
+
+                console.log(patientData)
+                console.log(patientToothData)
+                console.log(patientToothQuadrantData)
+                
+                res.send({result: {
+                    patient: patientData,
+                    patientTeeth: patientToothData,
+                    patientTeethQuadrant: patientToothQuadrantData
+                }
+            })
+        
+            });
+    
+        });
+    });
+}
+
 app.post('/getAllPatientData', (req, res) => {
     let searchItem = "*";
     if (req.headers['searchitem'] != undefined) {
@@ -30,6 +93,11 @@ app.post('/getAllPatientData', (req, res) => {
     }
     let sql = "SELECT " + searchItem + " FROM patient_data";
     databaseQuery(res, sql);
+})
+
+app.post('/getPaitientDataByID', async (req, res) => {
+    let id = req.headers['id'];
+    getPaitientDataByID(id, res)
 })
 
 app.post('/deletePatientData', (req, res) => {
@@ -364,6 +432,7 @@ function createNewPatient(res = null, patientData) {
                 return {result: 1, error: "Patient with given NHI number already exists!"}
             }
         }
+
         // Verified that patient doesn't already exist, time to add them
         sql = "INSERT INTO patient_data (NHI, FirstName, " + (patientData.patient_Middle_Name != undefined ? "MiddleName, " : "") + "LastName, DOB, ContactNumber, Email" + (patientData.patient_Notes != undefined ? ", Notes" : " ") + ") " 
         + "VALUES ('" 
@@ -377,7 +446,56 @@ function createNewPatient(res = null, patientData) {
         + (patientData.patient_Notes != undefined ? ", '" + patientData.patient_Notes + "'" : "") 
         + ")"
     
-        databaseQuery(res, sql)
+        result = databaseQuery(null, sql)
+
+        sql = "SELECT * FROM patient_data WHERE NHI = '" + patientData.patient_NHI + "';";
+
+        client.query(sql, function (err, result) {
+            if (err) {
+                console.log(err)
+                if (res) {
+                    res.send({result: 1, error: err})
+                    return
+                } else {
+                    return {result: 1, error: err}
+                }
+            }
+
+            if (Object.keys(result).length == 0) {
+                if (res) {
+                    res.send({result: 1, error: "Failed to add patient to Database!"})
+                    return
+                } else {
+                    return {result: 1, error: "Failed to add patient to Database!"}
+                }
+            }
+
+            let patientID = result[0]['ID'];
+
+            for (let i = 0; i < 32; i++) {
+                sql = "INSERT INTO patient_tooth_data (Patient, ToothID, Notes, leftLowerPocketGap, leftMiddlePocketGap, leftUpperPocketGap, rightLowerPocketGap, rightMiddlePocketGap, rightUpperPocketGap) " +
+                "VALUES (" + patientID + ", " + (i + 1) + ", 'TOOTH_NOTES_HERE', 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);"
+                client.query(sql, function (err) {
+                    if (err) {
+                        console.log(err)
+                        res.send({result: 1, error: err})
+                    }
+                    for (let k = 0; k < 9; k++) {
+                        sql = "INSERT INTO patient_tooth_quadrant_data (Patient, Tooth, Quadrant, Notes) " +
+                        "VALUES (" + patientID + ", " + (i + 1) + ", " + (k + 1) + ", 'QUADRANT_NOTES_HERE');"
+                        client.query(sql, function (err) {
+                            if (err) {
+                                console.log(err)
+                                res.send({result: 1, error: err})
+                            }
+                        });
+                    }
+                });
+            }
+
+        });
+
+        res.send({result: result})
     });
 }
 
@@ -489,8 +607,7 @@ function createNewBooking(res = null, bookingData) {
         numMissing++
     }
     */
-    let splitDate = bookingData.date.split("/");
-    let newDate = splitDate[2] + "-" + splitDate[1] + "-" + splitDate[0];
+    let newDate = bookingData.date;
 
     let splitTime = bookingData.time.split(":");
     let newTime = splitTime[0] + ":" + splitTime[1].slice(0, -2) + ":00";
@@ -539,7 +656,6 @@ function createNewBooking(res = null, bookingData) {
 
         sql = "INSERT INTO `bookings` (`Date`, `Time`, `Patient`, `Dentist`, `FeeDollars`, `FeeCents`, `Location`, `Notes`, `ProcedureName`, `AffectedAreas`) "
         + "VALUES ('" + newDate + "', '" + newTime + "', '" + bookingData.patientID + "', '" + bookingData.dentistID + "', '100', '99', 'Default Location', '" + bookingData.notes + "', '" + bookingData.procedure + "', '" + bookingData.affectedAreas + "')"
-    
         databaseQuery(res, sql)
     });
 }
@@ -631,15 +747,19 @@ function createNewImage(res = null, imageData) {
 }
 
 function databaseCreateTables(res = null) {
-    let sql = "CREATE TABLE IF NOT EXISTS patient_data (ID INT AUTO_INCREMENT PRIMARY KEY, NHI VARCHAR(255), FirstName VARCHAR(255), LastName VARCHAR(255), MiddleName VARCHAR(255), DOB DATE, ContactNumber VARCHAR(255), Email VARCHAR(255), Notes MEDIUMTEXT)";
+    let sql = "CREATE TABLE IF NOT EXISTS patient_data (ID INT AUTO_INCREMENT PRIMARY KEY, NHI VARCHAR(255) NOT NULL, FirstName VARCHAR(255) NOT NULL, LastName VARCHAR(255) NOT NULL, MiddleName VARCHAR(255), DOB DATE NOT NULL, ContactNumber VARCHAR(255) NOT NULL, Email VARCHAR(255) NOT NULL, Notes MEDIUMTEXT)";
     databaseQuery(res, sql)
-    sql = "CREATE TABLE IF NOT EXISTS accounts (ID INT AUTO_INCREMENT PRIMARY KEY, AccountName VARCHAR(255), AccountPasswordHash VARCHAR(255), AccountPasswordSalt VARCHAR(255), AccountAccessLevel INT, DentistNumber INT, DOB DATE, Email VARCHAR(255), PhoneNumber VARCHAR(255))";
+    sql = "CREATE TABLE IF NOT EXISTS accounts (ID INT AUTO_INCREMENT PRIMARY KEY, AccountName VARCHAR(255) NOT NULL, AccountPasswordHash VARCHAR(255) NOT NULL, AccountPasswordSalt VARCHAR(255) NOT NULL, AccountAccessLevel INT, DentistNumber INT, DOB DATE NOT NULL, Email VARCHAR(255) NOT NULL, PhoneNumber VARCHAR(255) NOT NULL)";
     databaseQuery(null, sql) 
-    sql = "CREATE TABLE IF NOT EXISTS bookings (ID INT AUTO_INCREMENT PRIMARY KEY, Date DATE, Time VARCHAR(255), Patient INT, Dentist INT, Type VARCHAR(255), FeeDollars INT, FeeCents INT, Location VARCHAR(255), Notes VARCHAR(255), ProcedureName VARCHAR(255), AffectedAreas VARCHAR(255), FOREIGN KEY (Patient) REFERENCES patient_data(ID), FOREIGN KEY (Dentist) REFERENCES accounts(ID))";
+    sql = "CREATE TABLE IF NOT EXISTS bookings (ID INT AUTO_INCREMENT PRIMARY KEY, Date DATE NOT NULL, Time VARCHAR(255) NOT NULL, Patient INT NOT NULL, Dentist INT NOT NULL, Type VARCHAR(255), FeeDollars INT NOT NULL, FeeCents INT NOT NULL, Location VARCHAR(255), Notes VARCHAR(255), ProcedureName VARCHAR(255) NOT NULL, AffectedAreas VARCHAR(255), FOREIGN KEY (Patient) REFERENCES patient_data(ID), FOREIGN KEY (Dentist) REFERENCES accounts(ID))";
     databaseQuery(res, sql)
-    sql = "CREATE TABLE IF NOT EXISTS quotes (ID INT AUTO_INCREMENT PRIMARY KEY, Patient INT, Dentist INT, Booking INT, QuoteCreationDate DATE, QuotePaymentStatus VARCHAR(255), QuotePaymentDeadline DATE, QuoteTotalCostDollars INT, QuoteTotalCostCents INT, FOREIGN KEY (Patient) REFERENCES patient_data(ID), FOREIGN KEY (Dentist) REFERENCES accounts(ID), FOREIGN KEY (Booking) REFERENCES bookings(ID))";
+    sql = "CREATE TABLE IF NOT EXISTS quotes (ID INT AUTO_INCREMENT PRIMARY KEY, Patient INT NOT NULL, Dentist INT NOT NULL, Booking INT NOT NULL, QuoteCreationDate DATE NOT NULL, QuotePaymentStatus VARCHAR(255) NOT NULL, QuotePaymentDeadline DATE NOT NULL, QuoteTotalCostDollars INT NOT NULL, QuoteTotalCostCents INT NOT NULL, FOREIGN KEY (Patient) REFERENCES patient_data(ID), FOREIGN KEY (Dentist) REFERENCES accounts(ID), FOREIGN KEY (Booking) REFERENCES bookings(ID))";
     databaseQuery(res, sql)
-    sql = "CREATE TABLE IF NOT EXISTS patient_images (ID INT AUTO_INCREMENT PRIMARY KEY, Patient INT, ImagePath VARCHAR(255), FOREIGN KEY (Patient) REFERENCES patient_data(ID))";
+    sql = "CREATE TABLE IF NOT EXISTS patient_images (ID INT AUTO_INCREMENT PRIMARY KEY, Patient INT NOT NULL, ImagePath VARCHAR(255) NOT NULL, FOREIGN KEY (Patient) REFERENCES patient_data(ID))";
+    databaseQuery(res, sql)
+    sql = "CREATE TABLE IF NOT EXISTS patient_tooth_data (ID INT AUTO_INCREMENT PRIMARY KEY, Patient INT NOT NULL, ToothID INT, Notes MEDIUMTEXT, leftLowerPocketGap DECIMAL(6,4) NOT NULL, leftMiddlePocketGap DECIMAL(6,4) NOT NULL, leftUpperPocketGap DECIMAL(6,4) NOT NULL, rightLowerPocketGap DECIMAL(6,4) NOT NULL, rightMiddlePocketGap DECIMAL(6,4) NOT NULL, rightUpperPocketGap DECIMAL(6,4) NOT NULL, FOREIGN KEY (Patient) REFERENCES patient_data(ID))";
+    databaseQuery(res, sql)
+    sql = "CREATE TABLE IF NOT EXISTS patient_tooth_quadrant_data (ID INT AUTO_INCREMENT PRIMARY KEY, Patient INT NOT NULL, Tooth INT NOT NULL, Quadrant INT, Notes MEDIUMTEXT, FOREIGN KEY (Tooth) REFERENCES patient_tooth_data(ID), FOREIGN KEY (Patient) REFERENCES patient_data(ID))";
     databaseQuery(res, sql)
 }
 
