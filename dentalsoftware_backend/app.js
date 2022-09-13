@@ -480,16 +480,18 @@ function createNewPatient(res = null, patientData) {
                         console.log(err)
                         res.send({result: 1, error: err})
                     }
+                    sql = "INSERT INTO patient_tooth_quadrant_data (Patient, Tooth, Quadrant, Notes) VALUES ";
                     for (let k = 0; k < 9; k++) {
-                        sql = "INSERT INTO patient_tooth_quadrant_data (Patient, Tooth, Quadrant, Notes) " +
-                        "VALUES (" + patientID + ", " + (i + 1) + ", " + (k + 1) + ", 'QUADRANT_NOTES_HERE');"
-                        client.query(sql, function (err) {
-                            if (err) {
-                                console.log(err)
-                                res.send({result: 1, error: err})
-                            }
-                        });
+                        sql += "(" + patientID + ", " + (i + 1) + ", " + (k + 1) + ", 'QUADRANT_NOTES_HERE'), "
                     }
+                    sql = sql.slice(0, -2); 
+                    sql += ";";
+                    client.query(sql, function (err) {
+                        if (err) {
+                            console.log(err)
+                            res.send({result: 1, error: err})
+                        }
+                    });
                 });
             }
 
