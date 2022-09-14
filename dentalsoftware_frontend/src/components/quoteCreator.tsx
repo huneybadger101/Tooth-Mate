@@ -151,8 +151,8 @@ export class QuoteCreator extends React.Component<any, any> {
                     patientID: this.state.currentPatient,
                     dentistID: this.state.currentDentist,
                     bookingID: this.state.currentBooking,
-                    totalCostDollars: this.state.currentTotalCost.split("$")[1].split(".")[0],
-                    totalCostCents: this.state.currentTotalCost.split("$")[1].split(".")[1]
+                    totalCostDollars: this.state.currentTotalCost.split(".")[0],
+                    totalCostCents: this.state.currentTotalCost.split(".")[1]
                 }
                 axios.post('http://localhost:3000/createNewQuote', null, {
                     headers: {

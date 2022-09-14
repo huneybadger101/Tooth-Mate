@@ -40,17 +40,17 @@ export class Homepage extends React.Component<any, any> {
                     [WidgetEventTypes.MouseButtonRelease]: () => this.newTab(<Calendar/>, "Calendar"),
                 }
             }/>)
-        pagesRow2.push(<Button style={buttonStyle} text="Patient Creator" on={
-                {
-                    // Only trigger when left click is released
-                    [WidgetEventTypes.MouseButtonRelease]: () => this.newTab(<PatientCreator/>, "Patient Creator"),
-                }
-            }/>)
-        pagesRow2.push(<View style="width: 100%;"></View>)
-        pagesRow2.push(<Button style={buttonStyle} text="Create Quotes" on={
+        pagesRow2.push(<Button style={buttonStyle} text="Quote Creator" on={
                 {
                     // Only trigger when left click is released
                     [WidgetEventTypes.MouseButtonRelease]: () => this.newTab(<QuoteCreator/>, "Quote Creator"),
+                }
+            }/>)
+        pagesRow2.push(<View style="width: 100%;"></View>)
+        pagesRow2.push(<Button style={buttonStyle} text="View Quotes" on={
+                {
+                    // Only trigger when left click is released
+                    [WidgetEventTypes.MouseButtonRelease]: () => this.newTab(<QuoteViewer/>, "Quote Viewer"),
                 }
             }/>)
 

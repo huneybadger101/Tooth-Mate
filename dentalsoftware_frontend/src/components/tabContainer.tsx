@@ -21,7 +21,7 @@ function TabContainer(props: any) {
     }
 
     const createHomepageAfterLogin = () => {
-        let homepageView = <Homepage newTab={createNewtab}/>;
+        let homepageView = <Homepage newTab={createNewtab} accountHelper={props.accountHelper}/>;
         setValues({
             children: [homepageView],
             view: homepageView,
@@ -32,6 +32,7 @@ function TabContainer(props: any) {
     const createNewtab = (component: JSX.Element, name: string) => {
         let tempChildren = state.children;
         let tempNames = state.names;
+        component = AddExtraProps(component, {newTab: createNewtab, postLogin: createHomepageAfterLogin, accountHelper: props.accountHelper});
         tempChildren.push(component)
         tempNames.push(name)
         setValues({

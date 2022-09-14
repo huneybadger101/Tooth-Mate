@@ -6,8 +6,10 @@ import TabContainer from "./components/tabContainer";
 import Login from "./components/login";
 import Calendar from "./components/calendar";
 import Homepage from "./components/homepage";
+import AccountHelper from "./components/accountHelper";
 
 var resolution = require("screen-resolution");
+var accountHelper = AccountHelper;
 
 const minSize = { width: 1000, height: 760 };
 class App extends React.Component<any, any> {
@@ -18,6 +20,10 @@ class App extends React.Component<any, any> {
     this.state = {
       windows: null
     }
+    
+    accountHelper.accountName = "";
+    accountHelper.accountAccessLevel = 0;
+    accountHelper.accountAdmin = false;
 
     resolution.get(false)
     .then((result: any) => {
@@ -26,7 +32,7 @@ class App extends React.Component<any, any> {
       let names = [];
       let windows = [];
 
-      screens.push(<Login/>)
+      screens.push(<Login accountHelper={accountHelper}/>)
       names.push("Login")
 
       const maxSize = {width: result.width, height: result.height}
@@ -36,7 +42,7 @@ class App extends React.Component<any, any> {
         size={maxSize}
         >
           <View style={containerStyle}>
-              <TabContainer names={names} createNewWindow={this.createNewWindow}>
+              <TabContainer names={names} createNewWindow={this.createNewWindow} createNewBlankWindow={this.createNewBlankWindow} accountHelper={accountHelper}>
                 {screens}
               </TabContainer>
             </View>
@@ -62,7 +68,7 @@ class App extends React.Component<any, any> {
         minSize={minSize}
       >
         <View style={containerStyle}>
-          <TabContainer names={nameArray} createNewWindow={this.createNewWindow} createNewBlankWindow={this.createNewBlankWindow}>
+          <TabContainer names={nameArray} createNewWindow={this.createNewWindow} createNewBlankWindow={this.createNewBlankWindow} accountHelper={accountHelper}>
             {viewArray}
           </TabContainer>
         </View>

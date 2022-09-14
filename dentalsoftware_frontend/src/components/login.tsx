@@ -38,6 +38,9 @@ export class Login extends React.Component<any, any> {
                 this.setState({
                     errorMessage: "Logged in!"
                 })
+                this.props.accountHelper.accountName = this.state.username;
+                this.props.accountHelper.accountAccessLevel = res.data.result['AccountAccessLevel'];
+                this.props.accountHelper.accountAdmin = (this.state.username == "admin");
                 this.props.postLogin();
             }
         })
