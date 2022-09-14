@@ -81,8 +81,8 @@ export class Bookings extends React.Component<any, any> {
                     for (let i = 0; i < resBooking.data.result.length; i++) {
                         let patient = null;
                         for (let k = 0; k < resBooking.data.result.length; k++) {
-                            if (resBooking.data.result[i]['Patient'] == resBooking.data.result[k]['ID']) {
-                                patient = resBooking.data.result[k];
+                            if (resBooking.data.result[i]['Patient'] == res.data.result[k]['ID']) {
+                                patient = res.data.result[k];
                                 break;
                             }
                         }
@@ -100,14 +100,15 @@ export class Bookings extends React.Component<any, any> {
                                 notes: patient['Notes']
                             }
                         );
+                        this.setState({
+                            patients: patients,
+                            patientsData: res.data.result,
+                            dentistsData: resAccount.data.result,
+                            dentists: dentists,
+                            bookings: bookingDisplayed
+                        })
                     }
-                    this.setState({
-                        patients: patients,
-                        patientsData: res.data.result,
-                        dentistsData: resAccount.data.result,
-                        dentists: dentists,
-                        bookings: bookingDisplayed
-                    })
+
                 })
                 .catch((err) => {
                     console.log(err)
@@ -138,9 +139,6 @@ export class Bookings extends React.Component<any, any> {
         {
             bookingDate = "---";
         }
-
-        //Required to toggle the edit, create booking, and delete button being displayed. Will also be used to determinen what bookings are displayed
-        var userType:any = "admin";
 
         //Handles and changes the text for the NHI number during booking edit and creation
         const textHandlerNHI = {
@@ -381,7 +379,7 @@ export class Bookings extends React.Component<any, any> {
 
                     }
 
-                    if (userType == "admin")
+                    if (this.props.accountHelper.accountAdmin)
                     {
                         bookingListEditButton[num] = 
                             <Button 
@@ -619,12 +617,13 @@ export class Bookings extends React.Component<any, any> {
         //TODO: Impliment this feature properly
         var bookingCreateButton:any = [];
 
-        if (userType == "admin")
-        bookingCreateButton.push(
-            <View>
-                <Button text = {this.state.bookingOrCancelButtonText} style={""} on={buttonHandlerBookingOrCancel} visible={true}/>
-            </View>
-        );
+        if (this.props.accountHelper.accountAdmin) {
+            bookingCreateButton.push(
+                <View>
+                    <Button text = {this.state.bookingOrCancelButtonText} style={""} on={buttonHandlerBookingOrCancel} visible={true}/>
+                </View>
+            );
+        }
 
         //Returs the booking page section to be displayed in the calendar
         //Note that the majority of the section is created above

@@ -603,12 +603,12 @@ function createNewBooking(res = null, bookingData) {
         errorMessage += "Procedure, "
         numMissing++
     }
-    /*
+    
     if (bookingData.affectedAreas === undefined) {
         errorMessage += "Affected Areas, "
         numMissing++
     }
-    */
+    
     let newDate = bookingData.date;
 
     let splitTime = bookingData.time.split(":");
