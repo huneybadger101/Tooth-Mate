@@ -1,6 +1,8 @@
-import { Text, View } from "@nodegui/react-nodegui";
+import { Button, Text, View } from "@nodegui/react-nodegui";
 import React from "react";
 import axios from 'axios';
+import { createPDF } from './quotePDFGenerator';
+import {  QFileDialog, FileMode } from "@nodegui/nodegui";
 
 export class QuoteViewer extends React.Component<any, any> {
 
@@ -47,11 +49,66 @@ export class QuoteViewer extends React.Component<any, any> {
     // Function that returns a component to be drawn, can have children components if the parent component supports it
     render() {
 
+        const createPDFButtonHandler = (quoteData:any):any => {
+
+            let patient:any;
+            let booking:any;
+            let dentist:any;
+
+            for (let i = 0; i < this.state.patients.length; i++) {
+                if (this.state.patients[i]["ID"] == quoteData['Patient']) {
+                    patient = this.state.patients[i];
+                    break;
+                }
+            }
+
+            for (let i = 0; i < this.state.bookings.length; i++) {
+                if (this.state.bookings[i]["ID"] == quoteData['Booking']) {
+                    booking = this.state.bookings[i];
+                    break;
+                }
+            }
+
+            for (let i = 0; i < this.state.accounts.length; i++) {
+                if (this.state.accounts[i]["ID"] == quoteData['Dentist']) {
+                    dentist = this.state.accounts[i];
+                    break;
+                }
+            }
+
+            let fileDialog = new QFileDialog();
+            fileDialog.setFileMode(FileMode.Directory);
+            fileDialog.setNameFilter('text (*txt)');
+            fileDialog.exec();
+            let selectedFiles = fileDialog.selectedFiles();
+            selectedFiles.map((file)=>{
+                let data = {
+                    id: quoteData['ID'],
+                    date: new Date().toString().split(" (")[0],
+                    paymentStatus: quoteData['QuotePaymentStatus'],
+                    paymentDeadline: quoteData['QuotePaymentDeadline'],
+                    totalCost: quoteData['QuoteTotalCostDollars'] + "." + quoteData['QuoteTotalCostCents'],
+                    patientName: patient['FirstName'] + " " + patient['MiddleName'] + " " + patient['LastName'],
+                    patientNHI: patient['NHI'],
+                    patientDOB: patient['DOB'],
+                    patientContactNumber: patient['ContactNumber'],
+                    patientEmailAddress: patient['Email'],
+                    bookingID: booking['ID'],
+                    bookingDate: booking['Date'],
+                    bookingTime: booking['Time'],
+                    bookingDentistName: dentist['AccountName'],
+                    bookingLocation: booking['Location'],
+                    bookingNotes: booking['Notes'],
+                    bookingProcedure: booking['ProcedureName']
+                };
+                createPDF(data, file + "/Quote_" + quoteData['ID'] + "_Booking_" + booking['ID'] + ".pdf");
+            })
+        }
+
         const quoteList = this.state.quotes;
         let quoteViews = [];
 
         for (let i in quoteList) {
-            console.log(quoteList[i])
             quoteViews.push(
             <View>
                 <Text>Quote ID: {quoteList[i]['ID']}</Text>
@@ -59,6 +116,11 @@ export class QuoteViewer extends React.Component<any, any> {
                 <Text>Quote Payment Status: {quoteList[i]['QuotePaymentStatus']}</Text>
                 <Text>Quote Total Cost: ${quoteList[i]['QuoteTotalCostDollars']}.{quoteList[i]['QuoteTotalCostCents']}</Text>
                 <Text>Quote Payment Deadline: {quoteList[i]['QuotePaymentDeadline']}</Text>
+                <Button text={"Export Quote as PDF"} on={
+                    {
+                        clicked: () => {createPDFButtonHandler(quoteList[i])}
+                    }
+                }></Button>
             </View>
             )
         }
