@@ -80,7 +80,7 @@ export class Bookings extends React.Component<any, any> {
                     var bookingDisplayed: any = [];
                     for (let i = 0; i < resBooking.data.result.length; i++) {
                         let patient = null;
-                        for (let k = 0; k < resBooking.data.result.length; k++) {
+                        for (let k = 0; k < res.data.result.length; k++) {
                             if (resBooking.data.result[i]['Patient'] == res.data.result[k]['ID']) {
                                 patient = res.data.result[k];
                                 break;
