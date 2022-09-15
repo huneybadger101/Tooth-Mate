@@ -1,6 +1,6 @@
 import open from "open";
 
-export const generateEmailReferral = async (patientData:{
+export const generateEmailReferral = (patientData:{
         patientName:String,
         patientNHI:String,
         patientDOB:String,
@@ -21,6 +21,6 @@ export const generateEmailReferral = async (patientData:{
         mailToString += "&body="
         mailToString += body
         mailToString = mailToString.replaceAll(" ", "%20");
-        console.log(mailToString)
+
         open(mailToString);
 }
