@@ -3,7 +3,8 @@ import React from "react";
 import Bookings from "../bookings";
 import Alert from "../alert";
 import { disableDentalChartButton } from "../Calendarhelpers/calendarDayButtonDisable";
-import { treatmentList } from "./comboBoxVariables";
+import { treatmentList, treatmentListPrices, treatmentListTimes, treatmentListTreatments, toothComboBox } from "./comboBoxVariables";
+import DentalChartIniniteLoopFix from "../Calendarhelpers/loopPreventer";
 
 export class BookingPageDentalChart extends React.Component<any, any> {
 
@@ -33,8 +34,24 @@ export class BookingPageDentalChart extends React.Component<any, any> {
             totalCharts: 0,
             currentlySelectedChart: 0,
             procedure: [],
+            procedureCopy: [],
+            procedurePrice: [],
+            procedureTime: [],
             patientNotes: [],
-            preventTotalReload: false
+            preventTotalReload: false,
+
+            procedurePrinted: "Initial examination",
+            procedureTimePrinted: treatmentListTimes(0),
+            procedurePricePrinted: treatmentListPrices(0),
+            procedureTimeStored: [],
+            procedureCostStored: [],
+            
+            currentlySelectedProcedureIndex: [],
+            currentlySelectedToothIndex: []
+        }
+
+        if (DentalChartIniniteLoopFix.alreadyRun == undefined) {
+            DentalChartIniniteLoopFix.alreadyRun = 4;
         }
     }
 
@@ -55,7 +72,7 @@ export class BookingPageDentalChart extends React.Component<any, any> {
         //Will set the array up to fill '0' to ensure buttons stay as the style they are meant to
         //Note that several setState function will set 'preventTotalReload' to true to prevent this to replay
         if (this.state.preventTotalReload == false)
-        {     
+        {
             this.state.dentalChartDataHolderOne[0] = "height: 100px; width: 100px;";
             this.state.dentalChartDataHolderTwo[0] = "height: 100px; width: 100px;";
             this.state.dentalChartDataHolderThree[0] = "height: 100px; width: 100px;";
@@ -65,6 +82,11 @@ export class BookingPageDentalChart extends React.Component<any, any> {
             this.state.dentalChartDataHolderSeven[0] = "height: 100px; width: 100px;";
             this.state.dentalChartDataHolderEight[0] = "height: 100px; width: 100px;";
             this.state.dentalChartDataHolderNine[0] = "height: 100px; width: 100px;";
+            this.state.currentlySelectedProcedureIndex[0] = 0;
+            this.state.currentlySelectedToothIndex[0] = 1;
+
+            this.state.procedureCostStored[0] = treatmentListPrices(0);
+            this.state.procedureTimeStored[0] = treatmentListTimes(0);
         }
 
         //Handles adding a dental chart
@@ -85,10 +107,16 @@ export class BookingPageDentalChart extends React.Component<any, any> {
                 this.state.dentalChartDataHolderEight[this.state.totalCharts] = "height: 100px; width: 100px;";
                 this.state.dentalChartDataHolderNine[this.state.totalCharts] = "height: 100px; width: 100px;";
 
+                this.state.currentlySelectedProcedureIndex[this.state.totalCharts] = 0;
+                this.state.currentlySelectedToothIndex[this.state.totalCharts] = 1;
+
                 //Updates which chart is currently selected to newly made chart
                 this.setState({
-                    currentlySelectedChart: this.state.totalCharts
+                    currentlySelectedChart: this.state.totalCharts,
                 });
+
+                this.state.procedureCostStored[this.state.totalCharts] = treatmentListPrices(this.state.currentlySelectedProcedureIndex[this.state.totalCharts]);
+                this.state.procedureTimeStored[this.state.totalCharts] = treatmentListTimes(this.state.currentlySelectedProcedureIndex[this.state.totalCharts]);
 
                 //Sets the buttons to the new index created to display the correct chart after creation
                 this.setState({
@@ -100,7 +128,10 @@ export class BookingPageDentalChart extends React.Component<any, any> {
                     buttonSix: this.state.dentalChartDataHolderSix[this.state.totalCharts],
                     buttonSeven: this.state.dentalChartDataHolderSeven[this.state.totalCharts],
                     buttonEight: this.state.dentalChartDataHolderEight[this.state.totalCharts],
-                    buttonNine: this.state.dentalChartDataHolderNine[this.state.totalCharts]
+                    buttonNine: this.state.dentalChartDataHolderNine[this.state.totalCharts],
+
+                    procedurePricePrinted: this.state.procedureCostStored[this.state.totalCharts],
+                    procedureTimePrinted: this.state.procedureTimeStored[this.state.totalCharts]
                 });
             }
         }
@@ -127,6 +158,9 @@ export class BookingPageDentalChart extends React.Component<any, any> {
                         this.state.dentalChartDataHolderSeven[num] = this.state.dentalChartDataHolderSeven[num + 1];
                         this.state.dentalChartDataHolderEight[num] = this.state.dentalChartDataHolderEight[num + 1];
                         this.state.dentalChartDataHolderNine[num] = this.state.dentalChartDataHolderNine[num + 1];
+
+                        this.state.currentlySelectedProcedureIndex[num] = this.state.currentlySelectedProcedureIndex[num + 1];
+                        this.state.currentlySelectedToothIndex[num] = this.state.currentlySelectedToothIndex[num + 1];
                     }
 
                     //Changes the tooth back to the first index
@@ -141,7 +175,10 @@ export class BookingPageDentalChart extends React.Component<any, any> {
                         buttonEight: this.state.dentalChartDataHolderEight[0],
                         buttonNine: this.state.dentalChartDataHolderNine[0],
                         totalCharts: this.state.totalCharts - 1,
-                        currentlySelectedChart: 0
+                        currentlySelectedChart: 0,
+
+                        procedurePricePrinted: this.state.procedureCostStored[0],
+                        procedureTimePrinted: this.state.procedureTimeStored[0]
                     });
                 }
             }
@@ -167,7 +204,10 @@ export class BookingPageDentalChart extends React.Component<any, any> {
                         buttonSix: this.state.dentalChartDataHolderSix[this.state.currentlySelectedChart],
                         buttonSeven: this.state.dentalChartDataHolderSeven[this.state.currentlySelectedChart],
                         buttonEight: this.state.dentalChartDataHolderEight[this.state.currentlySelectedChart],
-                        buttonNine: this.state.dentalChartDataHolderNine[this.state.currentlySelectedChart]
+                        buttonNine: this.state.dentalChartDataHolderNine[this.state.currentlySelectedChart],
+
+                        procedurePricePrinted: this.state.procedureCostStored[this.state.currentlySelectedChart],
+                        procedureTimePrinted: this.state.procedureTimeStored[this.state.currentlySelectedChart]
                     });
                 }
                 
@@ -194,20 +234,43 @@ export class BookingPageDentalChart extends React.Component<any, any> {
                         buttonSix: this.state.dentalChartDataHolderSix[this.state.currentlySelectedChart],
                         buttonSeven: this.state.dentalChartDataHolderSeven[this.state.currentlySelectedChart],
                         buttonEight: this.state.dentalChartDataHolderEight[this.state.currentlySelectedChart],
-                        buttonNine: this.state.dentalChartDataHolderNine[this.state.currentlySelectedChart]
+                        buttonNine: this.state.dentalChartDataHolderNine[this.state.currentlySelectedChart],
+
+                        procedurePricePrinted: this.state.procedureCostStored[this.state.currentlySelectedChart],
+                        procedureTimePrinted: this.state.procedureTimeStored[this.state.currentlySelectedChart]
                     });
                 }
             }
         }
 
         //Handles and changes the text for the procedure type during booking edit and creation
-        const textHandlerProcedure = {
-            currentTextChanged: (currentText:any) =>{
-                
-                this.state.procedure[this.state.currentlySelectedChart] = currentText;
+        const indexHanlderProcedure = {
+            currentIndexChanged: (currentText:any) =>{
+               
+                this.state.currentlySelectedProcedureIndex[this.state.currentlySelectedChart] = currentText
+                this.state.procedure[this.state.currentlySelectedChart] = treatmentListTreatments(currentText);
             }
         }
 
+        const indexHanlderTooth = {
+            currentIndexChanged: (currentText:any) =>{
+               
+                this.state.currentlySelectedToothIndex[this.state.currentlySelectedChart] = currentText
+                //this.state.procedure[this.state.currentlySelectedChart] = treatmentListTreatments(currentText);
+            }
+        }
+
+        const setProcedurePriceAndTime = {
+            clicked: () =>{
+
+                this.setState({
+                    procedurePricePrinted: treatmentListPrices(this.state.currentlySelectedProcedureIndex[this.state.currentlySelectedChart]),
+                    procedureTimePrinted: treatmentListTimes(this.state.currentlySelectedProcedureIndex[this.state.currentlySelectedChart]),
+                    preventTotalReload: true
+                });
+            }
+        }
+         
         const textHandlerNotes = {
             textChanged: (textValue:any) =>{
 
@@ -216,6 +279,32 @@ export class BookingPageDentalChart extends React.Component<any, any> {
 
                 this.setState({
                     //TODO: replace past a specific length
+                })
+            }
+        }
+
+        //TODO--------------------------------------------------------------------------------------------------------------------
+        const textHandlerCost = {
+            textChanged: (textValue:any) =>{
+
+                this.state.procedureCostStored[this.state.currentlySelectedChart] = textValue;
+                
+
+                this.setState({
+                    procedurePricePrinted: textValue
+                })
+            }
+        }
+
+        //TODO--------------------------------------------------------------------------------------------------------------------
+        const textHandlerTime = {
+            textChanged: (textValue:any) =>{
+
+                this.state.procedureTimeStored[this.state.currentlySelectedChart] = textValue;
+                
+
+                this.setState({
+                    procedureTimePrinted: textValue
                 })
             }
         }
@@ -352,7 +441,7 @@ export class BookingPageDentalChart extends React.Component<any, any> {
   
                 <View style="flex-direction: 'row';">
                     <View style={containerStyle}>
-  
+
                         <View style="flex: 0; flex-direction: 'row';">
                             <Button text="-" style="width: 150px;" on={dentalChartRemoveHandler}></Button>
                             <Button text="+" style="width: 150px;" on={dentalChartAddHandler}></Button>
@@ -369,15 +458,22 @@ export class BookingPageDentalChart extends React.Component<any, any> {
                         <View style="flex: 0; flex-direction: 'row';">
                             {buttonRowThree}
                         </View>
-                    
-                        <View style="flex: 0; flex-direction: 'row';">
-                            <Text>{"Currently selected chart: " + this.state.currentlySelectedChart}</Text>
-                        </View>
 
                         <View style="flex: 0; flex-direction: 'row';">
-                            <Button text="<" style="width: 150px;" on={dentalChartDisplayedLeftHanlder}></Button>
-                            <Button text=">" style="width: 150px;" on={dentalChartDisplayedRightHanlder}></Button>
+                            <Button text="<" style="width: 100px;" on={dentalChartDisplayedLeftHanlder}></Button>
+
+                            <Text style={"flex: 1; border: 1px solid black; background: 'LightGrey'; width: 100px;"}>
+                                {"Chart: " + (this.state.currentlySelectedChart + 1) + "/ " + (this.state.totalCharts + 1)}
+                            </Text>
+                            
+                            <Button text=">" style="width: 100px;" on={dentalChartDisplayedRightHanlder}></Button>
                         </View>
+
+                        {/* <View style="flex: 0; flex-direction: 'row';">
+                            <Text style={"flex: 1; border: 1px solid black; background: 'LightGrey';"}>
+                                {"Selected chart: " + (this.state.currentlySelectedChart + 1) + "/ " + (this.state.totalCharts + 1)}
+                            </Text>
+                        </View> */}
 
                     </View>
   
@@ -388,27 +484,36 @@ export class BookingPageDentalChart extends React.Component<any, any> {
                         <View style="flex-direction: 'row';">
                             <View style={"flex-grow: 1 0 0; background: 'white';"}>
 
-                                <View style="margin: 0px; flex-direction: 'row';">
-                                    <Text style={"flex: 1; border: 1px solid black; background: 'LightGrey';"}>Placeholder text 1</Text>
-                                    <ComboBox style={"flex: 2;"} items={treatmentList()} currentText={this.state.procedure[this.state.currentlySelectedChart]} 
-                                    on={textHandlerProcedure} />
+                                <View style="margin-left: 10px; flex-direction: 'row';">
+                                    <Text style={"flex: 1; border: 1px solid black; background: 'LightGrey';"}>Tooth</Text>
+                                    <ComboBox style={"flex: 2;"} items={toothComboBox()} currentIndex={this.state.currentlySelectedToothIndex[this.state.currentlySelectedChart]}
+                                    on={indexHanlderTooth} />
                                 </View>
 
-                                <View style="margin: 0px; flex-direction: 'row';">
-                                    <Text style={"flex: 1; border: 1px solid black; background: 'LightGrey';"}>Placeholder text 1</Text>
-                                    <ComboBox style={"flex: 2;"} items={treatmentList()} currentText={this.state.procedure[this.state.currentlySelectedChart]} 
-                                    on={textHandlerProcedure} />
+                                <View style="margin-left: 10px; flex-direction: 'row';">
+                                    <Text style={"flex: 1; border: 1px solid black; background: 'LightGrey';"}>Procedure</Text>
+                                    <ComboBox style={"flex: 2;"} items={treatmentList()} currentIndex={this.state.currentlySelectedProcedureIndex[this.state.currentlySelectedChart]}
+                                    on={indexHanlderProcedure} />
                                 </View>
 
+                                <View style="margin-left: 10px; flex-direction: 'row';">
+                                    {/* <Text style={"flex: 1; border: 1px solid black; background: 'LightGrey';"}>{"$" + this.state.procedurePricePrinted}</Text>
+                                    <Text style={"flex: 1; border: 1px solid black; background: 'LightGrey';"}>{this.state.procedureTimePrinted}</Text> */}
+                                    <LineEdit style={"flex: 2;"} on={textHandlerCost} text={this.state.procedureCostStored[this.state.currentlySelectedChart]} />
+                                    <LineEdit style={"flex: 2;"} on={textHandlerTime} text={this.state.procedureTimeStored[this.state.currentlySelectedChart]} />
+                                    <Button on={setProcedurePriceAndTime} text={"Default"}></Button>
+                                </View>
+                                
                                 <View style="margin: 10px;"></View>
 
-                                <View style="margin: 0px; flex-direction: 'row';">
-                                    <Text style={"flex: 1; border: 1px solid black; background: 'LightGrey';"}>Placeholder text 2</Text>
-                                    <LineEdit style={"flex: 2;"} on={textHandlerNotes} text={this.state.patientNotes[this.state.currentlySelectedChart]} />
+                                <View style="margin-left: 10px; flex-direction: 'row';">
+                                    <Text style={"flex: 1; border: 1px solid black; background: 'LightGrey';"}>Notes</Text>
                                 </View>
 
-                                <Button text={"Placeholder"} style={"flex-grow: 0 0 0;"}></Button>
-
+                                <View style="margin-left: 10px; flex-direction: 'row';">
+                                    <LineEdit style={"flex: 2;"} on={textHandlerNotes} text={this.state.patientNotes[this.state.currentlySelectedChart]} />
+                                </View>
+                                
                             </View>
                         </View>
                     </View>

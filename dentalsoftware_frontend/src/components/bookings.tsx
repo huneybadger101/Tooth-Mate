@@ -8,6 +8,7 @@ import { addLeadingZeros, replaceStringAtLength, NHIcorrectFormatCheck } from ".
 import { viewBooking } from "./Calendarhelpers/viewBookingSelected";
 import Alert from "./alert";
 import axios from 'axios';
+import { BookingPageDentalChart } from "./Calendarhelpers/bookingDentalChart";
 
 declare type ComboBoxItem = {
     text: string;
@@ -624,14 +625,11 @@ export class Bookings extends React.Component<any, any> {
                         <ComboBox style={"flex: 2;"} items={this.state.dentists} currentText={"Please select a dentist"} on={textHandlerDentistSelected} />
                     </View>
 
-                    <View style="margin: 0px; flex-direction: 'row';">
-                        <Text style={"flex: 1; border: 1px solid black; background: 'LightGrey';"}>Procedure</Text>
-                        <ComboBox style={"flex: 2;"} items={treatmentList()} currentText={this.state.procedure[this.state.currentBookingSelected]} on={textHandlerProcedure} />
-                    </View>
+                    <View style="margin: 10px;"></View>
 
                     <View style="margin: 0px; flex-direction: 'row';">
-                        <Text style={"flex: 1; border: 1px solid black; background: 'LightGrey';"}>Areas affected</Text>
-                        <LineEdit style={"flex: 2;"} on={textHandlerAreasAffected} text={this.state.areasAffected[this.state.currentBookingSelected]} />
+                        {/*textHandlerAreasAffected*/}
+                        <BookingPageDentalChart></BookingPageDentalChart>
                     </View>
 
                     
