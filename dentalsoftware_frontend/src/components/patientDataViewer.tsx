@@ -9,20 +9,32 @@ export class PatientDataViewer extends React.Component<any, any> {
         super(props);
 
         this.state = {
-            patients: null
+            patients: null,
+            bookings: null
         }
 
         axios.post('http://localhost:3000/getAllPatientData')
         .then((res) => {
-            this.setState({
-                patients: res.data.result,
-                selectedPatientNHI: null,
-                selectedPatientName: null,
-                selectedPatientDOB: null,
-                selectedPatientNumber: null,
-                selectedPatientEmail: null,
-                selectedPatientNotes: null
+            axios.post('http://localhost:3000/getAllBookings')
+            .then((resBookings) => {
+
+                this.setState({
+                    patients: res.data.result,
+                    bookings: resBookings.data.result,
+                    selectedPatientNHI: null,
+                    selectedPatientName: null,
+                    selectedPatientDOB: null,
+                    selectedPatientNumber: null,
+                    selectedPatientEmail: null,
+                    selectedPatientNotes: null,
+                    selectedLastBooking: null,
+                    selectedNextBooking: null
+                })
+
             })
+            .catch((err) => {
+                console.log(err)
+            });
         })
         .catch((err) => {
             console.log(err)
@@ -32,6 +44,33 @@ export class PatientDataViewer extends React.Component<any, any> {
 
     buttonHandler = (index: number) => {
         const patient = this.state.patients[index];
+        let currentDate = new Date();
+        let booking = [];
+        let lastBooking;
+        let nextBooking;
+
+        for (let i = 0; i < this.state.bookings.length; i++) {
+            if (this.state.bookings[i]['Patient'] == patient['ID']) {
+                booking.push(this.state.bookings[i]);
+            }
+        }
+
+        for (let i = 0; i < booking.length; i++) {
+            let tempDate = new Date(booking[i]['Date']);
+            if (tempDate < currentDate) {
+                lastBooking = booking[i]['Date'];
+            } else if (tempDate > currentDate) {
+                nextBooking = booking[i]['Date'];
+            }
+        }
+
+        if (lastBooking == undefined) {
+            lastBooking = "No previous bookings!"
+        }
+
+        if (nextBooking == undefined) {
+            nextBooking = "No upcoming bookings!"
+        }
 
         this.setState({
             selectedPatientNHI: patient['NHI'],
@@ -39,7 +78,9 @@ export class PatientDataViewer extends React.Component<any, any> {
             selectedPatientDOB: patient['DOB'],
             selectedPatientNumber: patient['ContactNumber'],
             selectedPatientEmail: patient['Email'],
-            selectedPatientNotes: patient['Notes']
+            selectedPatientNotes: patient['Notes'],
+            selectedLastBooking: lastBooking,
+            selectedNextBooking: nextBooking
         })
     }
 
@@ -50,7 +91,7 @@ export class PatientDataViewer extends React.Component<any, any> {
         let patientListStrings = [];
 
         for (let i in patientList) {
-            patientListStrings.push(<Button style="flex: 1; width: 100px; color: 'black'; font-size: 35px;" text={patientList[i].FirstName + " " + patientList[i].LastName} on={
+            patientListStrings.push(<Button style="flex: 1; color: 'black'; font-size: 35px;" text={patientList[i].FirstName + " " + patientList[i].LastName} on={
                     {
                         // Only trigger when left click is released
                         [WidgetEventTypes.MouseButtonRelease]: () => this.buttonHandler(Number(i)),
@@ -65,6 +106,9 @@ export class PatientDataViewer extends React.Component<any, any> {
         const selectedPatientNumber = this.state.selectedPatientNumber;
         const selectedPatientEmail = this.state.selectedPatientEmail;
         const selectedPatientNotes = this.state.selectedPatientNotes;
+
+        const selectedPatientLastBooking = this.state.selectedLastBooking;
+        const selectedPatientNextBooking = this.state.selectedNextBooking;
 
         const textStyle = "color: 'black'; font-size: 35px;";
 
@@ -88,8 +132,8 @@ export class PatientDataViewer extends React.Component<any, any> {
                     </View>
 
                     <View style="flex: 2; flex-direction: 'column';">
-                        <Text style={textStyle}>Details here about patients last visit:</Text>
-                        <Text style={textStyle}>Details here about patients next booking:</Text>
+                        <Text style={textStyle}>{selectedPatientName}'s Last Booking: {selectedPatientLastBooking}</Text>
+                        <Text style={textStyle}>{selectedPatientName}'s Next Booking: {selectedPatientNextBooking}</Text>
                     </View>
                 </View>
             </View>
