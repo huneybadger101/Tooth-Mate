@@ -22,7 +22,7 @@ export class PatientDataViewer extends React.Component<any, any> {
             alertView: null
         }
 
-        axios.post('http://localhost:3000/getAllPatientData')
+        axios.post('http://localhost:3000/patients/getAllPatientData')
         .then((res) => {
             this.setState({
                 patients: res.data.result,
@@ -138,7 +138,7 @@ export class PatientDataViewer extends React.Component<any, any> {
                     patient_Email_Address: this.state.currentEmailAddress,
                     patient_Notes: this.state.currentNotes,
                 }
-                axios.post('http://localhost:3000/createNewPatient', null, {
+                axios.post('http://localhost:3000/patients/createNewPatient', null, {
                     headers: {
                         'data': JSON.stringify(patientData)
                     }

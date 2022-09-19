@@ -37,13 +37,13 @@ export class QuoteCreator extends React.Component<any, any> {
             QuoteHelper.alreadyRun = 0;
         } 
 
-        axios.post('http://localhost:3000/getAllQuotes')
+        axios.post('http://localhost:3000/quotes/getAllQuotes')
         .then((resQuotes) => {
-            axios.post('http://localhost:3000/getAllBookings')
+            axios.post('http://localhost:3000/bookings/getAllBookings')
             .then((resBookings) => {
-                axios.post('http://localhost:3000/getAllPatientData')
+                axios.post('http://localhost:3000/patients/getAllPatientData')
                 .then((resPatients) => {
-                    axios.post('http://localhost:3000/getAllAccounts')
+                    axios.post('http://localhost:3000/accounts/getAllAccounts')
                     .then((resAccounts) => {
 
                         let bookings: ComboBoxItem[] = [];
@@ -154,7 +154,7 @@ export class QuoteCreator extends React.Component<any, any> {
                     totalCostDollars: this.state.currentTotalCost.split(".")[0],
                     totalCostCents: this.state.currentTotalCost.split(".")[1]
                 }
-                axios.post('http://localhost:3000/createNewQuote', null, {
+                axios.post('http://localhost:3000/quotes/createNewQuote', null, {
                     headers: {
                         'data': JSON.stringify(quoteData)
                     }

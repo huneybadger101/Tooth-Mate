@@ -19,7 +19,7 @@ export const createBooking = async (PatientID:Number, Date:string, Time:string,
         let result: any = null;
         let view: any = null;
         return(await 
-            axios.post('http://localhost:3000/createNewBooking', null, {
+            axios.post('http://localhost:3000/bookings/createNewBooking', null, {
                 headers: {
                     'data': JSON.stringify(bookingData)
                 }

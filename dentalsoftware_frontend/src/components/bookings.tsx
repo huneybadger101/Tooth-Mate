@@ -59,9 +59,9 @@ export class Bookings extends React.Component<any, any> {
             oldValuesPatientNotes: [],
         }
 
-        axios.post('http://localhost:3000/getAllPatientData')
+        axios.post('http://localhost:3000/patients/getAllPatientData')
         .then((res) => {
-            axios.post('http://localhost:3000/getAllAccounts')
+            axios.post('http://localhost:3000/accounts/getAllAccounts')
             .then((resAccount) => {
                 let patients: ComboBoxItem[] = [];
 
@@ -75,7 +75,7 @@ export class Bookings extends React.Component<any, any> {
                     dentists.push({text: resAccount.data.result[i]['AccountName']})
                 }
 
-                axios.post('http://localhost:3000/getAllBookings')
+                axios.post('http://localhost:3000/bookings/getAllBookings')
                 .then((resBooking) => {
                     var bookingDisplayed: any = [];
                     for (let i = 0; i < resBooking.data.result.length; i++) {

@@ -23,7 +23,7 @@ export class Login extends React.Component<any, any> {
 
     loginButtonHandler = () => {
         // Send username + password to API for checking, if good then login user, if bad then reject login
-        axios.post('http://localhost:3000/loginAccount', null, {
+        axios.post('http://localhost:3000/login/loginAccount', null, {
             headers: {
                 'username': this.state.username,
                 'password': this.state.password,
@@ -75,7 +75,7 @@ export class Login extends React.Component<any, any> {
             'Contact_Number': this.state.phone
         }
 
-        axios.post('http://localhost:3000/createNewAccount', null, {
+        axios.post('http://localhost:3000/accounts/createNewAccount', null, {
             headers: {
                 'data': JSON.stringify(data)
             }

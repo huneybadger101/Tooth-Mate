@@ -13,13 +13,13 @@ export class QuoteViewer extends React.Component<any, any> {
             quotes: null
         }
 
-        axios.post('http://localhost:3000/getAllQuotes')
+        axios.post('http://localhost:3000/quotes/getAllQuotes')
         .then((resQuotes) => {
-            axios.post('http://localhost:3000/getAllBookings')
+            axios.post('http://localhost:3000/bookings/getAllBookings')
             .then((resBookings) => {
-                axios.post('http://localhost:3000/getAllPatientData')
+                axios.post('http://localhost:3000/patients/getAllPatientData')
                 .then((resPatients) => {
-                    axios.post('http://localhost:3000/getAllAccounts')
+                    axios.post('http://localhost:3000/accounts/getAllAccounts')
                     .then((resAccounts) => {
                         this.setState({
                             quotes: resQuotes.data.result,
