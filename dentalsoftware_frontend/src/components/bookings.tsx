@@ -8,6 +8,7 @@ import { addLeadingZeros, replaceStringAtLength, NHIcorrectFormatCheck } from ".
 import { viewBooking } from "./Calendarhelpers/viewBookingSelected";
 import Alert from "./alert";
 import axios from 'axios';
+import { BookingPageDentalChart } from "./Calendarhelpers/bookingDentalChart";
 
 declare type ComboBoxItem = {
     text: string;
@@ -42,6 +43,7 @@ export class Bookings extends React.Component<any, any> {
             areasAffected: [],
             patientNotes: [],
             patients: null,
+            patientsViewed: null,
             dentists: null,
             patientsData: null,
             dentistsData: null,
@@ -57,6 +59,9 @@ export class Bookings extends React.Component<any, any> {
             oldValuesProcedure: [],
             oldValuesAreasAffected: [],
             oldValuesPatientNotes: [],
+
+            patientContactNumberSearch: "",
+            patientNHINumberSearch: ""
         }
 
         axios.post('http://localhost:3000/patients/getAllPatientData')
@@ -68,6 +73,10 @@ export class Bookings extends React.Component<any, any> {
                 for (let i = 0; i < res.data.result.length; i++) {
                     patients.push({text: res.data.result[i]['FirstName'] + " " + res.data.result[i]['LastName']})
                 }
+
+                this.setState({
+                    patientsViewed: patients
+                });
 
                 let dentists: ComboBoxItem[] = [];
 
@@ -194,11 +203,63 @@ export class Bookings extends React.Component<any, any> {
                 for (let i = 0; i < this.state.patientsData.length; i++) {
                     let tempName = this.state.patientsData[i]['FirstName'] + " " + this.state.patientsData[i]['LastName'];
                     if (currentText == tempName) {
-                        patientID = this.state.patientsData[i]['ID'];;
+                        patientID = this.state.patientsData[i]['ID'];
                         break;
                     }
                 }
                 this.state.patientName[this.state.currentBookingSelected] = patientID;
+            }
+        }
+
+        const textHandlerPatientContactNumberSearch = {
+            textChanged: (textValue:any) =>{
+
+                this.setState({
+                    patientContactNumberSearch: textValue
+                })
+
+                let patientsViewedTemp: ComboBoxItem[] = [];
+
+                //Will loop through the patient table and check if the text provided matches several patient records
+                //If it does, it will be saved into a combobox item to display as an avalaible patient to select
+                for (let i = 0; i < this.state.patientsData.length; i++)
+                {
+                    if (this.state.patientsData[i]['FirstName'].toLowerCase().includes(textValue.toLowerCase()) == true)
+                    {
+                        patientsViewedTemp.push({text: this.state.patientsData[i]["FirstName"] + " " + this.state.patientsData[i]["LastName"]})
+                    }
+                    else if ((this.state.patientsData[i]['FirstName'].toLowerCase() + " " + 
+                    this.state.patientsData[i]["LastName"].toLowerCase()).includes(textValue.toLowerCase()) == true)
+                    {
+                        patientsViewedTemp.push({text: this.state.patientsData[i]["FirstName"] + " " + this.state.patientsData[i]["LastName"]})
+                    }
+                    else if ((this.state.patientsData[i]['FirstName'].toLowerCase() + " " + 
+                    this.state.patientsData[i]['MiddleName'].toLowerCase() + " " + 
+                    this.state.patientsData[i]["LastName"].toLowerCase()).includes(textValue.toLowerCase()) == true)
+                    {
+                        patientsViewedTemp.push({text: this.state.patientsData[i]["FirstName"] + " " + this.state.patientsData[i]["LastName"]})
+                    }
+                    else if (this.state.patientsData[i]['LastName'].toLowerCase().includes(textValue.toLowerCase()) == true)
+                    {
+                        patientsViewedTemp.push({text: this.state.patientsData[i]["FirstName"] + " " + this.state.patientsData[i]["LastName"]})
+                    }
+                    else if (this.state.patientsData[i]['NHI'].toLowerCase().includes(textValue.toLowerCase()) == true)
+                    {
+                        patientsViewedTemp.push({text: this.state.patientsData[i]["FirstName"] + " " + this.state.patientsData[i]["LastName"]})
+                    }
+                    else if (this.state.patientsData[i]['ContactNumber'].includes(textValue) == true)
+                    {
+                        patientsViewedTemp.push({text: this.state.patientsData[i]["FirstName"] + " " + this.state.patientsData[i]["LastName"]})
+                    }
+                    else if (this.state.patientsData[i]['Email'].toLowerCase().includes(textValue.toLowerCase()) == true)
+                    {
+                        patientsViewedTemp.push({text: this.state.patientsData[i]["FirstName"] + " " + this.state.patientsData[i]["LastName"]})
+                    }
+                }
+
+                this.setState({
+                    patientsViewed: patientsViewedTemp
+                })
             }
         }
 
@@ -243,21 +304,6 @@ export class Bookings extends React.Component<any, any> {
                 this.state.areasAffected[this.state.currentBookingSelected] = textValue.replace(/[^0-9,! ]+/g, '');
                 this.setState({
                     editButtonClicked: true
-                })
-            }
-        }
-
-        //TODO
-        const textHandlerNotes = {
-            textChanged: (textValue:any) =>{
-
-                this.state.patientNotes[this.state.currentBookingSelected] = textValue.replace(/[^a-zA-Z0-9,! ]+/g, '');
-                this.setState({
-                    editButtonClicked: true
-                })
-
-                this.setState({
-                    //TODO: replace past a specific length
                 })
             }
         }
@@ -541,8 +587,16 @@ export class Bookings extends React.Component<any, any> {
             <View style={containerStyle}>
 
                     <View style="margin: 0px; flex-direction: 'row';">
+                        <Text style={"flex: 1; border: 1px solid black; background: 'LightGrey';"}>Search patient via contact number</Text>
+                        <LineEdit style={"flex: 2;"} text={this.state.patientContactNumberSearch} on={textHandlerPatientContactNumberSearch} />
+                    </View>
+
+            
+
+                    <View style="margin: 0px; flex-direction: 'row';">
                         <Text style={"flex: 1; border: 1px solid black; background: 'LightGrey';"}>Patient</Text>
-                        <ComboBox style={"flex: 2;"} items={this.state.patients} currentText={"Please select a patient"} on={textHandlerPatientSelected} />
+                        <ComboBox style={"flex: 2;"} items={this.state.patientsViewed} currentText={"Please select a patient"} on={textHandlerPatientSelected} />
+
                     </View>
 
 
@@ -572,27 +626,20 @@ export class Bookings extends React.Component<any, any> {
                         <ComboBox style={"flex: 2;"} items={this.state.dentists} currentText={"Please select a dentist"} on={textHandlerDentistSelected} />
                     </View>
 
-                    <View style="margin: 0px; flex-direction: 'row';">
-                        <Text style={"flex: 1; border: 1px solid black; background: 'LightGrey';"}>Procedure</Text>
-                        <ComboBox style={"flex: 2;"} items={treatmentList()} currentText={this.state.procedure[this.state.currentBookingSelected]} on={textHandlerProcedure} />
-                    </View>
+                    <View style="margin: 10px;"></View>
 
                     <View style="margin: 0px; flex-direction: 'row';">
-                        <Text style={"flex: 1; border: 1px solid black; background: 'LightGrey';"}>Areas affected</Text>
-                        <LineEdit style={"flex: 2;"} on={textHandlerAreasAffected} text={this.state.areasAffected[this.state.currentBookingSelected]} />
+                        {/*textHandlerAreasAffected*/}
+                        <BookingPageDentalChart></BookingPageDentalChart>
                     </View>
 
-                    <View style="margin: 0px; flex-direction: 'row';">
-                        <Text style={"flex: 1; border: 1px solid black; background: 'LightGrey';"}>Patient notes</Text>
-                        <LineEdit style={"flex: 2;"} on={textHandlerNotes} text={this.state.patientNotes[this.state.currentBookingSelected]} />
-                    </View>
+                    
 
                     <View style="margin: 10px;"></View>
 
                     <Button text={"Complete"} on={buttonHandlerCompleteEditOrCreation}></Button>
 
                 </View>
-                
                 </View>
         );
 

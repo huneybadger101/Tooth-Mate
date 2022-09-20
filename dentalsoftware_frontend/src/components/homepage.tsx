@@ -2,6 +2,7 @@ import { Button, Text, View } from "@nodegui/react-nodegui";
 import {  WidgetEventTypes } from "@nodegui/nodegui";
 import React from "react";
 import Calendar from "./calendar";
+import BookingPageDentalCharts from "./Calendarhelpers/bookingDentalChart";
 import PatientDataViewer from "./PatientDataViewer";
 import PatientCreator from "./patientCreator";
 import QuoteViewer from "./quoteViewer";
