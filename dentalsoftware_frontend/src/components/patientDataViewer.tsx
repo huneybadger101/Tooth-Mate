@@ -1,5 +1,6 @@
 import { Text, View, Button, LineEdit } from "@nodegui/react-nodegui";
 import {  WidgetEventTypes } from "@nodegui/nodegui";
+import TicketCreator from "./TicketCreator";
 import React from "react";
 import axios from 'axios';
 
@@ -11,14 +12,7 @@ export class PatientDataViewer extends React.Component<any, any> {
         this.state = {
             patients: null,
             bookings: null,
-            edit: false,
-            editingVisits: [],
-            editingVisitTeeth: [],
-            editingNumVisits: 0,
-            editingSelectedVisit: 0,
-            editingSelectedTooth: 0,
-            editingNumTeeth: 0,
-            selectedIndex: null
+            edit: false
         }
 
         axios.post('http://localhost:3000/patients/getAllPatientData')
@@ -29,6 +23,7 @@ export class PatientDataViewer extends React.Component<any, any> {
                 this.setState({
                     patients: res.data.result,
                     bookings: resBookings.data.result,
+                    selectedPatientID: null,
                     selectedPatientNHI: null,
                     selectedPatientName: null,
                     selectedPatientDOB: null,
@@ -81,6 +76,7 @@ export class PatientDataViewer extends React.Component<any, any> {
         }
 
         this.setState({
+            selectedPatientID: patient['ID'],
             selectedPatientNHI: patient['NHI'],
             selectedPatientName: patient['FirstName'] + " " + patient['LastName'],
             selectedPatientDOB: patient['DOB'],
@@ -90,76 +86,6 @@ export class PatientDataViewer extends React.Component<any, any> {
             selectedLastBooking: lastBooking,
             selectedNextBooking: nextBooking,
             selectedIndex: index
-        })
-    }
-
-    createTicket = () => {
-        this.setState({
-            edit: true,
-            editingVisits: [{
-                Date: new Date().toISOString().split('T')[0],
-                Time: new Date().toLocaleTimeString(),
-                LengthOfVisit: "60"
-            }],
-            editingVisitTeeth: [
-                {
-                    VisitNumber: 0,
-                    Tooth: 0, // Make this the id of the first index of the selected patients teeth
-                    ProcedureName: "Procedure",
-                    ProcedureCostDollars: "10",
-                    ProcedureCostCents: "0"
-                },
-                {
-                    VisitNumber: 0,
-                    Tooth: 23, // Make this the id of the first index of the selected patients teeth
-                    ProcedureName: "ProcedureASDASD",
-                    ProcedureCostDollars: "1213120",
-                    ProcedureCostCents: "02"
-                }
-            ],
-            editingSelectedVisit: 0,
-            editingSelectedTooth: 0,
-        })
-    }
-
-    addVisit = (num:Number) => {
-        let currentVisits = this.state.editingVisits;
-        currentVisits.push({
-            Date: new Date().toISOString().split('T')[0],
-            Time: new Date().toLocaleTimeString(),
-            LengthOfVisit: "60"
-        })
-        let currentTeeth = this.state.editingVisitTeeth;
-        currentTeeth.push({
-            VisitNumber: currentVisits.length - 1,
-            Tooth: 0, // Make this the id of the first index of the selected patients teeth
-            ProcedureName: "Procedure",
-            ProcedureCostDollars: "10",
-            ProcedureCostCents: "0"
-        })
-        this.setState({
-            editingVisits: currentVisits,
-            editingVisitTeeth: currentTeeth,
-            editingSelectedVisit: currentVisits.length - 1,
-            editingSelectedTooth: 0,
-            editingNumVisits: num,
-            editingNumTeeth: currentTeeth.length - 1
-        })
-    }
-
-    addTooth = () => {
-        let currentTeeth = this.state.editingVisitTeeth;
-        currentTeeth.push({
-            VisitNumber: this.state.editingSelectedVisit,
-            Tooth: 23, // Make this the id of the first index of the selected patients teeth
-            ProcedureName: "ProcedureADDEDNEW",
-            ProcedureCostDollars: "10",
-            ProcedureCostCents: "0"
-        })
-        this.setState({
-            editingVisitTeeth: currentTeeth,
-            editingSelectedTooth: currentTeeth.length - 1,
-            editingNumTeeth: currentTeeth.length - 1
         })
     }
 
@@ -193,182 +119,8 @@ export class PatientDataViewer extends React.Component<any, any> {
 
         if (this.state.edit) {
 
-            const textHandlerDate = {
-                textChanged: (textValue:any) =>{
-                    this.state.editingVisits[this.state.editingSelectedVisit]['Date'] = textValue
-                }
-            }
+            return <TicketCreator patient={this.state.selectedPatientID} patients={this.state.patients}/>
 
-            const textHandlerTime = {
-                textChanged: (textValue:any) =>{
-                    this.state.editingVisits[this.state.editingSelectedVisit]['Time'] = textValue
-                }
-            }
-
-            const textHandlerLengthOfVisit = {
-                textChanged: (textValue:any) =>{
-                    this.state.editingVisits[this.state.editingSelectedVisit]['LengthOfVisit'] = textValue
-                }
-            }
-
-            const changeNumberOfVists = (num:Number) => {
-                if (num >= 0 && num > this.state.editingNumVisits) {
-                    this.addVisit(num)
-                } 
-            }
-
-            const move = (num:Number) => {
-                if (num < 0 || num >= this.state.editingVisits.length) {
-                    return;
-                } else {
-                    this.setState({
-                        editingSelectedVisit: num
-                    })
-                }
-            }
-
-            let currentTeeth:any = [];
-
-            for (let i = 0; i < this.state.editingVisitTeeth.length; i++) {
-                if (this.state.editingVisitTeeth[i]['VisitNumber'] == this.state.editingSelectedVisit) {
-                    currentTeeth.push(this.state.editingVisitTeeth[i])
-                }
-            }
-            const textHandlerTooth = {
-                textChanged: (textValue:any) =>{
-                    currentTeeth[this.state.editingSelectedTooth]['Tooth'] = textValue
-                }
-            }
-
-            const textHandlerProcedureName = {
-                textChanged: (textValue:any) =>{
-                    currentTeeth[this.state.editingSelectedTooth]['ProcedureName'] = textValue
-                }
-            }
-
-            const textHandlerProcedureCostDollars = {
-                textChanged: (textValue:any) =>{
-                    currentTeeth[this.state.editingSelectedTooth]['ProcedureCostDollars'] = textValue
-                }
-            }
-
-            const textHandlerProcedureCostCents = {
-                textChanged: (textValue:any) =>{
-                    currentTeeth[this.state.editingSelectedTooth]['ProcedureCostCents'] = textValue
-                }
-            }
-
-            const moveTooth = (num:Number) => {
-                if (num < 0 || num >= currentTeeth.length) {
-                    return;
-                } else {
-                    this.setState({
-                        editingSelectedTooth: num
-                    })
-                }
-            }
-
-            let selectedTooth = 
-            <View style="flex: auto; flex-direction: 'column';">
-                <View style="margin: 0px; flex-direction: 'row';">
-                    <Text style={"flex: 1; border: 1px solid black; background: 'LightGrey';"}>Tooth</Text>
-                    <LineEdit style={"flex: 2;"} on={textHandlerTooth} text={String(currentTeeth[this.state.editingSelectedTooth]['Tooth'])} />
-                </View>
-                <View style="margin: 0px; flex-direction: 'row';">
-                    <Text style={"flex: 1; border: 1px solid black; background: 'LightGrey';"}>Procedure Name</Text>
-                    <LineEdit style={"flex: 2;"} on={textHandlerProcedureName} text={currentTeeth[this.state.editingSelectedTooth]['ProcedureName']} />
-                </View>
-                <View style="margin: 0px; flex-direction: 'row';">
-                    <Text style={"flex: 1; border: 1px solid black; background: 'LightGrey';"}>Procedure Cost Dollars</Text>
-                    <LineEdit style={"flex: 2;"} on={textHandlerProcedureCostDollars} text={currentTeeth[this.state.editingSelectedTooth]['ProcedureCostDollars']} />
-                </View>
-                <View style="margin: 0px; flex-direction: 'row';">
-                    <Text style={"flex: 1; border: 1px solid black; background: 'LightGrey';"}>Procedure Cost Cents</Text>
-                    <LineEdit style={"flex: 2;"} on={textHandlerProcedureCostCents} text={currentTeeth[this.state.editingSelectedTooth]['ProcedureCostCents']} />
-                </View>
-                <View style="margin: 0px; flex-direction: 'row';">
-                    <Button style="flex: 1;" text={"<"} on={
-                        {
-                            // Only trigger when left click is released
-                            [WidgetEventTypes.MouseButtonRelease]: () => moveTooth(this.state.editingSelectedTooth - 1),
-                        }
-                    }/>
-                    <Button style="flex: 1;" text={">"} on={
-                        {
-                            // Only trigger when left click is released
-                            [WidgetEventTypes.MouseButtonRelease]: () => moveTooth(this.state.editingSelectedTooth + 1),
-                        }
-                    }/>
-                </View>
-                <View style="flex: auto; flex-direction: 'row';">
-                        <Button style="flex: 1;" text={"-"} on={
-                            {
-                                // Only trigger when left click is released
-                                [WidgetEventTypes.MouseButtonRelease]: () => this.addTooth(),
-                            }
-                        }/>
-                        <Button style="flex: 1;" text={"+"} on={
-                            {
-                                // Only trigger when left click is released
-                                [WidgetEventTypes.MouseButtonRelease]: () => this.addTooth(),
-                            }
-                        }/>
-                    </View>
-            </View>;
-
-            const editingView = 
-            <View style="flex: auto; flex-direction: 'column';">
-                <Text style={"flex: 1; border: 1px solid black; background: 'LightGrey';"}>Visit {this.state.editingSelectedVisit + 1}</Text>
-                <View style="margin: 0px; flex-direction: 'row';">
-                    <Text style={"flex: 1; border: 1px solid black; background: 'LightGrey';"}>Date</Text>
-                    <LineEdit style={"flex: 2;"} on={textHandlerDate} text={this.state.editingVisits[this.state.editingSelectedVisit]['Date']} />
-                </View>
-                <View style="margin: 0px; flex-direction: 'row';">
-                    <Text style={"flex: 1; border: 1px solid black; background: 'LightGrey';"}>Time</Text>
-                    <LineEdit style={"flex: 2;"} on={textHandlerTime} text={this.state.editingVisits[this.state.editingSelectedVisit]['Time']} />
-                </View>
-                <View style="margin: 0px; flex-direction: 'row';">
-                    <Text style={"flex: 1; border: 1px solid black; background: 'LightGrey';"}>Length of Visit</Text>
-                    <LineEdit style={"flex: 2;"} on={textHandlerLengthOfVisit} text={this.state.editingVisits[this.state.editingSelectedVisit]['LengthOfVisit']} />
-                </View>
-
-                {selectedTooth}
-
-            </View>
-
-            return (
-                <View style="flex: auto;">
-                    {editingView}
-                    <View style="flex: auto; flex-direction: 'row';">
-                        <Button style="flex: 1;" text={"<"} on={
-                            {
-                                // Only trigger when left click is released
-                                [WidgetEventTypes.MouseButtonRelease]: () => move(this.state.editingSelectedVisit - 1),
-                            }
-                        }/>
-                        <Button style="flex: 1;" text={">"} on={
-                            {
-                                // Only trigger when left click is released
-                                [WidgetEventTypes.MouseButtonRelease]: () => move(this.state.editingSelectedVisit + 1),
-                            }
-                        }/>
-                    </View>
-                    <View style="flex: auto; flex-direction: 'row';">
-                        <Button style="flex: 1;" text={"-"} on={
-                            {
-                                // Only trigger when left click is released
-                                [WidgetEventTypes.MouseButtonRelease]: () => changeNumberOfVists(this.state.editingNumVisits - 1),
-                            }
-                        }/>
-                        <Button style="flex: 1;" text={"+"} on={
-                            {
-                                // Only trigger when left click is released
-                                [WidgetEventTypes.MouseButtonRelease]: () => changeNumberOfVists(this.state.editingNumVisits + 1),
-                            }
-                        }/>
-                    </View>
-                </View>
-            );
         } else {
             return (
                 <View style="flex: auto;">
@@ -398,7 +150,7 @@ export class PatientDataViewer extends React.Component<any, any> {
                             <Button style="flex: 1; color: 'black'; font-size: 35px;" text={"Create Ticket"} on={
                                 {
                                     // Only trigger when left click is released
-                                    [WidgetEventTypes.MouseButtonRelease]: () => this.createTicket(),
+                                    [WidgetEventTypes.MouseButtonRelease]: () => this.setState({edit: true}),
                                 }
                             }/>
                         </View>
