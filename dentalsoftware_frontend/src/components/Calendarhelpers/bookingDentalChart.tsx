@@ -263,6 +263,17 @@ export class BookingPageDentalChart extends React.Component<any, any> {
         const setProcedurePriceAndTime = {
             clicked: () =>{
 
+                //I DO NOT KNOW WHY, BUT YOU NEED TO HAVE BOTH OF THESE HERE TO FIX AN ISSUE WHERE THE MIDDLE LINES DO NOT UPDATE
+                this.setState({
+                    procedurePricePrinted: treatmentListPrices(this.state.currentlySelectedProcedureIndex[this.state.currentlySelectedChart]),
+                    procedureTimePrinted: treatmentListTimes(this.state.currentlySelectedProcedureIndex[this.state.currentlySelectedChart]),
+                    preventTotalReload: true
+                });
+
+                this.state.procedureCostStored[this.state.currentlySelectedChart] = this.state.procedurePricePrinted;
+                this.state.procedureTimeStored[this.state.currentlySelectedChart] = this.state.procedureTimePrinted;
+
+                //I DO NOT KNOW WHY, BUT YOU NEED TO HAVE BOTH OF THESE HERE TO FIX AN ISSUE WHERE THE MIDDLE LINES DO NOT UPDATE
                 this.setState({
                     procedurePricePrinted: treatmentListPrices(this.state.currentlySelectedProcedureIndex[this.state.currentlySelectedChart]),
                     procedureTimePrinted: treatmentListTimes(this.state.currentlySelectedProcedureIndex[this.state.currentlySelectedChart]),
@@ -288,7 +299,6 @@ export class BookingPageDentalChart extends React.Component<any, any> {
             textChanged: (textValue:any) =>{
 
                 this.state.procedureCostStored[this.state.currentlySelectedChart] = textValue;
-                
 
                 this.setState({
                     procedurePricePrinted: textValue
@@ -302,7 +312,6 @@ export class BookingPageDentalChart extends React.Component<any, any> {
 
                 this.state.procedureTimeStored[this.state.currentlySelectedChart] = textValue;
                 
-
                 this.setState({
                     procedureTimePrinted: textValue
                 })
@@ -469,12 +478,6 @@ export class BookingPageDentalChart extends React.Component<any, any> {
                             <Button text=">" style="width: 100px;" on={dentalChartDisplayedRightHanlder}></Button>
                         </View>
 
-                        {/* <View style="flex: 0; flex-direction: 'row';">
-                            <Text style={"flex: 1; border: 1px solid black; background: 'LightGrey';"}>
-                                {"Selected chart: " + (this.state.currentlySelectedChart + 1) + "/ " + (this.state.totalCharts + 1)}
-                            </Text>
-                        </View> */}
-
                     </View>
   
   
@@ -497,8 +500,6 @@ export class BookingPageDentalChart extends React.Component<any, any> {
                                 </View>
 
                                 <View style="margin-left: 10px; flex-direction: 'row';">
-                                    {/* <Text style={"flex: 1; border: 1px solid black; background: 'LightGrey';"}>{"$" + this.state.procedurePricePrinted}</Text>
-                                    <Text style={"flex: 1; border: 1px solid black; background: 'LightGrey';"}>{this.state.procedureTimePrinted}</Text> */}
                                     <LineEdit style={"flex: 2;"} on={textHandlerCost} text={this.state.procedureCostStored[this.state.currentlySelectedChart]} />
                                     <LineEdit style={"flex: 2;"} on={textHandlerTime} text={this.state.procedureTimeStored[this.state.currentlySelectedChart]} />
                                     <Button on={setProcedurePriceAndTime} text={"Default"}></Button>

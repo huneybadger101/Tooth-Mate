@@ -30,6 +30,18 @@ export const treatmentList = () =>{
             text: treatmentListTreatments(0)
         },
         {
+            text: "Upper Left Quadrant"
+        },
+        {
+            text: "Upper Right Quadrant"
+        },
+        {
+            text: "Lower Left Quadrant"
+        },
+        {
+            text: "Lower Right Quadrant"
+        },
+        {
             text: treatmentListTreatments(1)
         },
         {
@@ -167,6 +179,7 @@ export const treatmentListTreatments = (selectedTreatment:any) =>{
 
 export const treatmentListPrices = (selectedTreatment:any) =>{
     
+    //TODO: Have the pricing editable via the settings
     switch(selectedTreatment) {
         case 0: //Initial examination
         return "$100.00";
@@ -450,6 +463,7 @@ export const toothComboBox = () =>{
 
 export const toothNames = (selectedTreatment:any) =>{
     
+    //TODO: BEFORE TWO WEEK BEFORE DUE DATE
     switch(selectedTreatment) {
         //Uper right quadrant teeth
         case 0:
