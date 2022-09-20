@@ -5,6 +5,7 @@ import path from "path";
 import Homepage from "./components/homepage";
 import Fileread from "./components/readjosn/fileread";
 import Setting from "./components/setting";
+import Dentalchart from "./components/Dentalchart/patientsteeth"
 import Calendar from "./components/calendar";
 import Bookings from "./components/bookings";
 import TabContainer from "./components/tabContainer";
@@ -29,12 +30,12 @@ class App extends React.Component<any, any> {
 
       screens.push(<Homepage/>)
       names.push("Homepage")
-      screens.push(<Setting/>)
-      names.push("Setting")
-      screens.push(<Bookings/>)
-      names.push("Booking")
+      screens.push(<Calendar/>)
+      names.push("Calendar")
       screens.push(<Fileread/>)
       names.push("Fileread")
+      screens.push(<Dentalchart/>)
+      names.push("Dentalchart")
 
       const maxSize = {width: result.width, height: result.height}
       windows.push(<Window

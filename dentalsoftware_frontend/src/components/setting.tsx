@@ -1,7 +1,7 @@
 import { Text, View, Button } from "@nodegui/react-nodegui";
 import React from "react";
 
-export class Calendar extends React.Component<any, any> {
+export class Setting extends React.Component<any, any> {
 
   constructor(props: any) {
     super(props);
@@ -164,4 +164,4 @@ export class Calendar extends React.Component<any, any> {
     }
 } 
 
-export default Calendar;
+export default Setting;
