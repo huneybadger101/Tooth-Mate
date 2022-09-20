@@ -4,7 +4,7 @@ import { getWeekdayStart } from "./Calendarhelpers/calendarHelper";
 import { getMonthDayCount } from "./Calendarhelpers/calendarMonthDayCount";
 import { getWeekdaySelected } from "./Calendarhelpers/calendarDisplaySelectedDate";
 import Bookings from "./bookings";
-import { testButtons } from "./Calendarhelpers/calendarDayButtonDisable";
+import { disableCalendarButton } from "./Calendarhelpers/calendarDayButtonDisable";
 import Alert from "./alert";
 
 export class Calendar extends React.Component<any, any> {
@@ -133,7 +133,7 @@ export class Calendar extends React.Component<any, any> {
               <View style="border: 1px solid black; height: 100px; width: 100px;">
                 <Button text={ buttonName_0 } 
                 style="height: 100px; width: 100px;" 
-                enabled={testButtons(buttonName_0, this.state.daySelected, this.state.monthSelected, this.state.currentMonthSelected)}
+                enabled={disableCalendarButton(buttonName_0, this.state.daySelected, this.state.monthSelected, this.state.currentMonthSelected)}
                 on={{clicked: () => {
                   this.setState(
                   {daySelected: buttonName_0,
@@ -160,7 +160,7 @@ export class Calendar extends React.Component<any, any> {
             <View style="border: 1px solid black; height: 100px; width: 100px;">
               <Button text={ buttonName_1 } 
               style="height: 100px; width: 100px;" 
-              enabled={testButtons(buttonName_1, this.state.daySelected, this.state.monthSelected, this.state.currentMonthSelected)} 
+              enabled={disableCalendarButton(buttonName_1, this.state.daySelected, this.state.monthSelected, this.state.currentMonthSelected)} 
               on={{clicked: () => this.setState(
                 {daySelected: buttonName_1,
                   rightHandDateInfo: true,
@@ -177,7 +177,7 @@ export class Calendar extends React.Component<any, any> {
             <View style="border: 1px solid black; height: 100px; width: 100px;">
               <Button text={ buttonName_2 } 
               style="height: 100px; width: 100px;" 
-              enabled={testButtons(buttonName_2, this.state.daySelected, this.state.monthSelected, this.state.currentMonthSelected)} 
+              enabled={disableCalendarButton(buttonName_2, this.state.daySelected, this.state.monthSelected, this.state.currentMonthSelected)} 
               on={{clicked: () => this.setState(
                 {daySelected: buttonName_2,
                   rightHandDateInfo: true,
@@ -195,7 +195,7 @@ export class Calendar extends React.Component<any, any> {
               <View style="border: 1px solid black; height: 100px; width: 100px;">
                 <Button text={ buttonName_3 } 
                 style="height: 100px; width: 100px;" 
-                enabled={testButtons(buttonName_3, this.state.daySelected, this.state.monthSelected, this.state.currentMonthSelected)} 
+                enabled={disableCalendarButton(buttonName_3, this.state.daySelected, this.state.monthSelected, this.state.currentMonthSelected)} 
                 on={{clicked: () => this.setState(
                   {daySelected: buttonName_3,
                     rightHandDateInfo: true,
@@ -214,7 +214,7 @@ export class Calendar extends React.Component<any, any> {
               <View style="border: 1px solid black; height: 100px; width: 100px;">
                 <Button text={ buttonName_4 } 
                 style="height: 100px; width: 100px;" 
-                enabled={testButtons(buttonName_4, this.state.daySelected, this.state.monthSelected, this.state.currentMonthSelected)} 
+                enabled={disableCalendarButton(buttonName_4, this.state.daySelected, this.state.monthSelected, this.state.currentMonthSelected)} 
                 on={{clicked: () => this.setState(
                   {daySelected: buttonName_4, 
                   rightHandDateInfo: true,
@@ -241,7 +241,7 @@ export class Calendar extends React.Component<any, any> {
               <View style="border: 1px solid black; height: 100px; width: 100px;">
                 <Button text={ buttonName_5 } 
                 style="height: 100px; width: 100px;" 
-                enabled={testButtons(buttonName_5, this.state.daySelected, this.state.monthSelected, this.state.currentMonthSelected)}
+                enabled={disableCalendarButton(buttonName_5, this.state.daySelected, this.state.monthSelected, this.state.currentMonthSelected)}
                 on={{clicked: () => this.setState(
                   {daySelected: buttonName_5,
                     rightHandDateInfo: true,

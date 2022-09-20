@@ -3,6 +3,7 @@ import {  WidgetEventTypes } from "@nodegui/nodegui";
 import React from "react";
 import Bookings from "./bookings";
 import Calendar from "./calendar";
+import BookingPageDentalCharts from "./Calendarhelpers/bookingDentalChart";
 import PatientDataViewer from "./PatientDataViewer";
 import PatientCreator from "./patientCreator";
 //import Setting from "./setting";
@@ -29,7 +30,7 @@ export class Homepage extends React.Component<any, any> {
         pagesRow1.push(<Button style={buttonStyle} text="Bookings Page" on={
                 {
                     // Only trigger when left click is released
-                    [WidgetEventTypes.MouseButtonRelease]: () => this.newTab(<Bookings/>, "Bookings"),
+                    [WidgetEventTypes.MouseButtonRelease]: () => this.newTab(<BookingPageDentalCharts/>, "Dnetal chart for booking"),
                 }
             }/>)
         pagesRow1.push(<View style="width: 100%;"></View>)
