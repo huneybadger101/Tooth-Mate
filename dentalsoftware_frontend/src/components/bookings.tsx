@@ -64,9 +64,9 @@ export class Bookings extends React.Component<any, any> {
             patientNHINumberSearch: ""
         }
 
-        axios.post('http://localhost:3000/getAllPatientData')
+        axios.post('http://localhost:3000/patients/getAllPatientData')
         .then((res) => {
-            axios.post('http://localhost:3000/getAllAccounts')
+            axios.post('http://localhost:3000/accounts/getAllAccounts')
             .then((resAccount) => {
                 let patients: ComboBoxItem[] = [];
 
@@ -84,7 +84,7 @@ export class Bookings extends React.Component<any, any> {
                     dentists.push({text: resAccount.data.result[i]['AccountName']})
                 }
 
-                axios.post('http://localhost:3000/getAllBookings')
+                axios.post('http://localhost:3000/bookings/getAllBookings')
                 .then((resBooking) => {
                     var bookingDisplayed: any = [];
                     for (let i = 0; i < resBooking.data.result.length; i++) {
@@ -109,14 +109,15 @@ export class Bookings extends React.Component<any, any> {
                                 notes: patient['Notes']
                             }
                         );
+                        this.setState({
+                            patients: patients,
+                            patientsData: res.data.result,
+                            dentistsData: resAccount.data.result,
+                            dentists: dentists,
+                            bookings: bookingDisplayed
+                        })
                     }
-                    this.setState({
-                        patients: patients,
-                        patientsData: res.data.result,
-                        dentistsData: resAccount.data.result,
-                        dentists: dentists,
-                        bookings: bookingDisplayed
-                    })
+
                 })
                 .catch((err) => {
                     console.log(err)
@@ -147,9 +148,6 @@ export class Bookings extends React.Component<any, any> {
         {
             bookingDate = "---";
         }
-
-        //Required to toggle the edit, create booking, and delete button being displayed. Will also be used to determinen what bookings are displayed
-        var userType:any = "admin";
 
         //Handles and changes the text for the NHI number during booking edit and creation
         const textHandlerNHI = {
@@ -427,7 +425,7 @@ export class Bookings extends React.Component<any, any> {
 
                     }
 
-                    if (userType == "admin")
+                    if (this.props.accountHelper.accountAdmin)
                     {
                         bookingListEditButton[num] = 
                             <Button 
@@ -534,15 +532,10 @@ export class Bookings extends React.Component<any, any> {
                 //Activates when the complete button was clicked during a booking creation
                 else if (this.state.completeClickedCreate == true)
                 {
-                    let bookingDay = this.state.bookings[this.state.currentBookingSelected]['date'].split("T")[0].split("-")[0]
-                    let bookingMonth = Number(this.state.bookings[this.state.currentBookingSelected]['date'].split("T")[0].split("-")[1]).toString()
-                    let bookingYear = (Number(this.state.bookings[this.state.currentBookingSelected]['date'].split("T")[0].split("-")[2])).toString()
-
-                    let bookingDateString = bookingYear + "/" + bookingMonth + "/" + bookingDay;
                     this.setState({
                         bookingCreateOrEditDisplay: await createBooking(
                         Number(this.state.patientName[this.state.currentBookingSelected]),
-                        bookingDateString,
+                        bookingDateRev,
                         //Time is sent together so it is easier to handle on the other end
                         addLeadingZeros(this.state.timeHour[this.state.currentBookingSelected], 2) + ":" +
                         addLeadingZeros(this.state.timeMinute[this.state.currentBookingSelected], 2) + "" +
@@ -671,12 +664,13 @@ export class Bookings extends React.Component<any, any> {
         //TODO: Impliment this feature properly
         var bookingCreateButton:any = [];
 
-        if (userType == "admin")
-        bookingCreateButton.push(
-            <View>
-                <Button text = {this.state.bookingOrCancelButtonText} style={""} on={buttonHandlerBookingOrCancel} visible={true}/>
-            </View>
-        );
+        if (this.props.accountHelper.accountAdmin) {
+            bookingCreateButton.push(
+                <View>
+                    <Button text = {this.state.bookingOrCancelButtonText} style={""} on={buttonHandlerBookingOrCancel} visible={true}/>
+                </View>
+            );
+        }
 
         //Returs the booking page section to be displayed in the calendar
         //Note that the majority of the section is created above

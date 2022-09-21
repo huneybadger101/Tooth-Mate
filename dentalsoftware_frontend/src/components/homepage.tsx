@@ -1,11 +1,12 @@
 import { Button, Text, View } from "@nodegui/react-nodegui";
 import {  WidgetEventTypes } from "@nodegui/nodegui";
 import React from "react";
-import Bookings from "./bookings";
 import Calendar from "./calendar";
 import BookingPageDentalCharts from "./Calendarhelpers/bookingDentalChart";
 import PatientDataViewer from "./PatientDataViewer";
 import PatientCreator from "./patientCreator";
+import QuoteViewer from "./quoteViewer";
+import QuoteCreator from "./quoteCreator";
 //import Setting from "./setting";
 
 
@@ -27,10 +28,10 @@ export class Homepage extends React.Component<any, any> {
 
         let buttonStyle = "width: 400%; height: 200%; color: 'black'; font-size: 20px;";
         
-        pagesRow1.push(<Button style={buttonStyle} text="Bookings Page" on={
+        pagesRow1.push(<Button style={buttonStyle} text="View Patient Data" on={
                 {
                     // Only trigger when left click is released
-                    [WidgetEventTypes.MouseButtonRelease]: () => this.newTab(<BookingPageDentalCharts/>, "Dnetal chart for booking"),
+                    [WidgetEventTypes.MouseButtonRelease]: () => this.newTab(<PatientDataViewer/>, "Patient Data Viewer"),
                 }
             }/>)
         pagesRow1.push(<View style="width: 100%;"></View>)
@@ -40,19 +41,19 @@ export class Homepage extends React.Component<any, any> {
                     [WidgetEventTypes.MouseButtonRelease]: () => this.newTab(<Calendar/>, "Calendar"),
                 }
             }/>)
-        pagesRow2.push(<Button style={buttonStyle} text="Patient Creator" on={
+        pagesRow2.push(<Button style={buttonStyle} text="Quote Creator" on={
                 {
                     // Only trigger when left click is released
-                    [WidgetEventTypes.MouseButtonRelease]: () => this.newTab(<PatientCreator/>, "Patient Creator"),
+                    [WidgetEventTypes.MouseButtonRelease]: () => this.newTab(<QuoteCreator/>, "Quote Creator"),
                 }
             }/>)
         pagesRow2.push(<View style="width: 100%;"></View>)
-        // pagesRow2.push(<Button style={buttonStyle} text="Settings Page" on={
-        //         {
-        //             // Only trigger when left click is released
-        //             [WidgetEventTypes.MouseButtonRelease]: () => this.newTab(<Setting/>, "Settings"),
-        //         }
-        //     }/>)
+        pagesRow2.push(<Button style={buttonStyle} text="View Quotes" on={
+                {
+                    // Only trigger when left click is released
+                    [WidgetEventTypes.MouseButtonRelease]: () => this.newTab(<QuoteViewer/>, "Quote Viewer"),
+                }
+            }/>)
 
         return (
             <View style="flex: 1; justify-content: 'center'; align-items: 'center'; background-color: 'grey';">

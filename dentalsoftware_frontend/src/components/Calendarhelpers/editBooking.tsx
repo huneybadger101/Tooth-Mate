@@ -28,7 +28,7 @@ export const editFromDB = async (newBookingID:any, newDate:any, newTime:any,
         let result: any = null;
         let view: any = null;
         return(await 
-            axios.post('http://localhost:3000/updateBooking', null, {
+            axios.post('http://localhost:3000/bookings/updateBooking', null, {
                 headers: {
                     'bookingid': bookingData['bookingid'],
                     'cols': JSON.stringify(bookingData['cols']),

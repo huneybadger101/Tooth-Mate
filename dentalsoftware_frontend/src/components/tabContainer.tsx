@@ -6,14 +6,21 @@ import Homepage from "./homepage";
 
 function TabContainer(props: any) {
 
+    let lastDraggedView: any;
+
     const buttonHandler = (newView: any) => {
-        setValues(
-            {
-                children: state.children,
-                view: newView,
-                names: state.names
-            }
-        )
+        if (newView != lastDraggedView) {
+            setValues(
+                {
+                    children: state.children,
+                    view: newView,
+                    names: state.names
+                }
+            )
+        } else {
+            console.log("Bug averted! The app decided to try set the current view to the one that you just dragged out into it's own window! Aren't you glad I spent 2 hours figuring out this bug?")
+            lastDraggedView = undefined
+        }
     }
 
     const AddExtraProps = (Component: JSX.Element, extraProps: any) =>  {
@@ -21,7 +28,7 @@ function TabContainer(props: any) {
     }
 
     const createHomepageAfterLogin = () => {
-        let homepageView = <Homepage newTab={createNewtab}/>;
+        let homepageView = <Homepage newTab={createNewtab} accountHelper={props.accountHelper}/>;
         setValues({
             children: [homepageView],
             view: homepageView,
@@ -32,6 +39,7 @@ function TabContainer(props: any) {
     const createNewtab = (component: JSX.Element, name: string) => {
         let tempChildren = state.children;
         let tempNames = state.names;
+        component = AddExtraProps(component, {newTab: createNewtab, postLogin: createHomepageAfterLogin, accountHelper: props.accountHelper});
         tempChildren.push(component)
         tempNames.push(name)
         setValues({
@@ -44,11 +52,12 @@ function TabContainer(props: any) {
     const closeButtonHandler = (index: number) => {
         let tempChildren = state.children;
         tempChildren.splice(index, 1);
-        props.names.splice(index, 1)
+        let tempNames = state.names;
+        tempNames.splice(index, 1);
         setValues({
             children: tempChildren,
             view: tempChildren[0],
-            names: state.names
+            names: tempNames
         })
     }
 
@@ -65,8 +74,6 @@ function TabContainer(props: any) {
             TimeStamp.timeStamp = new Date().getTime();
         }
 
-        // Call App.tsx's createNewWindow function to create a new window with the provided view
-        props.createNewWindow(value.view, value.tabName)
         // Remove view from current tabContainer so it doesn't get displayed multiple times by the main App component
         let tempChildren = state.children;
         let tempNames = state.names;
@@ -77,6 +84,10 @@ function TabContainer(props: any) {
             view: tempChildren[0],
             names: tempNames
         })
+
+        // Call App.tsx's createNewWindow function to create a new window with the provided view
+        props.createNewWindow(value.view, value.tabName)
+        lastDraggedView = value.view;
     }
 
     let childrenArray = [];

@@ -22,7 +22,7 @@ export class PatientDataViewer extends React.Component<any, any> {
             alertView: null
         }
 
-        axios.post('http://localhost:3000/getAllPatientData')
+        axios.post('http://localhost:3000/patients/getAllPatientData')
         .then((res) => {
             this.setState({
                 patients: res.data.result,
@@ -138,7 +138,7 @@ export class PatientDataViewer extends React.Component<any, any> {
                     patient_Email_Address: this.state.currentEmailAddress,
                     patient_Notes: this.state.currentNotes,
                 }
-                axios.post('http://localhost:3000/createNewPatient', null, {
+                axios.post('http://localhost:3000/patients/createNewPatient', null, {
                     headers: {
                         'data': JSON.stringify(patientData)
                     }
@@ -147,13 +147,24 @@ export class PatientDataViewer extends React.Component<any, any> {
                     if (res.data.error) {
                         result = 1
                         alertView = <Alert title={"Error"} message={res.data.error} style={"background-color: 'red'; width: 600px; height: 400px;"} dismissAlert={alertDismissController}></Alert>
+                        this.setState({
+                            alertView: alertView
+                        })
                     } else {
                         result = 0
                         alertView = <Alert title={"Success"} message={"Added booking to database!"} style={"background-color: 'green'; width: 300px; height: 100px;"} dismissAlert={alertDismissController}></Alert>
+                        this.setState({
+                            alertView: alertView,
+                            currentFirstName: "",
+                            currentMiddleName: "",
+                            currentLastName: "",
+                            currentNHI: "",
+                            currentDOB: "",
+                            currentContactNumber: "",
+                            currentEmailAddress: "",
+                            currentNotes: ""
+                        })
                     }
-                    this.setState({
-                        alertView: alertView
-                    })
                 })
                 .catch((err) => {
                     console.log(err)
