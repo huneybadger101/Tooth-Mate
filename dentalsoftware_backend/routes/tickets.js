@@ -81,6 +81,7 @@ JSON Layout for incoming ticket creation:
 */
 
 function createNewTicket(res = null, ticketData) {
+
     let numMissing = 0
     let errorMessage = "Error: Missing "
     if (ticketData.ticket === undefined) {
@@ -102,7 +103,7 @@ function createNewTicket(res = null, ticketData) {
         return
     }
 
-    let sql = "INSERT INTO `tickets` (`Patient`, `NumberOfVisits`) VALUES (" + ticketData.ticket.patientID + ", " + ticketData.ticket.numberOfVisits + ")"
+    let sql = "INSERT INTO `tickets` (`Patient`, `NumberOfVisits`) VALUES (" + ticketData.ticket.PatientID + ", " + ticketData.ticket.NumberOfVisits + ")"
     tClient.query(sql, function (err, result) {
         if (err) {
             console.log(err)
@@ -153,11 +154,11 @@ function createNewTicket(res = null, ticketData) {
                             return {result: 1, error: err}
                         }
                     }
-                    sql = "INSERT INTO `ticket_visit_tooth` (`TicketVisit`, `Tooth`, `ProcedureName`, `ProcedureCostDollars`, `ProcedureCostCents`) VALUES "
+                    sql = "INSERT INTO `ticket_visit_tooth` (`TicketVisit`, `Tooth`, `ProcedureName`, `ProcedureCostDollars`, `ProcedureCostCents`, `Notes`, `ToothData1`, `ToothData2`, `ToothData3`, `ToothData4`, `ToothData5`, `ToothData6`, `ToothData7`, `ToothData8`, `ToothData9`) VALUES "
                     for (let i = 0; i < ticketData.ticketVisitTeeth.length; i++) {
                         for (let k = 0; k < result.length; k++) {
                             if (ticketData.ticketVisitTeeth[i]['VisitNumber'] == result[k]['VisitNumber']) {
-                                sql += "(" + result[k]['ID'] + ", " + ticketData.ticketVisitTeeth[i]['Tooth'] + ", '" + ticketData.ticketVisitTeeth[i]['ProcedureName'] + "', " + ticketData.ticketVisitTeeth[i]['ProcedureCostDollars'] + ", " + ticketData.ticketVisitTeeth[i]['ProcedureCostCents'] + "), "
+                                sql += "(" + result[k]['ID'] + ", " + ticketData.ticketVisitTeeth[i]['Tooth'] + ", '" + ticketData.ticketVisitTeeth[i]['ProcedureName'] + "', " + ticketData.ticketVisitTeeth[i]['ProcedureCostDollars'] + ", " + ticketData.ticketVisitTeeth[i]['ProcedureCostCents'] + ", '" + ticketData.ticketVisitTeeth[i]['Notes'] + "', " + ticketData.ticketVisitTeeth[i]['ToothData'][0] + ", " + ticketData.ticketVisitTeeth[i]['ToothData'][1] + ", " + ticketData.ticketVisitTeeth[i]['ToothData'][2] + ", " + ticketData.ticketVisitTeeth[i]['ToothData'][3] + ", " + ticketData.ticketVisitTeeth[i]['ToothData'][4] + ", " + ticketData.ticketVisitTeeth[i]['ToothData'][5] + ", " + ticketData.ticketVisitTeeth[i]['ToothData'][6] + ", " + ticketData.ticketVisitTeeth[i]['ToothData'][7] + ", " + ticketData.ticketVisitTeeth[i]['ToothData'][8] + "), "
                             }
                         }
                     }

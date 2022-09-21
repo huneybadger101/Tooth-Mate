@@ -191,7 +191,7 @@ export class ToothCreator extends React.Component<any, any> {
         }
         let data = {
             NumTeeth: this.state.totalCharts,
-            Index: index,
+            Index: this.props.getVisitIndex(),
             Teeth: teeth,
             TeethNames: teethNames,
             TeethIndexes: this.state.currentlySelectedToothIndex,

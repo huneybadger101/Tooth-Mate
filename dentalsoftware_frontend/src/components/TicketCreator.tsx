@@ -228,7 +228,7 @@ export class TicketCreator extends React.Component<any, any> {
                 <LineEdit style={"flex: 2;"} on={textHandlerLengthOfVisit} text={this.state.editingVisits[this.state.editingSelectedVisit]['LengthOfVisit']} />
             </View>
 
-            <ToothCreator ref={this.ToothCreatorComponent} passbackTeeth={this.getTeeth} getData={this.getData}/>
+            <ToothCreator ref={this.ToothCreatorComponent} passbackTeeth={this.getTeeth} getData={this.getData} getVisitIndex={this.getVisitIndex}/>
         </View>
 
         return (
