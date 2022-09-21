@@ -5,7 +5,9 @@ import { disableDentalChartButton } from "./Calendarhelpers/calendarDayButtonDis
 import { treatmentList, treatmentListPrices, treatmentListTimes, treatmentListTreatments, toothComboBox } from "./Calendarhelpers/comboBoxVariables";
 import DentalChartIniniteLoopFix from "./Calendarhelpers/loopPreventer";
 
+
 export class ToothCreator extends React.Component<any, any> {
+
 
     //Sets up several state based variables to use throughout the .tsx file
     constructor(props: any) {
@@ -31,7 +33,7 @@ export class ToothCreator extends React.Component<any, any> {
             dentalChartDataHolderSeven: [],
             dentalChartDataHolderEight: [],
             dentalChartDataHolderNine: [],
-            totalCharts: 0,
+            totalCharts: 1,
             currentlySelectedChart: 0,
             procedure: [],
             procedureCopy: [],
@@ -55,9 +57,11 @@ export class ToothCreator extends React.Component<any, any> {
         }
     }
 
-    setStateWithDataViaRef = (existingData:any, num:number) => {
+    setStateWithDataViaRef = (data:any) => {
 
-        this.passbackTeeth(num);
+        let existingData = data;
+
+        this.resetStateViaRef();
 
         if (existingData.length != 0) {
 
@@ -68,8 +72,8 @@ export class ToothCreator extends React.Component<any, any> {
 
                 let data:any = [];
 
-                for (let i = 0; i < existingData[num - 1]['NumTeeth']; i++) {
-                    data.push((existingData[num - 1]['Teeth'][i][k] ? "height: 100px; width: 100px; background: 'Grey';" : "height: 100px; width: 100px;"))
+                for (let i = 0; i < existingData['NumTeeth']; i++) {
+                    data.push((existingData['Teeth'][i][k] ? "height: 100px; width: 100px; background: 'Grey';" : "height: 100px; width: 100px;"))
                 }
                 buttonData.push(data)
             }
@@ -95,13 +99,13 @@ export class ToothCreator extends React.Component<any, any> {
                 dentalChartDataHolderEight: buttonData[7],
                 dentalChartDataHolderNine: buttonData[8],
     
-                totalCharts: existingData[num - 1]['NumTeeth'],
+                totalCharts: existingData['NumTeeth'],
                 currentlySelectedChart: 0,
-                procedure: existingData[num - 1]['Procedures'],
+                procedure: existingData['Procedures'],
                 procedureCopy: [],
-                procedurePrice: existingData[num - 1]['ProcedureCosts'],
-                procedureTime: existingData[num - 1]['ProcedureTimes'],
-                patientNotes: existingData[num - 1]['Notes'],
+                procedurePrice: existingData['ProcedureCosts'],
+                procedureTime: existingData['ProcedureTimes'],
+                patientNotes: existingData['Notes'],
                 preventTotalReload: false,
     
                 procedurePrinted: "Initial examination",
@@ -137,7 +141,7 @@ export class ToothCreator extends React.Component<any, any> {
             dentalChartDataHolderSeven: [],
             dentalChartDataHolderEight: [],
             dentalChartDataHolderNine: [],
-            totalCharts: 0,
+            totalCharts: 1,
             currentlySelectedChart: 0,
             procedure: [],
             procedureCopy: [],
@@ -157,16 +161,13 @@ export class ToothCreator extends React.Component<any, any> {
         })
     }
 
-    updateViaRef = (index:number) => {
-
-        this.passbackTeeth(index);
-
+    updateViaRef = () => {
         this.resetStateViaRef();
     }
 
     passbackTeeth = (index:number) => {
         let teeth = []
-        for (let k = 0; k < this.state.totalCharts + 1; k++) {
+        for (let k = 0; k < this.state.dentalChartDataHolderOne.length; k++) {
             teeth.push([
                 (this.state.dentalChartDataHolderOne[k].includes("Grey") ? true : false),
                 (this.state.dentalChartDataHolderTwo[k].includes("Grey") ? true : false),
@@ -181,10 +182,16 @@ export class ToothCreator extends React.Component<any, any> {
         }
         let teethNames = [];
         for (let i = 0; i < this.state.currentlySelectedToothIndex.length; i++) {
-            teethNames.push(toothComboBox()[this.state.currentlySelectedToothIndex[i]].text)
+            let selTooth = this.state.currentlySelectedToothIndex[i];
+            if (selTooth == -1) {
+                selTooth = 0;
+                this.state.currentlySelectedToothIndex[i] = selTooth;
+            }
+            teethNames.push(toothComboBox()[selTooth].text)
         }
         let data = {
-            NumTeeth: this.state.totalCharts + 1,
+            NumTeeth: this.state.totalCharts,
+            Index: index,
             Teeth: teeth,
             TeethNames: teethNames,
             TeethIndexes: this.state.currentlySelectedToothIndex,
@@ -194,7 +201,7 @@ export class ToothCreator extends React.Component<any, any> {
             Notes: this.state.patientNotes
         }
 
-        this.props.passbackTeeth(data, index)
+        this.props.passbackTeeth(data)
     }
 
     render() {
@@ -228,46 +235,46 @@ export class ToothCreator extends React.Component<any, any> {
         const dentalChartAddHandler = {
             clicked: () =>{
 
+
                 //Has the index for the total chart count increase by one
-                this.setState({totalCharts: this.state.totalCharts + 1, preventTotalReload: true});
-
-                //Uses the new chart index to increase the chart arrays and store the default button style in them
-                this.state.dentalChartDataHolderOne[this.state.totalCharts] = "height: 100px; width: 100px;";
-                this.state.dentalChartDataHolderTwo[this.state.totalCharts] = "height: 100px; width: 100px;";
-                this.state.dentalChartDataHolderThree[this.state.totalCharts] = "height: 100px; width: 100px;";
-                this.state.dentalChartDataHolderFour[this.state.totalCharts] = "height: 100px; width: 100px;";
-                this.state.dentalChartDataHolderFive[this.state.totalCharts] = "height: 100px; width: 100px;";
-                this.state.dentalChartDataHolderSix[this.state.totalCharts] = "height: 100px; width: 100px;";
-                this.state.dentalChartDataHolderSeven[this.state.totalCharts] = "height: 100px; width: 100px;";
-                this.state.dentalChartDataHolderEight[this.state.totalCharts] = "height: 100px; width: 100px;";
-                this.state.dentalChartDataHolderNine[this.state.totalCharts] = "height: 100px; width: 100px;";
-
-                this.state.currentlySelectedProcedureIndex[this.state.totalCharts] = 0;
-                this.state.currentlySelectedToothIndex[this.state.totalCharts] = 1;
-
-                //Updates which chart is currently selected to newly made chart
                 this.setState({
+                    totalCharts: this.state.totalCharts + 1,
+                    preventTotalReload: true,
                     currentlySelectedChart: this.state.totalCharts,
                 });
+                //Uses the new chart index to increase the chart arrays and store the default button style in them
+                this.state.dentalChartDataHolderOne[this.state.currentlySelectedChart] = "height: 100px; width: 100px;";
+                this.state.dentalChartDataHolderTwo[this.state.currentlySelectedChart] = "height: 100px; width: 100px;";
+                this.state.dentalChartDataHolderThree[this.state.currentlySelectedChart] = "height: 100px; width: 100px;";
+                this.state.dentalChartDataHolderFour[this.state.currentlySelectedChart] = "height: 100px; width: 100px;";
+                this.state.dentalChartDataHolderFive[this.state.currentlySelectedChart] = "height: 100px; width: 100px;";
+                this.state.dentalChartDataHolderSix[this.state.currentlySelectedChart] = "height: 100px; width: 100px;";
+                this.state.dentalChartDataHolderSeven[this.state.currentlySelectedChart] = "height: 100px; width: 100px;";
+                this.state.dentalChartDataHolderEight[this.state.currentlySelectedChart] = "height: 100px; width: 100px;";
+                this.state.dentalChartDataHolderNine[this.state.currentlySelectedChart] = "height: 100px; width: 100px;";
 
-                this.state.procedureCostStored[this.state.totalCharts] = treatmentListPrices(this.state.currentlySelectedProcedureIndex[this.state.totalCharts]);
-                this.state.procedureTimeStored[this.state.totalCharts] = treatmentListTimes(this.state.currentlySelectedProcedureIndex[this.state.totalCharts]);
-
-                //Sets the buttons to the new index created to display the correct chart after creation
                 this.setState({
-                    buttonOne: this.state.dentalChartDataHolderOne[this.state.totalCharts],
-                    buttonTwo: this.state.dentalChartDataHolderTwo[this.state.totalCharts],
-                    buttonThree: this.state.dentalChartDataHolderThree[this.state.totalCharts],
-                    buttonFour: this.state.dentalChartDataHolderFour[this.state.totalCharts],
-                    buttonFive: this.state.dentalChartDataHolderFive[this.state.totalCharts],
-                    buttonSix: this.state.dentalChartDataHolderSix[this.state.totalCharts],
-                    buttonSeven: this.state.dentalChartDataHolderSeven[this.state.totalCharts],
-                    buttonEight: this.state.dentalChartDataHolderEight[this.state.totalCharts],
-                    buttonNine: this.state.dentalChartDataHolderNine[this.state.totalCharts],
+                    buttonOne: this.state.dentalChartDataHolderOne[this.state.currentlySelectedChart],
+                    buttonTwo: this.state.dentalChartDataHolderTwo[this.state.currentlySelectedChart],
+                    buttonThree: this.state.dentalChartDataHolderThree[this.state.currentlySelectedChart],
+                    buttonFour: this.state.dentalChartDataHolderFour[this.state.currentlySelectedChart],
+                    buttonFive: this.state.dentalChartDataHolderFive[this.state.currentlySelectedChart],
+                    buttonSix: this.state.dentalChartDataHolderSix[this.state.currentlySelectedChart],
+                    buttonSeven: this.state.dentalChartDataHolderSeven[this.state.currentlySelectedChart],
+                    buttonEight: this.state.dentalChartDataHolderEight[this.state.currentlySelectedChart],
+                    buttonNine: this.state.dentalChartDataHolderNine[this.state.currentlySelectedChart],
 
-                    procedurePricePrinted: this.state.procedureCostStored[this.state.totalCharts],
-                    procedureTimePrinted: this.state.procedureTimeStored[this.state.totalCharts]
+                    procedurePricePrinted: this.state.procedureCostStored[this.state.currentlySelectedChart],
+                    procedureTimePrinted: this.state.procedureTimeStored[this.state.currentlySelectedChart],
                 });
+
+                this.state.currentlySelectedProcedureIndex[this.state.currentlySelectedChart] = 0;
+                this.state.currentlySelectedToothIndex[this.state.currentlySelectedChart] = 1;
+
+                this.state.procedureCostStored[this.state.currentlySelectedChart] = treatmentListPrices(this.state.currentlySelectedProcedureIndex[this.state.currentlySelectedChart]);
+                this.state.procedureTimeStored[this.state.currentlySelectedChart] = treatmentListTimes(this.state.currentlySelectedProcedureIndex[this.state.currentlySelectedChart]);
+
+                this.passbackTeeth(this.state.currentlySelectedChart)
             }
         }
 
@@ -275,7 +282,6 @@ export class ToothCreator extends React.Component<any, any> {
         const dentalChartRemoveHandler = {
             clicked: () =>{
 
-                console.log("Chart removed");
                 this.setState({
                     preventTotalReload: true
                 })
@@ -327,22 +333,19 @@ export class ToothCreator extends React.Component<any, any> {
                 {
                     this.setState({
                         currentlySelectedChart: this.state.currentlySelectedChart - 1,
-                        preventTotalReload: true
-                    })
+                        preventTotalReload: true,
+                        buttonOne: this.state.dentalChartDataHolderOne[this.state.currentlySelectedChart - 1],
+                        buttonTwo: this.state.dentalChartDataHolderTwo[this.state.currentlySelectedChart - 1],
+                        buttonThree: this.state.dentalChartDataHolderThree[this.state.currentlySelectedChart - 1],
+                        buttonFour: this.state.dentalChartDataHolderFour[this.state.currentlySelectedChart - 1],
+                        buttonFive: this.state.dentalChartDataHolderFive[this.state.currentlySelectedChart - 1],
+                        buttonSix: this.state.dentalChartDataHolderSix[this.state.currentlySelectedChart - 1],
+                        buttonSeven: this.state.dentalChartDataHolderSeven[this.state.currentlySelectedChart - 1],
+                        buttonEight: this.state.dentalChartDataHolderEight[this.state.currentlySelectedChart - 1],
+                        buttonNine: this.state.dentalChartDataHolderNine[this.state.currentlySelectedChart - 1],
 
-                    this.setState({
-                        buttonOne: this.state.dentalChartDataHolderOne[this.state.currentlySelectedChart],
-                        buttonTwo: this.state.dentalChartDataHolderTwo[this.state.currentlySelectedChart],
-                        buttonThree: this.state.dentalChartDataHolderThree[this.state.currentlySelectedChart],
-                        buttonFour: this.state.dentalChartDataHolderFour[this.state.currentlySelectedChart],
-                        buttonFive: this.state.dentalChartDataHolderFive[this.state.currentlySelectedChart],
-                        buttonSix: this.state.dentalChartDataHolderSix[this.state.currentlySelectedChart],
-                        buttonSeven: this.state.dentalChartDataHolderSeven[this.state.currentlySelectedChart],
-                        buttonEight: this.state.dentalChartDataHolderEight[this.state.currentlySelectedChart],
-                        buttonNine: this.state.dentalChartDataHolderNine[this.state.currentlySelectedChart],
-
-                        procedurePricePrinted: this.state.procedureCostStored[this.state.currentlySelectedChart],
-                        procedureTimePrinted: this.state.procedureTimeStored[this.state.currentlySelectedChart]
+                        procedurePricePrinted: this.state.procedureCostStored[this.state.currentlySelectedChart - 1],
+                        procedureTimePrinted: this.state.procedureTimeStored[this.state.currentlySelectedChart - 1],
                     });
                 }
                 
@@ -355,24 +358,22 @@ export class ToothCreator extends React.Component<any, any> {
 
                 if (this.state.currentlySelectedChart < this.state.totalCharts)
                 {
+                    let num = this.state.currentlySelectedChart + 1;
                     this.setState({
-                        currentlySelectedChart: this.state.currentlySelectedChart + 1,
-                        preventTotalReload: true
-                    });
+                        currentlySelectedChart: num,
+                        preventTotalReload: true,
+                        buttonOne: this.state.dentalChartDataHolderOne[num],
+                        buttonTwo: this.state.dentalChartDataHolderTwo[num],
+                        buttonThree: this.state.dentalChartDataHolderThree[num],
+                        buttonFour: this.state.dentalChartDataHolderFour[num],
+                        buttonFive: this.state.dentalChartDataHolderFive[num],
+                        buttonSix: this.state.dentalChartDataHolderSix[num],
+                        buttonSeven: this.state.dentalChartDataHolderSeven[num],
+                        buttonEight: this.state.dentalChartDataHolderEight[num],
+                        buttonNine: this.state.dentalChartDataHolderNine[num],
 
-                    this.setState({
-                        buttonOne: this.state.dentalChartDataHolderOne[this.state.currentlySelectedChart],
-                        buttonTwo: this.state.dentalChartDataHolderTwo[this.state.currentlySelectedChart],
-                        buttonThree: this.state.dentalChartDataHolderThree[this.state.currentlySelectedChart],
-                        buttonFour: this.state.dentalChartDataHolderFour[this.state.currentlySelectedChart],
-                        buttonFive: this.state.dentalChartDataHolderFive[this.state.currentlySelectedChart],
-                        buttonSix: this.state.dentalChartDataHolderSix[this.state.currentlySelectedChart],
-                        buttonSeven: this.state.dentalChartDataHolderSeven[this.state.currentlySelectedChart],
-                        buttonEight: this.state.dentalChartDataHolderEight[this.state.currentlySelectedChart],
-                        buttonNine: this.state.dentalChartDataHolderNine[this.state.currentlySelectedChart],
-
-                        procedurePricePrinted: this.state.procedureCostStored[this.state.currentlySelectedChart],
-                        procedureTimePrinted: this.state.procedureTimeStored[this.state.currentlySelectedChart]
+                        procedurePricePrinted: this.state.procedureCostStored[num],
+                        procedureTimePrinted: this.state.procedureTimeStored[num],
                     });
                 }
             }
@@ -381,17 +382,24 @@ export class ToothCreator extends React.Component<any, any> {
         //Handles and changes the text for the procedure type during booking edit and creation
         const indexHanlderProcedure = {
             currentIndexChanged: (currentText:any) =>{
-               
+
+
                 this.state.currentlySelectedProcedureIndex[this.state.currentlySelectedChart] = currentText
                 this.state.procedure[this.state.currentlySelectedChart] = treatmentListTreatments(currentText);
+
+                this.passbackTeeth(this.state.currentlySelectedChart)
+               
             }
         }
 
         const indexHanlderTooth = {
             currentIndexChanged: (currentText:any) =>{
-               
+
                 this.state.currentlySelectedToothIndex[this.state.currentlySelectedChart] = currentText
                 //this.state.procedure[this.state.currentlySelectedChart] = treatmentListTreatments(currentText);
+
+                this.passbackTeeth(this.state.currentlySelectedChart)
+                
             }
         }
 
@@ -414,6 +422,9 @@ export class ToothCreator extends React.Component<any, any> {
                     procedureTimePrinted: treatmentListTimes(this.state.currentlySelectedProcedureIndex[this.state.currentlySelectedChart]),
                     preventTotalReload: true
                 });
+
+                this.passbackTeeth(this.state.currentlySelectedChart)
+                
             }
         }
          
@@ -425,6 +436,8 @@ export class ToothCreator extends React.Component<any, any> {
                 this.setState({
                     //TODO: replace past a specific length
                 })
+
+                this.passbackTeeth(this.state.currentlySelectedChart)
             }
         }
 
@@ -437,6 +450,9 @@ export class ToothCreator extends React.Component<any, any> {
                 this.setState({
                     procedurePricePrinted: textValue
                 })
+
+                this.passbackTeeth(this.state.currentlySelectedChart)
+            
             }
         }
 
@@ -449,6 +465,9 @@ export class ToothCreator extends React.Component<any, any> {
                 this.setState({
                     procedureTimePrinted: textValue
                 })
+
+                this.passbackTeeth(this.state.currentlySelectedChart)
+            
             }
         }
 
@@ -460,7 +479,9 @@ export class ToothCreator extends React.Component<any, any> {
 
                 this.setState({
                     buttonOne: this.state.dentalChartDataHolderOne[this.state.currentlySelectedChart], preventTotalReload: true
-                });}}}/>
+                });
+                this.passbackTeeth(this.state.currentlySelectedChart)
+                }}}/>
             </View>
         )
 
@@ -472,7 +493,9 @@ export class ToothCreator extends React.Component<any, any> {
 
                 this.setState({
                     buttonTwo: this.state.dentalChartDataHolderTwo[this.state.currentlySelectedChart], preventTotalReload: true
-                });}}}/>
+                });
+                this.passbackTeeth(this.state.currentlySelectedChart)
+                }}}/>
             </View>
         )
 
@@ -484,7 +507,9 @@ export class ToothCreator extends React.Component<any, any> {
 
                 this.setState({
                     buttonThree: this.state.dentalChartDataHolderThree[this.state.currentlySelectedChart], preventTotalReload: true
-                });}}}/>
+                });
+                this.passbackTeeth(this.state.currentlySelectedChart)
+                }}}/>
             </View>
         )
 
@@ -496,7 +521,9 @@ export class ToothCreator extends React.Component<any, any> {
 
                 this.setState({
                     buttonFour: this.state.dentalChartDataHolderFour[this.state.currentlySelectedChart], preventTotalReload: true
-                });}}}/>
+                });
+                this.passbackTeeth(this.state.currentlySelectedChart)
+                }}}/>
             </View>
         )
 
@@ -508,7 +535,9 @@ export class ToothCreator extends React.Component<any, any> {
 
                 this.setState({
                     buttonFive: this.state.dentalChartDataHolderFive[this.state.currentlySelectedChart], preventTotalReload: true
-                });}}}/>
+                });
+                this.passbackTeeth(this.state.currentlySelectedChart)
+                }}}/>
             </View>
         )
 
@@ -520,7 +549,9 @@ export class ToothCreator extends React.Component<any, any> {
 
                 this.setState({
                     buttonSix: this.state.dentalChartDataHolderSix[this.state.currentlySelectedChart], preventTotalReload: true
-                });}}}/>
+                });
+                this.passbackTeeth(this.state.currentlySelectedChart)
+                }}}/>
             </View>
         )
 
@@ -532,7 +563,9 @@ export class ToothCreator extends React.Component<any, any> {
 
                 this.setState({
                     buttonSeven: this.state.dentalChartDataHolderSeven[this.state.currentlySelectedChart], preventTotalReload: true
-                });}}}/>
+                });
+                this.passbackTeeth(this.state.currentlySelectedChart);
+                }}}/>
             </View>
         )
 
@@ -544,7 +577,9 @@ export class ToothCreator extends React.Component<any, any> {
 
                 this.setState({
                     buttonEight: this.state.dentalChartDataHolderEight[this.state.currentlySelectedChart], preventTotalReload: true
-                });}}}/>
+                });
+                this.passbackTeeth(this.state.currentlySelectedChart);
+                }}}/>
             </View>
         )
 
@@ -556,7 +591,9 @@ export class ToothCreator extends React.Component<any, any> {
 
                 this.setState({
                     buttonNine: this.state.dentalChartDataHolderNine[this.state.currentlySelectedChart], preventTotalReload: true
-                });}}}/>
+                });
+                this.passbackTeeth(this.state.currentlySelectedChart);
+                }}}/>
             </View>
         )
 
@@ -608,7 +645,7 @@ export class ToothCreator extends React.Component<any, any> {
                             <Button text="<" style="width: 100px;" on={dentalChartDisplayedLeftHanlder}></Button>
 
                             <Text style={"flex: 1; border: 1px solid black; background: 'LightGrey'; width: 100px;"}>
-                                {"Tooth: " + (this.state.currentlySelectedChart + 1) + "/ " + (this.state.totalCharts + 1)}
+                                {"Tooth: " + (this.state.currentlySelectedChart + 1) + "/ " + this.state.totalCharts}
                             </Text>
                             
                             <Button text=">" style="width: 100px;" on={dentalChartDisplayedRightHanlder}></Button>
@@ -654,12 +691,6 @@ export class ToothCreator extends React.Component<any, any> {
                             </View>
                         </View>
                     </View>
-                    <Button text="Send back all teeth" on={
-                        {
-                            // Only trigger when left click is released
-                            [WidgetEventTypes.MouseButtonRelease]: () => this.passbackTeeth(this.state.currentVisit),
-                        }
-                    }/>
                 </View>
             </View>
         );

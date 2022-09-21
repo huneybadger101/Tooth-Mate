@@ -7,10 +7,14 @@ export class TicketCreator extends React.Component<any, any> {
 
     ToothCreatorComponent:any;
 
+    updateCheck:number;
+
     constructor(props: any) {
         super(props);
 
         this.ToothCreatorComponent = React.createRef();
+
+        this.updateCheck = 0;
 
         this.state = {
             patientID: props.patient,
@@ -40,8 +44,18 @@ export class TicketCreator extends React.Component<any, any> {
         }
     }
 
-    getTeeth = (teeth:any, index:number) => {
-        this.state.editingVisits[index]['Teeth'].push(teeth)
+    getVisitIndex = () => {
+        return this.state.editingSelectedVisit;
+    }
+
+    getData = (index:number) => {
+        return this.state.editingVisits[index]['Teeth'];
+    }
+
+    getTeeth = (teeth:any) => {
+        if (this.updateCheck == 0) {
+            this.state.editingVisits[this.state.editingSelectedVisit]['Teeth'] = teeth;
+        }
     }
 
     addVisit = (num:number) => {
@@ -64,10 +78,10 @@ export class TicketCreator extends React.Component<any, any> {
             editingVisits: currentVisits,
             editingSelectedVisit: currentVisits.length - 1,
             editingSelectedTooth: 0,
-            editingNumVisits: num,
+            editingNumVisits: currentVisits.length - 1,
         })
 
-        this.ToothCreatorComponent.current.updateViaRef(num - 1);
+        this.ToothCreatorComponent.current.updateViaRef();
     }
 
     removeVisit = (index:number) => {
@@ -108,15 +122,18 @@ export class TicketCreator extends React.Component<any, any> {
             } 
         }
 
-        const move = (num:Number, oldNum:Number) => {
+        const move = (num:number, oldNum:number) => {
+            this.updateCheck = 1;
             if (num < 0 || num >= this.state.editingVisits.length) {
                 return;
             } else {
                 this.setState({
                     editingSelectedVisit: num
                 })
-                this.ToothCreatorComponent.current.setStateWithDataViaRef(this.state.editingVisits[this.state.editingSelectedVisit]['Teeth'], oldNum);
+                let data = this.getData(num)
+                this.ToothCreatorComponent.current.setStateWithDataViaRef(data);
             }
+            this.updateCheck = 0;
         }
 
         const textHandlerTooth = {
@@ -159,8 +176,7 @@ export class TicketCreator extends React.Component<any, any> {
                 <LineEdit style={"flex: 2;"} on={textHandlerLengthOfVisit} text={this.state.editingVisits[this.state.editingSelectedVisit]['LengthOfVisit']} />
             </View>
 
-            <ToothCreator ref={this.ToothCreatorComponent} passbackTeeth={this.getTeeth}/>
-
+            <ToothCreator ref={this.ToothCreatorComponent} passbackTeeth={this.getTeeth} getData={this.getData}/>
         </View>
 
         return (
