@@ -50,36 +50,6 @@ ticketsRouter.post('/updateTicket', (req, res) => {
 
 })
 
-/* 
-
-JSON Layout for incoming ticket creation:
-
-{
-    "ticket": {
-        "PatientID": Number,
-        "NumberOfVisits": Number
-    },
-    "ticketVisit": [
-        {
-            "VisitNumber": Number,
-            "Date": Date String,
-            "Time": String,
-            "VisitTimeLength": Number (Minutes)
-        }
-    ],
-    "ticketVisitTeeth": [
-        {
-            "VisitNumber": Number,
-            "Tooth": Number,
-            "ProcedureName": String,
-            "ProcedureCostDollars": Number,
-            "ProcedureCostCents": Number
-        }
-    ]
-}
-
-*/
-
 function createNewTicket(res = null, ticketData) {
 
     let numMissing = 0
