@@ -228,20 +228,21 @@ export class TicketCreator extends React.Component<any, any> {
                 <LineEdit style={"flex: 2;"} on={textHandlerLengthOfVisit} text={this.state.editingVisits[this.state.editingSelectedVisit]['LengthOfVisit']} />
             </View>
 
-            <ToothCreator ref={this.ToothCreatorComponent} passbackTeeth={this.getTeeth} getData={this.getData} getVisitIndex={this.getVisitIndex}/>
+            <ToothCreator style="flex: auto;" ref={this.ToothCreatorComponent} passbackTeeth={this.getTeeth} getData={this.getData} getVisitIndex={this.getVisitIndex}/>
+        
         </View>
 
         return (
             <View style="flex: auto;">
                 {editingView}
-                <View style="flex: auto; flex-direction: 'row';">
-                    <Button style="flex: 1;" text={"<"} enabled={(this.state.editingVisits.length > 1 ? true : false)} on={
+                <View style="flex-shrink: 1; flex-direction: 'row';">
+                    <Button style="flex: auto;" text={"<"} enabled={(this.state.editingVisits.length > 1 ? true : false)} on={
                         {
                             // Only trigger when left click is released
                             [WidgetEventTypes.MouseButtonRelease]: () => move(this.state.editingSelectedVisit - 1, this.state.editingSelectedVisit),
                         }
                     }/>
-                    <Button style="flex: 1;" text={">"} enabled={(this.state.editingVisits.length > 1 ? true : false)} on={
+                    <Button style="flex: auto;" text={">"} enabled={(this.state.editingVisits.length > 1 ? true : false)} on={
                         {
                             // Only trigger when left click is released
                             [WidgetEventTypes.MouseButtonRelease]: () => move(this.state.editingSelectedVisit + 1, this.state.editingSelectedVisit),
@@ -249,13 +250,13 @@ export class TicketCreator extends React.Component<any, any> {
                     }/>
                 </View>
                 <View style="flex: auto; flex-direction: 'row';">
-                    <Button style="flex: 1;" text={"-"} on={
+                    <Button style="flex: auto;" text={"-"} on={
                         {
                             // Only trigger when left click is released
                             [WidgetEventTypes.MouseButtonRelease]: () => this.removeVisit(this.state.editingSelectedVisit),
                         }
                     }/>
-                    <Button style="flex: 1;" text={"+"} on={
+                    <Button style="flex: auto;" text={"+"} on={
                         {
                             // Only trigger when left click is released
                             [WidgetEventTypes.MouseButtonRelease]: () => this.addVisit(this.state.editingNumVisits + 1),
@@ -263,7 +264,7 @@ export class TicketCreator extends React.Component<any, any> {
                     }/>
                 </View>
                 <View style="flex: auto; flex-direction: 'row';">
-                    <Button style="flex: 1;" text={"Submit New Ticket"} on={
+                    <Button style="flex: auto;" text={"Submit New Ticket"} on={
                         {
                             // Only trigger when left click is released
                             [WidgetEventTypes.MouseButtonRelease]: () => this.createNewTicket(),
