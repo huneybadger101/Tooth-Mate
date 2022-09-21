@@ -2,6 +2,7 @@ import { Text, View, Button, LineEdit } from "@nodegui/react-nodegui";
 import {  WidgetEventTypes } from "@nodegui/nodegui";
 import React from "react";
 import ToothCreator from "./ToothCreator";
+import axios from "axios";
 
 export class TicketCreator extends React.Component<any, any> {
 
@@ -42,6 +43,57 @@ export class TicketCreator extends React.Component<any, any> {
                 })
             }
         }
+    }
+
+    createNewTicket = () => {
+        let visits = [];
+        for (let i = 0; i < this.state.editingVisits.length; i++) {
+            visits.push({
+                VisitNumber: this.state.editingVisits[i]['VisitNumber'],
+                Date: this.state.editingVisits[i]['Date'],
+                Time: this.state.editingVisits[i]['Time'],
+                VisitTimeLength: this.state.editingVisits[i]['LengthOfVisit']
+            })
+        }
+        let visitTeeth = [];
+        for (let i = 0; i < this.state.editingVisits.length; i++) {
+            for (let k = 0; k < this.state.editingVisits[i]['Teeth']['Teeth'].length; k++) {
+                visitTeeth.push({
+                    VisitNumber: this.state.editingVisits[i]['Teeth']['Index'],
+                    Tooth: this.state.editingVisits[i]['Teeth']['TeethIndexes'][k],
+                    ToothData: this.state.editingVisits[i]['Teeth']['Teeth'][k],
+                    ProcedureName: this.state.editingVisits[i]['Teeth']['Procedures'][k],
+                    ProcedureCostDollars: this.state.editingVisits[i]['Teeth']['ProcedureCosts'][k].split("$")[1].split(".")[0],
+                    ProcedureCostCents: this.state.editingVisits[i]['Teeth']['ProcedureCosts'][k].split("$")[1].split(".")[1],
+                    ProcedureTime: this.state.editingVisits[i]['Teeth']['ProcedureTimes'][k],
+                    Notes: this.state.editingVisits[i]['Teeth']['Notes'][k]
+                })
+            }
+        }
+        let data = {
+            ticket: {
+                PatientID: this.state.patientID,
+                NumberOfVisits: this.state.editingVisits.length
+            },
+            ticketVisit: visits,
+            ticketVisitTeeth: visitTeeth
+        }
+        axios.post('http://localhost:3000/tickets/createNewTicket', null, {
+            headers: {
+                'data': JSON.stringify(data)
+            }
+        })
+        .then((res) => {
+            if (res.data.error) {
+                console.log(res.data.error)
+            } else {
+                this.props.changeEdit()
+            }
+
+        })
+        .catch((err) => {
+            console.log(err)
+        })
     }
 
     getVisitIndex = () => {
@@ -207,6 +259,14 @@ export class TicketCreator extends React.Component<any, any> {
                         {
                             // Only trigger when left click is released
                             [WidgetEventTypes.MouseButtonRelease]: () => this.addVisit(this.state.editingNumVisits + 1),
+                        }
+                    }/>
+                </View>
+                <View style="flex: auto; flex-direction: 'row';">
+                    <Button style="flex: 1;" text={"Submit New Ticket"} on={
+                        {
+                            // Only trigger when left click is released
+                            [WidgetEventTypes.MouseButtonRelease]: () => this.createNewTicket(),
                         }
                     }/>
                 </View>

@@ -89,6 +89,12 @@ export class PatientDataViewer extends React.Component<any, any> {
         })
     }
 
+    changeEdit = () => {
+        this.setState({
+            edit: false
+        })
+    }
+
     // Function that returns a component to be drawn, can have children components if the parent component supports it
     render() {
 
@@ -119,7 +125,7 @@ export class PatientDataViewer extends React.Component<any, any> {
 
         if (this.state.edit) {
 
-            return <TicketCreator patient={this.state.selectedPatientID} patients={this.state.patients}/>
+            return <TicketCreator patient={this.state.selectedPatientID} patients={this.state.patients} changeEdit={this.changeEdit}/>
 
         } else {
             return (
