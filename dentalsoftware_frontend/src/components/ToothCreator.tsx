@@ -288,20 +288,35 @@ export class ToothCreator extends React.Component<any, any> {
 
                 if (this.state.totalCharts > 0)
                 {
-                    for (var num = this.state.currentlySelectedChart; num < this.state.totalCharts; num++)
-                    {
-                        this.state.dentalChartDataHolderOne[num] = this.state.dentalChartDataHolderOne[num + 1];
-                        this.state.dentalChartDataHolderTwo[num] = this.state.dentalChartDataHolderTwo[num + 1];
-                        this.state.dentalChartDataHolderThree[num] = this.state.dentalChartDataHolderThree[num + 1];
-                        this.state.dentalChartDataHolderFour[num] = this.state.dentalChartDataHolderFour[num + 1];
-                        this.state.dentalChartDataHolderFive[num] = this.state.dentalChartDataHolderFive[num + 1];
-                        this.state.dentalChartDataHolderSix[num] = this.state.dentalChartDataHolderSix[num + 1];
-                        this.state.dentalChartDataHolderSeven[num] = this.state.dentalChartDataHolderSeven[num + 1];
-                        this.state.dentalChartDataHolderEight[num] = this.state.dentalChartDataHolderEight[num + 1];
-                        this.state.dentalChartDataHolderNine[num] = this.state.dentalChartDataHolderNine[num + 1];
-
-                        this.state.currentlySelectedProcedureIndex[num] = this.state.currentlySelectedProcedureIndex[num + 1];
-                        this.state.currentlySelectedToothIndex[num] = this.state.currentlySelectedToothIndex[num + 1];
+                    if (this.state.currentlySelectedChart + 1 == this.state.totalCharts) {
+                            this.state.dentalChartDataHolderOne[num] = null;
+                            this.state.dentalChartDataHolderTwo[num] = null;
+                            this.state.dentalChartDataHolderThree[num] = null;
+                            this.state.dentalChartDataHolderFour[num] = null;
+                            this.state.dentalChartDataHolderFive[num] = null;
+                            this.state.dentalChartDataHolderSix[num] = null;
+                            this.state.dentalChartDataHolderSeven[num] = null;
+                            this.state.dentalChartDataHolderEight[num] = null;
+                            this.state.dentalChartDataHolderNine[num] = null;
+    
+                            this.state.currentlySelectedProcedureIndex[num] = null;
+                            this.state.currentlySelectedToothIndex[num] = null;
+                    } else {
+                        for (var num = this.state.currentlySelectedChart; num < this.state.totalCharts; num++)
+                        {
+                            this.state.dentalChartDataHolderOne[num] = this.state.dentalChartDataHolderOne[num + 1];
+                            this.state.dentalChartDataHolderTwo[num] = this.state.dentalChartDataHolderTwo[num + 1];
+                            this.state.dentalChartDataHolderThree[num] = this.state.dentalChartDataHolderThree[num + 1];
+                            this.state.dentalChartDataHolderFour[num] = this.state.dentalChartDataHolderFour[num + 1];
+                            this.state.dentalChartDataHolderFive[num] = this.state.dentalChartDataHolderFive[num + 1];
+                            this.state.dentalChartDataHolderSix[num] = this.state.dentalChartDataHolderSix[num + 1];
+                            this.state.dentalChartDataHolderSeven[num] = this.state.dentalChartDataHolderSeven[num + 1];
+                            this.state.dentalChartDataHolderEight[num] = this.state.dentalChartDataHolderEight[num + 1];
+                            this.state.dentalChartDataHolderNine[num] = this.state.dentalChartDataHolderNine[num + 1];
+    
+                            this.state.currentlySelectedProcedureIndex[num] = this.state.currentlySelectedProcedureIndex[num + 1];
+                            this.state.currentlySelectedToothIndex[num] = this.state.currentlySelectedToothIndex[num + 1];
+                        }
                     }
 
                     //Changes the tooth back to the first index
