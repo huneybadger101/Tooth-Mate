@@ -91,14 +91,15 @@ Example Code ->
 ```
 axios.post('http://localhost:3000/accounts/createNewAccount', null, {
     headers: {
-        'username': 'accountUsername',
-        'password': 'accountPassword',
-        'accessLevel': 2,
-        'dentistNumber': 2,
-        'DOB': '1999/9/4',
-        'Email_Address': 'example@gmail.com',
-        'Contact_Number': '0221224336'
-
+        'data': {
+            'username': 'accountUsername',
+            'password': 'accountPassword',
+            'accessLevel': 2,
+            'dentistNumber': 2,
+            'DOB': '1999/9/4',
+            'Email_Address': 'example@gmail.com',
+            'Contact_Number': '0221224336'
+        }
     })
     .then((res) => {
         if (res.data.error) {

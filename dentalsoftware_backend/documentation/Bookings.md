@@ -92,13 +92,15 @@ Example Code ->
 ```
 axios.post('http://localhost:3000/bookings/createNewAccount', null, {
     headers: {
-        'patientID': 1,
-        'Date': '2022/11/25',
-        'Time': '10:25',
-        'dentistID': 2,
-        'procedure': 'Initial Checkup',
-        'affectedAreas': 'Top Right',
-        'PatientAttended': 'NO'
+        'data': {
+            'patientID': 1,
+            'Date': '2022/11/25',
+            'Time': '10:25',
+            'dentistID': 2,
+            'procedure': 'Initial Checkup',
+            'affectedAreas': 'Top Right',
+            'PatientAttended': 'NO'
+        }
 
     })
     .then((res) => {

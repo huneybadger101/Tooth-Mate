@@ -65,8 +65,10 @@ Example Code ->
 ```
 axios.post('http://localhost:3000/images/createNewImage', null, {
     headers: {
-        'patientID': 2,
-        'imagePath': 'C:/Users/Matty/Desktop/ImageOne.png'
+        'data': {
+            'patientID': 2,
+            'imagePath': 'C:/Users/Matty/Desktop/ImageOne.png'
+        }
     })
     .then((res) => {
         if (res.data.error) {
