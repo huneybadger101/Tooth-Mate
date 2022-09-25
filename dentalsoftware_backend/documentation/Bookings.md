@@ -62,7 +62,7 @@ Example Code ->
 ```
 axios.post('http://localhost:3000/bookings/deleteBooking', null, {
     headers: {
-        'bookingid': '2',
+        'bookingid': 2,
         'cols': '{"cols": [DATA_HERE]}',
         'vals': '{"vals": [DATA_HERE]}'
     })
