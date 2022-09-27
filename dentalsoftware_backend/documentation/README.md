@@ -16,6 +16,12 @@ PLEASE NOTE: All API requests should be done using the `Axios` library, this can
 
 [Bookings related endpoints](./Bookings.md)
 
-[Miscellaneous endpoints](./Miscellaneous.md)
+[Images endpoints](./Images.md)
 
-[Patient Data related endpoints](./PatientData.md) 
+[Login endpoints](./Login.md)
+
+[Patients related endpoints](./Patients.md) 
+
+[Quotes related endpoints](./Quotes.md) 
+
+[Tickets related endpoints](./Tickets.md) 

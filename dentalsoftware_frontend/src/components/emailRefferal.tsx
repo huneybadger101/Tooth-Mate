@@ -6,9 +6,8 @@ export const generateEmailReferral = (patientData:{
         patientDOB:String,
         patientContactNumber:String,
         patientEmailAddress:String
-    }, subject:String) => {
+    }, subject:String, body:String) => {
 
-        let body = "This is a basic email refferal. This will contain a patient's data.%0D%0APatient Name: " +
         patientData['patientName'] + 
         "%0D%0APatients NHI Number: " + patientData['patientNHI'] +
         "%0D%0APatients Date of Birth: " + patientData['patientDOB'] +
