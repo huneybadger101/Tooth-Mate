@@ -342,7 +342,7 @@ export class Calendar extends React.Component<any, any> {
                   (this.state.currentMonthSelected + 1) + "." +
                   this.state.currentYearSelected + "." +
                   this.state.day[this.state.currentWeekdaySelected]
-                } callback={bookingsCallback} accountHelper={this.props.accountHelper}/>
+                } callback={bookingsCallback} newTab={this.props.newTab} accountHelper={this.props.accountHelper}/>
                 
 
               </View>

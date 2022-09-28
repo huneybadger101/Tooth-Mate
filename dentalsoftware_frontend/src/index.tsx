@@ -4,7 +4,6 @@ import App from "./app";
 
 process.title = "Toothmate Dental Software";
 Renderer.render(<App />);
-
 // This is for hot reloading (this will be stripped off in production by webpack)
 if (module.hot) {
     module.hot.accept(["./app"], function() {

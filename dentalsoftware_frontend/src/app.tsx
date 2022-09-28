@@ -1,6 +1,5 @@
 import { Window, View } from "@nodegui/react-nodegui";
 import React from "react";
-import { QIcon, QScreen } from "@nodegui/nodegui";
 import path from "path";
 import TabContainer from "./components/tabContainer";
 import Login from "./components/login";
@@ -35,7 +34,7 @@ class App extends React.Component<any, any> {
       screens.push(<Login accountHelper={accountHelper}/>)
       names.push("Login")
 
-      const maxSize = {width: result.width, height: result.height}
+      const maxSize = {width: result.width - 50, height: result.height - 50}
       windows.push(<Window
         windowTitle="ToothMate Dental Software"
         minSize={minSize}

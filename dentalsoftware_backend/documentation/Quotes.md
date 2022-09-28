@@ -1,6 +1,6 @@
-# Bookings Endpoints
+# Quotes Endpoints
 
-`/bookings/getAllBookings` -> Returns a dictionary containing all items in the Bookings table.
+`/quotes/getAllQuotes` -> Returns a dictionary containing all items in the Quotes table.
 
 - Request type: Post
 - Required Headers: None
@@ -9,7 +9,7 @@
 
 Example Code -> 
 ```
-axios.post('http://localhost:3000/bookings/getAllBookings')
+axios.post('http://localhost:3000/quotes/getAllQuotes')
     .then((res) => {
         if (res.data.error) {
             console.log(res.data.error)
@@ -24,18 +24,18 @@ axios.post('http://localhost:3000/bookings/getAllBookings')
 
 ----
 
-`/bookings/deleteBooking` -> Deletes an existing item in the Bookings table.
+`/quotes/deleteQuote` -> Deletes an existing item in the Quotes table.
 
 - Request type: Post
-- Required Headers: String - `bookingid`
+- Required Headers: String - `quoteid`
 - Optional Headers: None
 - Error: In the `response.data` dictionary, `result` will be equal to `1` and `error` will contain the full error logs
 
 Example Code -> 
 ```
-axios.post('http://localhost:3000/bookings/deleteBooking', null, {
+axios.post('http://localhost:3000/quotes/deleteQuote', null, {
     headers: {
-        'bookingid': '2'
+        'quoteid': 1
     })
     .then((res) => {
         if (res.data.error) {
@@ -51,18 +51,45 @@ axios.post('http://localhost:3000/bookings/deleteBooking', null, {
 
 ----
 
-`/bookings/updateBooking` -> Updates an existing item in the Bookings table.
+`/quotes/deleteAllQuotesForPatient` -> Deletes all existing quotes in the Quotes table which are assigned to a given patientID.
 
 - Request type: Post
-- Required Headers: String - `bookingid`, JSON String - `cols`, JSON String - `vals`
+- Required Headers: String (ID) - `patientid`
 - Optional Headers: None
 - Error: In the `response.data` dictionary, `result` will be equal to `1` and `error` will contain the full error logs
 
 Example Code -> 
 ```
-axios.post('http://localhost:3000/bookings/deleteBooking', null, {
+axios.post('http://localhost:3000/quotes/deleteAllQuotesForPatient', null, {
     headers: {
-        'bookingid': 2,
+        'patientid': 1
+    })
+    .then((res) => {
+        if (res.data.error) {
+            console.log(res.data.error)
+        } else {
+            console.log(res.data)
+        }
+    })
+    .catch((err) => {
+        console.log(err)
+    });
+```
+
+----
+
+`/quotes/updateQuote` -> Updates an existing item in the Quotes table.
+
+- Request type: Post
+- Required Headers: String - `quoteid`, JSON String - `cols`, JSON String - `vals`
+- Optional Headers: None
+- Error: In the `response.data` dictionary, `result` will be equal to `1` and `error` will contain the full error logs
+
+Example Code -> 
+```
+axios.post('http://localhost:3000/quotes/updateQuote', null, {
+    headers: {
+        'quoteid': 2,
         'cols': '{"cols": [DATA_HERE]}',
         'vals': '{"vals": [DATA_HERE]}'
     })
@@ -81,25 +108,23 @@ axios.post('http://localhost:3000/bookings/deleteBooking', null, {
 ----
 
 
-`/bookings/createNewBooking` -> Creates a new Booking entry in the Bookings table in the Database.
+`/quotes/createNewQuote` -> Creates a new Quote entry in the Quotes table in the Database.
 
 - Request type: Post
-- Required Headers: Number (ID) - `patientID`, String - `Date`, String `Time`, Number (ID) - `dentistID`, String - `procedure`, String - `affectedAreas`, String - `PatientAttended`.
+- Required Headers: Number (ID) - `patientID`, Number (ID) - `bookingID`, Number (ID) - `dentistID`, Number - `totalCostDollars`, Number - `TotalCostCents`.
 - Optional Headers: None
 - Error: In the `response.data` dictionary, `result` will be equal to `1` and `error` will contain the full error logs
 
 Example Code -> 
 ```
-axios.post('http://localhost:3000/bookings/createNewAccount', null, {
+axios.post('http://localhost:3000/quotes/createNewQuote', null, {
     headers: {
         'data': {
             'patientID': 1,
-            'Date': '2022/11/25',
-            'Time': '10:25',
-            'dentistID': 2,
-            'procedure': 'Initial Checkup',
-            'affectedAreas': 'Top Right',
-            'PatientAttended': 'NO'
+            'dentistID': 1,
+            'bookingID': 1,
+            'totalCostDollars': 25,
+            'totalCostCents': 0
         }
 
     })
