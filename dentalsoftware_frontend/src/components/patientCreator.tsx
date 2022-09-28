@@ -3,6 +3,7 @@ import { NHIcorrectFormatCheck } from "./Calendarhelpers/textFormatFunctions";
 import React from "react";
 import axios from 'axios';
 import Alert from "./alert";
+import ToothCreator from "./ToothCreator";
 
 export class PatientDataViewer extends React.Component<any, any> {
 
@@ -19,7 +20,9 @@ export class PatientDataViewer extends React.Component<any, any> {
             currentContactNumber: "",
             currentEmailAddress: "",
             currentNotes: "",
-            alertView: null
+            alertView: null,
+            teeth: [],
+            teethIndex: 0
         }
 
         axios.post('http://localhost:3000/patients/getAllPatientData')
@@ -125,6 +128,18 @@ export class PatientDataViewer extends React.Component<any, any> {
             })
         }
 
+        const updateTeethIndex = (index:number) => {
+            console.log("teethindex: " + index)
+            this.setState({
+                teethIndex: index
+            })
+        }
+
+        const getTeeth = (teeth:any) => {
+            this.state.teeth[this.state.teethIndex] = teeth;
+            console.log(this.state.teeth[this.state.teethIndex])
+        }
+
         const submitNewPatient = {
             clicked: () => {
                 let result;
@@ -137,6 +152,7 @@ export class PatientDataViewer extends React.Component<any, any> {
                     patient_Contact_Number: this.state.currentContactNumber,
                     patient_Email_Address: this.state.currentEmailAddress,
                     patient_Notes: this.state.currentNotes,
+                    patient_Teeth: this.state.teeth
                 }
                 axios.post('http://localhost:3000/patients/createNewPatient', null, {
                     headers: {
@@ -213,9 +229,13 @@ export class PatientDataViewer extends React.Component<any, any> {
                     <Text style={"flex: 1; border: 1px solid black; background: 'LightGrey';"}>Patient Notes</Text>
                     <LineEdit style={"flex: 2;"} on={textHandlerNotes} text={this.state.currentNotes} />
                 </View>
+
+                <ToothCreator style="flex: shrink;" passbackTeeth={getTeeth} getVisitIndex={() => {return 0}} updateTeethIndex={updateTeethIndex}/>
+                
                 <View style="margin: 0px; flex-direction: 'row';">
                     <Button text={"Submit"} on={submitNewPatient}></Button>
                 </View>
+
                 {this.state.alertView}
             </View>
         );

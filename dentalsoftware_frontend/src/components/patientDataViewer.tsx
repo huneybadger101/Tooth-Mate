@@ -102,7 +102,7 @@ export class PatientDataViewer extends React.Component<any, any> {
         let patientListStrings = [];
 
         for (let i in patientList) {
-            patientListStrings.push(<Button style="flex: 1; color: 'black'; font-size: 35px;" text={patientList[i].FirstName + " " + patientList[i].LastName} on={
+            patientListStrings.push(<Button style="flex: auto; color: 'black';" text={patientList[i].FirstName + " " + patientList[i].LastName} on={
                     {
                         // Only trigger when left click is released
                         [WidgetEventTypes.MouseButtonRelease]: () => this.buttonHandler(Number(i)),
@@ -153,7 +153,7 @@ export class PatientDataViewer extends React.Component<any, any> {
                         </View>
     
                         <View style="flex: 2; flex-direction: 'column';">
-                            <Button style="flex: 1; color: 'black'; font-size: 35px;" text={"Create Ticket"} on={
+                            <Button style="flex: 1; color: 'black'; font-size: 35px;" visible={selectedPatientNHI == null ? false : true} text={"Create Ticket"} on={
                                 {
                                     // Only trigger when left click is released
                                     [WidgetEventTypes.MouseButtonRelease]: () => this.setState({edit: true}),

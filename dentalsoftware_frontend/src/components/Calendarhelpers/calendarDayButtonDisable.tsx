@@ -1,8 +1,5 @@
 export const disableCalendarButton = (buttonSelected:any, daySelected:any, monthSelected:any, currentMonthSelected:any) =>{
 
-    console.log("Current month selected: " + monthSelected);
-    console.log("Month selected: " + monthSelected);
-
 
     if (buttonSelected == daySelected && monthSelected == currentMonthSelected)
     {

@@ -28,30 +28,30 @@ export class Homepage extends React.Component<any, any> {
 
         let buttonStyle = "width: 400%; height: 200%; color: 'black'; font-size: 20px;";
         
-        pagesRow1.push(<Button style={buttonStyle} text="View Patient Data" on={
+        pagesRow1.push(<Button style={buttonStyle} text="Create New Patient" on={
                 {
                     // Only trigger when left click is released
-                    [WidgetEventTypes.MouseButtonRelease]: () => this.newTab(<PatientDataViewer/>, "Patient Data Viewer"),
+                    [WidgetEventTypes.MouseButtonRelease]: () => this.newTab(<PatientCreator newTab={this.props.newTab}/>, "Patient Creator"),
                 }
             }/>)
         pagesRow1.push(<View style="width: 100%;"></View>)
         pagesRow1.push(<Button style={buttonStyle} text="Calendar Page" on={
                 {
                     // Only trigger when left click is released
-                    [WidgetEventTypes.MouseButtonRelease]: () => this.newTab(<Calendar/>, "Calendar"),
+                    [WidgetEventTypes.MouseButtonRelease]: () => this.newTab(<Calendar newTab={this.props.newTab}/>, "Calendar"),
                 }
             }/>)
         pagesRow2.push(<Button style={buttonStyle} text="Quote Creator" on={
                 {
                     // Only trigger when left click is released
-                    [WidgetEventTypes.MouseButtonRelease]: () => this.newTab(<QuoteCreator/>, "Quote Creator"),
+                    [WidgetEventTypes.MouseButtonRelease]: () => this.newTab(<QuoteCreator newTab={this.props.newTab}/>, "Quote Creator"),
                 }
             }/>)
         pagesRow2.push(<View style="width: 100%;"></View>)
         pagesRow2.push(<Button style={buttonStyle} text="View Quotes" on={
                 {
                     // Only trigger when left click is released
-                    [WidgetEventTypes.MouseButtonRelease]: () => this.newTab(<QuoteViewer/>, "Quote Viewer"),
+                    [WidgetEventTypes.MouseButtonRelease]: () => this.newTab(<QuoteViewer newTab={this.props.newTab}/>, "Quote Viewer"),
                 }
             }/>)
 

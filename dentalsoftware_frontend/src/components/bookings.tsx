@@ -9,6 +9,8 @@ import { viewBooking } from "./Calendarhelpers/viewBookingSelected";
 import Alert from "./alert";
 import axios from 'axios';
 import { BookingPageDentalChart } from "./Calendarhelpers/bookingDentalChart";
+import DentalChart from "./dentalChart";
+import PerioChart from "./perioChart";
 
 declare type ComboBoxItem = {
     text: string;
@@ -42,6 +44,7 @@ export class Bookings extends React.Component<any, any> {
             procedure: [],
             areasAffected: [],
             patientNotes: [],
+            bookingShowInfo: [],
             patients: null,
             patientsViewed: null,
             dentists: null,
@@ -451,37 +454,62 @@ export class Bookings extends React.Component<any, any> {
                     //will also create an edit button for each booking, an info button to get more details, and a delete button to remove the selected booking
                     //NOTE: Will only add the edit and delete buttons if the user type has said abilities
                     bookingList[num] =
-                        <View style="margin: 3px; flex-direction: 'row';">
+                        <View style="margin: 3px; flex-direction: 'column';">
 
-                            <Text style={"flex: 4; border: 1px solid black;"}>{"Booking ID: " + this.state.bookingID[num] + ", Booking date: " + dateFull}</Text>
+                            <View style="margin: 3px; flex-direction: 'row';">
+                                <Text style={"flex: 4; border: 1px solid black;"}>{"Booking ID: " + (this.state.bookingID[num] + 1) + ", Booking date: " + dateFull}</Text>
 
-                            <Button style={"flex: 1;"} text={"Info"} id={bookingSelected} on={{clicked: ()=>{
-                                
-                                this.setState({
-                                    currentBookingSelected: bookingSelected
-                                }),
+                                <Button style={"flex: 1;"} text={"Info"} id={bookingSelected} on={{clicked: ()=>{
 
-                                viewBooking(
-                                this.state.bookingID[this.state.currentBookingSelected],
-                                this.state.NHInum[this.state.currentBookingSelected],
-                                this.state.patientName[this.state.currentBookingSelected],
-                                dateFull,
-                                //Time is sent together so it is easier to handle on the other end
-                                addLeadingZeros(this.state.timeHour[this.state.currentBookingSelected], 2) + ":" +
-                                addLeadingZeros(this.state.timeMinute[this.state.currentBookingSelected], 2) + "" +
-                                this.state.timeAM_PM[this.state.currentBookingSelected],
-                                this.state.dentistName[this.state.currentBookingSelected],
-                                this.state.procedure[this.state.currentBookingSelected],
-                                this.state.areasAffected[this.state.currentBookingSelected],
-                                this.state.patientNotes[this.state.currentBookingSelected])
-                            
-                            
-                            }}} />
-                            
-                            {/*TODO: Have the info button bring up a window (or change the screen) to view detailed version of selected booking*/}
-                            {bookingListEditButton[num]}
-                            {bookingListDeleteButton[num]}
+                                    this.state.bookingShowInfo[this.state.bookingSelected] = !this.state.bookingShowInfo[this.state.bookingSelected];
 
+                                    this.setState({
+                                        currentBookingSelected: bookingSelected
+                                    }),
+
+                                    viewBooking(
+                                    this.state.bookingID[this.state.currentBookingSelected],
+                                    this.state.NHInum[this.state.currentBookingSelected],
+                                    this.state.patientName[this.state.currentBookingSelected],
+                                    dateFull,
+                                    //Time is sent together so it is easier to handle on the other end
+                                    addLeadingZeros(this.state.timeHour[this.state.currentBookingSelected], 2) + ":" +
+                                    addLeadingZeros(this.state.timeMinute[this.state.currentBookingSelected], 2) + "" +
+                                    this.state.timeAM_PM[this.state.currentBookingSelected],
+                                    this.state.dentistName[this.state.currentBookingSelected],
+                                    this.state.procedure[this.state.currentBookingSelected],
+                                    this.state.areasAffected[this.state.currentBookingSelected],
+                                    this.state.patientNotes[this.state.currentBookingSelected])
+                                }}} />
+
+                                {/*TODO: Have the info button bring up a window (or change the screen) to view detailed version of selected booking*/}
+                                {bookingListEditButton[num]}
+                                {bookingListDeleteButton[num]}
+                            </View>
+
+                            {(this.state.bookingShowInfo[this.state.bookingSelected] == true ? <View style="margin: 3px;">
+                                        <View style="flex-direction: 'column'; border: 1px solid black;">
+                                            <View style="flex-direction: 'row';">
+                                                <Text> Patient Name: {this.state.patientName[this.state.currentBookingSelected]}</Text>
+                                                <Button text="View Dental Chart" on={{
+                                                    clicked: () => {
+                                                        this.props.newTab(<DentalChart NHI={this.state.NHInum[this.state.currentBookingSelected]} bookingID={this.state.bookingID[this.state.currentBookingSelected] + 1}/>, "Dental Chart - " + this.state.NHInum[this.state.currentBookingSelected])
+                                                    }
+                                                }}/>
+                                                <Button text="View Perio Chart" on={{
+                                                    clicked: () => {
+                                                        this.props.newTab(<PerioChart NHI={this.state.NHInum[this.state.currentBookingSelected]} bookingID={this.state.bookingID[this.state.currentBookingSelected] + 1}/>, "Perio Chart - " + this.state.NHInum[this.state.currentBookingSelected])
+                                                    }
+                                                }}/>
+                                            </View>
+                                            <Text> Patient NHI: {this.state.NHInum[this.state.currentBookingSelected]}</Text>
+                                            <Text> Dentist Name: {this.state.dentistName[this.state.currentBookingSelected]}</Text>
+                                            <Text> Booking Time: {addLeadingZeros(this.state.timeHour[this.state.currentBookingSelected], 2) + ":" + addLeadingZeros(this.state.timeMinute[this.state.currentBookingSelected], 2) + "" + this.state.timeAM_PM[this.state.currentBookingSelected]}</Text>
+                                            <Text> Procedure: {this.state.procedure[this.state.currentBookingSelected]}</Text>
+                                            <Text> Areas Affected: {this.state.areasAffected[this.state.currentBookingSelected]}</Text>
+                                            <Text> Patient Notes: {this.state.patientNotes[this.state.currentBookingSelected]}</Text>
+                                        </View> 
+                                    </View>: null)}
                         </View>   
                 }
             }

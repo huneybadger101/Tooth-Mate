@@ -61,23 +61,23 @@ function createNewAccount(res = null, accountData) {
         errorMessage += "Account Password, "
         numMissing++
     }
-    if (accountData.password === undefined) {
+    if (accountData.accessLevel === undefined) {
         errorMessage += "Account Access Level, "
         numMissing++
     }
-    if (accountData.password === undefined) {
+    if (accountData.dentistNumber === undefined) {
         errorMessage += "Dentist Number, "
         numMissing++
     }
-    if (accountData.password === undefined) {
+    if (accountData.DOB === undefined) {
         errorMessage += "Date of Birth, "
         numMissing++
     }
-    if (accountData.password === undefined) {
+    if (accountData.Email_Address === undefined) {
         errorMessage += "Email Address, "
         numMissing++
     }
-    if (accountData.password === undefined) {
+    if (accountData.Contact_Number === undefined) {
         errorMessage += "Contact Phone Number, "
         numMissing++
     }

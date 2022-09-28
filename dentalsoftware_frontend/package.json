@@ -5,8 +5,10 @@
   "scripts": {
     "build": "webpack -p",
     "dev": "webpack --mode=development",
-    "start": "webpack -p && qode ./dist/index.js",
-    "debug": "qode --inspect ./dist/index.js"
+    "start": "qode ./dist/index.js",
+    "debug": "qode --inspect ./dist/index.js",
+    "dist-win": "npm run build && npx nodegui-packer --pack ./dist && cp -r %INIT_CWD%\\copy_node_modules %INIT_CWD%\\deploy\\win32\\build\\ToothMate\\node_modules",
+    "dist-macos": "npm run build && npx nodegui-packer --pack ./dist && cp -r $INIT_CWD\\copy_node_modules $INIT_CWD\\deploy\\Darwin\\build\\ToothMate\\node_modules"
   },
   "dependencies": {
     "@nodegui/react-nodegui": "^0.10.2",
