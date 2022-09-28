@@ -37,7 +37,7 @@ function databaseCreateTables(res = null) {
     databaseQuery(res, sql)
     sql = "CREATE TABLE IF NOT EXISTS patient_tooth_data (ID INT AUTO_INCREMENT PRIMARY KEY, Patient INT NOT NULL, ToothID INT, Notes MEDIUMTEXT, leftLowerPocketGap DECIMAL(6,4) NOT NULL, leftMiddlePocketGap DECIMAL(6,4) NOT NULL, leftUpperPocketGap DECIMAL(6,4) NOT NULL, rightLowerPocketGap DECIMAL(6,4) NOT NULL, rightMiddlePocketGap DECIMAL(6,4) NOT NULL, rightUpperPocketGap DECIMAL(6,4) NOT NULL, FOREIGN KEY (Patient) REFERENCES patient_data(ID))";
     databaseQuery(res, sql)
-    sql = "CREATE TABLE IF NOT EXISTS patient_tooth_quadrant_data (ID INT AUTO_INCREMENT PRIMARY KEY, Patient INT NOT NULL, Tooth INT NOT NULL, Quadrant INT, Notes MEDIUMTEXT, FOREIGN KEY (Tooth) REFERENCES patient_tooth_data(ID), FOREIGN KEY (Patient) REFERENCES patient_data(ID))";
+    sql = "CREATE TABLE IF NOT EXISTS patient_tooth_quadrant_data (ID INT AUTO_INCREMENT PRIMARY KEY, Patient INT NOT NULL, Tooth INT NOT NULL, Quadrant INT NOT NULL, Notes MEDIUMTEXT, AffectedArea BOOLEAN NOT NULL, FOREIGN KEY (Tooth) REFERENCES patient_tooth_data(ID), FOREIGN KEY (Patient) REFERENCES patient_data(ID))";
     databaseQuery(res, sql)
     sql = "CREATE TABLE IF NOT EXISTS tickets (ID INT AUTO_INCREMENT PRIMARY KEY, Patient INT NOT NULL, NumberOfVisits INT NOT NULL, FOREIGN KEY (Patient) REFERENCES patient_data(ID))";
     databaseQuery(res, sql)

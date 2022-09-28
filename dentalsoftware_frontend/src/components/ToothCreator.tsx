@@ -33,7 +33,7 @@ export class ToothCreator extends React.Component<any, any> {
             dentalChartDataHolderSeven: [],
             dentalChartDataHolderEight: [],
             dentalChartDataHolderNine: [],
-            totalCharts: 1,
+            totalCharts: 0,
             currentlySelectedChart: 0,
             procedure: [],
             procedureCopy: [],
@@ -336,6 +336,21 @@ export class ToothCreator extends React.Component<any, any> {
                         procedurePricePrinted: this.state.procedureCostStored[0],
                         procedureTimePrinted: this.state.procedureTimeStored[0]
                     });
+
+                    if (this.state.totalCharts == 0) {
+                        this.setState({
+                            buttonOne: "height: 100px; width: 100px;",
+                            buttonTwo: "height: 100px; width: 100px;",
+                            buttonThree: "height: 100px; width: 100px;",
+                            buttonFour: "height: 100px; width: 100px;",
+                            buttonFive: "height: 100px; width: 100px;",
+                            buttonSix: "height: 100px; width: 100px;",
+                            buttonSeven: "height: 100px; width: 100px;",
+                            buttonEight: "height: 100px; width: 100px;",
+                            buttonNine: "height: 100px; width: 100px;",
+                        })
+                        this.props.passbackTeeth({})
+                    }
                 }
             }
         }
@@ -362,6 +377,9 @@ export class ToothCreator extends React.Component<any, any> {
                         procedurePricePrinted: this.state.procedureCostStored[this.state.currentlySelectedChart - 1],
                         procedureTimePrinted: this.state.procedureTimeStored[this.state.currentlySelectedChart - 1],
                     });
+                    if (this.props.updateTeethIndex != undefined) {
+                        this.props.updateTeethIndex(this.state.currentlySelectedChart)
+                    }
                 }
                 
             }
@@ -371,7 +389,7 @@ export class ToothCreator extends React.Component<any, any> {
         const dentalChartDisplayedRightHanlder = {
             clicked: () =>{
 
-                if (this.state.currentlySelectedChart < this.state.totalCharts)
+                if (this.state.currentlySelectedChart < this.state.totalCharts - 1)
                 {
                     let num = this.state.currentlySelectedChart + 1;
                     this.setState({
@@ -390,6 +408,9 @@ export class ToothCreator extends React.Component<any, any> {
                         procedurePricePrinted: this.state.procedureCostStored[num],
                         procedureTimePrinted: this.state.procedureTimeStored[num],
                     });
+                    if (this.props.updateTeethIndex != undefined) {
+                        this.props.updateTeethIndex(this.state.currentlySelectedChart)
+                    }
                 }
             }
         }
@@ -488,7 +509,7 @@ export class ToothCreator extends React.Component<any, any> {
 
         buttonRowOne.push(
             <View style="border: 1px solid black; height: 100px; width: 100px;">
-            <Button text={ "1" } style={this.state.buttonOne} on={{clicked: () => {
+            <Button text={ "1" } style={this.state.buttonOne} enabled={(this.state.totalCharts > 0)} on={{clicked: () => {
 
                 this.state.dentalChartDataHolderOne[this.state.currentlySelectedChart] = disableDentalChartButton(this.state.buttonOne);
 
@@ -502,7 +523,7 @@ export class ToothCreator extends React.Component<any, any> {
 
         buttonRowOne.push(
             <View style="border: 1px solid black; height: 100px; width: 100px;">
-            <Button text={ "2" } style={this.state.buttonTwo} on={{clicked: () => {
+            <Button text={ "2" } style={this.state.buttonTwo} enabled={(this.state.totalCharts > 0)} on={{clicked: () => {
 
                 this.state.dentalChartDataHolderTwo[this.state.currentlySelectedChart] = disableDentalChartButton(this.state.buttonTwo);
 
@@ -516,7 +537,7 @@ export class ToothCreator extends React.Component<any, any> {
 
         buttonRowOne.push(
             <View style="border: 1px solid black; height: 100px; width: 100px;">
-            <Button text={ "3" } style={this.state.buttonThree} on={{clicked: () => {
+            <Button text={ "3" } style={this.state.buttonThree} enabled={(this.state.totalCharts > 0)} on={{clicked: () => {
 
                 this.state.dentalChartDataHolderThree[this.state.currentlySelectedChart] = disableDentalChartButton(this.state.buttonThree);
 
@@ -530,7 +551,7 @@ export class ToothCreator extends React.Component<any, any> {
 
         buttonRowTwo.push(
             <View style="border: 1px solid black; height: 100px; width: 100px;">
-            <Button text={ "4" } style={this.state.buttonFour} on={{clicked: () => {
+            <Button text={ "4" } style={this.state.buttonFour} enabled={(this.state.totalCharts > 0)} on={{clicked: () => {
 
                 this.state.dentalChartDataHolderFour[this.state.currentlySelectedChart] = disableDentalChartButton(this.state.buttonFour);
 
@@ -544,7 +565,7 @@ export class ToothCreator extends React.Component<any, any> {
 
         buttonRowTwo.push(
             <View style="border: 1px solid black; height: 100px; width: 100px;">
-            <Button text={ "5" } style={this.state.buttonFive} on={{clicked: () => {
+            <Button text={ "5" } style={this.state.buttonFive} enabled={(this.state.totalCharts > 0)} on={{clicked: () => {
 
                 this.state.dentalChartDataHolderFive[this.state.currentlySelectedChart] = disableDentalChartButton(this.state.buttonFive);
 
@@ -558,7 +579,7 @@ export class ToothCreator extends React.Component<any, any> {
 
         buttonRowTwo.push(
             <View style="border: 1px solid black; height: 100px; width: 100px;">
-            <Button text={ "6" } style={this.state.buttonSix} on={{clicked: () => {
+            <Button text={ "6" } style={this.state.buttonSix} enabled={(this.state.totalCharts > 0)} on={{clicked: () => {
 
                 this.state.dentalChartDataHolderSix[this.state.currentlySelectedChart] = disableDentalChartButton(this.state.buttonSix);
 
@@ -572,7 +593,7 @@ export class ToothCreator extends React.Component<any, any> {
 
         buttonRowThree.push(
             <View style="border: 1px solid black; height: 100px; width: 100px;">
-            <Button text={ "7" } style={this.state.buttonSeven} on={{clicked: () => {
+            <Button text={ "7" } style={this.state.buttonSeven} enabled={(this.state.totalCharts > 0)} on={{clicked: () => {
 
                 this.state.dentalChartDataHolderSeven[this.state.currentlySelectedChart] = disableDentalChartButton(this.state.buttonSeven);
 
@@ -586,7 +607,7 @@ export class ToothCreator extends React.Component<any, any> {
 
         buttonRowThree.push(
             <View style="border: 1px solid black; height: 100px; width: 100px;">
-            <Button text={ "8" } style={this.state.buttonEight} on={{clicked: () => {
+            <Button text={ "8" } style={this.state.buttonEight} enabled={(this.state.totalCharts > 0)} on={{clicked: () => {
 
                 this.state.dentalChartDataHolderEight[this.state.currentlySelectedChart] = disableDentalChartButton(this.state.buttonEight);
 
@@ -600,7 +621,7 @@ export class ToothCreator extends React.Component<any, any> {
 
         buttonRowThree.push(
             <View style="border: 1px solid black; height: 100px; width: 100px;">
-            <Button text={ "9" } style={this.state.buttonNine} on={{clicked: () => {
+            <Button text={ "9" } style={this.state.buttonNine} enabled={(this.state.totalCharts > 0)} on={{clicked: () => {
 
                 this.state.dentalChartDataHolderNine[this.state.currentlySelectedChart] = disableDentalChartButton(this.state.buttonNine);
 
@@ -660,7 +681,7 @@ export class ToothCreator extends React.Component<any, any> {
                             <Button text="<" style="width: 100px;" on={dentalChartDisplayedLeftHanlder}></Button>
 
                             <Text style={"flex: 1; border: 1px solid black; background: 'LightGrey'; width: 100px;"}>
-                                {"Tooth: " + (this.state.currentlySelectedChart + 1) + "/ " + this.state.totalCharts}
+                                {"Tooth: " + (this.state.totalCharts > 0 ? (this.state.currentlySelectedChart + 1) : "0") + "/ " + this.state.totalCharts}
                             </Text>
                             
                             <Button text=">" style="width: 100px;" on={dentalChartDisplayedRightHanlder}></Button>

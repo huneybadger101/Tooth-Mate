@@ -1,3 +1,5 @@
 ./node_modules/
 coverage/
 dist/
+deploy/win32/build/
+copy_node_modules/
