@@ -8,6 +8,72 @@ function setTClient(client) {
     tClient = client;
 }
 
+function getTicketDataByID(id, res) {
+    let ticketID = id;
+
+    let ticketData;
+    let ticketVisitData;
+    let ticketVisitToothData;
+
+    let sql = "SELECT * FROM tickets WHERE ID = '" + ticketID + "';"
+    tClient.query(sql, function (err, result) {
+        if (err) {
+            console.log(err)
+            if (res) {
+                res.send({result: 1, error: err})
+            } else {
+                return {result: 1}
+            }
+        }
+
+        ticketData = result;
+
+        sql = "SELECT * FROM ticket_visit WHERE Ticket = '" + ticketID + "';"
+        tClient.query(sql, function (err, result) {
+            if (err) {
+                console.log(err)
+                if (res) {
+                    res.send({result: 1, error: err})
+                } else {
+                    return {result: 1}
+                }
+            }
+    
+            ticketVisitData = result;
+
+            sql = "SELECT * FROM ticket_visit_tooth WHERE";
+
+            for (let i = 0; i < ticketVisitData.length; i++) {
+                if (sql.endsWith("'")) {
+                    sql += " OR";
+                }
+                sql += " TicketVisit = '" + ticketVisitData[i]['ID'] + "'";
+            }
+
+            sql += ";"
+
+            tClient.query(sql, function (err, result) {
+                if (err) {
+                    console.log(err)
+                    if (res) {
+                        res.send({result: 1, error: err})
+                    } else {
+                        return {result: 1}
+                    }
+                }
+                ticketVisitToothData = result;
+
+                res.send({result: {
+                    ticket: ticketData,
+                    ticketVisit: ticketVisitData,
+                    ticketVisitTooth: ticketVisitToothData
+                    }
+                })
+            });
+        });
+    });
+}
+
 ticketsRouter.post('/getAllTickets', (req, res) => {
     let searchItem = "*";
     if (req.headers['searchitem'] != undefined) {
@@ -15,6 +81,11 @@ ticketsRouter.post('/getAllTickets', (req, res) => {
     }
     let sql = "SELECT " + searchItem + " FROM tickets";
     databaseQuery(res, sql);
+})
+
+ticketsRouter.post('/getTicketDataByID', async (req, res) => {
+    let id = req.headers['id'];
+    getTicketDataByID(id, res)
 })
 
 ticketsRouter.post('/deleteTicket', (req, res) => {

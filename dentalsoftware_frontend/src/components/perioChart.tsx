@@ -66,7 +66,7 @@ export class PerioChart extends React.Component<any, any> {
     render() {
 
         if (this.state.patient == null) {
-            return (<View></View>)
+            return (<View/>)
         }
 
         const callback = (number:number) => {

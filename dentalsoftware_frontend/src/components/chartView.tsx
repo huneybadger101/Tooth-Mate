@@ -35,7 +35,7 @@ export class ChartView extends React.Component<any, any> {
                     this.props.callback(i + 16)
                 }
             }}/>)
-            name = "" + (i + 24);
+            name = "" + (i + 25);
             bottomRight.push(<Button style="height: 100px; width: 100px;" text={name} on={{
                 clicked: () => {
                     this.props.callback(i + 24)
