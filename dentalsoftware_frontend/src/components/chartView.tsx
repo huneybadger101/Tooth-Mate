@@ -51,17 +51,17 @@ export class ChartView extends React.Component<any, any> {
                         <View style="margin: 5px; flex-direction: 'row'">
                             {topLeft}
                         </View>
-                        <View style="border: 8px solid black;"/>
+                        <View style="border: 4px solid black;"/>
                         <View style="margin: 5px; flex-direction: 'row'">
                             {topRight}
                         </View>
                     </View>
-                    <View style="border: 8px solid black;"/>
+                    <View style="border: 4px solid black;"/>
                     <View style="flex: 'auto'; flex-direction: 'row';">
                         <View style="margin: 5px; flex-direction: 'row'">
                             {bottomLeft}
                         </View>
-                        <View style="border: 8px solid black;"/>
+                        <View style="border: 4px solid black;"/>
                         <View style="margin: 5px; flex-direction: 'row'">
                             {bottomRight}
                         </View>
