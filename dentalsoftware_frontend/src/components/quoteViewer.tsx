@@ -130,8 +130,6 @@ export class QuoteViewer extends React.Component<any, any> {
                 }
             }
 
-            console.log(quote)
-
             this.setState({
                 selectedQuoteID: id,
                 selectedPaymentStatus: quote['QuotePaymentStatus'],
@@ -153,7 +151,15 @@ export class QuoteViewer extends React.Component<any, any> {
 
         } 
 
-        const createPDFButtonHandler = (quoteData:any):any => {
+        const createPDFButtonHandler = (quoteID:number):any => {
+
+            let quoteData:any;
+            for (let i = 0; i < this.state.quotes.length; i++) {
+                if (quoteID == this.state.quotes[i]['ID']) {
+                    quoteData = this.state.quotes[i];
+                    break;
+                }
+            }
 
             let patient:any;
             let booking:any;
@@ -211,7 +217,6 @@ export class QuoteViewer extends React.Component<any, any> {
 
         const quoteList = this.state.quotes;
         let quoteViews = [];
-        let quoteButton = [];
 
         for (let i in quoteList) {
             quoteViews.push(
@@ -222,15 +227,6 @@ export class QuoteViewer extends React.Component<any, any> {
                     }
                 }></Button>
             </View>
-            )
-            quoteButton.push(
-                <View>
-                    <Button text={"Export Quote as PDF"} on={
-                        {
-                            clicked: () => {createPDFButtonHandler(quoteList[i])}
-                        }
-                    }></Button>
-                </View>
             )
         }
 
