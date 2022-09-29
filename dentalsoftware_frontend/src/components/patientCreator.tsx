@@ -53,6 +53,10 @@ export class PatientDataViewer extends React.Component<any, any> {
     // Function that returns a component to be drawn, can have children components if the parent component supports it
     render() {
 
+        if (this.state.patients == null) {
+            return (<View/>)
+        }
+
         let alertView = <View/>;
 
         const textHandlerFirstName = {
