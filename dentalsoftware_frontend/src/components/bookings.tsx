@@ -12,6 +12,10 @@ import { BookingPageDentalChart } from "./Calendarhelpers/bookingDentalChart";
 import DentalChart from "./dentalChart";
 import PerioChart from "./perioChart";
 
+const { MongoClient, ServerApiVersion } = require('mongodb');
+
+const uri = "mongodb+srv://tmAdmin:tmAdminR&D@toothmatecluster.82nq5.mongodb.net/?retryWrites=true&w=majority";
+
 declare type ComboBoxItem = {
     text: string;
 };
@@ -117,7 +121,8 @@ export class Bookings extends React.Component<any, any> {
                             patientsData: res.data.result,
                             dentistsData: resAccount.data.result,
                             dentists: dentists,
-                            bookings: bookingDisplayed
+                            bookings: bookingDisplayed,
+                            bookingsRaw: resBooking.data.result
                         })
                     }
 
@@ -369,6 +374,77 @@ export class Bookings extends React.Component<any, any> {
 
         }
 
+        const sendBookingDataToMobileAppDatabase = (bookingID:number) => {
+
+            let booking:any;
+            let patient:any;
+            let dentist:any;
+
+            for (let i = 0; i < this.state.bookingsRaw.length; i++) {
+                if (bookingID == this.state.bookingsRaw[i]['ID']) {
+                    booking = this.state.bookingsRaw[i];
+                    break;
+                }
+            }
+
+            for (let i = 0; i < this.state.patientsData.length; i++) {
+                if (booking['Patient'] == this.state.patientsData[i]['ID']) {
+                    patient = this.state.patientsData[i];
+                    break;
+                }
+            }
+
+            for (let i = 0; i < this.state.dentistsData.length; i++) {
+                if (booking['Dentist'] == this.state.dentistsData[i]['ID']) {
+                    dentist = this.state.dentistsData[i];
+                    break;
+                }
+            }
+
+            let data = {
+                id: booking['ID'],
+                date: new Date(booking['Date']),
+                time: booking['Time'],
+                procedure: booking['ProcedureName'],
+                location: booking['Location'],
+                notes: booking['Notes'],
+                patientName: patient['FirstName'] + (patient['MiddleName'] != '' ? (" " + patient['MiddleName'] + " ") : " ") + patient['LastName'],
+                patientNHI: patient['NHI'],
+                dentistName: dentist['DentistName']
+            }
+
+            let client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
+            client.connect((err:any) => {
+                client.db("myFirstDatabase").collection("transferredBookings").find({}).toArray((err:any, result:any) => {
+                    if (err) {
+                        this.props.callback(<Alert title={"Error"} message={"Failed to get entries from mobile app's database!"} style={"background-color: 'red'; width: 400px; height: 200px;"}></Alert>)
+                        client.close();
+                        return;
+                    }
+                    let found = false;
+                    for (let i in result) {
+                        if (result[i]['id'] == booking['ID']) {
+                            found = true;
+                        }
+                    }
+                    if (!found) {
+                        client.db("myFirstDatabase").collection("transferredBookings").insertOne(data, (err:any, res:any) => {
+                            if (err) {
+                                this.props.callback(<Alert title={"Error"} message={"Failed to insert entry into mobile app's database!"} style={"background-color: 'red'; width: 400px; height: 200px;"}></Alert>)
+                                client.close();
+                                return;
+                            }
+                            this.props.callback(<Alert title={"Success"} message={"Entry added into the mobile app's database!"} style={"background-color: 'green'; width: 400px; height: 200px;"}></Alert>)
+                            client.close();
+                        })
+                    } else {
+                        this.props.callback(<Alert title={"Error"} message={"An entry for this booking already exists in the mobile app's database!"} style={"background-color: 'red'; width: 400px; height: 200px;"}></Alert>)
+                        client.close();
+                    }
+                  });
+            })
+        }
+
         var bookingList:any = [];
         var bookingListEditButton:any = [];
         var bookingListDeleteButton:any = [];
@@ -499,6 +575,11 @@ export class Bookings extends React.Component<any, any> {
                                                 <Button text="View Perio Chart" on={{
                                                     clicked: () => {
                                                         this.props.newTab(<PerioChart NHI={this.state.NHInum[this.state.currentBookingSelected]} bookingID={this.state.bookingID[this.state.currentBookingSelected] + 1}/>, "Perio Chart - " + this.state.NHInum[this.state.currentBookingSelected])
+                                                    }
+                                                }}/>
+                                                <Button text="Send Booking Data to Mobile App" on={{
+                                                    clicked: () => {
+                                                        sendBookingDataToMobileAppDatabase(this.state.bookingID[this.state.currentBookingSelected] + 1)
                                                     }
                                                 }}/>
                                             </View>
