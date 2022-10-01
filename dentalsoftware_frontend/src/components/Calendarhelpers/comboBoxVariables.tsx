@@ -30,18 +30,6 @@ export const treatmentList = () =>{
             text: treatmentListTreatments(0)
         },
         {
-            text: "Upper Left Quadrant"
-        },
-        {
-            text: "Upper Right Quadrant"
-        },
-        {
-            text: "Lower Left Quadrant"
-        },
-        {
-            text: "Lower Right Quadrant"
-        },
-        {
             text: treatmentListTreatments(1)
         },
         {
@@ -358,6 +346,18 @@ export const toothComboBox = () =>{
     let comboBoxContents: ComboBoxTeeth[] = [
         {
             text: toothNames(0)
+        },
+        {
+            text: "Upper Left Quadrant"
+        },
+        {
+            text: "Upper Right Quadrant"
+        },
+        {
+            text: "Lower Left Quadrant"
+        },
+        {
+            text: "Lower Right Quadrant"
         },
         {
             text: "01 - " + toothNames(1)

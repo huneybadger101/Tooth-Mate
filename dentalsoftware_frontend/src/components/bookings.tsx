@@ -11,6 +11,7 @@ import axios from 'axios';
 import { BookingPageDentalChart } from "./Calendarhelpers/bookingDentalChart";
 import DentalChart from "./dentalChart";
 import PerioChart from "./perioChart";
+import { ticketItems, ticketVisitTable } from "./Calendarhelpers/bookingAxiosPosts";
 
 declare type ComboBoxItem = {
     text: string;
@@ -64,8 +65,79 @@ export class Bookings extends React.Component<any, any> {
             oldValuesPatientNotes: [],
 
             patientContactNumberSearch: "",
-            patientNHINumberSearch: ""
+            patientNHINumberSearch: "",
+
+            ticketListTextDisplayedArray: [],
+            ticketVisitTableCatagory: [],
+            ticketCount: 0
         }
+
+
+
+
+
+
+
+        
+
+
+
+
+        //Gets all of the tickets currently created
+        axios.post('http://localhost:3000/tickets/getAllTickets')
+        .then((resTickets) => {
+
+            this.setState({ticketCount: resTickets.data.result.length});
+
+
+            for (var i = 0; i < resTickets.data.result.length; i++)
+            {
+                this.state.ticketListTextDisplayedArray[i].push("Ticket ID: testing btw " + resTickets.data.result[i]['ID']);
+            }
+        })
+        .catch((err) => {
+            console.log(err)
+        });
+
+
+
+
+        for (var num = 0; num < 21; num++)
+        {
+            //Gets all of the tickets currently created
+            axios.post('http://localhost:3000/tickets/getTicketDataByID', null, {
+                headers: {
+                    'ID': 21 //ID #1 does exist
+                }
+            })
+            .then((resTicketsVisit) => {
+                
+                console.log("ID: " + resTicketsVisit.data.result['ticketVisit'][0]['Date']);
+                this.state.ticketVisitTableCatagory[num].push(resTicketsVisit.data.result['ticketVisit'][0]['Date']);
+                
+            })
+            .catch((err) => {
+                console.log(err)
+            });
+        }
+        
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         axios.post('http://localhost:3000/patients/getAllPatientData')
         .then((res) => {
@@ -133,11 +205,13 @@ export class Bookings extends React.Component<any, any> {
         .catch((err) => {
             console.log(err)
         });
+
+        
     }
 
     // Function that returns a component to be drawn, can have children components if the parent component supports it
     render() {
-        
+
         //Pulls data from the calendar component
         var splitBookingString = this.props.data.split(".");
         var day = splitBookingString[0];
@@ -214,7 +288,8 @@ export class Bookings extends React.Component<any, any> {
             }
         }
 
-        //Handles the patient search function
+        
+
         const textHandlerPatientContactNumberSearch = {
             textChanged: (textValue:any) =>{
 
@@ -301,7 +376,7 @@ export class Bookings extends React.Component<any, any> {
             }
         }
 
-        //TODO: Handles the areas affected for the procedure type
+        //TODO
         const textHandlerAreasAffected = {
             textChanged: (textValue:any) =>{
 
@@ -353,7 +428,6 @@ export class Bookings extends React.Component<any, any> {
             }
         }
 
-        //Handles deleting bookings from the database
         const deleteBookingFromDatabase = (id:any) => {
             axios.post('http://localhost:3000/deleteBooking', null, {
                 headers: {
@@ -375,8 +449,8 @@ export class Bookings extends React.Component<any, any> {
         var bookingListEditButton:any = [];
         var bookingListDeleteButton:any = [];
 
-        //Will set the date to --- if it has not been selected
         var dateFull = (day + "/" + month + "/" + year);
+
         if (dateFull == "0/1/0")
         {
             dateFull = "---";
@@ -463,27 +537,6 @@ export class Bookings extends React.Component<any, any> {
 
                                 <Button style={"flex: 1;"} text={"Info"} id={bookingSelected} on={{clicked: ()=>{
 
-//TODO: THIS ENTIRE SECTION MAY NOT BE NEEDED. CHECK THIS OUT AFTER THE BRANCHES HAVE BEEN MERGED--------------------------------------------------------------------------------------
-                                    viewBooking(
-                                    this.state.bookingID[this.state.currentBookingSelected],
-                                    this.state.NHInum[this.state.currentBookingSelected],
-                                    this.state.patientName[this.state.currentBookingSelected],
-                                    dateFull,
-                                    //Time is sent together so it is easier to handle on the other end
-                                    addLeadingZeros(this.state.timeHour[this.state.currentBookingSelected], 2) + ":" +
-                                    addLeadingZeros(this.state.timeMinute[this.state.currentBookingSelected], 2) + "" +
-                                    this.state.timeAM_PM[this.state.currentBookingSelected],
-                                    this.state.dentistName[this.state.currentBookingSelected],
-                                    this.state.procedure[this.state.currentBookingSelected],
-                                    this.state.areasAffected[this.state.currentBookingSelected],
-                                    this.state.patientNotes[this.state.currentBookingSelected])
-                                
-                                
-                                }}} />
-                            
-                            {/* //TODO: Have the info button bring up a window (or change the screen) to view detailed version of selected booking
-                            {bookingListEditButton[num]}
-                            {bookingListDeleteButton[num]}
                                     this.state.bookingShowInfo[this.state.bookingSelected] = !this.state.bookingShowInfo[this.state.bookingSelected];
 
                                     this.setState({
@@ -503,7 +556,7 @@ export class Bookings extends React.Component<any, any> {
                                     this.state.procedure[this.state.currentBookingSelected],
                                     this.state.areasAffected[this.state.currentBookingSelected],
                                     this.state.patientNotes[this.state.currentBookingSelected])
-                                }}} /> */}
+                                }}} />
 
                                 {/*TODO: Have the info button bring up a window (or change the screen) to view detailed version of selected booking*/}
                                 {bookingListEditButton[num]}
@@ -572,8 +625,6 @@ export class Bookings extends React.Component<any, any> {
                         this.setState({
                             //Set back to 'false' to continue update of the date
                             editButtonClicked: false,
-                            bookingOrCancelButtonText: "Create Booking",
-                            bookingCreateOrEditDisplay: 0
                         });
                     }
                     else
@@ -607,19 +658,12 @@ export class Bookings extends React.Component<any, any> {
                         this.setState({
                             //Set back to 'false' to continue update of the date
                             editButtonClicked: false,
-                            bookingOrCancelButtonText: "Create Booking",
-                            bookingCreateOrEditDisplay: 0
+                            bookingOrCancelButtonText: "Create Booking"
                         });
                     }
                     else if (this.state.bookingCreateOrEditDisplay['res'] == 1)
                     {
                         console.log("The booking creation was not done correctly...");
-                        this.setState({
-                            //Set back to 'false' to continue update of the date
-                            //editButtonClicked: true,
-                            bookingOrCancelButtonText: "Cancel",
-                            bookingCreateOrEditDisplay: 1
-                        });
                     }
                 }
             }
@@ -650,7 +694,425 @@ export class Bookings extends React.Component<any, any> {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        var ID:any;
+        var test:any;
+
+        //Gets all of the tickets currently created
+        axios.post('http://localhost:3000/tickets/getAllTickets')
+        .then((resTickets) => {
+
+
+            let ticketID;
+            for (var num = 0; num < resTickets.data.result.length; num++)
+            {
+                if (resTickets.data.result[num][''])
+                {
+
+                }
+            }
+
+            
+        })
+        .catch((err) => {
+            console.log(err)
+        });
+
         
+
+        const createBookingFromTicket = {
+            clicked: (id:any) =>{
+
+                console.log("ID: " + id);
+
+                // //Sets all the variables to allow for editing the booking
+                // this.state.bookingID[this.state.currentBookingSelected] = 0;
+                // this.state.NHInum[this.state.currentBookingSelected] = this.state.bookings[1]['nhi'];
+                // this.state.patientName[this.state.currentBookingSelected] = "Test name";
+                //     //NOTE: Date is not required as it will be changed via the calendar
+                // this.state.timeHour[this.state.currentBookingSelected] = 5;
+                // this.state.timeMinute[this.state.currentBookingSelected] = 30;
+                // this.state.timeAM_PM[this.state.currentBookingSelected] = "AM";
+                // this.state.dentistName[this.state.currentBookingSelected] = "NEED TO ADD";
+                // this.state.procedure[this.state.currentBookingSelected] = this.state.bookings[0]['Procedure'];
+                // this.state.areasAffected[this.state.currentBookingSelected] = this.state.bookings[0]['AffectedAreas'];
+                // this.state.patientNotes[this.state.currentBookingSelected] = this.state.bookings[0]['notes'];
+
+                // let testComboBox: ComboBoxItem[] = [];
+                // testComboBox.push({text: this.state.patientName[this.state.currentBookingSelected]});
+
+                // this.setState({
+                //     bookingCreateOrEditDisplay: 1,
+                //     patientsViewed: testComboBox
+                // });
+
+                // console.log("TESTING THE INDEX PRINTING OUT: " + testComboBox[0].text);
+
+            }
+        }
+
+        const toggleBookingsAndTickets = {
+            clicked: () =>{
+
+                if (this.state.bookingCreateOrEditDisplay == 0)
+                {
+                    this.setState({
+                        bookingCreateOrEditDisplay: 2
+                    });
+                }
+                else if (this.state.bookingCreateOrEditDisplay == 2)
+                {
+                    this.setState({
+                        bookingCreateOrEditDisplay: 0
+                    });
+                }
+            }
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+        var ticketList:any = [];
+        //let ticketListTextDisplayedArray:any = ticketItems();
+        var ticketListDeleteButton:any = [];
+
+        for (var i = 0; i < this.state.ticketListTextDisplayedArray.length; i++)
+        {
+            let ticketSelected = i.toString();
+
+            ticketList[i] = 
+            <View style="margin: 3px; flex-direction: 'row';">
+
+                <Text style={"flex: 4; border: 1px solid black;"}>{this.state.ticketListTextDisplayedArray[i] + " | " + this.state.ticketVisitTableCatagory[i]}</Text>
+
+                <Button style={"flex: 1;"} text={"Add"} id={ticketSelected} on={
+
+                    {
+                        clicked: () => {
+
+                            //Gets all of the tickets currently created
+                            axios.post('http://localhost:3000/tickets/getAllTickets')
+                            .then((resTickets) => {
+                                
+                                let ticketID;
+                                for (var num = 0; num < resTickets.data.result.length; num++)
+                                {
+                                    if (resTickets.data.result[num]['ID'] == ticketSelected)
+                                    {
+                                        ticketID = resTickets.data.result[num]['ID'];
+                                        break;
+                                    }
+                                }
+                            })
+                            .catch((err) => {
+                                console.log(err)
+                            });
+
+
+
+                            //Sets all the variables to allow for editing the booking
+                            this.state.bookingID[this.state.currentBookingSelected] = 0;
+                            this.state.NHInum[this.state.currentBookingSelected] = this.state.bookings[1]['nhi'];
+                            this.state.patientName[this.state.currentBookingSelected] = "Test name";
+                                //NOTE: Date is not required as it will be changed via the calendar
+                            this.state.timeHour[this.state.currentBookingSelected] = 5;
+                            this.state.timeMinute[this.state.currentBookingSelected] = 30;
+                            this.state.timeAM_PM[this.state.currentBookingSelected] = "AM";
+                            this.state.dentistName[this.state.currentBookingSelected] = "NEED TO ADD";
+                            this.state.procedure[this.state.currentBookingSelected] = this.state.bookings[0]['Procedure'];
+                            this.state.areasAffected[this.state.currentBookingSelected] = this.state.bookings[0]['AffectedAreas'];
+                            this.state.patientNotes[this.state.currentBookingSelected] = this.state.bookings[0]['notes'];
+
+                            let testComboBox: ComboBoxItem[] = [];
+                            testComboBox.push({text: this.state.patientName[this.state.currentBookingSelected]});
+
+                            this.setState({
+                                //bookingCreateOrEditDisplay: 1,
+                                patientsViewed: testComboBox
+                            });
+
+                            
+
+
+                        }
+                    }
+
+                } />
+
+                <Button style={"flex: 1;"} text={"Delete"} id={ticketSelected} on={{clicked: ()=>{
+                
+                }}} />
+
+            </View> 
+        }
+
+        
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        pageDiplay[2] = (
+            <View style="flex-direction: 'row';">
+
+                <View style={containerStyle2}>
+
+                    <View style="flex-direction: 'row';">
+                        <Button text="<<" style="flex: 1;"></Button>
+                        <Button text="View bookings" style="flex: 4;" on={toggleBookingsAndTickets}></Button>
+                        <Button text=">>" style="flex: 1;"></Button>
+                    </View>
+
+                    
+                    {ticketList}
+                </View>
+                
+            </View>
+        );
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -683,7 +1145,7 @@ export class Bookings extends React.Component<any, any> {
 
                     <View style="margin: 0px; flex-direction: 'row';">
                         <Text style={"flex: 1; border: 1px solid black; background: 'LightGrey';"}>Patient</Text>
-                        <ComboBox style={"flex: 2;"} items={this.state.patientsViewed} currentText={"Please select a patient"} on={textHandlerPatientSelected} />
+                        <ComboBox style={"flex: 2;"} items={this.state.patientsViewed} on={textHandlerPatientSelected} />
 
                     </View>
 
@@ -731,166 +1193,6 @@ export class Bookings extends React.Component<any, any> {
                 </View>
         );
 
-
-
-
-
-
-
-
-
-
-
-        
-
-        // axios.post('http://localhost:3000/tickets/getAllTickets')
-        // .then((res) => {
-        //     if (res.data.error) {
-        //         console.log(res.data.error)
-        //     } else {
-                
-        //         console.log("Ticket list length: " + res.data.result.length);
-
-        //         //Will print the ticket info. Add this to the below code later
-        //         console.log(res.data.result[0]["ID"]);
-        //         console.log(res.data.result[0]["Patient"]);
-        //         console.log(res.data.result[0]["NumberOfVisits"]);
-
-        //     }
-        // })
-        // .catch((err) => {
-        //     console.log(err)
-        // });
-
-
-
-
-
-
-        axios.post('http://localhost:3000/tickets/getTicketByID')
-        .then((res) => {
-            if (res.data.error) {
-                console.log(res.data.error)
-            } else {
-                
-                console.log("Ticket list length: " + res.data.result.length);
-
-                //Will print the ticket info. Add this to the below code later
-                console.log(res.data.result[0]["ticket/ID"]);
-                console.log(res.data.result[0]["ticket/Patient"]);
-                console.log(res.data.result[0]["ticket/NumberOfVisits"]);
-
-            }
-        })
-        .catch((err) => {
-            console.log(err)
-        });
-        
-
-
-            const createBookingFromTicket = {
-            clicked: (id:any) =>{
-
-                //Sets all the variables to allow for editing the booking
-                    this.state.bookingID[this.state.currentBookingSelected] = 0;
-                    this.state.NHInum[this.state.currentBookingSelected] = this.state.bookings[0]['nhi'];
-                    this.state.patientName[this.state.currentBookingSelected] = this.state.bookings[0]['patientName'];
-                        //NOTE: Date is not required as it will be changed via the calendar
-                    this.state.timeHour[this.state.currentBookingSelected] = this.state.bookings[0]['time'].split(":")[0];
-                    this.state.timeMinute[this.state.currentBookingSelected] = this.state.bookings[0]['time'].split(":")[1];
-                    this.state.timeAM_PM[this.state.currentBookingSelected] = (Number(this.state.timeHour[id]) > 12 ? "PM" : "AM");
-                    this.state.dentistName[this.state.currentBookingSelected] = "NEED TO ADD";
-                    this.state.procedure[this.state.currentBookingSelected] = this.state.bookings[0]['Procedure'];
-                    this.state.areasAffected[this.state.currentBookingSelected] = this.state.bookings[0]['AffectedAreas'];
-                    this.state.patientNotes[this.state.currentBookingSelected] = this.state.bookings[0]['notes'];
-
-
-
-
-
-
-
-                    // console.log("Info: " + this.state.bookingID[this.state.currentBookingSelected]);
-                    // console.log("Info: " + this.state.NHInum[this.state.currentBookingSelected]);
-                    // console.log("Info: " + this.state.patientName[this.state.currentBookingSelected]);
-                    // console.log("Info: " + this.state.timeHour[this.state.currentBookingSelected]);
-                    // console.log("Info: " + this.state.timeMinute[this.state.currentBookingSelected]);
-                    // console.log("Info: " + this.state.timeAM_PM[this.state.currentBookingSelected]);
-                    // console.log("Info: " + this.state.dentistName[this.state.currentBookingSelected]);
-                    // console.log("Info: " + this.state.procedure[this.state.currentBookingSelected]);
-                    // console.log("Info: " + this.state.areasAffected[this.state.currentBookingSelected]);
-                    // console.log("Info: " + this.state.patientNotes[this.state.currentBookingSelected]);
-
-            }
-        }
-
-
-
-
-
-
-
-
-        const toggleBookingsAndTickets = {
-            clicked: () =>{
-
-                if (this.state.bookingCreateOrEditDisplay == 0)
-                {
-                    this.setState({
-                        bookingCreateOrEditDisplay: 2
-                    });
-                }
-                else if (this.state.bookingCreateOrEditDisplay == 2)
-                {
-                    this.setState({
-                        bookingCreateOrEditDisplay: 0
-                    });
-                }
-            }
-        }
-
-
-
-
-        var ticketList:any = [];
-        var ticketListAddButton:any = [];
-        var ticketListDeleteButton:any = [];
-
-        for (var i = 0; i < 5; i++)
-        {
-            let ticketSelected = i.toString();
-
-            ticketList[i] = 
-            <View style="margin: 3px; flex-direction: 'row';">
-
-                <Text style={"flex: 4; border: 1px solid black;"}>{"Some text for the tickets"}</Text>
-
-                <Button style={"flex: 1;"} text={"Add"} id={ticketSelected} on={createBookingFromTicket} />
-
-                <Button style={"flex: 1;"} text={"Delete"} id={ticketSelected} on={{clicked: ()=>{
-                
-                    console.log("Ticket ID selected delete: " + ticketSelected);
-                
-                }}} />
-
-            </View> 
-        }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         pageDiplay[0] = (
             <View style="flex-direction: 'row';">
                 <View style={containerStyle2}>
@@ -907,38 +1209,9 @@ export class Bookings extends React.Component<any, any> {
 
                     <Text style={"margin: 10px;"}>{this.state.confirmMessage}</Text>
 
-                </View> 
-            </View>
-        );
-
-
-
-
-        pageDiplay[2] = (
-            <View style="flex-direction: 'row';">
-
-                <View style={containerStyle2}>
-
-                    <View style="flex-direction: 'row';">
-                        <Button text="<<" style="flex: 1;"></Button>
-                        <Button text="View bookings" style="flex: 4;" on={toggleBookingsAndTickets}></Button>
-                        <Button text=">>" style="flex: 1;"></Button>
-                    </View>
-
-                    {ticketList}
                 </View>
-                
             </View>
         );
-
-
-
-
-        
-
-
-
-
 
         //TODO: Impliment this feature properly
         var bookingCreateButton:any = [];
