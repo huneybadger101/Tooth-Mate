@@ -2,12 +2,11 @@ import { Button, Text, View } from "@nodegui/react-nodegui";
 import {  WidgetEventTypes } from "@nodegui/nodegui";
 import React from "react";
 import Calendar from "./calendar";
-import BookingPageDentalCharts from "./Calendarhelpers/bookingDentalChart";
 import PatientDataViewer from "./PatientDataViewer";
 import PatientCreator from "./patientCreator";
 import QuoteViewer from "./quoteViewer";
 import QuoteCreator from "./quoteCreator";
-//import Setting from "./setting";
+import TicketCreator from "./TicketCreator";
 
 
 export class Homepage extends React.Component<any, any> {
@@ -26,29 +25,42 @@ export class Homepage extends React.Component<any, any> {
         let pagesRow1 = [];
         let pagesRow2 = [];
 
-        let buttonStyle = "width: 400%; height: 200%; color: 'black'; font-size: 20px;";
         
-        pagesRow1.push(<Button style={buttonStyle} text="Create New Patient" on={
+        pagesRow1.push(<Button id="buttonLarge" text="Create New Patient" on={
                 {
                     // Only trigger when left click is released
                     [WidgetEventTypes.MouseButtonRelease]: () => this.newTab(<PatientCreator newTab={this.props.newTab}/>, "Patient Creator"),
                 }
             }/>)
         pagesRow1.push(<View style="width: 100%;"></View>)
-        pagesRow1.push(<Button style={buttonStyle} text="Calendar Page" on={
+        pagesRow1.push(<Button id="buttonLarge" text="View Patient Data" on={
+                {
+                    // Only trigger when left click is released
+                    [WidgetEventTypes.MouseButtonRelease]: () => this.newTab(<PatientDataViewer newTab={this.props.newTab}/>, "Patient Data Viewer"),
+                }
+            }/>)
+        pagesRow1.push(<View style="width: 100%;"></View>)
+        pagesRow1.push(<Button id="buttonLarge" text="Calendar Page" on={
                 {
                     // Only trigger when left click is released
                     [WidgetEventTypes.MouseButtonRelease]: () => this.newTab(<Calendar newTab={this.props.newTab}/>, "Calendar"),
                 }
             }/>)
-        pagesRow2.push(<Button style={buttonStyle} text="Quote Creator" on={
+        pagesRow2.push(<Button id="buttonLarge" text="Ticket Creator" on={
+                {
+                    // Only trigger when left click is released
+                    [WidgetEventTypes.MouseButtonRelease]: () => this.newTab(<TicketCreator newTab={this.props.newTab}/>, "Ticket Creator"),
+                }
+            }/>)
+        pagesRow2.push(<View style="width: 100%;"></View>)
+        pagesRow2.push(<Button id="buttonLarge" text="Quote Creator" on={
                 {
                     // Only trigger when left click is released
                     [WidgetEventTypes.MouseButtonRelease]: () => this.newTab(<QuoteCreator newTab={this.props.newTab}/>, "Quote Creator"),
                 }
             }/>)
         pagesRow2.push(<View style="width: 100%;"></View>)
-        pagesRow2.push(<Button style={buttonStyle} text="View Quotes" on={
+        pagesRow2.push(<Button id="buttonLarge" text="View Quotes" on={
                 {
                     // Only trigger when left click is released
                     [WidgetEventTypes.MouseButtonRelease]: () => this.newTab(<QuoteViewer newTab={this.props.newTab}/>, "Quote Viewer"),
@@ -56,7 +68,7 @@ export class Homepage extends React.Component<any, any> {
             }/>)
 
         return (
-            <View style="flex: 1; justify-content: 'center'; align-items: 'center'; background-color: 'grey';">
+            <View style="flex: 1; justify-content: 'center'; align-items: 'center';">
                 <View style="flex: 1; flex-direction: 'row';">
                 </View>
                 <View style="flex: 2; flex-direction: 'row';">

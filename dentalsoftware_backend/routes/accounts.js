@@ -81,6 +81,10 @@ function createNewAccount(res = null, accountData) {
         errorMessage += "Contact Phone Number, "
         numMissing++
     }
+    if (accountData.fullName === undefined) {
+        errorMessage += "Full Name, "
+        numMissing++
+    }
 
     if (numMissing > 0) {
         errorMessage = errorMessage.slice(0, -2) + "."
@@ -112,9 +116,10 @@ function createNewAccount(res = null, accountData) {
         }
         let accountPasswordSalt = makeid(15);
         // Verified that account doesn't already exist, time to add them
-        sql = "INSERT INTO accounts (AccountName, AccountPasswordHash, AccountPasswordSalt, AccountAccessLevel, DentistNumber, DOB, Email, PhoneNumber) " 
-        + "VALUES ('" 
-        + accountData.username + "', " 
+        sql = "INSERT INTO accounts (DentistName, AccountName, AccountPasswordHash, AccountPasswordSalt, AccountAccessLevel, DentistNumber, DOB, Email, PhoneNumber) " 
+        + "VALUES ("
+        + "'" + accountData.fullName + "', "
+        + "'" + accountData.username + "', " 
         + "'" + sha256(accountData.password + accountPasswordSalt) + "', " 
         + "'" + accountPasswordSalt + "', " 
         + "'" + accountData.accessLevel + "', " 

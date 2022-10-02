@@ -16,6 +16,7 @@
     "mongodb": "^4.10.0",
     "open": "^7.4.2",
     "pdfmake": "^0.2.5",
+    "postcss": "^8.4.17",
     "react": "^16.13.1",
     "screen-resolution": "^1.0.0"
   },

@@ -6,6 +6,7 @@ import Login from "./components/login";
 import Calendar from "./components/calendar";
 import Homepage from "./components/homepage";
 import AccountHelper from "./components/accountHelper";
+import { style } from "./styles/style";
 
 var resolution = require("screen-resolution");
 var accountHelper = AccountHelper;
@@ -39,6 +40,7 @@ class App extends React.Component<any, any> {
         windowTitle="ToothMate Dental Software"
         minSize={minSize}
         size={maxSize}
+        styleSheet={style}
         >
           <View style={containerStyle}>
               <TabContainer names={names} createNewWindow={this.createNewWindow} createNewBlankWindow={this.createNewBlankWindow} accountHelper={accountHelper}>
@@ -65,6 +67,7 @@ class App extends React.Component<any, any> {
       <Window
         windowTitle="ToothMate Dental Software"
         minSize={minSize}
+        styleSheet={style}
       >
         <View style={containerStyle}>
           <TabContainer names={nameArray} createNewWindow={this.createNewWindow} createNewBlankWindow={this.createNewBlankWindow} accountHelper={accountHelper}>
@@ -86,6 +89,7 @@ class App extends React.Component<any, any> {
       <Window
         windowTitle="ToothMate Dental Software"
         minSize={minSize}
+        styleSheet={style}
       >
         <View style={containerStyle}>
             {view}
