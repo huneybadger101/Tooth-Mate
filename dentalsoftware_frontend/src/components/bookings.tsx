@@ -82,7 +82,9 @@ export class Bookings extends React.Component<any, any> {
             patientNotes: [],
             toothSelected: [],
             addTicketOrEditClicked: false,
-            bookingDentalChartString: []
+            bookingDentalChartString: [],
+
+            ticketsBeingDisplayed: 0
         }
 
         //Gets all of the tickets currently created
@@ -543,7 +545,7 @@ export class Bookings extends React.Component<any, any> {
                                 style={"flex: 1;"}
                                 text={"Edit"}
                                 id={bookingSelected}
-                                on={{clicked: () => {
+                                on={{clicked: () => { 
                                     this.setState({
                                         currentBookingSelected: bookingSelected, 
                                         editBookingButton: true, 
@@ -554,70 +556,70 @@ export class Bookings extends React.Component<any, any> {
                                     })
                                 }}}/>
 
-                        bookingListDeleteButton[num] =
+                            bookingListDeleteButton[num] =
                             <Button style={"flex: 1;"} text={"Delete"} id={bookingSelected} on={{clicked: ()=>{deleteBookingFromDatabase(bookingSelected)}}}/>
-                    }
+                        }
 
-                    //Creates the bookings to view
-                    //will also create an edit button for each booking, an info button to get more details, and a delete button to remove the selected booking
-                    //NOTE: Will only add the edit and delete buttons if the user type has said abilities
-                    bookingList[num] =
-                        <View style="margin: 3px; flex-direction: 'column';">
+                        //Creates the bookings to view
+                        //will also create an edit button for each booking, an info button to get more details, and a delete button to remove the selected booking
+                        //NOTE: Will only add the edit and delete buttons if the user type has said abilities
+                        bookingList[num] =
+                            <View style="margin: 3px; flex-direction: 'column';">
 
-                            <View style="margin: 3px; flex-direction: 'row';">
-                                <Text style={"flex: 4; border: 1px solid black;"}>{"Booking ID: " + (this.state.bookingID[num] + 1) + ", Booking date: " + dateFull}</Text>
+                                <View style="margin: 3px; flex-direction: 'row';">
+                                    <Text style={"flex: 4; border: 1px solid black;"}>{"Booking ID: " + (this.state.bookingID[num] + 1) + ", Booking date: " + dateFull}</Text>
 
-                                <Button style={"flex: 1;"} text={"Info"} id={bookingSelected} on={{clicked: ()=>{
+                                    <Button style={"flex: 1;"} text={"Info"} id={bookingSelected} on={{clicked: ()=>{
 
-                                    this.state.bookingShowInfo[this.state.bookingSelected] = !this.state.bookingShowInfo[this.state.bookingSelected];
+                                        this.state.bookingShowInfo[this.state.bookingSelected] = !this.state.bookingShowInfo[this.state.bookingSelected];
 
-                                    this.setState({
-                                        currentBookingSelected: bookingSelected
-                                    }),
+                                        this.setState({
+                                            currentBookingSelected: bookingSelected
+                                        }),
 
-                                    viewBooking(
-                                    this.state.bookingID[this.state.currentBookingSelected],
-                                    this.state.NHInum[this.state.currentBookingSelected],
-                                    this.state.patientName[this.state.currentBookingSelected],
-                                    dateFull,
-                                    //Time is sent together so it is easier to handle on the other end
-                                    addLeadingZeros(this.state.timeHour[this.state.currentBookingSelected], 2) + ":" +
-                                    addLeadingZeros(this.state.timeMinute[this.state.currentBookingSelected], 2) + "" +
-                                    this.state.timeAM_PM[this.state.currentBookingSelected],
-                                    this.state.dentistName[this.state.currentBookingSelected],
-                                    this.state.procedure[this.state.currentBookingSelected],
-                                    this.state.areasAffected[this.state.currentBookingSelected],
-                                    this.state.patientNotes[this.state.currentBookingSelected])
-                                }}} />
+                                        viewBooking(
+                                        this.state.bookingID[this.state.currentBookingSelected],
+                                        this.state.NHInum[this.state.currentBookingSelected],
+                                        this.state.patientName[this.state.currentBookingSelected],
+                                        dateFull,
+                                        //Time is sent together so it is easier to handle on the other end
+                                        addLeadingZeros(this.state.timeHour[this.state.currentBookingSelected], 2) + ":" +
+                                        addLeadingZeros(this.state.timeMinute[this.state.currentBookingSelected], 2) + "" +
+                                        this.state.timeAM_PM[this.state.currentBookingSelected],
+                                        this.state.dentistName[this.state.currentBookingSelected],
+                                        this.state.procedure[this.state.currentBookingSelected],
+                                        this.state.areasAffected[this.state.currentBookingSelected],
+                                        this.state.patientNotes[this.state.currentBookingSelected])
+                                    }}} />
 
-                                {/*TODO: Have the info button bring up a window (or change the screen) to view detailed version of selected booking*/}
-                                {bookingListEditButton[num]}
-                                {bookingListDeleteButton[num]}
-                            </View>
+                                    {/*TODO: Have the info button bring up a window (or change the screen) to view detailed version of selected booking*/}
+                                    {bookingListEditButton[num]}
+                                    {bookingListDeleteButton[num]}
+                                </View>
 
-                            {(this.state.bookingShowInfo[this.state.bookingSelected] == true ? <View style="margin: 3px;">
-                                        <View style="flex-direction: 'column'; border: 1px solid black;">
-                                            <View style="flex-direction: 'row';">
-                                                <Text> Patient Name: {this.state.patientName[this.state.currentBookingSelected]}</Text>
-                                                <Button text="View Dental Chart" on={{
-                                                    clicked: () => {
-                                                        this.props.newTab(<DentalChart NHI={this.state.NHInum[this.state.currentBookingSelected]} bookingID={this.state.bookingID[this.state.currentBookingSelected] + 1}/>, "Dental Chart - " + this.state.NHInum[this.state.currentBookingSelected])
-                                                    }
-                                                }}/>
-                                                <Button text="View Perio Chart" on={{
-                                                    clicked: () => {
-                                                        this.props.newTab(<PerioChart NHI={this.state.NHInum[this.state.currentBookingSelected]} bookingID={this.state.bookingID[this.state.currentBookingSelected] + 1}/>, "Perio Chart - " + this.state.NHInum[this.state.currentBookingSelected])
-                                                    }
-                                                }}/>
-                                            </View>
-                                            <Text> Patient NHI: {this.state.NHInum[this.state.currentBookingSelected]}</Text>
-                                            <Text> Dentist Name: {this.state.dentistName[this.state.currentBookingSelected]}</Text>
-                                            <Text> Booking Time: {addLeadingZeros(this.state.timeHour[this.state.currentBookingSelected], 2) + ":" + addLeadingZeros(this.state.timeMinute[this.state.currentBookingSelected], 2) + "" + this.state.timeAM_PM[this.state.currentBookingSelected]}</Text>
-                                            <Text> Procedure: {this.state.procedure[this.state.currentBookingSelected]}</Text>
-                                            <Text> Areas Affected: {this.state.areasAffected[this.state.currentBookingSelected]}</Text>
-                                            <Text> Patient Notes: {this.state.patientNotes[this.state.currentBookingSelected]}</Text>
-                                        </View> 
-                                    </View>: null)}
+                                {(this.state.bookingShowInfo[this.state.bookingSelected] == true ? <View style="margin: 3px;">
+                                    <View style="flex-direction: 'column'; border: 1px solid black;">
+                                        <View style="flex-direction: 'row';">
+                                            <Text> Patient Name: {this.state.patientName[this.state.currentBookingSelected]}</Text>
+                                            <Button text="View Dental Chart" on={{
+                                                clicked: () => {
+                                                    this.props.newTab(<DentalChart NHI={this.state.NHInum[this.state.currentBookingSelected]} bookingID={this.state.bookingID[this.state.currentBookingSelected] + 1}/>, "Dental Chart - " + this.state.NHInum[this.state.currentBookingSelected])
+                                                }
+                                            }}/>
+                                            <Button text="View Perio Chart" on={{
+                                                clicked: () => {
+                                                    this.props.newTab(<PerioChart NHI={this.state.NHInum[this.state.currentBookingSelected]} bookingID={this.state.bookingID[this.state.currentBookingSelected] + 1}/>, "Perio Chart - " + this.state.NHInum[this.state.currentBookingSelected])
+                                                }
+                                            }}/>
+                                        </View>
+                                    <Text> Patient NHI: {this.state.NHInum[this.state.currentBookingSelected]}</Text>
+                                    <Text> Dentist Name: {this.state.dentistName[this.state.currentBookingSelected]}</Text>
+                                    <Text> Booking Time: {addLeadingZeros(this.state.timeHour[this.state.currentBookingSelected], 2) + ":" + addLeadingZeros(this.state.timeMinute[this.state.currentBookingSelected], 2) + "" + this.state.timeAM_PM[this.state.currentBookingSelected]}</Text>
+                                    <Text> Procedure: {this.state.procedure[this.state.currentBookingSelected]}</Text>
+                                    <Text> Areas Affected: {this.state.areasAffected[this.state.currentBookingSelected]}</Text>
+                                    <Text> Patient Notes: {this.state.patientNotes[this.state.currentBookingSelected]}</Text>
+                                </View> 
+                            </View>: null)}
                         </View>   
                 }
             }
@@ -799,6 +801,34 @@ export class Bookings extends React.Component<any, any> {
             }
         }
 
+        var numberOfTicketsDisplayed: any = 5;
+
+        //Will toggle between the page to display bookings and tickets
+        const ticketListLeft = {
+            clicked: () =>{
+
+                if (this.state.ticketsBeingDisplayed >= numberOfTicketsDisplayed)
+                {
+                    this.setState({
+                        ticketsBeingDisplayed: this.state.ticketsBeingDisplayed - numberOfTicketsDisplayed
+                    });
+                }
+            }
+        }
+
+        //Will display additional tickets by changing the page
+        const ticketListRight = {
+            clicked: () =>{
+                
+                if (this.state.ticketsBeingDisplayed + numberOfTicketsDisplayed < this.state.ticketListTextDisplayedArray.length)
+                {
+                    this.setState({
+                        ticketsBeingDisplayed: this.state.ticketsBeingDisplayed + numberOfTicketsDisplayed
+                    });
+                }
+            }
+        }
+
         var ticketList:any = [];
         //let ticketListTextDisplayedArray:any = ticketItems();
         var ticketListDeleteButton:any = [];
@@ -907,7 +937,7 @@ export class Bookings extends React.Component<any, any> {
 
                 <Button style={"flex: 1;"} text={"Delete"} id={ticketSelected} on={deleteTicket} />
 
-            </View> 
+            </View>
         }
 
         //Will display the ticket list
@@ -917,13 +947,19 @@ export class Bookings extends React.Component<any, any> {
                 <View style={containerStyle2}>
 
                     <View style="flex-direction: 'row';">
-                        <Button text="<<" style="flex: 1;"></Button>
+                        <Button text="<<" style="flex: 1;" on={ticketListLeft}></Button>
                         <Button text="View bookings" style="flex: 4;" on={toggleBookingsAndTickets}></Button>
-                        <Button text=">>" style="flex: 1;"></Button>
+                        <Button text=">>" style="flex: 1;" on={ticketListRight}></Button>
                     </View>
 
                     
-                    {ticketList}
+                    {ticketList[this.state.ticketsBeingDisplayed + 0]}
+                    {ticketList[this.state.ticketsBeingDisplayed + 1]}
+                    {ticketList[this.state.ticketsBeingDisplayed + 2]}
+                    {ticketList[this.state.ticketsBeingDisplayed + 3]}
+                    {ticketList[this.state.ticketsBeingDisplayed + 4]}
+
+                    {ticketList[20]}
                 </View>
                 
             </View>
