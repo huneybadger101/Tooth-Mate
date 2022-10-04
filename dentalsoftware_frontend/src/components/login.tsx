@@ -1,7 +1,8 @@
 import { Text, LineEdit, View, Button } from "@nodegui/react-nodegui";
-import {  WidgetEventTypes } from "@nodegui/nodegui";
+import {  WidgetEventTypes, EchoMode } from "@nodegui/nodegui";
 import React from "react";
 import axios from 'axios';
+import Alert from "./alert";
 
 export class Login extends React.Component<any, any> {
 
@@ -13,12 +14,20 @@ export class Login extends React.Component<any, any> {
             password: null,
             errorMessage: "",
             showCreateOptions: false,
+            fullName: null,
             accessLevel: null,
             dentistNumber: null,
             dob: null,
             email: null,
-            phone: null
+            phone: null,
+            alertView: null
         }
+    }
+
+    alertDismissController = () => {
+        this.setState({
+            alertView: null
+        })
     }
 
     loginButtonHandler = () => {
@@ -32,11 +41,11 @@ export class Login extends React.Component<any, any> {
         .then((res) => {
             if (res['data']['success'] == undefined) {
                 this.setState({
-                    errorMessage: res['data']['error']
+                    alertView: <Alert title={"Error"} message={res['data']['error']} style={"background-color: 'red'; width: 600px; height: 400px;"} dismissAlert={this.alertDismissController}/>
                 })
             } else {
                 this.setState({
-                    errorMessage: "Logged in!"
+                    alertView: "Logged in!"
                 })
                 this.props.accountHelper.accountName = this.state.username;
                 this.props.accountHelper.accountAccessLevel = res.data.result['AccountAccessLevel'];
@@ -47,7 +56,7 @@ export class Login extends React.Component<any, any> {
         .catch((err) => {
             console.log(err)
             this.setState({
-                errorMessage: err
+                alertView: <Alert title={"Error"} message={err} style={"background-color: 'red'; width: 600px; height: 400px;"} dismissAlert={this.alertDismissController}/>
             })
         });
     }
@@ -68,6 +77,7 @@ export class Login extends React.Component<any, any> {
         let data = {
             'username': this.state.username,
             'password': this.state.password,
+            'fullName': this.state.fullName,
             'accessLevel': this.state.accessLevel,
             'dentistNumber': this.state.dentistNumber,
             'DOB': this.state.dob,
@@ -104,63 +114,69 @@ export class Login extends React.Component<any, any> {
     // Function that returns a component to be drawn, can have children components if the parent component supports it
     render() {
 
-        const loginButton = <Button text="Login" on={
+        const loginButton = <Button id="button" text="Login" on={
             {
                 // Only trigger when left click is released
                 [WidgetEventTypes.MouseButtonRelease]: () => this.loginButtonHandler(),
             }
         }/>
 
-        const resetPasswordButton = <Button text="Reset Password" on={
+        const resetPasswordButton = <Button id="button" text="Reset Password" on={
             {
                 // Only trigger when left click is released
                 [WidgetEventTypes.MouseButtonRelease]: () => this.resetPasswordButtonHandler(),
             }
         }/>
 
-        const createNewAccountButton = <Button text="Create New Account" on={
+        const createNewAccountButton = <Button id="button" text="Create New Account" on={
             {
                 // Only trigger when left click is released
                 [WidgetEventTypes.MouseButtonRelease]: () => this.createNewAccountButtonHandler(),
             }
         }/>
 
-        const submitNewAccountButton = <Button text="Submit" on={
+        const submitNewAccountButton = <Button id="button" text="Submit" on={
             {
                 // Only trigger when left click is released
                 [WidgetEventTypes.MouseButtonRelease]: () => this.submitNewAccountButtonHandler(),
             }
         }/>
 
+        const fullNameText = <LineEdit id="textEntry" on={{ textChanged: (textValue) => {
+                                        this.setState({
+                                            fullName: textValue.replace(/[^a-zA-Z! ]+/g, '')
+                                        })
+                                    } }} text={this.state.fullName} placeholderText={"Full Name"} 
+                                />
 
-        const accessLevelText = <LineEdit on={{ textChanged: (textValue) => {
+        const accessLevelText = <LineEdit id="textEntry" on={{ textChanged: (textValue) => {
                                         this.setState({
                                             accessLevel: textValue.replace(/[^0-9! ]+/g, '')
                                         })
                                     } }} text={this.state.accessLevel} placeholderText={"Access Level"} 
                                 />
 
-        const dentistNumberText = <LineEdit on={{ textChanged: (textValue) => {
+        const dentistNumberText = <LineEdit id="textEntry" on={{ textChanged: (textValue) => {
                                     this.setState({
                                         dentistNumber: textValue.replace(/[^0-9! ]+/g, '')
                                     })
                                 } }} text={this.state.dentistNumber} placeholderText={"Dentist Number"} 
                             />
 
-        const dobText = <LineEdit on={{ textChanged: (textValue) => {
+        const dobText = <LineEdit id="textEntry" on={{ textChanged: (textValue) => {
                                 this.setState({
                                     dob: textValue.replace(/[^a-zA-Z0-9/! ]+/g, '')
                                 })
                             } }} text={this.state.dob} placeholderText={"Date of Birth"} 
                         />
 
-        const emailText = <LineEdit on={{ textChanged: (textValue) => {
+        const emailText = <LineEdit id="textEntry" on={{ textChanged: (textValue) => {
                                 this.setState({
                                     email: textValue.replace(/[^a-zA-Z0-9@.! ]+/g, '')
                                 })
                             } }} text={this.state.email} placeholderText={"Email Address"} 
                         />
-        const phoneText = <LineEdit on={{ textChanged: (textValue) => {
+        const phoneText = <LineEdit id="textEntry" on={{ textChanged: (textValue) => {
                                 this.setState({
                                    phone: textValue.replace(/[^0-9! ]+/g, '')
                                 })
@@ -171,29 +187,36 @@ export class Login extends React.Component<any, any> {
         return (
             <View style="flex: auto;">
                 <View style="flex: auto; flex-direction: 'column';">
-                    <View style="flex: 1; background-color: 'grey';">
-                        <LineEdit on={{ textChanged: (textValue) => {
+                    <View style="flex: 1;">
+                        <Text id="titleCenterAlign">Username</Text>
+                        <LineEdit id="textEntry" on={{ textChanged: (textValue) => {
                             this.setState({
                                 username: textValue.replace(/[^a-zA-Z0-9! ]+/g, '')
                             })
                         } }} text={this.state.username} placeholderText={"Username"} />
-                        <LineEdit on={{ textChanged: (textValue) => {
+                        <Text id="titleCenterAlign">Password</Text>
+                        <LineEdit id="textEntry" echoMode={EchoMode.Password} on={{ textChanged: (textValue) => {
                             this.setState({
                                 password: textValue.replace(/[^a-zA-Z0-9! ]+/g, '')
                             })
                         } }} text={this.state.password} placeholderText={"Password"} />
+                        {(this.state.showCreateOptions ? <Text id="titleCenterAlign">Full Name</Text> : null)}
+                        {(this.state.showCreateOptions ? fullNameText : null)}
+                        {(this.state.showCreateOptions ? <Text id="titleCenterAlign">Access Level</Text> : null)}
                         {(this.state.showCreateOptions ? accessLevelText : null)}
+                        {(this.state.showCreateOptions ? <Text id="titleCenterAlign">Dentist Number</Text> : null)}
                         {(this.state.showCreateOptions ? dentistNumberText : null)}
+                        {(this.state.showCreateOptions ? <Text id="titleCenterAlign">Date of Birth</Text> : null)}
                         {(this.state.showCreateOptions ? dobText : null)}
+                        {(this.state.showCreateOptions ? <Text id="titleCenterAlign">Email Address</Text> : null)}
                         {(this.state.showCreateOptions ? emailText : null)}
+                        {(this.state.showCreateOptions ? <Text id="titleCenterAlign">Phone Number</Text> : null)}
                         {(this.state.showCreateOptions ? phoneText : null)}
                         {(this.state.showCreateOptions ? submitNewAccountButton : null)}
                         {(!this.state.showCreateOptions ? loginButton : null)}
                         {(!this.state.showCreateOptions ? resetPasswordButton : null)}
-                    </View >
-                    <View style="flex: 1; background-color: 'grey';">
-                        {errorMessage}
-                        {createNewAccountButton}
+                        {(!this.state.showCreateOptions ? createNewAccountButton : null)}
+                        {this.state.alertView}
                     </View >
                 </View>
             </View>

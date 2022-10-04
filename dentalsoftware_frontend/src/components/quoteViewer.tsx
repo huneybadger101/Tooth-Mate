@@ -50,6 +50,10 @@ export class QuoteViewer extends React.Component<any, any> {
     // Function that returns a component to be drawn, can have children components if the parent component supports it
     render() {
 
+        if (this.state.quotes == null) {
+            return (<View/>)
+        }
+
         const createEmailButtonHandler = (id:number) => {
 
             let quote;
@@ -130,20 +134,18 @@ export class QuoteViewer extends React.Component<any, any> {
                 }
             }
 
-            console.log(quote)
-
             this.setState({
                 selectedQuoteID: id,
                 selectedPaymentStatus: quote['QuotePaymentStatus'],
-                selectedPaymentDeadline: quote['QuotePaymentDeadline'],
+                selectedPaymentDeadline: quote['QuotePaymentDeadline'].split("T")[0],
                 selectedTotalCost: quote['QuoteTotalCostDollars'] + "." + quote['QuoteTotalCostCents'],
                 selectedPatientName: patient['FirstName'] + " " + patient['MiddleName'] + " " + patient['LastName'],
                 selectedPatientNHI: patient['NHI'],
-                selectedPatientDOB: patient['DOB'],
+                selectedPatientDOB: patient['DOB'].split("T")[0],
                 selectedPatientContactNumber: patient['ContactNumber'],
                 selectedPatientEmailAddress: patient['Email'],
                 selectedBookingID: booking['ID'],
-                selectedBookingDate: booking['Date'],
+                selectedBookingDate: booking['Date'].split("T")[0],
                 selectedBookingTime: booking['Time'],
                 selectedBookingDentistName: dentist['AccountName'],
                 selectedBookingLocation: booking['Location'],
@@ -153,7 +155,15 @@ export class QuoteViewer extends React.Component<any, any> {
 
         } 
 
-        const createPDFButtonHandler = (quoteData:any):any => {
+        const createPDFButtonHandler = (quoteID:number):any => {
+
+            let quoteData:any;
+            for (let i = 0; i < this.state.quotes.length; i++) {
+                if (quoteID == this.state.quotes[i]['ID']) {
+                    quoteData = this.state.quotes[i];
+                    break;
+                }
+            }
 
             let patient:any;
             let booking:any;
@@ -211,26 +221,16 @@ export class QuoteViewer extends React.Component<any, any> {
 
         const quoteList = this.state.quotes;
         let quoteViews = [];
-        let quoteButton = [];
 
         for (let i in quoteList) {
             quoteViews.push(
             <View>
-                <Button text={quoteList[i]['ID']} on={
+                <Button text={"Quote: " + quoteList[i]['ID']} on={
                     {
                         clicked: () => {setSelectedQuoteData(quoteList[i]['ID'])}
                     }
                 }></Button>
             </View>
-            )
-            quoteButton.push(
-                <View>
-                    <Button text={"Export Quote as PDF"} on={
-                        {
-                            clicked: () => {createPDFButtonHandler(quoteList[i])}
-                        }
-                    }></Button>
-                </View>
             )
         }
 
@@ -241,30 +241,29 @@ export class QuoteViewer extends React.Component<any, any> {
                 <View style="flex: auto;">
                     <View style="flex: auto; flex-direction: 'row';">
                         <View style="flex: 1; background-color: 'grey';">
-                            <Text style={textStyle}>Selectable List of Quotes: </Text>
+                            <Text>Please select a Quote: </Text>
                             <View style="flex: auto;">
                                 {quoteViews}
                             </View>
                         </View>
-                        <View style="flex: 2; flex-direction: 'column';">
-                            <Text style={textStyle}>Quote ID: {this.state.selectedQuoteID}</Text>
-                            <Text style={textStyle}>Quote Payment Status: {this.state.selectedPaymentStatus}</Text>
-                            <Text style={textStyle}>Quote Payment Deadline: {this.state.selectedPaymentDeadline}</Text>
-                            <Text style={textStyle}>Quote Total Cost: {this.state.selectedTotalCost}</Text>
+                        <View style="flex: 4; flex-direction: 'column';">
+                            <Text>Quote ID: {this.state.selectedQuoteID}</Text>
+                            <Text>Quote Payment Status: {this.state.selectedPaymentStatus}</Text>
+                            <Text>Quote Payment Deadline: {this.state.selectedPaymentDeadline}</Text>
+                            <Text>Quote Total Cost: {this.state.selectedTotalCost}</Text>
 
-                            <Text style={textStyle}>Patient NHI: {this.state.selectedPatientNHI}</Text>
-                            <Text style={textStyle}>Patient Name: {this.state.selectedPatientName}</Text>
-                            <Text style={textStyle}>Patient Date of Birth: {this.state.selectedPatientDOB}</Text>
-                            <Text style={textStyle}>Patient Contact Number: {this.state.selectedPatientNumber}</Text>
-                            <Text style={textStyle}>Patient Email Address: {this.state.selectedPatientEmail}</Text>
-                            <Text style={textStyle}>Patient Notes: {this.state.selectedPatientNotes}</Text>
+                            <Text>Patient NHI: {this.state.selectedPatientNHI}</Text>
+                            <Text>Patient Name: {this.state.selectedPatientName}</Text>
+                            <Text>Patient Date of Birth: {this.state.selectedPatientDOB}</Text>
+                            <Text>Patient Contact Number: {this.state.selectedPatientNumber}</Text>
+                            <Text>Patient Email Address: {this.state.selectedPatientEmail}</Text>
+                            <Text>Patient Notes: {this.state.selectedPatientNotes}</Text>
                             
-                            <Text style={textStyle}>Booking Date: {this.state.selectedBookingDate}</Text>
-                            <Text style={textStyle}>Booking Time: {this.state.selectedBookingTime}</Text>
-                            <Text style={textStyle}>Booking Location: {this.state.selectedBookingLocation}</Text>
-                            <Text style={textStyle}>Booking Notes: {this.state.selectedBookingNotes}</Text>
-                            <Text style={textStyle}>Booking Procedure: {this.state.selectedBookingProcedure}</Text>
-                            
+                            <Text>Booking Date: {this.state.selectedBookingDate}</Text>
+                            <Text>Booking Time: {this.state.selectedBookingTime}</Text>
+                            <Text>Booking Location: {this.state.selectedBookingLocation}</Text>
+                            <Text>Booking Notes: {this.state.selectedBookingNotes}</Text>
+                            <Text>Booking Procedure: {this.state.selectedBookingProcedure}</Text>
                             <Button text={"Export Quote as PDF"} enabled={(this.state.selectedQuoteID != null)} on={
                                 {
                                     clicked: () => {createPDFButtonHandler(this.state.selectedQuoteID)}
