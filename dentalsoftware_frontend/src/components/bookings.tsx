@@ -84,7 +84,8 @@ export class Bookings extends React.Component<any, any> {
             addTicketOrEditClicked: false,
             bookingDentalChartString: [],
 
-            ticketsBeingDisplayed: 0
+            ticketsBeingDisplayed: 0,
+            bookingsBeingDisplayed: 0
         }
 
         //Gets all of the tickets currently created
@@ -804,28 +805,50 @@ export class Bookings extends React.Component<any, any> {
         var numberOfTicketsDisplayed: any = 5;
 
         //Will toggle between the page to display bookings and tickets
-        const ticketListLeft = {
+        const ticketAndBookingListLeft = {
             clicked: () =>{
 
-                if (this.state.ticketsBeingDisplayed >= numberOfTicketsDisplayed)
+                //Will change the page for the booking list
+                if (this.state.bookingCreateOrEditDisplay == 0)
                 {
-                    this.setState({
-                        ticketsBeingDisplayed: this.state.ticketsBeingDisplayed - numberOfTicketsDisplayed
-                    });
+                    this.state.bookingsBeingDisplayed;
+                }
+                //Will change the page for the ticket list
+                else if (this.state.bookingCreateOrEditDisplay == 2)
+                {
+                    if (this.state.ticketsBeingDisplayed >= numberOfTicketsDisplayed)
+                    {
+                        this.setState({
+                            ticketsBeingDisplayed: this.state.ticketsBeingDisplayed - numberOfTicketsDisplayed
+                        });
+                    }
                 }
             }
         }
 
         //Will display additional tickets by changing the page
-        const ticketListRight = {
+        const ticketAndBookingListRight = {
             clicked: () =>{
                 
-                if (this.state.ticketsBeingDisplayed + numberOfTicketsDisplayed < this.state.ticketListTextDisplayedArray.length)
+                //Will change the page for the booking list
+                if (this.state.bookingCreateOrEditDisplay == 0)
                 {
-                    this.setState({
-                        ticketsBeingDisplayed: this.state.ticketsBeingDisplayed + numberOfTicketsDisplayed
-                    });
+                    this.state.bookingsBeingDisplayed;
                 }
+                //Will change the page for the ticket list
+                else if (this.state.bookingCreateOrEditDisplay == 2)
+                {
+                    if (this.state.ticketsBeingDisplayed + numberOfTicketsDisplayed < this.state.ticketListTextDisplayedArray.length)
+                    {
+                        this.setState({
+                            ticketsBeingDisplayed: this.state.ticketsBeingDisplayed + numberOfTicketsDisplayed
+                        });
+                    }
+                }
+
+
+
+                
             }
         }
 
@@ -947,9 +970,9 @@ export class Bookings extends React.Component<any, any> {
                 <View style={containerStyle2}>
 
                     <View style="flex-direction: 'row';">
-                        <Button text="<<" style="flex: 1;" on={ticketListLeft}></Button>
+                        <Button text="<<" style="flex: 1;" on={ticketAndBookingListLeft}></Button>
                         <Button text="View bookings" style="flex: 4;" on={toggleBookingsAndTickets}></Button>
-                        <Button text=">>" style="flex: 1;" on={ticketListRight}></Button>
+                        <Button text=">>" style="flex: 1;" on={ticketAndBookingListRight}></Button>
                     </View>
 
                     
@@ -1034,9 +1057,9 @@ export class Bookings extends React.Component<any, any> {
                 <View style={containerStyle2}>
 
                     <View style="flex-direction: 'row';">
-                        <Button text="<<" style="flex: 1;"></Button>
-                        <Button text="View tickets" style="flex: 4;" on={toggleBookingsAndTickets}></Button>
-                        <Button text=">>" style="flex: 1;"></Button>
+                        <Button text="<<" style="flex: 1;" on={ticketAndBookingListLeft}></Button>
+                        <Button text="View bookings" style="flex: 4;" on={toggleBookingsAndTickets}></Button>
+                        <Button text=">>" style="flex: 1;" on={ticketAndBookingListRight}></Button>
                     </View>
 
                     <Text style="border: 1px solid black; padding: 10px;">{"Date selected: " + dateFull}</Text>
