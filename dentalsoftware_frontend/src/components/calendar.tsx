@@ -359,7 +359,9 @@ export class Calendar extends React.Component<any, any> {
                 </ScrollArea> */}
 
             </View>
+            
             {this.state.bookingsAlert}
+            
           </View>
         );
     }
