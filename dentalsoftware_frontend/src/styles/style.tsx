@@ -59,7 +59,4 @@ export const style =
         font-size: 18px;
         color: black;
     }
-    #hide {
-        display: 'none';
-    }
 `
