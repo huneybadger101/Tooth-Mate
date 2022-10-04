@@ -5,6 +5,12 @@ import Alert from "../alert";
 export const editFromDB = async (newBookingID:any, newDate:any, newTime:any, 
     newProcedure:any, newAreasAffected:any, newPatientNotes:any) =>{
 
+
+
+
+
+
+
         newDate = newDate.split("/")[2] + "/" + newDate.split("/")[1] + "/" + String(Number(newDate.split("/")[0]) + 1);
 
         let bookingData = {

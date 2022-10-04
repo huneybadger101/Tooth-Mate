@@ -40,3 +40,30 @@ export const NHIcorrectFormatCheck = (string:any) =>{
     
     return returnedString;
 }
+
+//Will take the string used for the bookings dental chart and convert it to a 1 or 0 (1 being true)
+export const bookingDentalChartTrueOrFalse = (string:any) =>{
+
+    switch(string) {
+        case "height: 100px; width: 100px;":
+        return 0;
+        break;
+        case "height: 100px; width: 100px; background: 'Grey';":
+        return 1;
+        break;
+    }
+}
+
+export const bookingDentalChartTrueOrFalseInverted = (number:any) =>{
+
+    switch(number) {
+        case "0":
+        return "height: 100px; width: 100px;";
+        break;
+        case "1":
+        return "height: 100px; width: 100px; background: 'Grey';";
+        break;
+        default:
+        return "height: 100px; width: 100px;";
+    }
+}

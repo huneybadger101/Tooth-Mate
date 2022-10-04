@@ -1,10 +1,9 @@
 import { Text, View, Button, ComboBox, LineEdit } from "@nodegui/react-nodegui";
 import React from "react";
-import Bookings from "../bookings";
-import Alert from "../alert";
 import { disableDentalChartButton } from "../Calendarhelpers/calendarDayButtonDisable";
 import { treatmentList, treatmentListPrices, treatmentListTimes, treatmentListTreatments, toothComboBox } from "./comboBoxVariables";
 import DentalChartIniniteLoopFix from "../Calendarhelpers/loopPreventer";
+import { bookingDentalChartTrueOrFalseInverted } from "../Calendarhelpers/textFormatFunctions";
 
 export class BookingPageDentalChart extends React.Component<any, any> {
 
@@ -20,8 +19,8 @@ export class BookingPageDentalChart extends React.Component<any, any> {
             buttonSix: "height: 100px; width: 100px;",
             buttonSeven: "height: 100px; width: 100px;",
             buttonEight: "height: 100px; width: 100px;",
-            buttonNine: "height: 100px; width: 100px;",   
-            
+            buttonNine: "height: 100px; width: 100px;",
+
             dentalChartDataHolderOne: [],
             dentalChartDataHolderTwo: [],
             dentalChartDataHolderThree: [],
@@ -57,6 +56,25 @@ export class BookingPageDentalChart extends React.Component<any, any> {
 
     render() {
 
+        this.props.callback(
+
+            this.state.dentalChartDataHolderOne,
+            this.state.dentalChartDataHolderTwo,
+            this.state.dentalChartDataHolderThree,
+            this.state.dentalChartDataHolderFour,
+            this.state.dentalChartDataHolderFive,
+            this.state.dentalChartDataHolderSix,
+            this.state.dentalChartDataHolderSeven,
+            this.state.dentalChartDataHolderEight,
+            this.state.dentalChartDataHolderNine,
+            this.state.procedure,
+            this.state.procedureTimeStored,
+            this.state.procedureCostStored,
+            this.state.patientNotes,
+            this.state.totalCharts,
+            this.state.currentlySelectedToothIndex
+        );
+        
         //Will hold the button rows
         var buttonRowOne:any = [];
         var buttonRowTwo:any = [];
@@ -73,21 +91,123 @@ export class BookingPageDentalChart extends React.Component<any, any> {
         //Note that several setState function will set 'preventTotalReload' to true to prevent this to replay
         if (this.state.preventTotalReload == false)
         {
-            this.state.dentalChartDataHolderOne[0] = "height: 100px; width: 100px;";
-            this.state.dentalChartDataHolderTwo[0] = "height: 100px; width: 100px;";
-            this.state.dentalChartDataHolderThree[0] = "height: 100px; width: 100px;";
-            this.state.dentalChartDataHolderFour[0] = "height: 100px; width: 100px;";
-            this.state.dentalChartDataHolderFive[0] = "height: 100px; width: 100px;";
-            this.state.dentalChartDataHolderSix[0] = "height: 100px; width: 100px;";
-            this.state.dentalChartDataHolderSeven[0] = "height: 100px; width: 100px;";
-            this.state.dentalChartDataHolderEight[0] = "height: 100px; width: 100px;";
-            this.state.dentalChartDataHolderNine[0] = "height: 100px; width: 100px;";
-            this.state.currentlySelectedProcedureIndex[0] = 0;
-            this.state.currentlySelectedToothIndex[0] = 1;
+            this.setState({
+                preventTotalReload: true
+            });
 
-            this.state.procedureCostStored[0] = treatmentListPrices(0);
-            this.state.procedureTimeStored[0] = treatmentListTimes(0);
+            //Will happen if the create booking button is clicked
+            if (this.props.data[0] == true)
+            {
+                //Will prep multiple variables for a new booking...
+                this.setState({
+                    totalCharts: 0,
+                    buttonOne: "height: 100px; width: 100px;",
+                    buttonTwo: "height: 100px; width: 100px;",
+                    buttonThree: "height: 100px; width: 100px;",
+                    buttonFour: "height: 100px; width: 100px;",
+                    buttonFive: "height: 100px; width: 100px;",
+                    buttonSix: "height: 100px; width: 100px;",
+                    buttonSeven: "height: 100px; width: 100px;",
+                    buttonEight: "height: 100px; width: 100px;",
+                    buttonNine: "height: 100px; width: 100px;",
+                    procedurePrinted: "Initial Examination",
+                    procedureTimePrinted: "Placeholder time...",
+                    procedurePricePrinted: "Placeholder cost..."
+                });
+
+                //Will prep multiple variables for a new booking...
+                this.state.dentalChartDataHolderOne[0] = "height: 100px; width: 100px;";
+                this.state.dentalChartDataHolderTwo[0] = "height: 100px; width: 100px;";
+                this.state.dentalChartDataHolderThree[0] = "height: 100px; width: 100px;";
+                this.state.dentalChartDataHolderFour[0] = "height: 100px; width: 100px;";
+                this.state.dentalChartDataHolderFive[0] = "height: 100px; width: 100px;";
+                this.state.dentalChartDataHolderSix[0] = "height: 100px; width: 100px;";
+                this.state.dentalChartDataHolderSeven[0] = "height: 100px; width: 100px;";
+                this.state.dentalChartDataHolderEight[0] = "height: 100px; width: 100px;";
+                this.state.dentalChartDataHolderNine[0] = "height: 100px; width: 100px;";
+                this.state.currentlySelectedProcedureIndex[0] = 0;
+                this.state.currentlySelectedToothIndex[0] = 0;
+                this.state.procedureCostStored[0] = treatmentListPrices(0);
+                this.state.procedureTimeStored[0] = treatmentListTimes(0);
+
+                //Will prep multiple variables for a new booking...
+                this.state.procedure[0] = "Initial Procedure";
+                this.state.procedurePrice[0] = "Price Placeholder test...";
+                this.state.procedureTime[0] = "Time Placeholder test...";
+                this.state.patientNotes[0] = "Notes Placeholder test...";
+            }
+            //Will happen if edit booking is selected
+            else if (this.props.data[0] == false)
+            {
+                console.log("EDIT BOOKING");
+            }
+            //Will happen when the edit button or add ticket button is clicked...
+            else
+            {
+                //Will take the data sent from bookings file and set the buttons
+                this.setState({
+                    totalCharts: this.props.data.length - 1,
+                    buttonOne: bookingDentalChartTrueOrFalseInverted(this.props.data[0].split("-")[0]),
+                    buttonTwo: bookingDentalChartTrueOrFalseInverted(this.props.data[0].split("-")[1]),
+                    buttonThree: bookingDentalChartTrueOrFalseInverted(this.props.data[0].split("-")[2]),
+                    buttonFour: bookingDentalChartTrueOrFalseInverted(this.props.data[0].split("-")[3]),
+                    buttonFive: bookingDentalChartTrueOrFalseInverted(this.props.data[0].split("-")[4]),
+                    buttonSix: bookingDentalChartTrueOrFalseInverted(this.props.data[0].split("-")[5]),
+                    buttonSeven: bookingDentalChartTrueOrFalseInverted(this.props.data[0].split("-")[6]),
+                    buttonEight: bookingDentalChartTrueOrFalseInverted(this.props.data[0].split("-")[7]),
+                    buttonNine: bookingDentalChartTrueOrFalseInverted(this.props.data[0].split("-")[8]),
+                });
+
+                //Will iterate through the booking file variables and create specified amount of dental charts
+                for (var num = 0; num < this.props.data.length; num++)
+                {
+                    //Creates an array of the strings sent from bookings file as to access each one
+                    var splitBookingString = this.props.data[num].split("-");
+
+                    console.log(splitBookingString[0]);//Chart 1
+                    console.log(splitBookingString[1]);//Chart 2
+                    console.log(splitBookingString[2]);//Chart 3
+                    console.log(splitBookingString[3]);//Chart 4
+                    console.log(splitBookingString[4]);//Chart 5
+                    console.log(splitBookingString[5]);//Chart 6
+                    console.log(splitBookingString[6]);//Chart 7
+                    console.log(splitBookingString[7]);//Chart 8
+                    console.log(splitBookingString[8]);//Chart 9
+                    console.log(splitBookingString[9]);//Procedure
+                    console.log(splitBookingString[10]);//Procedure cost
+                    console.log(splitBookingString[11]);//Procedure time
+                    console.log(splitBookingString[12]);//Notes
+                    console.log(splitBookingString[13]);//Tooth selected
+                    console.log("--------------------------------");
+
+                    //Sets the state of the dental chart buttons displayed based on stored db variables
+                    this.state.dentalChartDataHolderOne[num] = bookingDentalChartTrueOrFalseInverted(splitBookingString[0]);
+                    this.state.dentalChartDataHolderTwo[num] = bookingDentalChartTrueOrFalseInverted(splitBookingString[1]);
+                    this.state.dentalChartDataHolderThree[num] = bookingDentalChartTrueOrFalseInverted(splitBookingString[2]);
+                    this.state.dentalChartDataHolderFour[num] = bookingDentalChartTrueOrFalseInverted(splitBookingString[3]);
+                    this.state.dentalChartDataHolderFive[num] = bookingDentalChartTrueOrFalseInverted(splitBookingString[4]);
+                    this.state.dentalChartDataHolderSix[num] = bookingDentalChartTrueOrFalseInverted(splitBookingString[5]);
+                    this.state.dentalChartDataHolderSeven[num] = bookingDentalChartTrueOrFalseInverted(splitBookingString[6]);
+                    this.state.dentalChartDataHolderEight[num] = bookingDentalChartTrueOrFalseInverted(splitBookingString[7]);
+                    this.state.dentalChartDataHolderNine[num] =bookingDentalChartTrueOrFalseInverted(splitBookingString[8]);
+                    this.state.currentlySelectedProcedureIndex[num] = splitBookingString[9];
+                    this.state.currentlySelectedToothIndex[num] = splitBookingString[13];
+                    this.state.procedureCostStored[num] = splitBookingString[10];
+                    this.state.procedureTimeStored[num] = splitBookingString[11];
+                }
+            }
         }
+
+
+
+
+
+
+
+
+
+
+
 
         //Handles adding a dental chart
         const dentalChartAddHandler = {
@@ -108,7 +228,7 @@ export class BookingPageDentalChart extends React.Component<any, any> {
                 this.state.dentalChartDataHolderNine[this.state.totalCharts] = "height: 100px; width: 100px;";
 
                 this.state.currentlySelectedProcedureIndex[this.state.totalCharts] = 0;
-                this.state.currentlySelectedToothIndex[this.state.totalCharts] = 1;
+                this.state.currentlySelectedToothIndex[this.state.totalCharts] = 0;
 
                 //Updates which chart is currently selected to newly made chart
                 this.setState({
@@ -133,6 +253,8 @@ export class BookingPageDentalChart extends React.Component<any, any> {
                     procedurePricePrinted: this.state.procedureCostStored[this.state.totalCharts],
                     procedureTimePrinted: this.state.procedureTimeStored[this.state.totalCharts]
                 });
+
+                
             }
         }
 
@@ -140,7 +262,6 @@ export class BookingPageDentalChart extends React.Component<any, any> {
         const dentalChartRemoveHandler = {
             clicked: () =>{
 
-                console.log("Chart removed");
                 this.setState({
                     preventTotalReload: true
                 })

@@ -1,6 +1,5 @@
 export const disableCalendarButton = (buttonSelected:any, daySelected:any, monthSelected:any, currentMonthSelected:any) =>{
 
-
     if (buttonSelected == daySelected && monthSelected == currentMonthSelected)
     {
         return false
