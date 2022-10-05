@@ -59,4 +59,31 @@ export const style =
         font-size: 18px;
         color: black;
     }
+
+    #buttonCalanderDate {
+        background-color: #DDDDDD;
+        border-width: 1px;
+        border-style: solid;
+        border-radius: 2px;
+        width: 5.2%; 
+        height: 5.2%; 
+        color: 'black'; 
+        font-size: 20px;
+    }
+    #buttonCalanderDate:hover {
+        background-color: #FFFFFF;
+    }
+    #buttonCalanderDate:pressed {
+        background-color: #BBBBBB;
+    }
+    #buttonCalanderDateSelected {
+        background-color: #FFFFFF;
+        border-width: 1px;
+        border-style: solid;
+        border-radius: 2px;
+        width: 5.2%; 
+        height: 5.2%; 
+        color: 'black'; 
+        font-size: 20px;
+    }
 `

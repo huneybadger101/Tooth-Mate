@@ -34,11 +34,57 @@ export class Calendar extends React.Component<any, any> {
         rightHandDateInfo: false,
         currentBookingSelected: "",
         editBookingButton: false,
-        bookingsAlert: null
+        bookingsAlert: null,
+
+        screenWidth: 0,
+        screenHeight: 0,
+
+        //Below are the variables that will be used for styling (calendar buttons ectc...)
+        calendarButtonSizeX: 0,
+        calendarButtonSizeY: 0,
+        calendarButtonStyle: ""
     }
   }
 
     render() {
+
+      //Will check if the screen resolution has been set. If not, it will set the screen resolution variables for use
+      if (this.state.screenWidth == 0)
+      {
+        var resolution = require("screen-resolution");
+        resolution.get(false)
+        .then((result: any) => {
+
+          //Setting states for the visual calculations
+          this.setState({
+            screenWidth: result.width,
+            screenHeight: result.height,
+
+            calendarButtonSizeX: Math.round((result.width * 5.20833333) / 100),
+            calendarButtonSizeY: Math.round((result.height * 9.25925926) / 100),
+          });
+
+          //Setting the states for the actual styling strings...
+          this.setState({
+            calendarButtonStyle: "height:" + this.state.calendarButtonSizeY + "px; width: " + this.state.calendarButtonSizeX + "px;"
+          });
+
+        });
+      }
+
+      //Will get the screen resolution and check if it isk different from the variables. If it is, it means the resolution was changed and will changed the components accordingly
+      var resolution = require("screen-resolution");
+        resolution.get(false)
+        .then((result: any) => {
+
+          if (this.state.screenWidth != result.width || this.state.screenHeight != result.height)
+          {
+              this.setState({
+                screenWidth: 0,
+                screenHeight: 0
+              });
+          }
+        });
 
       //Sets the day values in a state based array
       this.state.day[0] = "Monday";
@@ -128,11 +174,13 @@ export class Calendar extends React.Component<any, any> {
 
           if (i >= this.state.weekDaySelected)
           {
+
             let buttonName_0 = (i + (1 - this.state.weekDaySelected)).toString();
             calendar1.push( 
               <View style="border: 1px solid black; height: 100px; width: 100px;">
-                <Button text={ buttonName_0 } 
-                style="height: 100px; width: 100px;" 
+                <Button text={ buttonName_0 }
+                id={"buttonCalanderDate"}
+                style={this.state.calendarButtonStyle}
                 enabled={disableCalendarButton(buttonName_0, this.state.daySelected, this.state.monthSelected, this.state.currentMonthSelected)}
                 on={{clicked: () => {
                   this.setState(
@@ -159,7 +207,7 @@ export class Calendar extends React.Component<any, any> {
           calendar2.push( 
             <View style="border: 1px solid black; height: 100px; width: 100px;">
               <Button text={ buttonName_1 } 
-              style="height: 100px; width: 100px;" 
+              style={this.state.calendarButtonStyle}
               enabled={disableCalendarButton(buttonName_1, this.state.daySelected, this.state.monthSelected, this.state.currentMonthSelected)} 
               on={{clicked: () => this.setState(
                 {daySelected: buttonName_1,
@@ -176,7 +224,7 @@ export class Calendar extends React.Component<any, any> {
           calendar3.push( 
             <View style="border: 1px solid black; height: 100px; width: 100px;">
               <Button text={ buttonName_2 } 
-              style="height: 100px; width: 100px;" 
+              style={this.state.calendarButtonStyle}
               enabled={disableCalendarButton(buttonName_2, this.state.daySelected, this.state.monthSelected, this.state.currentMonthSelected)} 
               on={{clicked: () => this.setState(
                 {daySelected: buttonName_2,
@@ -194,7 +242,7 @@ export class Calendar extends React.Component<any, any> {
             calendar4.push( 
               <View style="border: 1px solid black; height: 100px; width: 100px;">
                 <Button text={ buttonName_3 } 
-                style="height: 100px; width: 100px;" 
+                style={this.state.calendarButtonStyle}
                 enabled={disableCalendarButton(buttonName_3, this.state.daySelected, this.state.monthSelected, this.state.currentMonthSelected)} 
                 on={{clicked: () => this.setState(
                   {daySelected: buttonName_3,
@@ -213,7 +261,7 @@ export class Calendar extends React.Component<any, any> {
             calendar5.push( 
               <View style="border: 1px solid black; height: 100px; width: 100px;">
                 <Button text={ buttonName_4 } 
-                style="height: 100px; width: 100px;" 
+                style={this.state.calendarButtonStyle}
                 enabled={disableCalendarButton(buttonName_4, this.state.daySelected, this.state.monthSelected, this.state.currentMonthSelected)} 
                 on={{clicked: () => this.setState(
                   {daySelected: buttonName_4, 
@@ -240,7 +288,7 @@ export class Calendar extends React.Component<any, any> {
             calendar6.push( 
               <View style="border: 1px solid black; height: 100px; width: 100px;">
                 <Button text={ buttonName_5 } 
-                style="height: 100px; width: 100px;" 
+                style={this.state.calendarButtonStyle}
                 enabled={disableCalendarButton(buttonName_5, this.state.daySelected, this.state.monthSelected, this.state.currentMonthSelected)}
                 on={{clicked: () => this.setState(
                   {daySelected: buttonName_5,
