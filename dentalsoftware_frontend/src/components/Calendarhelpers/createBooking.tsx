@@ -1,4 +1,3 @@
-import { Button, View } from "@nodegui/react-nodegui";
 import React from "react";
 import Alert from "../alert";
 import axios from 'axios';
@@ -6,30 +5,34 @@ import axios from 'axios';
 export const createBooking = async (PatientID:Number, Date:string, Time:string,
     DentistID:Number, Procedure:string, AreasAffected:string, PatientNotes:string,
     chartOne: any, chartTwo: any, chartThree: any, chartFour: any, chartFive: any, chartSix: any, chartSeven: any, chartEight: any, chartNine: any, 
-    callProcedure: any, callProcedurePrice: any, callProcedureCost: any, callNotes: any, totalCharts: any, toothSelected: any) => {
+    callProcedure: any, callProcedureTime: any, callProcedureCost: any, callNotes: any, totalCharts: any, toothSelected: any) => {
 
-        for (var i = 0; i <= totalCharts; i++)
-        {
-            console.log("-----------------TOTAL CHARTS: " + totalCharts + " --------------");
-            console.log("CURRENT VIEWED: " + i + " OUT OF " + totalCharts);
-            console.log("Length: " + totalCharts);
-            console.log(chartOne[i]);
-            console.log(chartTwo[i]);
-            console.log(chartThree[i]);
-            console.log(chartFour[i]);
-            console.log(chartFive[i]);
-            console.log(chartSix[i]);
-            console.log(chartSeven[i]);
-            console.log(chartEight[i]);
-            console.log(chartNine[i]);
-            console.log(callProcedure[i]);
-            console.log(callProcedurePrice[i]);
-            console.log(callProcedureCost[i]);
-            console.log(callNotes[i]);
-            console.log(toothSelected[i]);
-            console.log("------------------------------------------");
+        totalCharts++;
+
+        let charts = [];
+
+        for (var i = 0; i < totalCharts; i++) {
+            charts.push({
+                data1: chartOne[i],
+                data2: chartTwo[i],
+                data3: chartThree[i],
+                data4: chartFour[i],
+                data5: chartFive[i],
+                data6: chartSix[i],
+                data7: chartSeven[i],
+                data8: chartEight[i],
+                data9: chartNine[i],
+                procedure: callProcedure[i],
+                procedureLength: callProcedureTime[i],
+                procedureCost: callProcedureCost[i],
+                notes: callNotes[i],
+                tooth: toothSelected[i]
+            })
         }
 
+        if (DentistID == null || DentistID <= 0) {
+            DentistID = 1;
+        }
 
         let bookingData = {
             patientID: PatientID,
@@ -38,7 +41,8 @@ export const createBooking = async (PatientID:Number, Date:string, Time:string,
             dentistID: DentistID,
             procedure: Procedure,
             affectedAreas: AreasAffected,
-            notes: PatientNotes
+            notes: PatientNotes,
+            dentalCharts: charts
         }
 
         let result: any = null;
