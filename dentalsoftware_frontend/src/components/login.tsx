@@ -44,9 +44,6 @@ export class Login extends React.Component<any, any> {
                     alertView: <Alert title={"Error"} message={res['data']['error']} style={"background-color: 'red'; width: 600px; height: 400px;"} dismissAlert={this.alertDismissController}/>
                 })
             } else {
-                this.setState({
-                    alertView: "Logged in!"
-                })
                 this.props.accountHelper.accountName = this.state.username;
                 this.props.accountHelper.accountAccessLevel = res.data.result['AccountAccessLevel'];
                 this.props.accountHelper.accountAdmin = (this.state.username == "admin");
@@ -189,13 +186,13 @@ export class Login extends React.Component<any, any> {
                 <View style="flex: auto; flex-direction: 'column';">
                     <View style="flex: 1;">
                         <Text id="titleCenterAlign">Username</Text>
-                        <LineEdit id="textEntry" on={{ textChanged: (textValue) => {
+                        <LineEdit id="textEntry" on={{ returnPressed: () => {this.loginButtonHandler()}, textChanged: (textValue) => {
                             this.setState({
                                 username: textValue.replace(/[^a-zA-Z0-9! ]+/g, '')
                             })
                         } }} text={this.state.username} placeholderText={"Username"} />
                         <Text id="titleCenterAlign">Password</Text>
-                        <LineEdit id="textEntry" echoMode={EchoMode.Password} on={{ textChanged: (textValue) => {
+                        <LineEdit id="textEntry" echoMode={EchoMode.Password} on={{ returnPressed: () => {this.loginButtonHandler()}, textChanged: (textValue) => {
                             this.setState({
                                 password: textValue.replace(/[^a-zA-Z0-9! ]+/g, '')
                             })
