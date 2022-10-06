@@ -172,7 +172,7 @@ function createNewPatient(res = null, patientData) {
         }
 
         // Verified that patient doesn't already exist, time to add them
-        sql = "INSERT INTO patient_data (NHI, FirstName, " + (patientData.patient_Middle_Name != undefined ? "MiddleName, " : "") + "LastName, DOB, ContactNumber, Email" + (patientData.patient_Notes != undefined ? ", Notes" : " ") + ") " 
+        sql = "INSERT INTO patient_data (NHI, FirstName, " + (patientData.patient_Middle_Name != undefined ? "MiddleName, " : "") + "LastName, DOB, ContactNumber, Email" + (patientData.patient_Notes != undefined ? ", Notes" : " ") + (patientData.patient_Existing_Conditions != undefined ? ", ExistingConditions" : " ") + ") " 
         + "VALUES ('" 
         + patientData.patient_NHI + "', " 
         + "'" + patientData.patient_First_Name + "', " 
@@ -181,7 +181,8 @@ function createNewPatient(res = null, patientData) {
         + "'" + patientData.patient_DOB + "', "
         + "'" + patientData.patient_Contact_Number + "', " 
         + "'" + patientData.patient_Email_Address + "'"
-        + (patientData.patient_Notes != undefined ? ", '" + patientData.patient_Notes + "'" : "") 
+        + (patientData.patient_Notes != undefined ? ", '" + patientData.patient_Notes + "'" : "")
+        + (patientData.patient_Existing_Conditions != undefined ? ", '" + JSON.stringify(patientData.patient_Existing_Conditions) + "'" : "")
         + ")"
     
         result = databaseQuery(null, sql)
@@ -218,9 +219,9 @@ function createNewPatient(res = null, patientData) {
                         console.log(err)
                         res.send({result: 1, error: err})
                     }
-                    sql = "INSERT INTO patient_tooth_quadrant_data (Patient, Tooth, Quadrant, Notes) VALUES ";
+                    sql = "INSERT INTO patient_tooth_quadrant_data (Patient, Tooth, Quadrant, Notes, AffectedArea) VALUES ";
                     for (let k = 0; k < 9; k++) {
-                        sql += "(" + patientID + ", " + (i + 1) + ", " + (k + 1) + ", 'QUADRANT_NOTES_HERE'), "
+                        sql += "(" + patientID + ", " + (i + 1) + ", " + (k + 1) + ", 'QUADRANT_NOTES_HERE', 0), "
                     }
                     sql = sql.slice(0, -2); 
                     sql += ";";

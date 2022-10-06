@@ -9,7 +9,9 @@ export class ChartView extends React.Component<any, any> {
     }
 
     // Function that returns a component to be drawn, can have children components if the parent component supports it
-    render() {  
+    render() {
+
+        let alert = this.props.alert;
 
         let topLeft = [];
         let topRight = [];
@@ -67,6 +69,7 @@ export class ChartView extends React.Component<any, any> {
                         </View>
                     </View>
                 </View>
+                {alert}
             </View>
         );
     }

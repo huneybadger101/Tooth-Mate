@@ -3,6 +3,7 @@ import React from "react";
 import axios from 'axios';
 import { toothNames } from "./Calendarhelpers/comboBoxVariables";
 import ChartView from "./chartView";
+import Alert from "./alert";
 
 export class DentalChart extends React.Component<any, any> {
 
@@ -15,7 +16,8 @@ export class DentalChart extends React.Component<any, any> {
             patientTeethQuadrant: null,
             selectedTooth: null,
             showSelectedTooth: false,
-            selectedToothQuadrantIndex: 0
+            selectedToothQuadrantIndex: 0,
+            alertView: null
         }
 
         axios.post('http://localhost:3000/patients/getAllPatientData')
@@ -23,7 +25,7 @@ export class DentalChart extends React.Component<any, any> {
             let id;
             for (let i = 0; i < resPatients.data.result.length; i++) {
                 //if (this.props.NHI == resPatients.data.result[i]['NHI']) {
-                if ("ASD231" == resPatients.data.result[i]['NHI']) {
+                if ("USA125" == resPatients.data.result[i]['NHI']) {
                     id = resPatients.data.result[i]['ID'];
                     break;
                 }
@@ -43,11 +45,21 @@ export class DentalChart extends React.Component<any, any> {
                             break;
                         }
                     }
+                    let alert = <View/>
+                    if (resPatientsByID.data.result['patient'][0]['ExistingConditions'] != null) {
+                        let conditionData = JSON.parse(resPatientsByID.data.result['patient'][0]['ExistingConditions']);
+                        let message = "";
+                        for (let i = 0; i < conditionData['ExistingConditionsNames'].length; i++) {
+                            message += conditionData['ExistingConditionsNames'][i] + " - " + conditionData['ExistingConditionsNotes'][i] + "\n\n"
+                        }
+                        alert = <Alert title={"Patient Pre-Existing Conditions"} message={message} style={"background-color: 'orange'; width: 600px; height: 400px;"} dismissAlert={this.alertDismissController}/>
+                    }
                     this.setState({
                         patient: resPatientsByID.data.result['patient'][0],
                         patientTeeth: resPatientsByID.data.result['patientTeeth'],
                         patientTeethQuadrant: resPatientsByID.data.result['patientTeethQuadrant'],
-                        booking: booking
+                        booking: booking,
+                        alertView: alert
                     })
                 })
                 .catch((err) => {
@@ -62,6 +74,12 @@ export class DentalChart extends React.Component<any, any> {
             console.log(err)
         });
 
+    }
+
+    alertDismissController = () => {
+        this.setState({
+            alertView: null
+        })
     }
 
     // Function that returns a component to be drawn, can have children components if the parent component supports it
@@ -194,7 +212,7 @@ export class DentalChart extends React.Component<any, any> {
         } else {
 
             return (
-                <ChartView callback={callback} name={(this.state.patient['FirstName'] + " " + this.state.patient['LastName'] + "'s Dental Chart")}/>
+                <ChartView callback={callback} name={(this.state.patient['FirstName'] + " " + this.state.patient['LastName'] + "'s Dental Chart")} alert={this.state.alertView}/>
             );
         }
     }

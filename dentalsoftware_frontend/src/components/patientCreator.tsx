@@ -3,7 +3,6 @@ import { NHIcorrectFormatCheck } from "./Calendarhelpers/textFormatFunctions";
 import React from "react";
 import axios from 'axios';
 import Alert from "./alert";
-import ToothCreator from "./ToothCreator";
 
 export class PatientDataViewer extends React.Component<any, any> {
 
@@ -21,8 +20,10 @@ export class PatientDataViewer extends React.Component<any, any> {
             currentEmailAddress: "",
             currentNotes: "",
             alertView: null,
-            teeth: [],
-            teethIndex: 0
+            currentExistingConditionsViews: [],
+            currentExistingConditionNames: [],
+            currentExistingConditionNotes: [],
+            numExistingConditions: 0
         }
 
         axios.post('http://localhost:3000/patients/getAllPatientData')
@@ -126,22 +127,18 @@ export class PatientDataViewer extends React.Component<any, any> {
             }
         }
 
+        const textHandlerExistingConditionsNames = (textValue:any, index:number) => {
+            this.state.currentExistingConditionNames[index] = textValue;
+        }
+
+        const textHandlerExistingConditionsNotes = (textValue:any, index:number) => {
+            this.state.currentExistingConditionNotes[index] = textValue;
+        }
+
         const alertDismissController = () => {
             this.setState({
                 alertView: null
             })
-        }
-
-        const updateTeethIndex = (index:number) => {
-            console.log("teethindex: " + index)
-            this.setState({
-                teethIndex: index
-            })
-        }
-
-        const getTeeth = (teeth:any) => {
-            this.state.teeth[this.state.teethIndex] = teeth;
-            console.log(this.state.teeth[this.state.teethIndex])
         }
 
         const submitNewPatient = {
@@ -156,7 +153,7 @@ export class PatientDataViewer extends React.Component<any, any> {
                     patient_Contact_Number: this.state.currentContactNumber,
                     patient_Email_Address: this.state.currentEmailAddress,
                     patient_Notes: this.state.currentNotes,
-                    patient_Teeth: this.state.teeth
+                    patient_Existing_Conditions: (this.state.currentExistingConditionNames != "" ? {ExistingConditionsNames: this.state.currentExistingConditionNames, ExistingConditionsNotes: this.state.currentExistingConditionNotes} : undefined)
                 }
                 axios.post('http://localhost:3000/patients/createNewPatient', null, {
                     headers: {
@@ -182,7 +179,9 @@ export class PatientDataViewer extends React.Component<any, any> {
                             currentDOB: "",
                             currentContactNumber: "",
                             currentEmailAddress: "",
-                            currentNotes: ""
+                            currentNotes: "",
+                            currentExistingConditionNames: "",
+                            currentExistingConditionNotes: ""
                         })
                     }
                 })
@@ -197,7 +196,27 @@ export class PatientDataViewer extends React.Component<any, any> {
             }
         }
 
-        const textStyle = "color: 'black'; font-size: 20px;";
+        const removeExistingCondition = () => {
+            this.state.currentExistingConditionNames.pop()
+            this.state.currentExistingConditionNotes.pop()
+            this.state.currentExistingConditionsViews.pop()
+            this.setState(this.state)
+        }
+
+        const addExistingCondition = () => {
+            let currentIndex = this.state.currentExistingConditionsViews.length;
+            this.state.currentExistingConditionsViews.push(
+                <View style="margin: 0px; flex-direction: 'row';">
+                    <Text style={"flex: 1; border: 1px solid black; background: 'LightGrey';"}>Condition {this.state.currentExistingConditionsViews.length + 1}</Text>
+                    <LineEdit style={"flex: 2;"} on={{textChanged: (text) => textHandlerExistingConditionsNames(text, currentIndex)}} text={this.state.currentExistingConditionNames[currentIndex]} />
+                    <Text style={"flex: 1; border: 1px solid black; background: 'LightGrey';"}>Condition {this.state.currentExistingConditionsViews.length + 1} Notes</Text>
+                    <LineEdit style={"flex: 2;"} on={{textChanged: (text) => textHandlerExistingConditionsNotes(text, currentIndex)}} text={this.state.currentExistingConditionNotes[currentIndex]} />
+                </View>
+            )
+            this.setState(this.state)
+        }
+
+        const textStyle = "color: 'black'; font-size: 20px;"; 
 
         return (
             <View style="flex: auto;">
@@ -233,8 +252,13 @@ export class PatientDataViewer extends React.Component<any, any> {
                     <Text style={"flex: 1; border: 1px solid black; background: 'LightGrey';"}>Patient Notes</Text>
                     <LineEdit style={"flex: 2;"} on={textHandlerNotes} text={this.state.currentNotes} />
                 </View>
-
-                <ToothCreator style="flex: shrink;" passbackTeeth={getTeeth} getVisitIndex={() => {return 0}} updateTeethIndex={updateTeethIndex}/>
+                <View style="margin: 0px; flex-direction: 'row';">
+                    <Button text="Remove Existing Condition" on={{pressed: removeExistingCondition}}/>
+                    <Button text="Add Existing Condition" on={{pressed: addExistingCondition}}/>
+                </View>
+                {this.state.currentExistingConditionsViews.map((view:any)=>{
+                        return view
+                })}
                 
                 <View style="margin: 0px; flex-direction: 'row';">
                     <Button text={"Submit"} on={submitNewPatient}></Button>
