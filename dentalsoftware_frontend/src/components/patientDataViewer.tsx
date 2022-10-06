@@ -101,7 +101,6 @@ export class PatientDataViewer extends React.Component<any, any> {
             this.setState({
                 offset: this.state.offset - 5
             })
-            console.log(this.state.offset)
         }
     }
 
@@ -110,7 +109,6 @@ export class PatientDataViewer extends React.Component<any, any> {
             this.setState({
                 offset: this.state.offset + 5
             })
-            console.log(this.state.offset)
         }
     }
 
@@ -138,8 +136,6 @@ export class PatientDataViewer extends React.Component<any, any> {
             displayButtons.push(patientListStrings[i])
         }
 
-        console.log(this.state.patients.length)
-
         const selectedPatientNHI = this.state.selectedPatientNHI;
         const selectedPatientName = this.state.selectedPatientName;
         const selectedPatientDOB = this.state.selectedPatientDOB;
@@ -163,9 +159,9 @@ export class PatientDataViewer extends React.Component<any, any> {
                         <View style="flex: 1; background-color: 'grey';">
                             <Text id="titleCenterAlign" style={textStyle}>Patients</Text>
                             <View style="flex: auto;">
-                                <Button text="↑" enabled={this.state.offset != 0} on={{pressed: this.lowerOffset}}/>
+                                <Button id="button" text="↑" enabled={this.state.offset != 0} on={{pressed: this.lowerOffset}}/>
                                 {displayButtons}
-                                <Button text="↓" enabled={this.state.offset + 5 < this.state.patients.length} on={{pressed: this.raiseOffset}}/>
+                                <Button id="button" text="↓" enabled={this.state.offset + 5 < this.state.patients.length} on={{pressed: this.raiseOffset}}/>
                             </View>
                         </View>
     

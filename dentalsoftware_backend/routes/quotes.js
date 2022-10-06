@@ -79,11 +79,6 @@ function createNewQuote(res = null, quoteData) {
         numMissing++
     }
 
-    if (quoteData.totalCostCents === undefined) {
-        errorMessage += "Total Cost (Cents), "
-        numMissing++
-    }
-
     if (numMissing > 0) {
         errorMessage = errorMessage.slice(0, -2) + "."
         res.send({result: 1, error: errorMessage})
@@ -113,7 +108,7 @@ function createNewQuote(res = null, quoteData) {
         }
 
         sql = "INSERT INTO `quotes` (`Patient`, `Dentist`, `Booking`, `QuoteCreationDate`, `QuotePaymentStatus`, `QuotePaymentDeadline`, `QuoteTotalCostDollars`, `QuoteTotalCostCents`) "
-        + "VALUES (" + quoteData.patientID + ", " + quoteData.dentistID + ", " + quoteData.bookingID + ", '" + new Date().toISOString().slice(0, 19).replace('T', ' ') + "', 'UNPAID', '" + addDays(new Date(), 30).toISOString().slice(0, 19).replace('T', ' ') + "', " + quoteData.totalCostDollars + ", " + quoteData.totalCostCents + ")"
+        + "VALUES (" + quoteData.patientID + ", " + quoteData.dentistID + ", " + quoteData.bookingID + ", '" + new Date().toISOString().slice(0, 19).replace('T', ' ') + "', 'UNPAID', '" + addDays(new Date(), 30).toISOString().slice(0, 19).replace('T', ' ') + "', " + quoteData.totalCostDollars + ", " + (quoteData.totalCostCents != undefined ? quoteData.totalCostCents : 0) + ")"
     
         databaseQuery(res, sql)
     });
