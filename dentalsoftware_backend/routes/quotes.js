@@ -85,33 +85,39 @@ function createNewQuote(res = null, quoteData) {
         return
     }
 
-    let sql = "SELECT * FROM quotes WHERE Booking='" + quoteData.bookingID + "'"
-    qClient.query(sql, function (err, result) {
-        if (err) {
-            console.log(err)
-            if (res) {
-                res.send({result: 1, error: err})
-                return
-            } else {
-                return {result: 1, error: err}
+    let sql = "SELECT * FROM quotes WHERE Booking='" + quoteData.bookingID + "'";
+    try {
+        qClient.query(sql, function (err, result) {
+            if (err) {
+                console.log(err)
+                if (res) {
+                    res.send({result: 1, error: err})
+                    return
+                } else {
+                    return {result: 1, error: err}
+                }
             }
-        }
 
-        if (Object.keys(result).length > 0) {
+            if (Object.keys(result).length > 0) {
 
-            if (res) {
-                res.send({result: 1, error: "A quote for the given Booking already exists!"})
-                return
-            } else {
-                return {result: 1, error: "A quote for the given Booking already exists!"}
+                if (res) {
+                    res.send({result: 1, error: "A quote for the given Booking already exists!"})
+                    return
+                } else {
+                    return {result: 1, error: "A quote for the given Booking already exists!"}
+                }
             }
-        }
 
-        sql = "INSERT INTO `quotes` (`Patient`, `Dentist`, `Booking`, `QuoteCreationDate`, `QuotePaymentStatus`, `QuotePaymentDeadline`, `QuoteTotalCostDollars`, `QuoteTotalCostCents`) "
-        + "VALUES (" + quoteData.patientID + ", " + quoteData.dentistID + ", " + quoteData.bookingID + ", '" + new Date().toISOString().slice(0, 19).replace('T', ' ') + "', 'UNPAID', '" + addDays(new Date(), 30).toISOString().slice(0, 19).replace('T', ' ') + "', " + quoteData.totalCostDollars + ", " + (quoteData.totalCostCents != undefined ? quoteData.totalCostCents : 0) + ")"
+            sql = "INSERT INTO `quotes` (`Patient`, `Dentist`, `Booking`, `QuoteCreationDate`, `QuotePaymentStatus`, `QuotePaymentDeadline`, `QuoteTotalCostDollars`, `QuoteTotalCostCents`) "
+            + "VALUES (" + quoteData.patientID + ", " + quoteData.dentistID + ", " + quoteData.bookingID + ", '" + new Date().toISOString().slice(0, 19).replace('T', ' ') + "', 'UNPAID', '" + addDays(new Date(), 30).toISOString().slice(0, 19).replace('T', ' ') + "', " + quoteData.totalCostDollars + ", " + (quoteData.totalCostCents != undefined ? quoteData.totalCostCents : 0) + ")"
+        
+            databaseQuery(res, sql)
+        });
+    } catch (error) {
+        console.log(error)
+        res.send(error)
+    }
     
-        databaseQuery(res, sql)
-    });
 
     function addDays(date, days) {
         var result = new Date(date);

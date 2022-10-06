@@ -5,22 +5,27 @@ function setDBClient(client) {
 }
 
 function databaseQuery(res = null, query) {
-    if (dbClient != undefined) {
-        dbClient.query(query, function (err, result) {
-            if (err) {
-                console.log(err)
-                if (res) {
-                    res.send({result: 1, error: err})
-                } else {
-                    return {result: 1}
+    try {
+        if (dbClient != undefined) {
+            dbClient.query(query, function (err, result) {
+                if (err) {
+                    console.log(err)
+                    if (res) {
+                        res.send({result: 1, error: err})
+                    } else {
+                        return {result: 1}
+                    }
                 }
-            }
-            if (res) {
-                res.send({result: result})
-            } else {
-                return {result: result}
-            }
-        });
+                if (res) {
+                    res.send({result: result})
+                } else {
+                    return {result: result}
+                }
+            });
+        }   
+    } catch (error) {
+        console.log(error)
+        res.send(error)
     }
 }
 
