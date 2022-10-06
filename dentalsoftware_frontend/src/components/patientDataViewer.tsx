@@ -31,7 +31,8 @@ export class PatientDataViewer extends React.Component<any, any> {
                     selectedPatientEmail: null,
                     selectedPatientNotes: null,
                     selectedLastBooking: null,
-                    selectedNextBooking: null
+                    selectedNextBooking: null,
+                    offset: 0
                 })
 
             })
@@ -95,6 +96,24 @@ export class PatientDataViewer extends React.Component<any, any> {
         })
     }
 
+    lowerOffset = () => {
+        if (this.state.offset >= 5) { 
+            this.setState({
+                offset: this.state.offset - 5
+            })
+            console.log(this.state.offset)
+        }
+    }
+
+    raiseOffset = () => {
+        if (this.state.offset <= this.state.patients.length) {
+            this.setState({
+                offset: this.state.offset + 5
+            })
+            console.log(this.state.offset)
+        }
+    }
+
     // Function that returns a component to be drawn, can have children components if the parent component supports it
     render() {
 
@@ -106,7 +125,7 @@ export class PatientDataViewer extends React.Component<any, any> {
         let patientListStrings = [];
 
         for (let i in patientList) {
-            patientListStrings.push(<Button style="flex: auto; color: 'black';" text={patientList[i].FirstName + " " + patientList[i].LastName} on={
+            patientListStrings.push(<Button id="button" text={patientList[i].FirstName + " " + patientList[i].LastName} on={
                     {
                         // Only trigger when left click is released
                         [WidgetEventTypes.MouseButtonRelease]: () => this.buttonHandler(Number(i)),
@@ -114,6 +133,12 @@ export class PatientDataViewer extends React.Component<any, any> {
                 }/>
             )
         }
+        let displayButtons = [];
+        for (let i = this.state.offset; i < this.state.offset + 5; i++) {
+            displayButtons.push(patientListStrings[i])
+        }
+
+        console.log(this.state.patients.length)
 
         const selectedPatientNHI = this.state.selectedPatientNHI;
         const selectedPatientName = this.state.selectedPatientName;
@@ -136,9 +161,11 @@ export class PatientDataViewer extends React.Component<any, any> {
                 <View style="flex: auto;">
                     <View style="flex: auto; flex-direction: 'row';">
                         <View style="flex: 1; background-color: 'grey';">
-                            <Text style={textStyle}>Selectable List of Patients: </Text>
+                            <Text id="titleCenterAlign" style={textStyle}>Patients</Text>
                             <View style="flex: auto;">
-                                {patientListStrings}
+                                <Button text="↑" enabled={this.state.offset != 0} on={{pressed: this.lowerOffset}}/>
+                                {displayButtons}
+                                <Button text="↓" enabled={this.state.offset + 5 < this.state.patients.length} on={{pressed: this.raiseOffset}}/>
                             </View>
                         </View>
     
