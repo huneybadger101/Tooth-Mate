@@ -64,11 +64,11 @@ export const style =
         background-color: #DDDDDD;
         border-width: 1px;
         border-style: solid;
-        border-radius: 2px;
+        
         width: 5.2%; 
         height: 5.2%; 
         color: 'black'; 
-        font-size: 20px;
+        font-size: 15px;
     }
     #buttonCalanderDate:hover {
         background-color: #FFFFFF;
@@ -76,14 +76,13 @@ export const style =
     #buttonCalanderDate:pressed {
         background-color: #BBBBBB;
     }
-    #buttonCalanderDateSelected {
-        background-color: #FFFFFF;
+    #buttonCalanderDateDisabled {
+        background-color: #7A7A7A;
         border-width: 1px;
         border-style: solid;
-        border-radius: 2px;
         width: 5.2%; 
         height: 5.2%; 
         color: 'black'; 
-        font-size: 20px;
+        font-size: 15px;
     }
 `
