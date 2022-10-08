@@ -1,3 +1,5 @@
+var i = 0;
+
 export const style = 
 `
     #titleCenterAlign {
@@ -64,11 +66,9 @@ export const style =
         background-color: #DDDDDD;
         border-width: 1px;
         border-style: solid;
-        
-        width: 5.2%; 
-        height: 5.2%; 
         color: 'black'; 
-        font-size: 15px;
+        width: 100px;
+        height: 100px;
     }
     #buttonCalanderDate:hover {
         background-color: #FFFFFF;
@@ -80,9 +80,8 @@ export const style =
         background-color: #7A7A7A;
         border-width: 1px;
         border-style: solid;
-        width: 5.2%; 
-        height: 5.2%; 
-        color: 'black'; 
-        font-size: 15px;
+        color: 'black';
+        width: 100px;
+        height: 100px;
     }
 `

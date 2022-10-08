@@ -35,6 +35,8 @@ export class Calendar extends React.Component<any, any> {
         currentBookingSelected: "",
         editBookingButton: false,
         bookingsAlert: null,
+        calendarDisabledButtons: false,
+        calendarDisabledButtonText: "",
 
         screenWidth: 0,
         screenHeight: 0,
@@ -150,6 +152,7 @@ export class Calendar extends React.Component<any, any> {
               //Sets the weekday start for each month using a function from another file (calendayHelper.tsx)
               this.setState({weekDaySelected: getWeekdayStart(this.state.monthSelected, this.state.year)});
               this.setState({monthDayCount: getMonthDayCount(this.state.monthSelected, this.state.year)}); 
+              this.setState({calendarDisabledButtons: false, calendarDisabledButtonText: ""});
           }
         }
         
@@ -169,6 +172,7 @@ export class Calendar extends React.Component<any, any> {
               //Sets the weekday start for each month using a function from another file (calendayHelper.tsx)
               this.setState({weekDaySelected: getWeekdayStart(this.state.monthSelected, this.state.year)});
               this.setState({monthDayCount: getMonthDayCount(this.state.monthSelected, this.state.year)});
+              this.setState({calendarDisabledButtons: false, calendarDisabledButtonText: ""});
           }
         }
 
@@ -184,7 +188,7 @@ export class Calendar extends React.Component<any, any> {
             calendar1.push( 
                 <Button text={ buttonName_0 }
                 id={"buttonCalanderDate"}
-                style={this.state.calendarButtonStyle}
+                //style={this.state.calendarButtonStyle}
                 enabled={disableCalendarButton(buttonName_0, this.state.daySelected, this.state.monthSelected, this.state.currentMonthSelected)}
                 on={{clicked: () => {
                   this.setState(
@@ -202,8 +206,9 @@ export class Calendar extends React.Component<any, any> {
             calendar1.push( 
               <Button
                 id={"buttonCalanderDateDisabled"}
-                style={this.state.calendarButtonStyle}
-                enabled={false}
+                //style={this.state.calendarButtonStyle}
+                enabled={this.state.calendarDisabledButtons}
+                text={this.state.calendarDisabledButtonText}
                 />
               )
           }
@@ -212,7 +217,7 @@ export class Calendar extends React.Component<any, any> {
           calendar2.push( 
               <Button text={ buttonName_1 } 
               id={"buttonCalanderDate"}
-              style={this.state.calendarButtonStyle}
+              //style={this.state.calendarButtonStyle}
               enabled={disableCalendarButton(buttonName_1, this.state.daySelected, this.state.monthSelected, this.state.currentMonthSelected)} 
               on={{clicked: () => this.setState(
                 {daySelected: buttonName_1,
@@ -228,7 +233,7 @@ export class Calendar extends React.Component<any, any> {
           calendar3.push( 
               <Button text={ buttonName_2 } 
               id={"buttonCalanderDate"}
-              style={this.state.calendarButtonStyle}
+              //style={this.state.calendarButtonStyle}
               enabled={disableCalendarButton(buttonName_2, this.state.daySelected, this.state.monthSelected, this.state.currentMonthSelected)} 
               on={{clicked: () => this.setState(
                 {daySelected: buttonName_2,
@@ -245,7 +250,7 @@ export class Calendar extends React.Component<any, any> {
             calendar4.push( 
                 <Button text={ buttonName_3 } 
                 id={"buttonCalanderDate"}
-                style={this.state.calendarButtonStyle}
+                //style={this.state.calendarButtonStyle}
                 enabled={disableCalendarButton(buttonName_3, this.state.daySelected, this.state.monthSelected, this.state.currentMonthSelected)} 
                 on={{clicked: () => this.setState(
                   {daySelected: buttonName_3,
@@ -263,7 +268,7 @@ export class Calendar extends React.Component<any, any> {
             calendar5.push( 
                 <Button text={ buttonName_4 } 
                 id={"buttonCalanderDate"}
-                style={this.state.calendarButtonStyle}
+                //style={this.state.calendarButtonStyle}
                 enabled={disableCalendarButton(buttonName_4, this.state.daySelected, this.state.monthSelected, this.state.currentMonthSelected)} 
                 on={{clicked: () => this.setState(
                   {daySelected: buttonName_4, 
@@ -280,8 +285,9 @@ export class Calendar extends React.Component<any, any> {
             calendar5.push( 
               <Button
                 id={"buttonCalanderDateDisabled"}
-                style={this.state.calendarButtonStyle}
-                enabled={false}
+                //style={this.state.calendarButtonStyle}
+                enabled={this.state.calendarDisabledButtons}
+                text={this.state.calendarDisabledButtonText}
                 />
               )
           }
@@ -291,7 +297,7 @@ export class Calendar extends React.Component<any, any> {
             calendar6.push( 
                 <Button text={ buttonName_5 } 
                 id={"buttonCalanderDate"}
-                style={this.state.calendarButtonStyle}
+                //style={this.state.calendarButtonStyle}
                 enabled={disableCalendarButton(buttonName_5, this.state.daySelected, this.state.monthSelected, this.state.currentMonthSelected)}
                 on={{clicked: () => this.setState(
                   {daySelected: buttonName_5,
@@ -308,8 +314,9 @@ export class Calendar extends React.Component<any, any> {
             calendar6.push(
               <Button
                 id={"buttonCalanderDateDisabled"}
-                style={this.state.calendarButtonStyle}
-                enabled={false}
+                //style={this.state.calendarButtonStyle}
+                enabled={this.state.calendarDisabledButtons}
+                text={this.state.calendarDisabledButtonText}
                 />
               )
           }
