@@ -47,9 +47,9 @@ export class Calendar extends React.Component<any, any> {
         calendarButtonStyle: "",
 
         //Variables that will be used for styling the buttons above the calendar
-        buttonLeftAndRightSize: 0,
-        dateDisplaySize: 0,
-        weekdayTextDisplaySize: 0
+        buttonLeftAndRightStyle: 0,
+        dateDisplayStyle: 0,
+        weekdayTextDisplayStyle: 0
     }
   }
 
@@ -68,14 +68,8 @@ export class Calendar extends React.Component<any, any> {
             screenHeight: result.height,
 
             calendarButtonSizeX: Math.round((result.width * 5.20833333) / 100),
-            calendarButtonSizeY: Math.round((result.height * 9.25925926) / 100),
+            calendarButtonSizeY: Math.round((result.height * 9.25925926) / 100)
           });
-
-          //Setting the states for the actual styling strings...
-          this.setState({
-            calendarButtonStyle: "height:" + this.state.calendarButtonSizeY + "px; width: " + this.state.calendarButtonSizeX + "px;"
-          });
-
         });
       }
 
@@ -150,9 +144,12 @@ export class Calendar extends React.Component<any, any> {
               }
 
               //Sets the weekday start for each month using a function from another file (calendayHelper.tsx)
-              this.setState({weekDaySelected: getWeekdayStart(this.state.monthSelected, this.state.year)});
-              this.setState({monthDayCount: getMonthDayCount(this.state.monthSelected, this.state.year)}); 
-              this.setState({calendarDisabledButtons: false, calendarDisabledButtonText: ""});
+              this.setState({
+                weekDaySelected: getWeekdayStart(this.state.monthSelected, this.state.year),
+                monthDayCount: getMonthDayCount(this.state.monthSelected, this.state.year),
+                calendarDisabledButtons: false, 
+                calendarDisabledButtonText: ""
+              });
           }
         }
         
@@ -170,9 +167,12 @@ export class Calendar extends React.Component<any, any> {
               }
 
               //Sets the weekday start for each month using a function from another file (calendayHelper.tsx)
-              this.setState({weekDaySelected: getWeekdayStart(this.state.monthSelected, this.state.year)});
-              this.setState({monthDayCount: getMonthDayCount(this.state.monthSelected, this.state.year)});
-              this.setState({calendarDisabledButtons: false, calendarDisabledButtonText: ""});
+              this.setState({
+                weekDaySelected: getWeekdayStart(this.state.monthSelected, this.state.year),
+                monthDayCount: getMonthDayCount(this.state.monthSelected, this.state.year),
+                calendarDisabledButtons: false, 
+                calendarDisabledButtonText: ""
+              });
           }
         }
 
@@ -188,7 +188,6 @@ export class Calendar extends React.Component<any, any> {
             calendar1.push( 
                 <Button text={ buttonName_0 }
                 id={"buttonCalanderDate"}
-                //style={this.state.calendarButtonStyle}
                 enabled={disableCalendarButton(buttonName_0, this.state.daySelected, this.state.monthSelected, this.state.currentMonthSelected)}
                 on={{clicked: () => {
                   this.setState(
@@ -206,7 +205,6 @@ export class Calendar extends React.Component<any, any> {
             calendar1.push( 
               <Button
                 id={"buttonCalanderDateDisabled"}
-                //style={this.state.calendarButtonStyle}
                 enabled={this.state.calendarDisabledButtons}
                 text={this.state.calendarDisabledButtonText}
                 />
@@ -217,7 +215,6 @@ export class Calendar extends React.Component<any, any> {
           calendar2.push( 
               <Button text={ buttonName_1 } 
               id={"buttonCalanderDate"}
-              //style={this.state.calendarButtonStyle}
               enabled={disableCalendarButton(buttonName_1, this.state.daySelected, this.state.monthSelected, this.state.currentMonthSelected)} 
               on={{clicked: () => this.setState(
                 {daySelected: buttonName_1,
@@ -233,7 +230,6 @@ export class Calendar extends React.Component<any, any> {
           calendar3.push( 
               <Button text={ buttonName_2 } 
               id={"buttonCalanderDate"}
-              //style={this.state.calendarButtonStyle}
               enabled={disableCalendarButton(buttonName_2, this.state.daySelected, this.state.monthSelected, this.state.currentMonthSelected)} 
               on={{clicked: () => this.setState(
                 {daySelected: buttonName_2,
@@ -250,7 +246,6 @@ export class Calendar extends React.Component<any, any> {
             calendar4.push( 
                 <Button text={ buttonName_3 } 
                 id={"buttonCalanderDate"}
-                //style={this.state.calendarButtonStyle}
                 enabled={disableCalendarButton(buttonName_3, this.state.daySelected, this.state.monthSelected, this.state.currentMonthSelected)} 
                 on={{clicked: () => this.setState(
                   {daySelected: buttonName_3,
@@ -322,7 +317,6 @@ export class Calendar extends React.Component<any, any> {
           }
         }
 
-
         const containerStyle = `
             flex-grow: 0 0 0;
             background: 'white';
@@ -331,13 +325,6 @@ export class Calendar extends React.Component<any, any> {
         const containerStyle2 = `
             flex-grow: 2 2 2;
             
-            flex-direction: 'column';
-            background: 'white';
-        `;
-
-        const containerStyle3 = `
-            flex-shrink: 2;
-            bottom: 10px;
             flex-direction: 'column';
             background: 'white';
         `;
@@ -354,19 +341,19 @@ export class Calendar extends React.Component<any, any> {
               <View style={containerStyle}>
 
                 <View style="flex: 0; flex-direction: 'row';">
-                    <Button style="width: 200px;" text={"<<"} on={buttonHandlerDecreaseMonth}/>
-                        <Text style="border: 1px solid black; width: 300px;">{this.state.month[this.state.monthSelected] + ", " + this.state.year}</Text>
-                    <Button style="width: 200px;" text={">>"} on={buttonHandlerIncreaseMonth}/>
+                    <Button id={"monthChangeButtonsCalander"} text={"<<"} on={buttonHandlerDecreaseMonth}/>
+                        <Text id={"monthSelectedCalander"}>{this.state.month[this.state.monthSelected] + ", " + this.state.year}</Text>
+                    <Button id={"monthChangeButtonsCalander"} text={">>"} on={buttonHandlerIncreaseMonth}/>
                 </View>
 
                 <View style="flex: 0; flex-direction: 'row';">
-                    <Text style="flex: 0; border: 1px solid black; width: 100px;">{this.state.day[0]}</Text>
-                    <Text style="flex: 0; border: 1px solid black; width: 100px;">{this.state.day[1]}</Text>
-                    <Text style="flex: 0; border: 1px solid black; width: 100px;">{this.state.day[2]}</Text>
-                    <Text style="flex: 0; border: 1px solid black; width: 100px;">{this.state.day[3]}</Text>
-                    <Text style="flex: 0; border: 1px solid black; width: 100px;">{this.state.day[4]}</Text>
-                    <Text style="flex: 0; border: 1px solid black; width: 100px;">{this.state.day[5]}</Text>
-                    <Text style="flex: 0; border: 1px solid black; width: 100px;">{this.state.day[6]}</Text>
+                    <Text id={"weekdaysCalander"}>{this.state.day[0]}</Text>
+                    <Text id={"weekdaysCalander"}>{this.state.day[1]}</Text>
+                    <Text id={"weekdaysCalander"}>{this.state.day[2]}</Text>
+                    <Text id={"weekdaysCalander"}>{this.state.day[3]}</Text>
+                    <Text id={"weekdaysCalander"}>{this.state.day[4]}</Text>
+                    <Text id={"weekdaysCalander"}>{this.state.day[5]}</Text>
+                    <Text id={"weekdaysCalander"}>{this.state.day[6]}</Text>
                 </View>
 
                 <View style="flex: 0; flex-direction: 'row';">
@@ -390,7 +377,6 @@ export class Calendar extends React.Component<any, any> {
 
               </View>
 
-
               {/**/}
               <View style={containerStyle2}>
 
@@ -404,18 +390,6 @@ export class Calendar extends React.Component<any, any> {
                 
 
               </View>
-            </View>
-
-
-            {/**/}
-            <View style={containerStyle3}>
-
-                {/* <ScrollArea style={"flex-grow: 1;"}>
-                <View style={"flex-grow: 1; width: 500px;"}>
-                  {bookingList}
-                </View>
-                </ScrollArea> */}
-
             </View>
             
             {this.state.bookingsAlert}

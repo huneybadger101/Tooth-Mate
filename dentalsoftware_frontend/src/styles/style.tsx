@@ -1,4 +1,34 @@
-var i = 0;
+
+
+
+
+export const screenResolutionX = () =>{
+
+    return 1920;
+}
+
+export const screenResolutionY = () =>{
+
+    //return 1080;
+
+    var test:any;
+    
+    var resolution = require("screen-resolution");
+    resolution.get(false)
+    .then((result: any) => {
+
+        //Setting states for the visual calculations
+        test = result.height;
+
+        return test;
+    });
+
+    //return test;
+      
+}
+
+
+
 
 export const style = 
 `
@@ -61,14 +91,15 @@ export const style =
         font-size: 18px;
         color: black;
     }
-
     #buttonCalanderDate {
         background-color: #DDDDDD;
         border-width: 1px;
         border-style: solid;
         color: 'black'; 
-        width: 100px;
-        height: 100px;
+        border-radius: 2px;
+        margin: 1px;
+        height: ` + Math.round((screenResolutionX() * 5.20833333) / 100) + ` px;
+        width: ` + Math.round((screenResolutionY() * 9.25925926) / 100) + ` px;
     }
     #buttonCalanderDate:hover {
         background-color: #FFFFFF;
@@ -81,7 +112,48 @@ export const style =
         border-width: 1px;
         border-style: solid;
         color: 'black';
-        width: 100px;
-        height: 100px;
+        border-radius: 2px;
+        margin: 1px;
+        height: ` + Math.round((screenResolutionX() * 5.20833333) / 100) + ` px;
+        width: ` + Math.round((screenResolutionY() * 9.25925926) / 100) + ` px;
+    }
+    #weekdaysCalander {
+        background-color: #FFFFFF;
+        border-width: 1px;
+        border-style: solid;
+        color: 'black';
+        font-size: 15px;
+        border-radius: 2px;
+        margin: 1px;
+        height: ` + (Math.round((screenResolutionX() * 5.20833333) / 100) / 4) + ` px;
+        width: ` + Math.round((screenResolutionY() * 9.25925926) / 100) + ` px;
+    }
+    #monthSelectedCalander {
+        background-color: #FFFFFF;
+        border-width: 1px;
+        border-style: solid;
+        color: 'black';
+        font-size: 15px;
+        border-radius: 2px;
+        margin: 1px;
+        height: ` + (Math.round((screenResolutionX() * 5.20833333) / 100) / 4) + ` px;
+        width: ` + ((Math.round((screenResolutionY() * 9.25925926) / 100) * 3) + 4) + ` px;
+    }
+    #monthChangeButtonsCalander {
+        background-color: #DDDDDD;
+        border-width: 1px;
+        border-style: solid;
+        color: 'black';
+        font-size: 15px;
+        border-radius: 2px;
+        margin: 1px;
+        height: ` + (Math.round((screenResolutionX() * 5.20833333) / 100) / 4) + ` px;
+        width: ` + ((Math.round((screenResolutionY() * 9.25925926) / 100) * 2) + 2) + ` px;
+    }
+    #monthChangeButtonsCalander:hover {
+        background-color: #FFFFFF;
+    }
+    #monthChangeButtonsCalander:pressed {
+        background-color: #BBBBBB;
     }
 `

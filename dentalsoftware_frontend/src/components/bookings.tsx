@@ -824,7 +824,7 @@ export class Bookings extends React.Component<any, any> {
 
         const containerStyle2 = `
             flex-grow: auto 0 0;
-            background: 'white';
+            background: 'red';
             border: 0px solid black;
             margin: 0px;
             height: '100%';
