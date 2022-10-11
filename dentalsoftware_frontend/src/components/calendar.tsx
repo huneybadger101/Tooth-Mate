@@ -1,4 +1,4 @@
-import { Text, View, Button } from "@nodegui/react-nodegui";
+import { Text, View, Button, Window } from "@nodegui/react-nodegui";
 import React from "react";
 import { getWeekdayStart } from "./Calendarhelpers/calendarHelper";
 import { getMonthDayCount } from "./Calendarhelpers/calendarMonthDayCount";
@@ -6,6 +6,7 @@ import { getWeekdaySelected } from "./Calendarhelpers/calendarDisplaySelectedDat
 import Bookings from "./bookings";
 import { disableCalendarButton } from "./Calendarhelpers/calendarDayButtonDisable";
 import Alert from "./alert";
+import { style } from "../styles/style";
 
 export class Calendar extends React.Component<any, any> {
 
@@ -38,54 +39,10 @@ export class Calendar extends React.Component<any, any> {
         calendarDisabledButtons: false,
         calendarDisabledButtonText: "",
 
-        screenWidth: 0,
-        screenHeight: 0,
-
-        //Variables that will be used for styling the calendar buttons
-        calendarButtonSizeX: 0,
-        calendarButtonSizeY: 0,
-        calendarButtonStyle: "",
-
-        //Variables that will be used for styling the buttons above the calendar
-        buttonLeftAndRightStyle: 0,
-        dateDisplayStyle: 0,
-        weekdayTextDisplayStyle: 0
     }
   }
 
     render() {
-
-      //Will check if the screen resolution has been set. If not, it will set the screen resolution variables for use
-      if (this.state.screenWidth == 0)
-      {
-        var resolution = require("screen-resolution");
-        resolution.get(false)
-        .then((result: any) => {
-
-          //Setting states for the visual calculations
-          this.setState({
-            screenWidth: result.width,
-            screenHeight: result.height,
-
-            calendarButtonSizeX: Math.round((result.width * 5.20833333) / 100),
-            calendarButtonSizeY: Math.round((result.height * 9.25925926) / 100)
-          });
-        });
-      }
-
-      //Will get the screen resolution and check if it isk different from the variables. If it is, it means the resolution was changed and will changed the components accordingly
-      var resolution = require("screen-resolution");
-        resolution.get(false)
-        .then((result: any) => {
-
-          if (this.state.screenWidth != result.width || this.state.screenHeight != result.height)
-          {
-              this.setState({
-                screenWidth: 0,
-                screenHeight: 0
-              });
-          }
-        });
 
       //Sets the day values in a state based array
       this.state.day[0] = "Monday";
@@ -381,7 +338,9 @@ export class Calendar extends React.Component<any, any> {
               <View style={containerStyle2}>
 
                 {/*Will call the bookings component to be diplayed on the calendar page and send several variables for use in the bookings page*/}
-                <Bookings data={
+                
+                <Bookings 
+                data={
                   this.state.daySelected + "." + 
                   (this.state.currentMonthSelected + 1) + "." +
                   this.state.currentYearSelected + "." +

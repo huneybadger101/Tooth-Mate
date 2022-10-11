@@ -1,4 +1,4 @@
-import { Text, View, Button, LineEdit, ComboBox, SpinBox } from "@nodegui/react-nodegui";
+import { Text, View, Button, LineEdit, ComboBox, SpinBox, Window } from "@nodegui/react-nodegui";
 import React from "react";
 import { timeAMorPM, timeHourRange, timeMinuteRange } from "./Calendarhelpers/comboBoxVariables";
 import { createBooking } from "./Calendarhelpers/createBooking";
@@ -11,6 +11,8 @@ import { BookingPageDentalChart } from "./Calendarhelpers/bookingDentalChart";
 import DentalChart from "./dentalChart";
 import PerioChart from "./perioChart";
 import { toothNames } from "./Calendarhelpers/comboBoxVariables";
+import { style } from "../styles/style";
+import Calendar from "./calendar";
 
 const { MongoClient, ServerApiVersion } = require('mongodb');
 
@@ -30,7 +32,7 @@ export class Bookings extends React.Component<any, any> {
             name: "",
             dentist: "",
             notes: "",
-            confirmMessage: "",
+            confirmMessage: "Test text",
             currentBookingSelected: "",
             editBookingButton: false,
             bookingCreateOrEditDisplay: 0,
@@ -89,7 +91,9 @@ export class Bookings extends React.Component<any, any> {
             bookingDentalChartString: [],
 
             ticketsBeingDisplayed: 0,
-            bookingsBeingDisplayed: 0
+            bookingsBeingDisplayed: 0,
+
+            testVar: false
         }
 
         //Gets all of the tickets currently created
@@ -191,6 +195,8 @@ export class Bookings extends React.Component<any, any> {
 
     // Function that returns a component to be drawn, can have children components if the parent component supports it
     render() {
+
+        
 
         var dentalChartTotal: any;
 
@@ -824,7 +830,7 @@ export class Bookings extends React.Component<any, any> {
 
         const containerStyle2 = `
             flex-grow: auto 0 0;
-            background: 'red';
+            background: 'white';
             border: 0px solid black;
             margin: 0px;
             height: '100%';
@@ -942,11 +948,11 @@ export class Bookings extends React.Component<any, any> {
             let ticketSelected = i.toString();
 
             ticketList[i] = 
-            <View style="margin: 3px; flex-direction: 'row';">
+            <View style="flex-direction: 'row';">
 
-                <Text style={"flex: 4; border: 1px solid black;"}>{this.state.ticketListTextDisplayedArray[i]}</Text>
+                <Text id={"ticketText"}>{this.state.ticketListTextDisplayedArray[i]}</Text>
 
-                <Button style={"flex: 1;"} text={"Add"} id={ticketSelected} on={{
+                <Button id={"ticketAddAndDeleteButton"} text={"Add"} on={{
 
                     clicked: async () => {
 
@@ -1039,21 +1045,30 @@ export class Bookings extends React.Component<any, any> {
                     }
                 }} />
 
-                <Button style={"flex: 1;"} text={"Delete"} id={ticketSelected} on={deleteTicket} />
+                <Button id={"ticketAddAndDeleteButton"} text={"Delete"} on={{
+
+                    clicked: async () => {
+                        console.log("Deleting ticket number: " + ticketSelected + 1);
+                    }
+                }}/>
 
             </View>
         }
+
+        
+
+        
+        
 
         //Will display the ticket list
         pageDiplay[2] = (
             <View style="flex-direction: 'row';">
 
                 <View style={containerStyle2}>
-
                     <View style="flex-direction: 'row';">
-                        <Button text="<<" style="flex: 1;" on={ticketAndBookingListLeft}></Button>
+                        <Button id={"bookingChangePageButton"} text={"<<"} on={ticketAndBookingListLeft}></Button>
                         <Button text="View bookings" style="flex: 4;" on={toggleBookingsAndTickets}></Button>
-                        <Button text=">>" style="flex: 1;" on={ticketAndBookingListRight}></Button>
+                        <Button id={"bookingChangePageButton"} text={">>"} on={ticketAndBookingListRight}></Button>
                     </View>
 
                     
@@ -1071,6 +1086,7 @@ export class Bookings extends React.Component<any, any> {
 
         //Will display the page used to create or edit bookings
         pageDiplay[1] = (
+            
             <View style="flex-direction: 'row';">
             <View style={containerStyle}>
 
@@ -1138,9 +1154,9 @@ export class Bookings extends React.Component<any, any> {
                 <View style={containerStyle2}>
 
                     <View style="flex-direction: 'row';">
-                        <Button text="<<" style="flex: 1;" on={ticketAndBookingListLeft}></Button>
-                        <Button text="View bookings" style="flex: 4;" on={toggleBookingsAndTickets}></Button>
-                        <Button text=">>" style="flex: 1;" on={ticketAndBookingListRight}></Button>
+                        <Button id={"bookingChangePageButton"} text={"<<"} on={ticketAndBookingListLeft}></Button>
+                        <Button id={"toggleBookingAndTicket"} text="View bookings" style="flex: 4;" on={toggleBookingsAndTickets}></Button>
+                        <Button id={"bookingChangePageButton"} text={">>"} on={ticketAndBookingListRight}></Button>
                     </View>
 
                     <Text style="border: 1px solid black; padding: 10px;">{"Date selected: " + dateFull}</Text>
@@ -1160,10 +1176,10 @@ export class Bookings extends React.Component<any, any> {
         if (this.props.accountHelper.accountAdmin) {
             bookingCreateButton.push(
                 <View>
-                    <Button text = {this.state.bookingOrCancelButtonText} style={""} on={buttonHandlerBookingOrCancel} visible={true}/>
+                    <Button id={"createBookingButton"} text={this.state.bookingOrCancelButtonText} on={buttonHandlerBookingOrCancel} visible={true}/>
                 </View>
             );
-        }
+        }      
 
         //Returs the booking page section to be displayed in the calendar
         //Note that the majority of the section is created above

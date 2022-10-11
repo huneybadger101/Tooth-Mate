@@ -1,36 +1,4 @@
-
-
-
-
-export const screenResolutionX = () =>{
-
-    return 1920;
-}
-
-export const screenResolutionY = () =>{
-
-    //return 1080;
-
-    var test:any;
-    
-    var resolution = require("screen-resolution");
-    resolution.get(false)
-    .then((result: any) => {
-
-        //Setting states for the visual calculations
-        test = result.height;
-
-        return test;
-    });
-
-    //return test;
-      
-}
-
-
-
-
-export const style = 
+export const style = (width:any, height:any) =>
 `
     #titleCenterAlign {
         font-size: 22px;
@@ -98,8 +66,9 @@ export const style =
         color: 'black'; 
         border-radius: 2px;
         margin: 1px;
-        height: ` + Math.round((screenResolutionX() * 5.20833333) / 100) + ` px;
-        width: ` + Math.round((screenResolutionY() * 9.25925926) / 100) + ` px;
+        height: ` + Math.round((width * 5.20833333) / 100) + ` px;
+        width: ` + Math.round((height * 9.25925926) / 100) + ` px;
+        outline: 'none';
     }
     #buttonCalanderDate:hover {
         background-color: #FFFFFF;
@@ -114,8 +83,9 @@ export const style =
         color: 'black';
         border-radius: 2px;
         margin: 1px;
-        height: ` + Math.round((screenResolutionX() * 5.20833333) / 100) + ` px;
-        width: ` + Math.round((screenResolutionY() * 9.25925926) / 100) + ` px;
+        height: ` + Math.round((width * 5.20833333) / 100) + ` px;
+        width: ` + Math.round((height * 9.25925926) / 100) + ` px;
+        outline: 'none';
     }
     #weekdaysCalander {
         background-color: #FFFFFF;
@@ -125,8 +95,9 @@ export const style =
         font-size: 15px;
         border-radius: 2px;
         margin: 1px;
-        height: ` + (Math.round((screenResolutionX() * 5.20833333) / 100) / 4) + ` px;
-        width: ` + Math.round((screenResolutionY() * 9.25925926) / 100) + ` px;
+        height: ` + (Math.round((width * 5.20833333) / 100) / 4) + ` px;
+        width: ` + Math.round((height * 9.25925926) / 100) + ` px;
+        outline: 'none';
     }
     #monthSelectedCalander {
         background-color: #FFFFFF;
@@ -136,8 +107,9 @@ export const style =
         font-size: 15px;
         border-radius: 2px;
         margin: 1px;
-        height: ` + (Math.round((screenResolutionX() * 5.20833333) / 100) / 4) + ` px;
-        width: ` + ((Math.round((screenResolutionY() * 9.25925926) / 100) * 3) + 4) + ` px;
+        height: ` + (Math.round((width * 5.20833333) / 100) / 4) + ` px;
+        width: ` + ((Math.round((height * 9.25925926) / 100) * 3) + 4) + ` px;
+        outline: 'none';
     }
     #monthChangeButtonsCalander {
         background-color: #DDDDDD;
@@ -147,8 +119,9 @@ export const style =
         font-size: 15px;
         border-radius: 2px;
         margin: 1px;
-        height: ` + (Math.round((screenResolutionX() * 5.20833333) / 100) / 4) + ` px;
-        width: ` + ((Math.round((screenResolutionY() * 9.25925926) / 100) * 2) + 2) + ` px;
+        height: ` + (Math.round((width * 5.20833333) / 100) / 4) + ` px;
+        width: ` + ((Math.round((height * 9.25925926) / 100) * 2) + 2) + ` px;
+        outline: 'none';
     }
     #monthChangeButtonsCalander:hover {
         background-color: #FFFFFF;
@@ -156,4 +129,91 @@ export const style =
     #monthChangeButtonsCalander:pressed {
         background-color: #BBBBBB;
     }
+    #bookingChangePageButton {
+        background-color: #DDDDDD;
+        border-width: 1px;
+        border-style: solid;
+        color: 'black'; 
+        border-radius: 2px;
+        margin: 1px;
+        height: ` + (Math.round((width * 5.20833333) / 100) / 4) + ` px;
+        flex: 1;
+        flex-direction: 'row';
+        outline: 'none';
+    }
+    #bookingChangePageButton:hover {
+        background-color: #FFFFFF;
+    }
+    #bookingChangePageButton:pressed {
+        background-color: #BBBBBB;
+    }
+
+    #toggleBookingAndTicket {
+        background-color: #DDDDDD;
+        border-width: 1px;
+        border-style: solid;
+        color: 'black'; 
+        border-radius: 2px;
+        margin: 1px;
+        height: ` + (Math.round((width * 5.20833333) / 100) / 4) + ` px;
+        flex: 4;
+        flex-direction: 'row';
+        outline: 'none';
+    }
+    #toggleBookingAndTicket:hover {
+        background-color: #FFFFFF;
+    }
+    #toggleBookingAndTicket:pressed {
+        background-color: #BBBBBB;
+    }
+
+    #createBookingButton {
+        background-color: #DDDDDD;
+        border-width: 1px;
+        border-style: solid;
+        color: 'black'; 
+        border-radius: 2px;
+        margin: 1px;
+        height: ` + (Math.round((width * 5.20833333) / 100) / 4) + ` px;
+        outline: 'none';
+    }
+    #createBookingButton:hover {
+        background-color: #FFFFFF;
+    }
+    #createBookingButton:pressed {
+        background-color: #BBBBBB;
+    }
+    #ticketText {
+        background-color: #FFFFFF;
+        border-width: 1px;
+        border-style: solid;
+        color: 'black';
+        font-size: 15px;
+        border-radius: 2px;
+        margin: 1px;
+        height: ` + (Math.round((width * 5.20833333) / 100)) + ` px;
+        flex: 6;
+        flex-direction: 'row';
+        outline: 'none';
+        margin: 1px;
+    }
+    #ticketAddAndDeleteButton {
+        background-color: #DDDDDD;
+        border-width: 1px;
+        border-style: solid;
+        color: 'black'; 
+        border-radius: 2px;
+        margin: 1px;
+        height: ` + (Math.round((width * 5.20833333) / 100)) + ` px;
+        flex: 2;
+        flex-direction: 'row';
+        outline: 'none';
+    }
+    #ticketAddAndDeleteButton:hover {
+        background-color: #FFFFFF;
+    }
+    #ticketAddAndDeleteButton:pressed {
+        background-color: #BBBBBB;
+    }
+    
 `
