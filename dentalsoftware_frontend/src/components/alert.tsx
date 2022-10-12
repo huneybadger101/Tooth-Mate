@@ -1,5 +1,5 @@
 import { Text, View, Button } from "@nodegui/react-nodegui";
-import {  WidgetEventTypes } from "@nodegui/nodegui";
+import { WidgetEventTypes } from "@nodegui/nodegui";
 import React from "react";
 
 export class Alert extends React.Component<any, any> {
@@ -34,16 +34,16 @@ export class Alert extends React.Component<any, any> {
     // Function that returns a component to be drawn, can have children components if the parent component supports it
     render() {
 
-        const dismissButton = <Button text="Dismiss" on={
+        const dismissButton = <Button id="button" style="border: 1px black;" text="Dismiss" on={
             {
                 // Only trigger when left click is released
                 [WidgetEventTypes.MouseButtonRelease]: () => this.dismissButtonHandler(),
             }
         }/>
 
-        let mainView: any = <View style={"position: 'absolute'; justify-content: 'space-evenly'; align-items: 'center'; top: 20; right: 20; " + this.state.style}>
-                                <Text style="font-size: 20px;">{this.state.title}</Text>
-                                <Text>{this.state.message}</Text>
+        let mainView: any = <View id="alert" style={this.state.style}>
+                                <Text style={"font-weight: 'bold'; font-size: 24px;" + (this.props.titleStyle != undefined ? this.props.titleStyle : "")}>{this.state.title}</Text>
+                                <Text style={"font-weight: 'bold'; font-size: 12px;" +(this.props.textStyle != undefined ? this.props.textStyle : "")}>{this.state.message}</Text>
                                 {(this.state.subView != null ? this.state.subView : null)}
                                 {dismissButton}
                             </View>

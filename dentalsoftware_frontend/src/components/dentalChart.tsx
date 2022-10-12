@@ -52,7 +52,7 @@ export class DentalChart extends React.Component<any, any> {
                         for (let i = 0; i < conditionData['ExistingConditionsNames'].length; i++) {
                             message += conditionData['ExistingConditionsNames'][i] + " - " + conditionData['ExistingConditionsNotes'][i] + "\n\n"
                         }
-                        alert = <Alert title={"Patient Pre-Existing Conditions"} message={message} style={"background-color: 'orange'; width: 600px; height: 400px;"} dismissAlert={this.alertDismissController}/>
+                        alert = <Alert title={"Patient Pre-Existing Conditions"} message={message} style={"background-color: 'orange';"} dismissAlert={this.alertDismissController}/>
                     }
                     this.setState({
                         patient: resPatientsByID.data.result['patient'][0],

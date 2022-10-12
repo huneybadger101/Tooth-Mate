@@ -18,7 +18,9 @@ class App extends React.Component<any, any> {
     super(props);
 
     this.state = {
-      windows: null
+      windows: null,
+      screenWidth: 0,
+      screenHeight: 0
     }
     
     accountHelper.accountName = "";
@@ -27,6 +29,14 @@ class App extends React.Component<any, any> {
 
     resolution.get(false)
     .then((result: any) => {
+
+      if (this.state.screenWidth == 0)
+      {
+          this.setState({
+            screenWidth: result.width,
+            screenHeight: result.height
+          });
+      }
 
       let screens = [];
       let names = [];
@@ -40,7 +50,7 @@ class App extends React.Component<any, any> {
         windowTitle="ToothMate Dental Software"
         minSize={minSize}
         size={maxSize}
-        styleSheet={style}
+        styleSheet={style(this.state.screenWidth, this.state.screenHeight)}
         >
           <View style={containerStyle}>
               <TabContainer names={names} createNewWindow={this.createNewWindow} createNewBlankWindow={this.createNewBlankWindow} accountHelper={accountHelper}>
@@ -67,7 +77,7 @@ class App extends React.Component<any, any> {
       <Window
         windowTitle="ToothMate Dental Software"
         minSize={minSize}
-        styleSheet={style}
+        styleSheet={style(this.state.screenWidth, this.state.screenHeight)}
       >
         <View style={containerStyle}>
           <TabContainer names={nameArray} createNewWindow={this.createNewWindow} createNewBlankWindow={this.createNewBlankWindow} accountHelper={accountHelper}>
@@ -89,7 +99,7 @@ class App extends React.Component<any, any> {
       <Window
         windowTitle="ToothMate Dental Software"
         minSize={minSize}
-        styleSheet={style}
+        styleSheet={style(this.state.screenWidth, this.state.screenHeight)}
       >
         <View style={containerStyle}>
             {view}

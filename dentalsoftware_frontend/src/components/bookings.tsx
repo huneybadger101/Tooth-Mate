@@ -475,11 +475,11 @@ export class Bookings extends React.Component<any, any> {
             })
             .then((res) => {
                 console.log(res)
-                this.props.callback(<Alert title={"Success"} message={"Deleted booking from database!"} style={"background-color: 'green'; width: 300px; height: 100px;"}></Alert>)
+                this.props.callback(<Alert title={"Success"} message={"Deleted booking from database!"} style={"background-color: 'green';"}></Alert>)
             })
             .catch((err) => {
                 console.log(err)
-                this.props.callback(<Alert title={"Error"} message={err} style={"background-color: 'red'; width: 600px; height: 400px;"}></Alert>)
+                this.props.callback(<Alert title={"Error"} message={err} style={"background-color: 'red';"}></Alert>)
             });
 
         }
@@ -527,7 +527,7 @@ export class Bookings extends React.Component<any, any> {
             client.connect((err:any) => {
                 client.db("myFirstDatabase").collection("transferredBookings").find({}).toArray((err:any, result:any) => {
                     if (err) {
-                        this.props.callback(<Alert title={"Error"} message={"Failed to get entries from mobile app's database!"} style={"background-color: 'red'; width: 400px; height: 200px;"}></Alert>)
+                        this.props.callback(<Alert title={"Error"} message={"Failed to get entries from mobile app's database!"} style={"background-color: 'red';"}></Alert>)
                         client.close();
                         return;
                     }
@@ -540,15 +540,15 @@ export class Bookings extends React.Component<any, any> {
                     if (!found) {
                         client.db("myFirstDatabase").collection("transferredBookings").insertOne(data, (err:any, res:any) => {
                             if (err) {
-                                this.props.callback(<Alert title={"Error"} message={"Failed to insert entry into mobile app's database!"} style={"background-color: 'red'; width: 400px; height: 200px;"}></Alert>)
+                                this.props.callback(<Alert title={"Error"} message={"Failed to insert entry into mobile app's database!"} style={"background-color: 'red';"}></Alert>)
                                 client.close();
                                 return;
                             }
-                            this.props.callback(<Alert title={"Success"} message={"Entry added into the mobile app's database!"} style={"background-color: 'green'; width: 400px; height: 200px;"}></Alert>)
+                            this.props.callback(<Alert title={"Success"} message={"Entry added into the mobile app's database!"} style={"background-color: 'green';"}></Alert>)
                             client.close();
                         })
                     } else {
-                        this.props.callback(<Alert title={"Error"} message={"An entry for this booking already exists in the mobile app's database!"} style={"background-color: 'red'; width: 400px; height: 200px;"}></Alert>)
+                        this.props.callback(<Alert title={"Error"} message={"An entry for this booking already exists in the mobile app's database!"} style={"background-color: 'red';"}></Alert>)
                         client.close();
                     }
                   });

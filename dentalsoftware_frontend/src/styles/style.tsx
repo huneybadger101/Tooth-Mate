@@ -1,4 +1,4 @@
-export const style = 
+export const style = (width:any, height:any) =>
 `
     #titleCenterAlign {
         font-size: 22px;
@@ -58,5 +58,18 @@ export const style =
     #text {
         font-size: 18px;
         color: black;
+    }
+    #alert {
+        position: 'absolute'; 
+        justify-content: 'space-evenly'; 
+        align-items: 'center'; 
+        width: 400px;
+        height: 200px;
+        top: 20px; 
+        right: ` + ((width / 2) - 227) + `px;
+        border: 2px;
+        border-width: 1px;
+        border-style: solid;
+        border-radius: 15px 15px 15px 15px;
     }
 `

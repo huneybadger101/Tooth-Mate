@@ -41,7 +41,7 @@ export class Login extends React.Component<any, any> {
         .then((res) => {
             if (res['data']['success'] == undefined) {
                 this.setState({
-                    alertView: <Alert title={"Error"} message={res['data']['error']} style={"background-color: 'red'; width: 600px; height: 400px;"} dismissAlert={this.alertDismissController}/>
+                    alertView: <Alert title={"Error"} message={res['data']['error']} style={"background-color: 'red';"} titleStyle={"color: white;"} textStyle={"color: white;"} dismissAlert={this.alertDismissController}/>
                 })
             } else {
                 this.props.accountHelper.accountName = this.state.username;
@@ -53,7 +53,7 @@ export class Login extends React.Component<any, any> {
         .catch((err) => {
             console.log(err)
             this.setState({
-                alertView: <Alert title={"Error"} message={err} style={"background-color: 'red'; width: 600px; height: 400px;"} dismissAlert={this.alertDismissController}/>
+                alertView: <Alert title={"Error"} message={err} style={"background-color: 'red';"} dismissAlert={this.alertDismissController}/>
             })
         });
     }

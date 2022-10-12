@@ -162,13 +162,13 @@ export class PatientDataViewer extends React.Component<any, any> {
                 .then((res) => {
                     if (res.data.error) {
                         result = 1
-                        alertView = <Alert title={"Error"} message={res.data.error} style={"background-color: 'red'; width: 600px; height: 400px;"} dismissAlert={alertDismissController}></Alert>
+                        alertView = <Alert title={"Error"} message={res.data.error} style={"background-color: 'red';"} dismissAlert={alertDismissController}></Alert>
                         this.setState({
                             alertView: alertView
                         })
                     } else {
                         result = 0
-                        alertView = <Alert title={"Success"} message={"Added booking to database!"} style={"background-color: 'green'; width: 300px; height: 100px;"} dismissAlert={alertDismissController}></Alert>
+                        alertView = <Alert title={"Success"} message={"Added booking to database!"} style={"background-color: 'green';"} dismissAlert={alertDismissController}></Alert>
                         this.setState({
                             alertView: alertView,
                             currentFirstName: "",
@@ -188,7 +188,7 @@ export class PatientDataViewer extends React.Component<any, any> {
                 .catch((err) => {
                     console.log(err)
                     result = 1
-                    alertView = <Alert title={"Error"} message={err} style={"background-color: 'red'; width: 600px; height: 400px;"} dismissAlert={alertDismissController}></Alert>
+                    alertView = <Alert title={"Error"} message={err} style={"background-color: 'red';"} dismissAlert={alertDismissController}></Alert>
                     this.setState({
                         alertView: alertView
                     })

@@ -46,10 +46,10 @@ export const editFromDB = async (newBookingID:any, newDate:any, newTime:any,
                 if (res.data.error) {
                     console.log(res.data.error)
                     result = 1
-                    view = <Alert title={"Error"} message={res.data.error} style={"background-color: 'red'; width: 600px; height: 400px;"}></Alert>
+                    view = <Alert title={"Error"} message={res.data.error} style={"background-color: 'red';"}></Alert>
                 } else {
                     result = 0
-                    view = <Alert title={"Success"} message={"Updated booking in database!"} style={"background-color: 'green'; width: 300px; height: 100px;"}></Alert>
+                    view = <Alert title={"Success"} message={"Updated booking in database!"} style={"background-color: 'green';"}></Alert>
                 }
                 return (
                     {res: result, view: view}
@@ -58,7 +58,7 @@ export const editFromDB = async (newBookingID:any, newDate:any, newTime:any,
             .catch((err) => {
                 console.log(err)
                 result = 1
-                view = <Alert title={"Error"} message={err} style={"background-color: 'red'; width: 600px; height: 400px;"}></Alert>
+                view = <Alert title={"Error"} message={err} style={"background-color: 'red';"}></Alert>
                 return (
                     {res: result, view: view}
                 );

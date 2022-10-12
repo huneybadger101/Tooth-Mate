@@ -165,9 +165,9 @@ export class QuoteCreator extends React.Component<any, any> {
                 })
                 .then((res) => {
                     if (res.data.error) {
-                        alertView = <Alert title={"Error"} message={res.data.error} style={"background-color: 'red'; width: 600px; height: 400px;"} dismissAlert={alertDismissController}></Alert>
+                        alertView = <Alert title={"Error"} message={res.data.error} style={"background-color: 'red';"} dismissAlert={alertDismissController}></Alert>
                     } else {
-                        alertView = <Alert title={"Success"} message={"Added quote to database!"} style={"background-color: 'green'; width: 300px; height: 100px;"} dismissAlert={alertDismissController}></Alert>
+                        alertView = <Alert title={"Success"} message={"Added quote to database!"} style={"background-color: 'green';"} dismissAlert={alertDismissController}></Alert>
                     }
                     this.setState({
                         alertView: alertView
@@ -175,7 +175,7 @@ export class QuoteCreator extends React.Component<any, any> {
                 })
                 .catch((err) => {
                     console.log(err)
-                    alertView = <Alert title={"Error"} message={err} style={"background-color: 'red'; width: 600px; height: 400px;"} dismissAlert={alertDismissController}></Alert>
+                    alertView = <Alert title={"Error"} message={err} style={"background-color: 'red';"} dismissAlert={alertDismissController}></Alert>
                     this.setState({
                         alertView: alertView
                     })

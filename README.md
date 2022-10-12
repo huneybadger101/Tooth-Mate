@@ -30,6 +30,6 @@
 
 You should now have the main application and the API both up and running!
 
-## API Documentation
+# API Documentation
 
 Please visit [this link](./dentalsoftware_backend/documentation/README.md) to read the API documentation.
