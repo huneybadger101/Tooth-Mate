@@ -1,10 +1,26 @@
 # DentalSoftware
 
+# Installing MySQL
+- Windows/MacOS: Visit [this site](https://www.apachefriends.org/) and download XAMPP. Install it and start Apache and MySQL.
+- Linux Distributions: Use your package manager of choice to install MySQL. E.G:
+    - `sudo apt install mysql-server`
+    - `sudo systemctl start mysql.service`
+
 # Installing
 
 - First clone the repo - `git clone https://github.com/matthewPiersonUni/dentalSoftware/`
 - Move into the backend folder - `cd dentalsoftware_backend`
 - Install the Node dependencies - `npm install`
+- Create a `.env` file and ensure it contains the following entries:
+
+    ```
+    MYSQL_DATABASE_URL="IP_ADDRESS_OF_YOUR_MYSQL_INSTANCE"
+    MYSQL_DATABASE_USERNAME="USERNAME_FOR_DATABASE"
+    MYSQL_DATABASE_PASSWORD="PASWORD_FOR_DATABASE"
+    MYSQL_DATABASE_NAME="NAME_OF_DATABASE"
+    MYSQL_DATABASE_PORT=PORT_FOR_DATABASE (Number not String)
+    ```
+    
 - Start the API - `npm start`
 - Open a new terminal window and move into the frontend folder - `cd ../dentalsoftware_frontend`
 - Install the Node dependencies - `npm install --force` (The `force` flag is required due to some version conflicts, there is no issue in the actual application however)
