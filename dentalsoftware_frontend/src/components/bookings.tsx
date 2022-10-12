@@ -32,7 +32,6 @@ export class Bookings extends React.Component<any, any> {
             name: "",
             dentist: "",
             notes: "",
-            confirmMessage: "Test text",
             currentBookingSelected: "",
             editBookingButton: false,
             bookingCreateOrEditDisplay: 0,
@@ -93,7 +92,10 @@ export class Bookings extends React.Component<any, any> {
             ticketsBeingDisplayed: 0,
             bookingsBeingDisplayed: 0,
 
-            testVar: false
+            bookingMessageSelected: 0,
+            bookingMessageSelectedCopy: 0,
+
+            bookingSpare: ""
         }
 
         //Gets all of the tickets currently created
@@ -300,11 +302,6 @@ export class Bookings extends React.Component<any, any> {
         var weekday = splitBookingString[3];
         var bookingDate = splitBookingString[0] + "/" + splitBookingString[1] + "/" + splitBookingString[2];
         var bookingDateRev = splitBookingString[2] + "/" + splitBookingString[1] + "/" + splitBookingString[0];
-
-        if (bookingDate == "0/1/0")
-        {
-            bookingDate = "---";
-        }
 
         //Handles and changes the text for the NHI number during booking edit and creation
         const textHandlerNHI = {
@@ -567,20 +564,15 @@ export class Bookings extends React.Component<any, any> {
 
         var dateFull = (day + "/" + month + "/" + year);
 
-        if (dateFull == "0/1/0")
-        {
-            dateFull = "---";
-        }
-
         //Will go through and assign the variables from 'bookingVariables' to be displayed when editing a booking
         if (day != 0 && this.state.bookings.length > 0)
         {
             for (var num = 0; num < this.state.bookings.length; num++)
             {
 
-                let bookingYear = this.state.bookings[num]['date'].split("T")[0].split("-")[0]
-                let bookingMonth = Number(this.state.bookings[num]['date'].split("T")[0].split("-")[1]).toString()
-                let bookingDay = (Number(this.state.bookings[num]['date'].split("T")[0].split("-")[2]) + 1).toString()
+                let bookingYear = this.state.bookings[num]['date'].split("T")[0].split("-")[0];
+                let bookingMonth = Number(this.state.bookings[num]['date'].split("T")[0].split("-")[1]).toString();
+                let bookingDay = (Number(this.state.bookings[num]['date'].split("T")[0].split("-")[2]) + 1).toString();
 
                 let bookingDateString = bookingYear + "/" + bookingMonth + "/" + bookingDay;
                 if (bookingDateRev == bookingDateString) {
@@ -637,7 +629,8 @@ export class Bookings extends React.Component<any, any> {
                                         completeClickedEdit: true,
                                         bookingOrCancelButtonText: "Cancel"
                                     })
-                                }}}/>
+                                }}}
+                            />
 
                             bookingListDeleteButton[num] =
                             <Button id={"ticketAddAndDeleteButton"} style={"flex: 1;"} text={"Delete"} on={{clicked: ()=>{deleteBookingFromDatabase(bookingSelected)}}}/>
@@ -647,10 +640,10 @@ export class Bookings extends React.Component<any, any> {
                         //will also create an edit button for each booking, an info button to get more details, and a delete button to remove the selected booking
                         //NOTE: Will only add the edit and delete buttons if the user type has said abilities
                         bookingList[num] =
-                            <View style="margin: 3px; flex-direction: 'column';">
+                            <View style="flex-direction: 'column';">
 
-                                <View style="margin: 3px; flex-direction: 'row';">
-                                    <Text id={"ticketText"} style={"flex: 4; border: 1px solid black;"}>{"Booking ID: " + (this.state.bookingID[num] + 1) + ", Booking date: " + dateFull}</Text>
+                                <View style="flex-direction: 'row';">
+                                    <Text id={"ticketText"}>{"Booking ID: " + (this.state.bookingID[num] + 1) + ", Booking date: " + dateFull}</Text>
 
                                     <Button id={"ticketAddAndDeleteButton"} style={"flex: 1;"} text={"Info"} on={{clicked: ()=>{
 
@@ -680,7 +673,7 @@ export class Bookings extends React.Component<any, any> {
                                     {bookingListDeleteButton[num]}
                                 </View>
 
-                            {(this.state.bookingShowInfo[this.state.bookingSelected] == true ? <View style="margin: 3px;">
+                            {(this.state.bookingShowInfo[this.state.bookingSelected] == true ? <View style="">
                                         <View style="flex-direction: 'column'; border: 1px solid black;">
                                             <View style="flex-direction: 'row';">
                                                 <Text> Patient Name: {this.state.patientName[this.state.currentBookingSelected]}</Text>
@@ -712,7 +705,52 @@ export class Bookings extends React.Component<any, any> {
                 }
             }
         }
-    
+
+        //Checks if the date has been changed, if so, it will change the on screen message based on the date selected
+        if (bookingDate != this.state.bookingSpare)
+        {
+            console.log("DATE WAS CHANGED IN THE BOOKINGS SECTION...");
+
+            //1 Date selected but no bookings
+            //0 No date selected
+
+            //Will set the message selected index to display no booking selected
+            if (bookingDate == "0/1/0")
+            {
+                console.log("NO BOOKING CHOSEN...");
+
+                this.setState({
+                    bookingSpare: bookingDate,
+                    bookingMessageSelected: 0,
+                    bookingMessageSelectedCopy: 0
+                });
+            }
+            //Will set the message selected index to display a booking selected with no bookings
+            else if ((bookingDate != "0/1/0" && bookingList[0] == undefined))
+            {
+                bookingList = [];
+
+                console.log("BOOKING CHOSEN, NO BOOKINGS...");
+
+                this.setState({
+                    bookingSpare: bookingDate,
+                    bookingMessageSelected: 1,
+                    bookingMessageSelectedCopy: 1
+                });
+            }
+            //Will set the message selected index to display no message (will be replaced by actual bookings or ticket list)
+            else if ((bookingDate != "0/1/0" && bookingList[0] != undefined))
+            {
+                console.log("BOOKING CHOSEN, WITH BOOKINGS...");
+
+                this.setState({
+                    bookingSpare: bookingDate,
+                    bookingMessageSelected: 2,
+                    bookingMessageSelectedCopy: 2
+                });
+            }
+        }
+
         //Sends data to be "idiot proofed" and confirmed
         const buttonHandlerCompleteEditOrCreation = {
             clicked: async () => {
@@ -837,6 +875,7 @@ export class Bookings extends React.Component<any, any> {
         `;
 
         var pageDiplay: any = [];
+        var pageDiplayMessage: any = [];
 
         //TDOO: Have the ticket clicked be deleted
         const deleteTicket = {
@@ -877,13 +916,21 @@ export class Bookings extends React.Component<any, any> {
                 if (this.state.bookingCreateOrEditDisplay == 0)
                 {
                     this.setState({
-                        bookingCreateOrEditDisplay: 2
+                        bookingMessageSelected: 2,
+                    });
+
+                    this.setState({
+                        bookingCreateOrEditDisplay: 2,
                     });
                 }
                 else if (this.state.bookingCreateOrEditDisplay == 2)
                 {
                     this.setState({
-                        bookingCreateOrEditDisplay: 0
+                        bookingMessageSelected: this.state.bookingMessageSelectedCopy,
+                    });
+
+                    this.setState({
+                        bookingCreateOrEditDisplay: 0,
                     });
                 }
             }
@@ -1056,9 +1103,21 @@ export class Bookings extends React.Component<any, any> {
             </View>
         }
 
-        
+        pageDiplayMessage[1] = (
+            <View id={"bookingPlaceholderMessageContainer"}>
+                <View style={"position: 'absolute';"}>
+                    <Text id={"messageTextStandard"}>{"Selected Date"}</Text>
+                    <Text id={"messageTextColor"}>{dateFull}</Text>
+                    <Text id={"messageTextStandard"}>{"Contains no Bookings..."}</Text>
+                </View>
+            </View>
+        );
 
-        
+        pageDiplayMessage[0] = (
+            <View id={"bookingPlaceholderMessageContainer"}>
+                <Text>{"No date selected"}</Text>
+            </View>
+        );
         
 
         //Will display the ticket list
@@ -1160,11 +1219,11 @@ export class Bookings extends React.Component<any, any> {
                         <Button id={"bookingChangePageButton"} text={">>"} on={ticketAndBookingListRight}></Button>
                     </View>
 
-                    <Text style="border: 1px solid black; padding: 10px;">{"Date selected: " + dateFull}</Text>
-
-                    {bookingList}
-
-                    <Text style={"margin: 10px;"}>{this.state.confirmMessage}</Text>
+                    {/* Displays the message that tells the user if a booking is selected or if no bookings exist for the date selected */}
+                    {pageDiplayMessage[this.state.bookingMessageSelected]}
+                    
+                    {/* Displays the booking class */}
+                    {bookingList[this.state.bookingsBeingDisplayed + 0]}
 
                 </View>
             </View>
