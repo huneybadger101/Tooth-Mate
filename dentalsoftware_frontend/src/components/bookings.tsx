@@ -625,9 +625,9 @@ export class Bookings extends React.Component<any, any> {
                     {
                         bookingListEditButton[num] = 
                             <Button 
+                                id={"ticketAddAndDeleteButton"}
                                 style={"flex: 1;"}
                                 text={"Edit"}
-                                id={bookingSelected}
                                 on={{clicked: () => { 
                                     this.setState({
                                         currentBookingSelected: bookingSelected, 
@@ -640,7 +640,7 @@ export class Bookings extends React.Component<any, any> {
                                 }}}/>
 
                             bookingListDeleteButton[num] =
-                            <Button style={"flex: 1;"} text={"Delete"} id={bookingSelected} on={{clicked: ()=>{deleteBookingFromDatabase(bookingSelected)}}}/>
+                            <Button id={"ticketAddAndDeleteButton"} style={"flex: 1;"} text={"Delete"} on={{clicked: ()=>{deleteBookingFromDatabase(bookingSelected)}}}/>
                         }
 
                         //Creates the bookings to view
@@ -650,9 +650,9 @@ export class Bookings extends React.Component<any, any> {
                             <View style="margin: 3px; flex-direction: 'column';">
 
                                 <View style="margin: 3px; flex-direction: 'row';">
-                                    <Text style={"flex: 4; border: 1px solid black;"}>{"Booking ID: " + (this.state.bookingID[num] + 1) + ", Booking date: " + dateFull}</Text>
+                                    <Text id={"ticketText"} style={"flex: 4; border: 1px solid black;"}>{"Booking ID: " + (this.state.bookingID[num] + 1) + ", Booking date: " + dateFull}</Text>
 
-                                    <Button style={"flex: 1;"} text={"Info"} id={bookingSelected} on={{clicked: ()=>{
+                                    <Button id={"ticketAddAndDeleteButton"} style={"flex: 1;"} text={"Info"} on={{clicked: ()=>{
 
                                         this.state.bookingShowInfo[this.state.bookingSelected] = !this.state.bookingShowInfo[this.state.bookingSelected];
 
@@ -943,6 +943,7 @@ export class Bookings extends React.Component<any, any> {
         //let ticketListTextDisplayedArray:any = ticketItems();
         var ticketListDeleteButton:any = [];
 
+        //Creates the tickets to be displayed
         for (var i = 0; i < this.state.ticketListTextDisplayedArray.length; i++)
         {
             let ticketSelected = i.toString();
