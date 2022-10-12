@@ -1,5 +1,7 @@
 # Quotes Endpoints
 
+[Back](./README.md)
+
 `/quotes/getAllQuotes` -> Returns a dictionary containing all items in the Quotes table.
 
 - Request type: Post

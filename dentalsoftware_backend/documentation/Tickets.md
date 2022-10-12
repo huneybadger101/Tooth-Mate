@@ -1,5 +1,6 @@
 # Tickets Endpoints
 
+[Back](./README.md)
 
 `/tickets/getAllTickets` -> Returns a dictionary containing all items in the Tickets table.
 

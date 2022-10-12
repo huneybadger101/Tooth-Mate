@@ -1,5 +1,7 @@
 # Images Endpoints
 
+[Back](./README.md)
+
 `/images/getAllImagesForPatient` -> Returns a dictionary containing all images for the given patient in the Images table.
 
 - Request type: Post
