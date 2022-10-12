@@ -5,27 +5,32 @@ function setDBClient(client) {
 }
 
 function databaseQuery(res = null, query) {
-    if (dbClient != undefined) {
-        dbClient.query(query, function (err, result) {
-            if (err) {
-                console.log(err)
-                if (res) {
-                    res.send({result: 1, error: err})
-                } else {
-                    return {result: 1}
+    try {
+        if (dbClient != undefined) {
+            dbClient.query(query, function (err, result) {
+                if (err) {
+                    console.log(err)
+                    if (res) {
+                        res.send({result: 1, error: err})
+                    } else {
+                        return {result: 1}
+                    }
                 }
-            }
-            if (res) {
-                res.send({result: result})
-            } else {
-                return {result: result}
-            }
-        });
+                if (res) {
+                    res.send({result: result})
+                } else {
+                    return {result: result}
+                }
+            });
+        }   
+    } catch (error) {
+        console.log(error)
+        res.send(error)
     }
 }
 
 function databaseCreateTables(res = null) {
-    let sql = "CREATE TABLE IF NOT EXISTS patient_data (ID INT AUTO_INCREMENT PRIMARY KEY, NHI VARCHAR(255) NOT NULL, FirstName VARCHAR(255) NOT NULL, LastName VARCHAR(255) NOT NULL, MiddleName VARCHAR(255), DOB DATE NOT NULL, ContactNumber VARCHAR(255) NOT NULL, Email VARCHAR(255) NOT NULL, Notes MEDIUMTEXT)";
+    let sql = "CREATE TABLE IF NOT EXISTS patient_data (ID INT AUTO_INCREMENT PRIMARY KEY, NHI VARCHAR(255) NOT NULL, FirstName VARCHAR(255) NOT NULL, LastName VARCHAR(255) NOT NULL, MiddleName VARCHAR(255), DOB DATE NOT NULL, ContactNumber VARCHAR(255) NOT NULL, Email VARCHAR(255) NOT NULL, Notes MEDIUMTEXT, ExistingConditions JSON)";
     databaseQuery(res, sql)
     sql = "CREATE TABLE IF NOT EXISTS accounts (ID INT AUTO_INCREMENT PRIMARY KEY, DentistName VARCHAR(255) NOT NULL, AccountName VARCHAR(255) NOT NULL, AccountPasswordHash VARCHAR(255) NOT NULL, AccountPasswordSalt VARCHAR(255) NOT NULL, AccountAccessLevel INT, DentistNumber INT, DOB DATE NOT NULL, Email VARCHAR(255) NOT NULL, PhoneNumber VARCHAR(255) NOT NULL)";
     databaseQuery(res, sql) 

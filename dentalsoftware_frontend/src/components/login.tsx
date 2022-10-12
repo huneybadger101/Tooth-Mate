@@ -41,7 +41,7 @@ export class Login extends React.Component<any, any> {
         .then((res) => {
             if (res['data']['success'] == undefined) {
                 this.setState({
-                    alertView: <Alert title={"Error"} message={res['data']['error']} style={"background-color: 'red'; width: 600px; height: 400px;"} dismissAlert={this.alertDismissController}/>
+                    alertView: <Alert title={"Error"} message={res['data']['error']} style={"background-color: 'red';"} titleStyle={"color: white;"} textStyle={"color: white;"} dismissAlert={this.alertDismissController}/>
                 })
             } else {
                 this.props.accountHelper.accountName = this.state.username;
@@ -53,7 +53,7 @@ export class Login extends React.Component<any, any> {
         .catch((err) => {
             console.log(err)
             this.setState({
-                alertView: <Alert title={"Error"} message={err} style={"background-color: 'red'; width: 600px; height: 400px;"} dismissAlert={this.alertDismissController}/>
+                alertView: <Alert title={"Error"} message={err} style={"background-color: 'red';"} dismissAlert={this.alertDismissController}/>
             })
         });
     }
@@ -118,13 +118,6 @@ export class Login extends React.Component<any, any> {
             }
         }/>
 
-        const resetPasswordButton = <Button id="button" text="Reset Password" on={
-            {
-                // Only trigger when left click is released
-                [WidgetEventTypes.MouseButtonRelease]: () => this.resetPasswordButtonHandler(),
-            }
-        }/>
-
         const createNewAccountButton = <Button id="button" text="Create New Account" on={
             {
                 // Only trigger when left click is released
@@ -182,7 +175,7 @@ export class Login extends React.Component<any, any> {
         const errorMessage = <Text>{this.state.errorMessage}</Text>
 
         return (
-            <View style="flex: auto;">
+            <View id="mainView" style="flex: auto;">
                 <View style="flex: auto; flex-direction: 'column';">
                     <View style="flex: 1;">
                         <Text id="titleCenterAlign">Username</Text>
@@ -211,7 +204,6 @@ export class Login extends React.Component<any, any> {
                         {(this.state.showCreateOptions ? phoneText : null)}
                         {(this.state.showCreateOptions ? submitNewAccountButton : null)}
                         {(!this.state.showCreateOptions ? loginButton : null)}
-                        {(!this.state.showCreateOptions ? resetPasswordButton : null)}
                         {(!this.state.showCreateOptions ? createNewAccountButton : null)}
                         {this.state.alertView}
                     </View >

@@ -31,7 +31,8 @@ export class PatientDataViewer extends React.Component<any, any> {
                     selectedPatientEmail: null,
                     selectedPatientNotes: null,
                     selectedLastBooking: null,
-                    selectedNextBooking: null
+                    selectedNextBooking: null,
+                    offset: 0
                 })
 
             })
@@ -95,6 +96,22 @@ export class PatientDataViewer extends React.Component<any, any> {
         })
     }
 
+    lowerOffset = () => {
+        if (this.state.offset >= 5) { 
+            this.setState({
+                offset: this.state.offset - 5
+            })
+        }
+    }
+
+    raiseOffset = () => {
+        if (this.state.offset <= this.state.patients.length) {
+            this.setState({
+                offset: this.state.offset + 5
+            })
+        }
+    }
+
     // Function that returns a component to be drawn, can have children components if the parent component supports it
     render() {
 
@@ -106,13 +123,17 @@ export class PatientDataViewer extends React.Component<any, any> {
         let patientListStrings = [];
 
         for (let i in patientList) {
-            patientListStrings.push(<Button style="flex: auto; color: 'black';" text={patientList[i].FirstName + " " + patientList[i].LastName} on={
+            patientListStrings.push(<Button id="button" text={patientList[i].FirstName + " " + patientList[i].LastName} on={
                     {
                         // Only trigger when left click is released
                         [WidgetEventTypes.MouseButtonRelease]: () => this.buttonHandler(Number(i)),
                     }
                 }/>
             )
+        }
+        let displayButtons = [];
+        for (let i = this.state.offset; i < this.state.offset + 5; i++) {
+            displayButtons.push(patientListStrings[i])
         }
 
         const selectedPatientNHI = this.state.selectedPatientNHI;
@@ -133,16 +154,18 @@ export class PatientDataViewer extends React.Component<any, any> {
 
         } else {
             return (
-                <View style="flex: auto;">
-                    <View style="flex: auto; flex-direction: 'row';">
+                <View id="mainView" style="flex: auto;">
+                    <View id="mainView" style="flex: auto; flex-direction: 'row';">
                         <View style="flex: 1; background-color: 'grey';">
-                            <Text style={textStyle}>Selectable List of Patients: </Text>
+                            <Text id="titleCenterAlign" style={textStyle}>Patients</Text>
                             <View style="flex: auto;">
-                                {patientListStrings}
+                                <Button id="button" text="↑" enabled={this.state.offset != 0} on={{pressed: this.lowerOffset}}/>
+                                {displayButtons}
+                                <Button id="button" text="↓" enabled={this.state.offset + 5 < this.state.patients.length} on={{pressed: this.raiseOffset}}/>
                             </View>
                         </View>
     
-                        <View style="flex: 2; flex-direction: 'column';">
+                        <View id="mainViewTransparent" style="flex: 2; flex-direction: 'column';">
                             <Text style={textStyle}>Patient NHI: {selectedPatientNHI}</Text>
                             <Text style={textStyle}>Patient Name: {selectedPatientName}</Text>
                             <Text style={textStyle}>Patient Date of Birth: {selectedPatientDOB}</Text>
@@ -151,12 +174,12 @@ export class PatientDataViewer extends React.Component<any, any> {
                             <Text style={textStyle}>Patient Notes: {selectedPatientNotes}</Text>
                         </View>
     
-                        <View style="flex: 2; flex-direction: 'column';">
+                        <View id="mainViewTransparent" style="flex: 2; flex-direction: 'column';">
                             <Text style={textStyle}>{selectedPatientName}'s Last Booking: {selectedPatientLastBooking}</Text>
                             <Text style={textStyle}>{selectedPatientName}'s Next Booking: {selectedPatientNextBooking}</Text>
                         </View>
     
-                        <View style="flex: 2; flex-direction: 'column';">
+                        <View id="mainViewTransparent" style="flex: 2; flex-direction: 'column';">
                             <Button style="flex: 1; color: 'black'; font-size: 35px;" visible={selectedPatientNHI == null ? false : true} text={"Create Ticket"} on={
                                 {
                                     // Only trigger when left click is released

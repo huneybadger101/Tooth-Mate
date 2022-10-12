@@ -68,7 +68,7 @@ export class Homepage extends React.Component<any, any> {
             }/>)
 
         return (
-            <View style="flex: 1; justify-content: 'center'; align-items: 'center';">
+            <View id="mainView" style="flex: 1; justify-content: 'center'; align-items: 'center';">
                 <View style="flex: 1; flex-direction: 'row';">
                 </View>
                 <View style="flex: 2; flex-direction: 'row';">

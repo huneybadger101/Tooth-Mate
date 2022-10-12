@@ -1,5 +1,11 @@
 export const style = (width:any, height:any) =>
 `
+    #mainView {
+        background-color: qlineargradient(x1:0, y1:0, x2:1, y2:1, stop: 0 #9ccbe6, stop:1 #589EC7);
+    }
+    #mainViewTransparent {
+        background-color: transparent;
+    }
     #titleCenterAlign {
         font-size: 22px;
         margin: 5px 0px;
@@ -59,6 +65,20 @@ export const style = (width:any, height:any) =>
         font-size: 18px;
         color: black;
     }
+    #alert {
+        position: 'absolute'; 
+        justify-content: 'space-evenly'; 
+        align-items: 'center'; 
+        width: 400px;
+        height: 200px;
+        top: 20px; 
+        right: ` + ((width / 2) - 227) + `px;
+        border: 2px;
+        border-width: 1px;
+        border-style: solid;
+        border-radius: 15px;
+    }
+`
     #buttonCalanderDate {
         background-color: #DDDDDD;
         border-width: 1px;

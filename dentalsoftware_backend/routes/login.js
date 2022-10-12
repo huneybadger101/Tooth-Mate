@@ -15,32 +15,7 @@ loginRouter.post('/loginAccount', (req, res) => {
     let password = req.headers['password'];
 
     let sql = "SELECT AccountPasswordSalt FROM accounts WHERE AccountName = '" + username + "';";
-
-    lClient.query(sql, function (err, result) {
-        if (err) {
-            console.log(err)
-            if (res) {
-                res.send({result: 1, error: err})
-                return
-            } else {
-                return {result: 1, error: err}
-            }
-        }
-
-        if (Object.keys(result).length == 0) {
-            if (res) {
-                res.send({result: 1, error: "Username or password was incorrect, please try again!"})
-                return
-            } else {
-                return {result: 1, error: "Username or password was incorrect, please try again!"}
-            }
-        }
-
-        let passwordSalt = result[0]['AccountPasswordSalt'];
-        let hashedPassword = sha256(password + passwordSalt);
-
-        sql = "SELECT * FROM accounts WHERE AccountName = '" + username + "' AND AccountPasswordHash = '" + hashedPassword + "';";
-
+    try {
         lClient.query(sql, function (err, result) {
             if (err) {
                 console.log(err)
@@ -51,9 +26,8 @@ loginRouter.post('/loginAccount', (req, res) => {
                     return {result: 1, error: err}
                 }
             }
-            userPasswordMatches = Object.keys(result).length
-    
-            if (userPasswordMatches == 0) {
+
+            if (Object.keys(result).length == 0) {
                 if (res) {
                     res.send({result: 1, error: "Username or password was incorrect, please try again!"})
                     return
@@ -61,11 +35,40 @@ loginRouter.post('/loginAccount', (req, res) => {
                     return {result: 1, error: "Username or password was incorrect, please try again!"}
                 }
             }
-            res.send({result: result[0], success: 1})
-        });        
 
-    });
+            let passwordSalt = result[0]['AccountPasswordSalt'];
+            let hashedPassword = sha256(password + passwordSalt);
 
+            sql = "SELECT * FROM accounts WHERE AccountName = '" + username + "' AND AccountPasswordHash = '" + hashedPassword + "';";
+
+            lClient.query(sql, function (err, result) {
+                if (err) {
+                    console.log(err)
+                    if (res) {
+                        res.send({result: 1, error: err})
+                        return
+                    } else {
+                        return {result: 1, error: err}
+                    }
+                }
+                userPasswordMatches = Object.keys(result).length
+        
+                if (userPasswordMatches == 0) {
+                    if (res) {
+                        res.send({result: 1, error: "Username or password was incorrect, please try again!"})
+                        return
+                    } else {
+                        return {result: 1, error: "Username or password was incorrect, please try again!"}
+                    }
+                }
+                res.send({result: result[0], success: 1})
+            });        
+
+        });
+    } catch (error) {
+        console.log(error)
+        res.send(error)
+    }
 })
 
 module.exports = {loginRouter, setLClient};

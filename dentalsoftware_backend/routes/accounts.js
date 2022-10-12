@@ -94,42 +94,48 @@ function createNewAccount(res = null, accountData) {
     // No missing data, time to check if account already exists
     let sql = "SELECT * FROM accounts WHERE AccountName='" + accountData.username + "'"
     let accountExists = 0
-    aClient.query(sql, function (err, result) {
-        if (err) {
-            console.log(err)
-            if (res) {
-                res.send({result: 1, error: err})
-                return
-            } else {
-                return {result: 1, error: err}
+    try {
+        aClient.query(sql, function (err, result) {
+            if (err) {
+                console.log(err)
+                if (res) {
+                    res.send({result: 1, error: err})
+                    return
+                } else {
+                    return {result: 1, error: err}
+                }
             }
-        }
-        accountExists = Object.keys(result).length
+            accountExists = Object.keys(result).length
 
-        if (accountExists > 0) {
-            if (res) {
-                res.send({result: 1, error: "Account with given username already exists!"})
-                return
-            } else {
-                return {result: 1, error: "Account with given username already exists!"}
+            if (accountExists > 0) {
+                if (res) {
+                    res.send({result: 1, error: "Account with given username already exists!"})
+                    return
+                } else {
+                    return {result: 1, error: "Account with given username already exists!"}
+                }
             }
-        }
-        let accountPasswordSalt = makeid(15);
-        // Verified that account doesn't already exist, time to add them
-        sql = "INSERT INTO accounts (DentistName, AccountName, AccountPasswordHash, AccountPasswordSalt, AccountAccessLevel, DentistNumber, DOB, Email, PhoneNumber) " 
-        + "VALUES ("
-        + "'" + accountData.fullName + "', "
-        + "'" + accountData.username + "', " 
-        + "'" + sha256(accountData.password + accountPasswordSalt) + "', " 
-        + "'" + accountPasswordSalt + "', " 
-        + "'" + accountData.accessLevel + "', " 
-        + "'" + accountData.dentistNumber + "', " 
-        + "'" + accountData.DOB + "', "
-        + "'" + accountData.Email_Address + "', " 
-        + "'" + accountData.Contact_Number + "')"
+            let accountPasswordSalt = makeid(15);
+            // Verified that account doesn't already exist, time to add them
+            sql = "INSERT INTO accounts (DentistName, AccountName, AccountPasswordHash, AccountPasswordSalt, AccountAccessLevel, DentistNumber, DOB, Email, PhoneNumber) " 
+            + "VALUES ("
+            + "'" + accountData.fullName + "', "
+            + "'" + accountData.username + "', " 
+            + "'" + sha256(accountData.password + accountPasswordSalt) + "', " 
+            + "'" + accountPasswordSalt + "', " 
+            + "'" + accountData.accessLevel + "', " 
+            + "'" + accountData.dentistNumber + "', " 
+            + "'" + accountData.DOB + "', "
+            + "'" + accountData.Email_Address + "', " 
+            + "'" + accountData.Contact_Number + "')"
+        
+            databaseQuery(res, sql)
+        });
+    } catch (error) {
+        console.log(error)
+        res.send(error)
+    }
     
-        databaseQuery(res, sql)
-    });
 }
 
 module.exports = {accountsRouter, setAClient};

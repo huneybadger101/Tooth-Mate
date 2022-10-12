@@ -15,19 +15,7 @@ function getBookingDataByID(id, res) {
     let bookingDentalChartsData;
 
     let sql = "SELECT * FROM bookings WHERE ID = '" + bookingID + "';"
-    bClient.query(sql, function (err, result) {
-        if (err) {
-            console.log(err)
-            if (res) {
-                res.send({result: 1, error: err})
-            } else {
-                return {result: 1}
-            }
-        }
-
-        bookingData = result;
-
-        sql = "SELECT * FROM dental_charts WHERE Booking = '" + bookingID + "';"
+    try {
         bClient.query(sql, function (err, result) {
             if (err) {
                 console.log(err)
@@ -37,26 +25,44 @@ function getBookingDataByID(id, res) {
                     return {result: 1}
                 }
             }
-    
-            bookingDentalChartsData = result;
-            let bookingDentalChartsDataParsed = [];
-            for (let i = 0; i < bookingDentalChartsData.length; i++) {
-                bookingDentalChartsDataParsed.push({
-                    Data: JSON.parse(bookingDentalChartsData[i]['Data']),
-                    ID: bookingDentalChartsData[i]['ID'],
-                    Booking: bookingDentalChartsData[i]['Booking'],
-                    })
-            }
-    
-            res.send({
-                result: {
-                    bookingData,
-                    bookingDentalChartsData: bookingDentalChartsDataParsed
+
+            bookingData = result;
+
+            sql = "SELECT * FROM dental_charts WHERE Booking = '" + bookingID + "';"
+            bClient.query(sql, function (err, result) {
+                if (err) {
+                    console.log(err)
+                    if (res) {
+                        res.send({result: 1, error: err})
+                    } else {
+                        return {result: 1}
+                    }
                 }
-            })
-    
+        
+                bookingDentalChartsData = result;
+                let bookingDentalChartsDataParsed = [];
+                for (let i = 0; i < bookingDentalChartsData.length; i++) {
+                    bookingDentalChartsDataParsed.push({
+                        Data: JSON.parse(bookingDentalChartsData[i]['Data']),
+                        ID: bookingDentalChartsData[i]['ID'],
+                        Booking: bookingDentalChartsData[i]['Booking'],
+                        })
+                }
+        
+                res.send({
+                    result: {
+                        bookingData,
+                        bookingDentalChartsData: bookingDentalChartsDataParsed
+                    }
+                })
+        
+            });
         });
-    });
+    } catch (error) {
+        console.log(error)
+        res.send(error)
+    }
+    
 }
 
 bookingsRouter.post('/getAllBookings', (req, res) => {
@@ -147,56 +153,7 @@ function createNewBooking(res = null, bookingData) {
     }
 
     let sql = "SELECT * FROM bookings WHERE Date='" + newDate + "'"
-    bClient.query(sql, function (err, result) {
-        if (err) {
-            console.log(err)
-            if (res) {
-                res.send({result: 1, error: err})
-                return
-            } else {
-                return {result: 1, error: err}
-            }
-        }
-
-        if (Object.keys(result).length > 0) {
-
-            for (let i = 0; i < Object.keys(result).length; i++) {
-                let tempHour = result[i]['Time'].split(":")[0]
-                let tempMin = result[i]['Time'].split(":")[1]
-
-                let tempTime = (tempHour * 60) + tempMin;
-                let newTime = (hour * 60) + minute;
-
-                let diff = Math.abs(tempTime - newTime);
-
-                if (diff < 90) {
-                    if (res) {
-                        res.send({result: 1, error: "Booking already exists within 90 minutes of the given time/date!"})
-                        return
-                    } else {
-                        return {result: 1, error: "Booking already exists within 90 minutes of the given time/date!"}
-                    }
-                }
-            }
-        }
-
-        let dollars = 0;
-        let cents = 0;
-
-        if (bookingData.dentistID == 0) {bookingData.dentistID++}
-
-        for (let i = 0; i < bookingData.dentalCharts.length; i++) {
-            dollars += Number(bookingData.dentalCharts[i]['procedureCost'].split("$")[1].split(".")[0])
-            cents += Number(bookingData.dentalCharts[i]['procedureCost'].split("$")[1].split(".")[1])
-
-            while (cents >= 100) {
-                dollars++
-                cents -= 100
-            }
-        }
-
-        sql = "INSERT INTO `bookings` (`Date`, `Time`, `Patient`, `Dentist`, `FeeDollars`, `FeeCents`, `Location`, `Notes`, `ProcedureName`, `PatientAttended`) "
-        + "VALUES ('" + newDate + "', '" + newTime + "', '" + bookingData.patientID + "', '" + bookingData.dentistID + "', '" + dollars + "', '" + cents + "', 'Default Location', '" + bookingData.notes + "', '" + bookingData.procedure + "', 'DATEBEFOREBOOKING')"
+    try {
         bClient.query(sql, function (err, result) {
             if (err) {
                 console.log(err)
@@ -208,7 +165,45 @@ function createNewBooking(res = null, bookingData) {
                 }
             }
 
-            sql = "SELECT * FROM bookings ORDER BY id DESC LIMIT 1";
+            if (Object.keys(result).length > 0) {
+
+                for (let i = 0; i < Object.keys(result).length; i++) {
+                    let tempHour = result[i]['Time'].split(":")[0]
+                    let tempMin = result[i]['Time'].split(":")[1]
+
+                    let tempTime = (tempHour * 60) + tempMin;
+                    let newTime = (hour * 60) + minute;
+
+                    let diff = Math.abs(tempTime - newTime);
+
+                    if (diff < 90) {
+                        if (res) {
+                            res.send({result: 1, error: "Booking already exists within 90 minutes of the given time/date!"})
+                            return
+                        } else {
+                            return {result: 1, error: "Booking already exists within 90 minutes of the given time/date!"}
+                        }
+                    }
+                }
+            }
+
+            let dollars = 0;
+            let cents = 0;
+
+            if (bookingData.dentistID == 0) {bookingData.dentistID++}
+
+            for (let i = 0; i < bookingData.dentalCharts.length; i++) {
+                dollars += Number(bookingData.dentalCharts[i]['procedureCost'].split("$")[1].split(".")[0])
+                cents += Number(bookingData.dentalCharts[i]['procedureCost'].split("$")[1].split(".")[1])
+
+                while (cents >= 100) {
+                    dollars++
+                    cents -= 100
+                }
+            }
+
+            sql = "INSERT INTO `bookings` (`Date`, `Time`, `Patient`, `Dentist`, `FeeDollars`, `FeeCents`, `Location`, `Notes`, `ProcedureName`, `PatientAttended`) "
+            + "VALUES ('" + newDate + "', '" + newTime + "', '" + bookingData.patientID + "', '" + bookingData.dentistID + "', '" + dollars + "', '" + cents + "', 'Default Location', '" + bookingData.notes + "', '" + bookingData.procedure + "', 'DATEBEFOREBOOKING')"
             bClient.query(sql, function (err, result) {
                 if (err) {
                     console.log(err)
@@ -219,19 +214,36 @@ function createNewBooking(res = null, bookingData) {
                         return {result: 1, error: err}
                     }
                 }
-                let bookingID = result[0]['ID'];
-                sql = "INSERT INTO `dental_charts` (`Booking`, `Data`) VALUES "
 
-                for (let i = 0; i < bookingData.dentalCharts.length; i++) {
-                    sql += "(" + bookingID + ", '" + JSON.stringify(bookingData.dentalCharts[i]) + "'), ";
-                }
-                sql = sql.slice(0, -2)
-                sql += ";";
-                databaseQuery(res, sql);
+                sql = "SELECT * FROM bookings ORDER BY id DESC LIMIT 1";
+                bClient.query(sql, function (err, result) {
+                    if (err) {
+                        console.log(err)
+                        if (res) {
+                            res.send({result: 1, error: err})
+                            return
+                        } else {
+                            return {result: 1, error: err}
+                        }
+                    }
+                    let bookingID = result[0]['ID'];
+                    sql = "INSERT INTO `dental_charts` (`Booking`, `Data`) VALUES "
+
+                    for (let i = 0; i < bookingData.dentalCharts.length; i++) {
+                        sql += "(" + bookingID + ", '" + JSON.stringify(bookingData.dentalCharts[i]) + "'), ";
+                    }
+                    sql = sql.slice(0, -2)
+                    sql += ";";
+                    databaseQuery(res, sql);
+                })
+                
             })
-            
-        })
-    });
+        });
+    } catch (error) {
+        console.log(error)
+        res.send(error)
+    }
+    
 }
 
 module.exports = {bookingsRouter, setBClient};

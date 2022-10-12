@@ -1,6 +1,7 @@
 const express = require('express');
 const mysql = require('mysql'); 
 const app = express();
+require('dotenv').config()
 
 let { databaseCreateTables, setDBClient } = require('./helpers/db');
 let { patientRouter, setPClient } = require('./routes/patients');
@@ -44,7 +45,7 @@ function databaseConnect(host = "localhost", username = "root", password = null,
     setIClient(client);
 }
 
-databaseConnect("103.204.131.211", "toothmate", "SuperSecurePassword!?123", "toothmate", 33306)
+databaseConnect(process.env.MYSQL_DATABASE_URL, process.env.MYSQL_DATABASE_USERNAME, process.env.MYSQL_DATABASE_PASSWORD, process.env.MYSQL_DATABASE_NAME, process.env.MYSQL_DATABASE_PORT)
 // Tables are only created if they currently do not exist, will not be created on every launch
 databaseCreateTables()
 

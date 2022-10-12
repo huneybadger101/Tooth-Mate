@@ -1,10 +1,7 @@
 import { Window, View } from "@nodegui/react-nodegui";
 import React from "react";
-import path from "path";
 import TabContainer from "./components/tabContainer";
 import Login from "./components/login";
-import Calendar from "./components/calendar";
-import Homepage from "./components/homepage";
 import AccountHelper from "./components/accountHelper";
 import { style } from "./styles/style";
 
@@ -13,14 +10,14 @@ var accountHelper = AccountHelper;
 
 const minSize = { width: 1000, height: 760 };
 class App extends React.Component<any, any> {
-
   constructor(props: any) {
     super(props);
 
     this.state = {
       windows: null,
       screenWidth: 0,
-      screenHeight: 0
+      screenHeight: 0,
+      style: null
     }
     
     accountHelper.accountName = "";
@@ -34,7 +31,8 @@ class App extends React.Component<any, any> {
       {
           this.setState({
             screenWidth: result.width,
-            screenHeight: result.height
+            screenHeight: result.height,
+            style: style(result.width, result.height)
           });
       }
 
@@ -50,10 +48,10 @@ class App extends React.Component<any, any> {
         windowTitle="ToothMate Dental Software"
         minSize={minSize}
         size={maxSize}
-        styleSheet={style(this.state.screenWidth, this.state.screenHeight)}
+        styleSheet={this.state.style}
         >
           <View style={containerStyle}>
-              <TabContainer names={names} createNewWindow={this.createNewWindow} createNewBlankWindow={this.createNewBlankWindow} accountHelper={accountHelper}>
+              <TabContainer names={names} updateResolution={this.updateCurrentResolution} createNewWindow={this.createNewWindow} createNewBlankWindow={this.createNewBlankWindow} accountHelper={accountHelper}>
                 {screens}
               </TabContainer>
             </View>
@@ -67,6 +65,26 @@ class App extends React.Component<any, any> {
 
   }
 
+  updateCurrentResolution = (width:number, height:number) => {
+    this.setState({
+      screenWidth: width,
+      screenHeight: height,
+      style: style(width, height)
+    })
+
+    for (let i = 0; i < this.state.windows.length; i++) {
+      let tempWindow = <Window
+      windowTitle="ToothMate Dental Software"
+      minSize={minSize}
+      styleSheet={style(width, height)}
+      >
+        {this.state.windows[i].props.children}
+      </Window>
+      this.state.windows[i] = tempWindow;
+    }
+    this.setState(this.state)
+  }
+
   // Reference to this function needs to be passed to each component in order for
   // this App component to allow for new Window components to be created and displayed
   createNewWindow = (view: any, name: string) => {
@@ -77,10 +95,10 @@ class App extends React.Component<any, any> {
       <Window
         windowTitle="ToothMate Dental Software"
         minSize={minSize}
-        styleSheet={style(this.state.screenWidth, this.state.screenHeight)}
+        styleSheet={this.state.style}
       >
         <View style={containerStyle}>
-          <TabContainer names={nameArray} createNewWindow={this.createNewWindow} createNewBlankWindow={this.createNewBlankWindow} accountHelper={accountHelper}>
+          <TabContainer names={nameArray} updateResolution={this.updateCurrentResolution} createNewWindow={this.createNewWindow} createNewBlankWindow={this.createNewBlankWindow} accountHelper={accountHelper}>
             {viewArray}
           </TabContainer>
         </View>
@@ -99,7 +117,7 @@ class App extends React.Component<any, any> {
       <Window
         windowTitle="ToothMate Dental Software"
         minSize={minSize}
-        styleSheet={style(this.state.screenWidth, this.state.screenHeight)}
+        styleSheet={this.state.style}
       >
         <View style={containerStyle}>
             {view}

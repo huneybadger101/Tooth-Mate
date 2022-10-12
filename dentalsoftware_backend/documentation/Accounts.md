@@ -1,5 +1,7 @@
 # Accounts Endpoints
 
+[Back](./README.md)
+
 `/accounts/getAllAccounts` -> Returns a dictionary containing all items in the Accounts table.
 
 - Request type: Post

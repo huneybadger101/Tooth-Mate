@@ -238,7 +238,7 @@ export class QuoteViewer extends React.Component<any, any> {
 
         return (
 
-                <View style="flex: auto;">
+                <View id="mainView" style="flex: auto;">
                     <View style="flex: auto; flex-direction: 'row';">
                         <View style="flex: 1; background-color: 'grey';">
                             <Text>Please select a Quote: </Text>

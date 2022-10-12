@@ -1,5 +1,6 @@
 # Login Endpoints
 
+[Back](./README.md)
 
 `/login/loginAccount` -> Takes in a username + password and compares them to existing data in the database. Will return success = 1 if the salted + hashed given password matches that of the password that is in the database.
 

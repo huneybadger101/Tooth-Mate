@@ -3,7 +3,6 @@ import { NHIcorrectFormatCheck } from "./Calendarhelpers/textFormatFunctions";
 import React from "react";
 import axios from 'axios';
 import Alert from "./alert";
-import ToothCreator from "./ToothCreator";
 
 export class PatientDataViewer extends React.Component<any, any> {
 
@@ -21,8 +20,9 @@ export class PatientDataViewer extends React.Component<any, any> {
             currentEmailAddress: "",
             currentNotes: "",
             alertView: null,
-            teeth: [],
-            teethIndex: 0
+            currentExistingConditionsViews: [],
+            currentExistingConditionNames: [],
+            currentExistingConditionNotes: []
         }
 
         axios.post('http://localhost:3000/patients/getAllPatientData')
@@ -126,22 +126,18 @@ export class PatientDataViewer extends React.Component<any, any> {
             }
         }
 
+        const textHandlerExistingConditionsNames = (textValue:any, index:number) => {
+            this.state.currentExistingConditionNames[index] = textValue;
+        }
+
+        const textHandlerExistingConditionsNotes = (textValue:any, index:number) => {
+            this.state.currentExistingConditionNotes[index] = textValue;
+        }
+
         const alertDismissController = () => {
             this.setState({
                 alertView: null
             })
-        }
-
-        const updateTeethIndex = (index:number) => {
-            console.log("teethindex: " + index)
-            this.setState({
-                teethIndex: index
-            })
-        }
-
-        const getTeeth = (teeth:any) => {
-            this.state.teeth[this.state.teethIndex] = teeth;
-            console.log(this.state.teeth[this.state.teethIndex])
         }
 
         const submitNewPatient = {
@@ -156,7 +152,7 @@ export class PatientDataViewer extends React.Component<any, any> {
                     patient_Contact_Number: this.state.currentContactNumber,
                     patient_Email_Address: this.state.currentEmailAddress,
                     patient_Notes: this.state.currentNotes,
-                    patient_Teeth: this.state.teeth
+                    patient_Existing_Conditions: (this.state.currentExistingConditionNames != "" ? {ExistingConditionsNames: this.state.currentExistingConditionNames, ExistingConditionsNotes: this.state.currentExistingConditionNotes} : undefined)
                 }
                 axios.post('http://localhost:3000/patients/createNewPatient', null, {
                     headers: {
@@ -166,13 +162,13 @@ export class PatientDataViewer extends React.Component<any, any> {
                 .then((res) => {
                     if (res.data.error) {
                         result = 1
-                        alertView = <Alert title={"Error"} message={res.data.error} style={"background-color: 'red'; width: 600px; height: 400px;"} dismissAlert={alertDismissController}></Alert>
+                        alertView = <Alert title={"Error"} message={res.data.error} style={"background-color: 'red';"} dismissAlert={alertDismissController}></Alert>
                         this.setState({
                             alertView: alertView
                         })
                     } else {
                         result = 0
-                        alertView = <Alert title={"Success"} message={"Added booking to database!"} style={"background-color: 'green'; width: 300px; height: 100px;"} dismissAlert={alertDismissController}></Alert>
+                        alertView = <Alert title={"Success"} message={"Added booking to database!"} style={"background-color: 'green';"} dismissAlert={alertDismissController}></Alert>
                         this.setState({
                             alertView: alertView,
                             currentFirstName: "",
@@ -182,14 +178,17 @@ export class PatientDataViewer extends React.Component<any, any> {
                             currentDOB: "",
                             currentContactNumber: "",
                             currentEmailAddress: "",
-                            currentNotes: ""
+                            currentNotes: "",
+                            currentExistingConditionNames: [],
+                            currentExistingConditionNotes: [],
+                            currentExistingConditionsViews: []
                         })
                     }
                 })
                 .catch((err) => {
                     console.log(err)
                     result = 1
-                    alertView = <Alert title={"Error"} message={err} style={"background-color: 'red'; width: 600px; height: 400px;"} dismissAlert={alertDismissController}></Alert>
+                    alertView = <Alert title={"Error"} message={err} style={"background-color: 'red';"} dismissAlert={alertDismissController}></Alert>
                     this.setState({
                         alertView: alertView
                     })
@@ -197,47 +196,72 @@ export class PatientDataViewer extends React.Component<any, any> {
             }
         }
 
-        const textStyle = "color: 'black'; font-size: 20px;";
+        const removeExistingCondition = () => {
+            this.state.currentExistingConditionNames.pop()
+            this.state.currentExistingConditionNotes.pop()
+            this.state.currentExistingConditionsViews.pop()
+            this.setState(this.state)
+        }
+
+        const addExistingCondition = () => {
+            let currentIndex = this.state.currentExistingConditionsViews.length;
+            this.state.currentExistingConditionsViews.push(
+                <View style="margin: 0px; flex-direction: 'row';">
+                    <Text id="titleCenterAlign" style={"flex: 1; border: 1px solid black; background: 'LightGrey';"}>Condition {this.state.currentExistingConditionsViews.length + 1} Name</Text>
+                    <LineEdit id="textEntry" style={"flex: 2;"} on={{textChanged: (text) => textHandlerExistingConditionsNames(text, currentIndex)}} text={this.state.currentExistingConditionNames[currentIndex]} />
+                    <Text id="titleCenterAlign" style={"flex: 1; border: 1px solid black; background: 'LightGrey';"}>Condition {this.state.currentExistingConditionsViews.length + 1} Notes</Text>
+                    <LineEdit id="textEntry" style={"flex: 2;"} on={{textChanged: (text) => textHandlerExistingConditionsNotes(text, currentIndex)}} text={this.state.currentExistingConditionNotes[currentIndex]} />
+                </View>
+            )
+            this.setState(this.state)
+        }
+
+        const textStyle = "color: 'black'; font-size: 20px;"; 
 
         return (
-            <View style="flex: auto;">
+            <View id="mainView" style="flex: auto;">
                 <View style="margin: 0px; flex-direction: 'row';">
-                    <Text style={"flex: 1; border: 1px solid black; background: 'LightGrey';"}>Patient First Name</Text>
-                    <LineEdit style={"flex: 2;"} on={textHandlerFirstName} text={this.state.currentFirstName} />
+                    <Text id="titleCenterAlign" style={"flex: 1; border: 1px solid black; background: 'LightGrey';"}>Patient First Name</Text>
+                    <LineEdit id="textEntry" style={"flex: 2;"} on={textHandlerFirstName} text={this.state.currentFirstName} />
                 </View>
                 <View style="margin: 0px; flex-direction: 'row';">
-                    <Text style={"flex: 1; border: 1px solid black; background: 'LightGrey';"}>Patient Middle Name (Optional)</Text>
-                    <LineEdit style={"flex: 2;"} on={textHandlerMiddleName} text={this.state.currentMiddleName} />
+                    <Text id="titleCenterAlign" style={"flex: 1; border: 1px solid black; background: 'LightGrey';"}>Patient Middle Name (Optional)</Text>
+                    <LineEdit id="textEntry" style={"flex: 2;"} on={textHandlerMiddleName} text={this.state.currentMiddleName} />
                 </View>
                 <View style="margin: 0px; flex-direction: 'row';">
-                    <Text style={"flex: 1; border: 1px solid black; background: 'LightGrey';"}>Patient Last Name</Text>
-                    <LineEdit style={"flex: 2;"} on={textHandlerLastName} text={this.state.currentLastName} />
+                    <Text id="titleCenterAlign" style={"flex: 1; border: 1px solid black; background: 'LightGrey';"}>Patient Last Name</Text>
+                    <LineEdit id="textEntry" style={"flex: 2;"} on={textHandlerLastName} text={this.state.currentLastName} />
                 </View>
                 <View style="margin: 0px; flex-direction: 'row';">
-                    <Text style={"flex: 1; border: 1px solid black; background: 'LightGrey';"}>Patient NHI Number</Text>
-                    <LineEdit style={"flex: 2;"} on={textHandlerNHI} text={this.state.currentNHI} />
+                    <Text id="titleCenterAlign" style={"flex: 1; border: 1px solid black; background: 'LightGrey';"}>Patient NHI Number</Text>
+                    <LineEdit id="textEntry" style={"flex: 2;"} on={textHandlerNHI} text={this.state.currentNHI} />
                 </View>
                 <View style="margin: 0px; flex-direction: 'row';">
-                    <Text style={"flex: 1; border: 1px solid black; background: 'LightGrey';"}>Patient DOB</Text>
-                    <LineEdit style={"flex: 2;"} on={textHandlerDOB} text={this.state.currentDOB} />
+                    <Text id="titleCenterAlign" style={"flex: 1; border: 1px solid black; background: 'LightGrey';"}>Patient DOB</Text>
+                    <LineEdit id="textEntry" style={"flex: 2;"} on={textHandlerDOB} text={this.state.currentDOB} />
                 </View>
                 <View style="margin: 0px; flex-direction: 'row';">
-                    <Text style={"flex: 1; border: 1px solid black; background: 'LightGrey';"}>Patient Contact Number</Text>
-                    <LineEdit style={"flex: 2;"} on={textHandlerContactNumber} text={this.state.currentContactNumber} />
+                    <Text id="titleCenterAlign" style={"flex: 1; border: 1px solid black; background: 'LightGrey';"}>Patient Contact Number</Text>
+                    <LineEdit id="textEntry" style={"flex: 2;"} on={textHandlerContactNumber} text={this.state.currentContactNumber} />
                 </View>
                 <View style="margin: 0px; flex-direction: 'row';">
-                    <Text style={"flex: 1; border: 1px solid black; background: 'LightGrey';"}>Patient Email Address</Text>
-                    <LineEdit style={"flex: 2;"} on={textHandlerEmailAddress} text={this.state.currentEmailAddress} />
+                    <Text id="titleCenterAlign" style={"flex: 1; border: 1px solid black; background: 'LightGrey';"}>Patient Email Address</Text>
+                    <LineEdit id="textEntry" style={"flex: 2;"} on={textHandlerEmailAddress} text={this.state.currentEmailAddress} />
                 </View>
                 <View style="margin: 0px; flex-direction: 'row';">
-                    <Text style={"flex: 1; border: 1px solid black; background: 'LightGrey';"}>Patient Notes</Text>
-                    <LineEdit style={"flex: 2;"} on={textHandlerNotes} text={this.state.currentNotes} />
+                    <Text id="titleCenterAlign" style={"flex: 1; border: 1px solid black; background: 'LightGrey';"}>Patient Notes</Text>
+                    <LineEdit id="textEntry" style={"flex: 2;"} on={textHandlerNotes} text={this.state.currentNotes} />
                 </View>
-
-                <ToothCreator style="flex: shrink;" passbackTeeth={getTeeth} getVisitIndex={() => {return 0}} updateTeethIndex={updateTeethIndex}/>
+                <View style="margin: 0px; flex-direction: 'row';">
+                    <Button id="button" text="Remove Existing Condition" on={{pressed: removeExistingCondition}}/>
+                    <Button id="button" text="Add Existing Condition" on={{pressed: addExistingCondition}}/>
+                </View>
+                {this.state.currentExistingConditionsViews.map((view:any)=>{
+                        return view
+                })}
                 
                 <View style="margin: 0px; flex-direction: 'row';">
-                    <Button text={"Submit"} on={submitNewPatient}></Button>
+                    <Button id="button" text={"Submit"} on={submitNewPatient}></Button>
                 </View>
 
                 {this.state.alertView}

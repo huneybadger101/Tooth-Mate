@@ -16,19 +16,7 @@ function getTicketDataByID(id, res) {
     let ticketVisitToothData;
 
     let sql = "SELECT * FROM tickets WHERE ID = '" + ticketID + "';"
-    tClient.query(sql, function (err, result) {
-        if (err) {
-            console.log(err)
-            if (res) {
-                res.send({result: 1, error: err})
-            } else {
-                return {result: 1}
-            }
-        }
-
-        ticketData = result;
-
-        sql = "SELECT * FROM ticket_visit WHERE Ticket = '" + ticketID + "';"
+    try {
         tClient.query(sql, function (err, result) {
             if (err) {
                 console.log(err)
@@ -38,20 +26,10 @@ function getTicketDataByID(id, res) {
                     return {result: 1}
                 }
             }
-    
-            ticketVisitData = result;
 
-            sql = "SELECT * FROM ticket_visit_tooth WHERE";
+            ticketData = result;
 
-            for (let i = 0; i < ticketVisitData.length; i++) {
-                if (sql.endsWith("'")) {
-                    sql += " OR";
-                }
-                sql += " TicketVisit = '" + ticketVisitData[i]['ID'] + "'";
-            }
-
-            sql += ";"
-
+            sql = "SELECT * FROM ticket_visit WHERE Ticket = '" + ticketID + "';"
             tClient.query(sql, function (err, result) {
                 if (err) {
                     console.log(err)
@@ -61,17 +39,44 @@ function getTicketDataByID(id, res) {
                         return {result: 1}
                     }
                 }
-                ticketVisitToothData = result;
+        
+                ticketVisitData = result;
 
-                res.send({result: {
-                    ticket: ticketData,
-                    ticketVisit: ticketVisitData,
-                    ticketVisitTooth: ticketVisitToothData
+                sql = "SELECT * FROM ticket_visit_tooth WHERE";
+
+                for (let i = 0; i < ticketVisitData.length; i++) {
+                    if (sql.endsWith("'")) {
+                        sql += " OR";
                     }
-                })
+                    sql += " TicketVisit = '" + ticketVisitData[i]['ID'] + "'";
+                }
+
+                sql += ";"
+
+                tClient.query(sql, function (err, result) {
+                    if (err) {
+                        console.log(err)
+                        if (res) {
+                            res.send({result: 1, error: err})
+                        } else {
+                            return {result: 1}
+                        }
+                    }
+                    ticketVisitToothData = result;
+
+                    res.send({result: {
+                        ticket: ticketData,
+                        ticketVisit: ticketVisitData,
+                        ticketVisitTooth: ticketVisitToothData
+                        }
+                    })
+                });
             });
         });
-    });
+    } catch (error) {
+        console.log(error)
+        res.send(error)
+    }   
 }
 
 ticketsRouter.post('/getAllTickets', (req, res) => {
@@ -145,18 +150,7 @@ function createNewTicket(res = null, ticketData) {
     }
 
     let sql = "INSERT INTO `tickets` (`Patient`, `NumberOfVisits`) VALUES (" + ticketData.ticket.PatientID + ", " + ticketData.ticket.NumberOfVisits + ")"
-    tClient.query(sql, function (err, result) {
-        if (err) {
-            console.log(err)
-            if (res) {
-                res.send({result: 1, error: err})
-                return
-            } else {
-                return {result: 1, error: err}
-            }
-        }
-
-        sql = "SELECT * FROM tickets ORDER BY id DESC LIMIT 1";
+    try {
         tClient.query(sql, function (err, result) {
             if (err) {
                 console.log(err)
@@ -167,13 +161,8 @@ function createNewTicket(res = null, ticketData) {
                     return {result: 1, error: err}
                 }
             }
-            ticketID = result[0]['ID'];
-            sql = "INSERT INTO `ticket_visit` (`VisitNumber`, `Ticket`, `Date`, `Time`, `VisitTimeLength`) VALUES ";
-            for (let i = 0; i < ticketData.ticketVisit.length; i++) {
-                sql += "(" + ticketData.ticketVisit[i]['VisitNumber'] + ", " + ticketID + ", '" + ticketData.ticketVisit[i]['Date'] + "', '" + ticketData.ticketVisit[i]['Time'] + "', '" + ticketData.ticketVisit[i]['VisitTimeLength'] + "'), "
-            }
-            sql = sql.slice(0, -2); 
-            sql += ";";
+
+            sql = "SELECT * FROM tickets ORDER BY id DESC LIMIT 1";
             tClient.query(sql, function (err, result) {
                 if (err) {
                     console.log(err)
@@ -184,7 +173,13 @@ function createNewTicket(res = null, ticketData) {
                         return {result: 1, error: err}
                     }
                 }
-                sql = "SELECT * FROM ticket_visit WHERE Ticket = '" + ticketID + "'";
+                ticketID = result[0]['ID'];
+                sql = "INSERT INTO `ticket_visit` (`VisitNumber`, `Ticket`, `Date`, `Time`, `VisitTimeLength`) VALUES ";
+                for (let i = 0; i < ticketData.ticketVisit.length; i++) {
+                    sql += "(" + ticketData.ticketVisit[i]['VisitNumber'] + ", " + ticketID + ", '" + ticketData.ticketVisit[i]['Date'] + "', '" + ticketData.ticketVisit[i]['Time'] + "', '" + ticketData.ticketVisit[i]['VisitTimeLength'] + "'), "
+                }
+                sql = sql.slice(0, -2); 
+                sql += ";";
                 tClient.query(sql, function (err, result) {
                     if (err) {
                         console.log(err)
@@ -195,21 +190,37 @@ function createNewTicket(res = null, ticketData) {
                             return {result: 1, error: err}
                         }
                     }
-                    sql = "INSERT INTO `ticket_visit_tooth` (`TicketVisit`, `Tooth`, `ProcedureName`, `ProcedureCostDollars`, `ProcedureCostCents`, `Notes`, `ToothData1`, `ToothData2`, `ToothData3`, `ToothData4`, `ToothData5`, `ToothData6`, `ToothData7`, `ToothData8`, `ToothData9`) VALUES "
-                    for (let i = 0; i < ticketData.ticketVisitTeeth.length; i++) {
-                        for (let k = 0; k < result.length; k++) {
-                            if (ticketData.ticketVisitTeeth[i]['VisitNumber'] == result[k]['VisitNumber']) {
-                                sql += "(" + result[k]['ID'] + ", " + ticketData.ticketVisitTeeth[i]['Tooth'] + ", '" + ticketData.ticketVisitTeeth[i]['ProcedureName'] + "', " + ticketData.ticketVisitTeeth[i]['ProcedureCostDollars'] + ", " + ticketData.ticketVisitTeeth[i]['ProcedureCostCents'] + ", '" + ticketData.ticketVisitTeeth[i]['Notes'] + "', " + ticketData.ticketVisitTeeth[i]['ToothData'][0] + ", " + ticketData.ticketVisitTeeth[i]['ToothData'][1] + ", " + ticketData.ticketVisitTeeth[i]['ToothData'][2] + ", " + ticketData.ticketVisitTeeth[i]['ToothData'][3] + ", " + ticketData.ticketVisitTeeth[i]['ToothData'][4] + ", " + ticketData.ticketVisitTeeth[i]['ToothData'][5] + ", " + ticketData.ticketVisitTeeth[i]['ToothData'][6] + ", " + ticketData.ticketVisitTeeth[i]['ToothData'][7] + ", " + ticketData.ticketVisitTeeth[i]['ToothData'][8] + "), "
+                    sql = "SELECT * FROM ticket_visit WHERE Ticket = '" + ticketID + "'";
+                    tClient.query(sql, function (err, result) {
+                        if (err) {
+                            console.log(err)
+                            if (res) {
+                                res.send({result: 1, error: err})
+                                return
+                            } else {
+                                return {result: 1, error: err}
                             }
                         }
-                    }
-                    sql = sql.slice(0, -2); 
-                    sql += ";";
-                    databaseQuery(res, sql);
+                        sql = "INSERT INTO `ticket_visit_tooth` (`TicketVisit`, `Tooth`, `ProcedureName`, `ProcedureCostDollars`, `ProcedureCostCents`, `Notes`, `ToothData1`, `ToothData2`, `ToothData3`, `ToothData4`, `ToothData5`, `ToothData6`, `ToothData7`, `ToothData8`, `ToothData9`) VALUES "
+                        for (let i = 0; i < ticketData.ticketVisitTeeth.length; i++) {
+                            for (let k = 0; k < result.length; k++) {
+                                if (ticketData.ticketVisitTeeth[i]['VisitNumber'] == result[k]['VisitNumber']) {
+                                    sql += "(" + result[k]['ID'] + ", " + ticketData.ticketVisitTeeth[i]['Tooth'] + ", '" + ticketData.ticketVisitTeeth[i]['ProcedureName'] + "', " + ticketData.ticketVisitTeeth[i]['ProcedureCostDollars'] + ", " + ticketData.ticketVisitTeeth[i]['ProcedureCostCents'] + ", '" + ticketData.ticketVisitTeeth[i]['Notes'] + "', " + ticketData.ticketVisitTeeth[i]['ToothData'][0] + ", " + ticketData.ticketVisitTeeth[i]['ToothData'][1] + ", " + ticketData.ticketVisitTeeth[i]['ToothData'][2] + ", " + ticketData.ticketVisitTeeth[i]['ToothData'][3] + ", " + ticketData.ticketVisitTeeth[i]['ToothData'][4] + ", " + ticketData.ticketVisitTeeth[i]['ToothData'][5] + ", " + ticketData.ticketVisitTeeth[i]['ToothData'][6] + ", " + ticketData.ticketVisitTeeth[i]['ToothData'][7] + ", " + ticketData.ticketVisitTeeth[i]['ToothData'][8] + "), "
+                                }
+                            }
+                        }
+                        sql = sql.slice(0, -2); 
+                        sql += ";";
+                        databaseQuery(res, sql);
+                    });
                 });
             });
         });
-    });
+    } catch (error) {
+        console.log(error)
+        res.send(error)
+    }
+    
 }
 
 module.exports = {ticketsRouter, setTClient};

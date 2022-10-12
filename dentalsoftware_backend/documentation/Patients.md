@@ -1,5 +1,7 @@
 # Patients Endpoints
 
+[Back](./README.md)
+
 `/patients/getAllPatientData` -> Returns a dictionary containing all items in the Patients table.
 
 - Request type: Post
@@ -112,7 +114,7 @@ axios.post('http://localhost:3000/patients/updatePatientData', null, {
 
 - Request type: Post
 - Required Headers: String (NHI) - `patient_nhi`, String - `patient_First_Name`, String - `patient_Last_Name`, String - `patient_DOB`, String - `patient_Contact_Number`, String - `patient_Email_Address`.
-- Optional Headers: String - `patient_Middle_Name`
+- Optional Headers: String - `patient_Middle_Name`.
 - Error: In the `response.data` dictionary, `result` will be equal to `1` and `error` will contain the full error logs
 
 Example Code -> 
