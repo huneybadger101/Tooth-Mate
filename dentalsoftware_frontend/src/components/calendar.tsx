@@ -1,4 +1,4 @@
-import { Text, View, Button } from "@nodegui/react-nodegui";
+import { Text, View, Button, Window } from "@nodegui/react-nodegui";
 import React from "react";
 import { getWeekdayStart } from "./Calendarhelpers/calendarHelper";
 import { getMonthDayCount } from "./Calendarhelpers/calendarMonthDayCount";
@@ -6,6 +6,7 @@ import { getWeekdaySelected } from "./Calendarhelpers/calendarDisplaySelectedDat
 import Bookings from "./bookings";
 import { disableCalendarButton } from "./Calendarhelpers/calendarDayButtonDisable";
 import Alert from "./alert";
+import { style } from "../styles/style";
 
 export class Calendar extends React.Component<any, any> {
 
@@ -34,7 +35,10 @@ export class Calendar extends React.Component<any, any> {
         rightHandDateInfo: false,
         currentBookingSelected: "",
         editBookingButton: false,
-        bookingsAlert: null
+        bookingsAlert: null,
+        calendarDisabledButtons: false,
+        calendarDisabledButtonText: "",
+
     }
   }
 
@@ -97,8 +101,12 @@ export class Calendar extends React.Component<any, any> {
               }
 
               //Sets the weekday start for each month using a function from another file (calendayHelper.tsx)
-              this.setState({weekDaySelected: getWeekdayStart(this.state.monthSelected, this.state.year)});
-              this.setState({monthDayCount: getMonthDayCount(this.state.monthSelected, this.state.year)}); 
+              this.setState({
+                weekDaySelected: getWeekdayStart(this.state.monthSelected, this.state.year),
+                monthDayCount: getMonthDayCount(this.state.monthSelected, this.state.year),
+                calendarDisabledButtons: false, 
+                calendarDisabledButtonText: ""
+              });
           }
         }
         
@@ -116,8 +124,12 @@ export class Calendar extends React.Component<any, any> {
               }
 
               //Sets the weekday start for each month using a function from another file (calendayHelper.tsx)
-              this.setState({weekDaySelected: getWeekdayStart(this.state.monthSelected, this.state.year)});
-              this.setState({monthDayCount: getMonthDayCount(this.state.monthSelected, this.state.year)});
+              this.setState({
+                weekDaySelected: getWeekdayStart(this.state.monthSelected, this.state.year),
+                monthDayCount: getMonthDayCount(this.state.monthSelected, this.state.year),
+                calendarDisabledButtons: false, 
+                calendarDisabledButtonText: ""
+              });
           }
         }
 
@@ -128,11 +140,11 @@ export class Calendar extends React.Component<any, any> {
 
           if (i >= this.state.weekDaySelected)
           {
+
             let buttonName_0 = (i + (1 - this.state.weekDaySelected)).toString();
             calendar1.push( 
-              <View style="border: 1px solid black; height: 100px; width: 100px;">
-                <Button text={ buttonName_0 } 
-                style="height: 100px; width: 100px;" 
+                <Button text={ buttonName_0 }
+                id={"buttonCalanderDate"}
                 enabled={disableCalendarButton(buttonName_0, this.state.daySelected, this.state.monthSelected, this.state.currentMonthSelected)}
                 on={{clicked: () => {
                   this.setState(
@@ -143,23 +155,23 @@ export class Calendar extends React.Component<any, any> {
                     currentYearSelected: this.state.year,
                     currentWeekdaySelected: getWeekdaySelected(this.state.monthSelected, this.state.year, buttonName_0)}
                   )}}} />
-              </View>
               )
           }
           else
           {
             calendar1.push( 
-              <View style="border: 1px solid black; height: 100px; width: 100px; background-color: 'grey';">
-                <Text></Text>
-              </View>
+              <Button
+                id={"buttonCalanderDateDisabled"}
+                enabled={this.state.calendarDisabledButtons}
+                text={this.state.calendarDisabledButtonText}
+                />
               )
           }
           
           let buttonName_1 = (i + (8 - this.state.weekDaySelected)).toString();
           calendar2.push( 
-            <View style="border: 1px solid black; height: 100px; width: 100px;">
               <Button text={ buttonName_1 } 
-              style="height: 100px; width: 100px;" 
+              id={"buttonCalanderDate"}
               enabled={disableCalendarButton(buttonName_1, this.state.daySelected, this.state.monthSelected, this.state.currentMonthSelected)} 
               on={{clicked: () => this.setState(
                 {daySelected: buttonName_1,
@@ -169,14 +181,12 @@ export class Calendar extends React.Component<any, any> {
                   currentYearSelected: this.state.year,
                   currentWeekdaySelected: getWeekdaySelected(this.state.monthSelected, this.state.year, buttonName_1)}
                 )}} />
-            </View>
           )
 
           let buttonName_2 = (i + (15 - this.state.weekDaySelected)).toString();
           calendar3.push( 
-            <View style="border: 1px solid black; height: 100px; width: 100px;">
               <Button text={ buttonName_2 } 
-              style="height: 100px; width: 100px;" 
+              id={"buttonCalanderDate"}
               enabled={disableCalendarButton(buttonName_2, this.state.daySelected, this.state.monthSelected, this.state.currentMonthSelected)} 
               on={{clicked: () => this.setState(
                 {daySelected: buttonName_2,
@@ -186,15 +196,13 @@ export class Calendar extends React.Component<any, any> {
                   currentYearSelected: this.state.year,
                   currentWeekdaySelected: getWeekdaySelected(this.state.monthSelected, this.state.year, buttonName_2)}
                 )}} />
-            </View>
           )
 
           if (i + (22 - this.state.weekDaySelected) <= this.state.monthDayCount){
             let buttonName_3 = (i + (22 - this.state.weekDaySelected)).toString();
             calendar4.push( 
-              <View style="border: 1px solid black; height: 100px; width: 100px;">
                 <Button text={ buttonName_3 } 
-                style="height: 100px; width: 100px;" 
+                id={"buttonCalanderDate"}
                 enabled={disableCalendarButton(buttonName_3, this.state.daySelected, this.state.monthSelected, this.state.currentMonthSelected)} 
                 on={{clicked: () => this.setState(
                   {daySelected: buttonName_3,
@@ -204,16 +212,15 @@ export class Calendar extends React.Component<any, any> {
                     currentYearSelected: this.state.year,
                     currentWeekdaySelected: getWeekdaySelected(this.state.monthSelected, this.state.year, buttonName_3)}
                   )}} />
-              </View>
             )
           }
 
           if (i + (29 - this.state.weekDaySelected) <= this.state.monthDayCount){
             let buttonName_4 = (i + (29 - this.state.weekDaySelected)).toString();
             calendar5.push( 
-              <View style="border: 1px solid black; height: 100px; width: 100px;">
                 <Button text={ buttonName_4 } 
-                style="height: 100px; width: 100px;" 
+                id={"buttonCalanderDate"}
+                //style={this.state.calendarButtonStyle}
                 enabled={disableCalendarButton(buttonName_4, this.state.daySelected, this.state.monthSelected, this.state.currentMonthSelected)} 
                 on={{clicked: () => this.setState(
                   {daySelected: buttonName_4, 
@@ -223,24 +230,26 @@ export class Calendar extends React.Component<any, any> {
                   currentYearSelected: this.state.year,
                   currentWeekdaySelected: getWeekdaySelected(this.state.monthSelected, this.state.year, buttonName_4)}
                   )}} />
-              </View>
             )
           }
           else
           {
             calendar5.push( 
-              <View style="border: 1px solid black; height: 100px; width: 100px; background-color: 'grey';">
-                <Text></Text>
-              </View>
+              <Button
+                id={"buttonCalanderDateDisabled"}
+                //style={this.state.calendarButtonStyle}
+                enabled={this.state.calendarDisabledButtons}
+                text={this.state.calendarDisabledButtonText}
+                />
               )
           }
 
           if (i + (36 - this.state.weekDaySelected) <= this.state.monthDayCount){
             let buttonName_5 = (i + (36 - this.state.weekDaySelected)).toString();
             calendar6.push( 
-              <View style="border: 1px solid black; height: 100px; width: 100px;">
                 <Button text={ buttonName_5 } 
-                style="height: 100px; width: 100px;" 
+                id={"buttonCalanderDate"}
+                //style={this.state.calendarButtonStyle}
                 enabled={disableCalendarButton(buttonName_5, this.state.daySelected, this.state.monthSelected, this.state.currentMonthSelected)}
                 on={{clicked: () => this.setState(
                   {daySelected: buttonName_5,
@@ -250,19 +259,20 @@ export class Calendar extends React.Component<any, any> {
                     currentYearSelected: this.state.year,
                     currentWeekdaySelected: getWeekdaySelected(this.state.monthSelected, this.state.year, buttonName_5)}
                   )}} />
-              </View>
             )
           }
           else
           {
             calendar6.push(
-              <View style="border: 1px solid black; height: 100px; width: 100px; background-color: 'grey';">
-                <Text></Text>
-              </View>
+              <Button
+                id={"buttonCalanderDateDisabled"}
+                //style={this.state.calendarButtonStyle}
+                enabled={this.state.calendarDisabledButtons}
+                text={this.state.calendarDisabledButtonText}
+                />
               )
           }
         }
-
 
         const containerStyle = `
             flex-grow: 0 0 0;
@@ -272,13 +282,6 @@ export class Calendar extends React.Component<any, any> {
         const containerStyle2 = `
             flex-grow: 2 2 2;
             
-            flex-direction: 'column';
-            background: 'white';
-        `;
-
-        const containerStyle3 = `
-            flex-shrink: 2;
-            bottom: 10px;
             flex-direction: 'column';
             background: 'white';
         `;
@@ -295,19 +298,19 @@ export class Calendar extends React.Component<any, any> {
               <View style={containerStyle}>
 
                 <View style="flex: 0; flex-direction: 'row';">
-                    <Button style="width: 200px;" text={"<<"} on={buttonHandlerDecreaseMonth}/>
-                        <Text style="border: 1px solid black; width: 300px;">{this.state.month[this.state.monthSelected] + ", " + this.state.year}</Text>
-                    <Button style="width: 200px;" text={">>"} on={buttonHandlerIncreaseMonth}/>
+                    <Button id={"monthChangeButtonsCalander"} text={"<<"} on={buttonHandlerDecreaseMonth}/>
+                        <Text id={"monthSelectedCalander"}>{this.state.month[this.state.monthSelected] + ", " + this.state.year}</Text>
+                    <Button id={"monthChangeButtonsCalander"} text={">>"} on={buttonHandlerIncreaseMonth}/>
                 </View>
 
                 <View style="flex: 0; flex-direction: 'row';">
-                    <Text style="flex: 0; border: 1px solid black; width: 100px;">{this.state.day[0]}</Text>
-                    <Text style="flex: 0; border: 1px solid black; width: 100px;">{this.state.day[1]}</Text>
-                    <Text style="flex: 0; border: 1px solid black; width: 100px;">{this.state.day[2]}</Text>
-                    <Text style="flex: 0; border: 1px solid black; width: 100px;">{this.state.day[3]}</Text>
-                    <Text style="flex: 0; border: 1px solid black; width: 100px;">{this.state.day[4]}</Text>
-                    <Text style="flex: 0; border: 1px solid black; width: 100px;">{this.state.day[5]}</Text>
-                    <Text style="flex: 0; border: 1px solid black; width: 100px;">{this.state.day[6]}</Text>
+                    <Text id={"weekdaysCalander"}>{this.state.day[0]}</Text>
+                    <Text id={"weekdaysCalander"}>{this.state.day[1]}</Text>
+                    <Text id={"weekdaysCalander"}>{this.state.day[2]}</Text>
+                    <Text id={"weekdaysCalander"}>{this.state.day[3]}</Text>
+                    <Text id={"weekdaysCalander"}>{this.state.day[4]}</Text>
+                    <Text id={"weekdaysCalander"}>{this.state.day[5]}</Text>
+                    <Text id={"weekdaysCalander"}>{this.state.day[6]}</Text>
                 </View>
 
                 <View style="flex: 0; flex-direction: 'row';">
@@ -331,13 +334,13 @@ export class Calendar extends React.Component<any, any> {
 
               </View>
 
-
               {/**/}
               <View style={containerStyle2}>
 
-
                 {/*Will call the bookings component to be diplayed on the calendar page and send several variables for use in the bookings page*/}
-                <Bookings data={
+                
+                <Bookings 
+                data={
                   this.state.daySelected + "." + 
                   (this.state.currentMonthSelected + 1) + "." +
                   this.state.currentYearSelected + "." +
@@ -346,18 +349,6 @@ export class Calendar extends React.Component<any, any> {
                 
 
               </View>
-            </View>
-
-
-            {/**/}
-            <View style={containerStyle3}>
-
-                {/* <ScrollArea style={"flex-grow: 1;"}>
-                <View style={"flex-grow: 1; width: 500px;"}>
-                  {bookingList}
-                </View>
-                </ScrollArea> */}
-
             </View>
             
             {this.state.bookingsAlert}

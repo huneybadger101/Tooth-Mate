@@ -138,7 +138,7 @@ class App extends React.Component<any, any> {
     // Must wrap main App component in a React.Fragment component
     // in order to allow for sub-windows to be created when needed
     return (
-      <React.Fragment> 
+      <React.Fragment>
         {this.state.windows}
       </React.Fragment>
     );
