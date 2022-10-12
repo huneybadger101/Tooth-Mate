@@ -1,10 +1,20 @@
-import { View, Button} from "@nodegui/react-nodegui";
-import {  WidgetEventTypes } from "@nodegui/nodegui";
+import { View, Button, useEventHandler} from "@nodegui/react-nodegui";
+import { WidgetEventTypes, QResizeEvent } from "@nodegui/nodegui";
 import React, { useState } from "react";
 import TimeStamp from "./timestamp";
 import Homepage from "./homepage";
 
 function TabContainer(props: any) {
+
+    const resizeChecker = useEventHandler<any>(
+        {
+            [WidgetEventTypes.Resize]: (event: any) => {
+                const resizeEvent = new QResizeEvent(event)
+                props.updateResolution(resizeEvent.size().width(), resizeEvent.size().height())
+          }
+        },
+        []
+      );
 
     let lastDraggedView: any;
 
@@ -153,7 +163,7 @@ function TabContainer(props: any) {
                 </View>;
     // Display the view
     return (
-        <View style="flex: auto; flex-direction: 'column';">
+        <View on={resizeChecker} style="flex: auto; flex-direction: 'column';">
             {header}
             <View style="flex: auto; width: '100%'; height: '100%';">
                 {AddExtraProps(state.view, {newTab: createNewtab, postLogin: createHomepageAfterLogin})}

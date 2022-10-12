@@ -219,7 +219,7 @@ export class PatientDataViewer extends React.Component<any, any> {
         const textStyle = "color: 'black'; font-size: 20px;"; 
 
         return (
-            <View style="flex: auto;">
+            <View id="mainView" style="flex: auto;">
                 <View style="margin: 0px; flex-direction: 'row';">
                     <Text id="titleCenterAlign" style={"flex: 1; border: 1px solid black; background: 'LightGrey';"}>Patient First Name</Text>
                     <LineEdit id="textEntry" style={"flex: 2;"} on={textHandlerFirstName} text={this.state.currentFirstName} />

@@ -186,7 +186,7 @@ export class QuoteCreator extends React.Component<any, any> {
         const textStyle = "color: 'black'; font-size: 20px;";
 
         return (
-            <View style="flex: auto;">
+            <View id="mainView" style="flex: auto;">
                 <View style="margin: 0px; flex-direction: 'row';">
                     <Text style={"flex: 1; border: 1px solid black; background: 'LightGrey';"}>Booking</Text>
                     <ComboBox style={"flex: 2;"} items={this.state.bookings} currentText={"Please select a booking"} on={textHandlerBookingSelected} />

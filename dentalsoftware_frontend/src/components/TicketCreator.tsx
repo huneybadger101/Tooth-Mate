@@ -233,7 +233,7 @@ export class TicketCreator extends React.Component<any, any> {
         </View>
 
         return (
-            <View style="flex: auto;">
+            <View id="mainView" style="flex: auto;">
                 {editingView}
                 <View style="flex-shrink: 1; flex-direction: 'row';">
                     <Button style="flex: auto;" text={"<"} enabled={(this.state.editingVisits.length > 1 ? true : false)} on={

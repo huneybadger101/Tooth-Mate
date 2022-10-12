@@ -154,8 +154,8 @@ export class PatientDataViewer extends React.Component<any, any> {
 
         } else {
             return (
-                <View style="flex: auto;">
-                    <View style="flex: auto; flex-direction: 'row';">
+                <View id="mainView" style="flex: auto;">
+                    <View id="mainView" style="flex: auto; flex-direction: 'row';">
                         <View style="flex: 1; background-color: 'grey';">
                             <Text id="titleCenterAlign" style={textStyle}>Patients</Text>
                             <View style="flex: auto;">
@@ -165,7 +165,7 @@ export class PatientDataViewer extends React.Component<any, any> {
                             </View>
                         </View>
     
-                        <View style="flex: 2; flex-direction: 'column';">
+                        <View id="mainViewTransparent" style="flex: 2; flex-direction: 'column';">
                             <Text style={textStyle}>Patient NHI: {selectedPatientNHI}</Text>
                             <Text style={textStyle}>Patient Name: {selectedPatientName}</Text>
                             <Text style={textStyle}>Patient Date of Birth: {selectedPatientDOB}</Text>
@@ -174,12 +174,12 @@ export class PatientDataViewer extends React.Component<any, any> {
                             <Text style={textStyle}>Patient Notes: {selectedPatientNotes}</Text>
                         </View>
     
-                        <View style="flex: 2; flex-direction: 'column';">
+                        <View id="mainViewTransparent" style="flex: 2; flex-direction: 'column';">
                             <Text style={textStyle}>{selectedPatientName}'s Last Booking: {selectedPatientLastBooking}</Text>
                             <Text style={textStyle}>{selectedPatientName}'s Next Booking: {selectedPatientNextBooking}</Text>
                         </View>
     
-                        <View style="flex: 2; flex-direction: 'column';">
+                        <View id="mainViewTransparent" style="flex: 2; flex-direction: 'column';">
                             <Button style="flex: 1; color: 'black'; font-size: 35px;" visible={selectedPatientNHI == null ? false : true} text={"Create Ticket"} on={
                                 {
                                     // Only trigger when left click is released

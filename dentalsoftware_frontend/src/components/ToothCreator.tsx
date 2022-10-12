@@ -655,7 +655,7 @@ export class ToothCreator extends React.Component<any, any> {
 
         return (
 
-            <View style={"flex-grow: 1; flex-direction: 'column';"}>
+            <View id="mainView" style={"flex-grow: 1; flex-direction: 'column';"}>
   
                 <View style="flex-direction: 'row';">
                     <View style={containerStyle}>

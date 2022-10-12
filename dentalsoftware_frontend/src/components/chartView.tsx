@@ -46,7 +46,7 @@ export class ChartView extends React.Component<any, any> {
         }
 
         return (
-            <View style="flex: 1; justify-content: 'center'; align-items: 'center';">
+            <View id="mainView" style="flex: 1; justify-content: 'center'; align-items: 'center';">
                 <Text>{this.props.name}</Text>
                 <View style="flex: 'auto'; margin: 10px;">
                     <View style="flex: 'auto'; flex-direction: 'row';">
