@@ -78,7 +78,6 @@ export const style = (width:any, height:any) =>
         border-style: solid;
         border-radius: 15px;
     }
-`
     #buttonCalanderDate {
         background-color: #DDDDDD;
         border-width: 1px;
