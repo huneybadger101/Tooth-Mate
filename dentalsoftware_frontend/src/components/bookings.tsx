@@ -442,6 +442,10 @@ export class Bookings extends React.Component<any, any> {
                     this.state.patientNotes[this.state.currentBookingSelected] = "";
 
                     this.setState({
+                        bookingMessageSelected: this.state.bookingMessageSelectedCopy
+                    });
+
+                    this.setState({
                         bookingCreateOrEditDisplay: 0,
                         bookingOrCancelButtonText: "Create Booking",
                         editButtonClicked: false,
@@ -458,6 +462,10 @@ export class Bookings extends React.Component<any, any> {
                     //This will be sent to the booking display chart to tell it the new booking button was clicked
                         //This is to ensure that fields are not prefilled with data that should not be there...
                     this.state.bookingDentalChartString[0] = true;
+
+                    this.setState({
+                        bookingMessageSelected: 2
+                    });
 
                     //Changes settings so the page is the create booking page and resets the patient name combo box
                     this.setState({
