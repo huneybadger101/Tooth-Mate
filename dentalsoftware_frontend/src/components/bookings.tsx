@@ -584,7 +584,6 @@ export class Bookings extends React.Component<any, any> {
 
                 let bookingDateString = bookingYear + "/" + bookingMonth + "/" + bookingDay;
                 if (bookingDateRev == bookingDateString) {
-                    
                     //Sets a reference point for the button that is clicked
                     let bookingSelected = num.toString();
 
@@ -717,7 +716,19 @@ export class Bookings extends React.Component<any, any> {
         //Checks if the date has been changed, if so, it will change the on screen message based on the date selected
         if (bookingDate != this.state.bookingSpare)
         {
-            console.log("DATE WAS CHANGED IN THE BOOKINGS SECTION...");
+
+            let hasBookings = false;
+
+            bookingList = bookingList.filter(function( element:any ) {
+                return element !== undefined;
+            });
+
+            if (bookingList.length > 0) {
+                console.log(bookingList[0].props.children[0].props.children)
+                hasBookings = true
+            }
+
+            //console.log("DATE WAS CHANGED IN THE BOOKINGS SECTION...");
 
             //1 Date selected but no bookings
             //0 No date selected
@@ -725,7 +736,7 @@ export class Bookings extends React.Component<any, any> {
             //Will set the message selected index to display no booking selected
             if (bookingDate == "0/1/0")
             {
-                console.log("NO BOOKING CHOSEN...");
+                //console.log("NO BOOKING CHOSEN...");
 
                 this.setState({
                     bookingSpare: bookingDate,
@@ -734,11 +745,11 @@ export class Bookings extends React.Component<any, any> {
                 });
             }
             //Will set the message selected index to display a booking selected with no bookings
-            else if ((bookingDate != "0/1/0" && bookingList[0] == undefined))
+            else if ((bookingDate != "0/1/0" && !hasBookings))
             {
                 bookingList = [];
 
-                console.log("BOOKING CHOSEN, NO BOOKINGS...");
+                //console.log("BOOKING CHOSEN, NO BOOKINGS...");
 
                 this.setState({
                     bookingSpare: bookingDate,
@@ -747,9 +758,9 @@ export class Bookings extends React.Component<any, any> {
                 });
             }
             //Will set the message selected index to display no message (will be replaced by actual bookings or ticket list)
-            else if ((bookingDate != "0/1/0" && bookingList[0] != undefined))
+            else if ((bookingDate != "0/1/0" && hasBookings))
             {
-                console.log("BOOKING CHOSEN, WITH BOOKINGS...");
+                //console.log("BOOKING CHOSEN, WITH BOOKINGS...");
 
                 this.setState({
                     bookingSpare: bookingDate,
@@ -834,8 +845,8 @@ export class Bookings extends React.Component<any, any> {
                         this.state.dentalChartDataHolderEight,
                         this.state.dentalChartDataHolderNine,
                         this.state.procedure,
-                        this.state.procedureCostStored,
                         this.state.procedureTimeStored,
+                        this.state.procedureCostStored,
                         this.state.patientNotes,
                         dentalChartTotal,
                         this.state.toothSelected)
@@ -1216,6 +1227,10 @@ export class Bookings extends React.Component<any, any> {
             </View>
         );
 
+        bookingList = bookingList.filter(function( element:any ) {
+            return element !== undefined;
+        });
+
         //Will display the booking list
         pageDiplay[0] = (
             <View style="flex-direction: 'row';">
@@ -1231,7 +1246,7 @@ export class Bookings extends React.Component<any, any> {
                     {pageDiplayMessage[this.state.bookingMessageSelected]}
                     
                     {/* Displays the booking class */}
-                    {bookingList[this.state.bookingsBeingDisplayed + 0]}
+                    {bookingList[this.state.bookingsBeingDisplayed]}
 
                 </View>
             </View>
