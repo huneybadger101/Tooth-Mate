@@ -478,6 +478,100 @@ export class Bookings extends React.Component<any, any> {
             }
         }
 
+        const editExistingBookingClicked = {//------------------------------------------------------------------------------------------------------------------------------------
+            clicked: async () => {
+
+                //Deletes arrays contents in preperation to reset the arrays contents
+                //This will stop the arrays size from remaining the size it was prior to the reset
+                    //In other words, if you just used this variable for storing 20 dental charts and
+                    //then try to use it for storing 3 dental charts, it will still contain the 17
+                    //dental charts that were used before...
+                for (var num = 0; num < this.state.bookingDentalChartString.length; num++)
+                {
+                    this.state.bookingDentalChartString[num] = null;
+                }
+
+                //Gets all of the tickets currently created
+                await axios.post('http://localhost:3000/bookings/getBookingDataByID', null, {
+                    headers: {
+                        'ID': 9
+                    }
+                })
+                .then((resTicketsVisit) => {
+
+                    
+
+                    // //TODO: have the booking dental charts load into the below variables...
+                    // for (var num = 0; num < resTicketsVisit.data.result['ticketVisitTooth'].length; num++)
+                    // {
+                    //     this.state.dentalChartDataHolderOne[num] = resTicketsVisit.data.result['ticketVisitTooth'][num]['ToothData1'];
+                    //     this.state.dentalChartDataHolderTwo[num] = resTicketsVisit.data.result['ticketVisitTooth'][num]['ToothData2'];
+                    //     this.state.dentalChartDataHolderThree[num] = resTicketsVisit.data.result['ticketVisitTooth'][num]['ToothData3'];
+                    //     this.state.dentalChartDataHolderFour[num] = resTicketsVisit.data.result['ticketVisitTooth'][num]['ToothData4'];
+                    //     this.state.dentalChartDataHolderFive[num] = resTicketsVisit.data.result['ticketVisitTooth'][num]['ToothData5'];
+                    //     this.state.dentalChartDataHolderSix[num] = resTicketsVisit.data.result['ticketVisitTooth'][num]['ToothData6'];
+                    //     this.state.dentalChartDataHolderSeven[num] = resTicketsVisit.data.result['ticketVisitTooth'][num]['ToothData7'];
+                    //     this.state.dentalChartDataHolderEight[num] = resTicketsVisit.data.result['ticketVisitTooth'][num]['ToothData8'];
+                    //     this.state.dentalChartDataHolderNine[num] = resTicketsVisit.data.result['ticketVisitTooth'][num]['ToothData9'];
+                    //     this.state.procedure[num] = resTicketsVisit.data.result['ticketVisitTooth'][num]['ProcedureName'];
+                    //     this.state.procedureCostStored[num] = resTicketsVisit.data.result['ticketVisitTooth'][num]['ProcedureCostDollars'];
+                    //     //this.state.procedureTimeStored[num] = resTicketsVisit.data.result['ticketVisitTooth'][num]['VisitTime']; TODO: CHANGE HOW TIME IS STORED--------------------------------------------------
+                    //     this.state.patientNotes[num] = resTicketsVisit.data.result['ticketVisitTooth'][num]['Notes'];
+                    //     this.state.toothSelected[num] = resTicketsVisit.data.result['ticketVisitTooth'][num]['Tooth'];
+
+                    //     this.state.bookingDentalChartString[num] = (
+                    //         this.state.dentalChartDataHolderOne[num] + "-" +
+                    //         this.state.dentalChartDataHolderTwo[num] + "-" +
+                    //         this.state.dentalChartDataHolderThree[num] + "-" +
+                    //         this.state.dentalChartDataHolderFour[num] + "-" +
+                    //         this.state.dentalChartDataHolderFive[num] + "-" +
+                    //         this.state.dentalChartDataHolderSix[num] + "-" +
+                    //         this.state.dentalChartDataHolderSeven[num] + "-" +
+                    //         this.state.dentalChartDataHolderEight[num] + "-" +
+                    //         this.state.dentalChartDataHolderNine[num] + "-" +
+                    //         this.state.procedure[num] + "-" +
+                    //         this.state.procedureCostStored[num] + "-" +
+                    //         this.state.procedureTimeStored[num] + "-" +
+                    //         this.state.patientNotes[num] + "-" +
+                    //         this.state.toothSelected[num] + "-" +
+                    //         resTicketsVisit.data.result['ticketVisitTooth'].length);
+
+                    //     console.log("SAVED TEXT... " + this.state.bookingDentalChartString[num]);
+                    // }
+                })
+                .catch((err) => {
+                    console.log(err)
+                });
+
+                // //Sets all the variables to allow for editing the booking
+                // this.state.NHInum[this.state.currentBookingSelected] = this.state.ticketPatientNHIStored[ticketSelected]['NHI'];
+                // this.state.patientName[this.state.currentBookingSelected] = this.state.ticketPatientNHIStored[ticketSelected]['FirstName'];
+                //     //NOTE: Date is not required as it will be changed via the calendar
+                // this.state.timeHour[this.state.currentBookingSelected] = 9;
+                // this.state.timeMinute[this.state.currentBookingSelected] = 0;
+                // this.state.timeAM_PM[this.state.currentBookingSelected] = "AM";
+                // this.state.dentistName[this.state.currentBookingSelected] = "NEED TO ADD";
+                // this.state.procedure[this.state.currentBookingSelected] = this.state.bookings[0]['Procedure'];
+                // this.state.areasAffected[this.state.currentBookingSelected] = this.state.bookings[0]['AffectedAreas'];
+                // this.state.patientNotes[this.state.currentBookingSelected] = this.state.bookings[0]['notes'];
+                    
+                
+                // console.log("NUMBER OF VISIT COUNT: " + this.state.numberOfVisitsCount[ticketSelected]);
+
+
+                // let singlePatientComboBox: ComboBoxItem[] = [];
+                // singlePatientComboBox.push({text: this.state.patientName[this.state.currentBookingSelected]});
+
+                // this.setState({
+                //     addTicketOrEditClicked: true,
+                //     bookingCreateOrEditDisplay: 1,
+                //     patientsViewed: singlePatientComboBox,
+                //     bookingOrCancelButtonText: "Cancel",
+                //     completeClickedCreate: true
+                // });
+            }
+        }
+
         const deleteBookingFromDatabase = (id:any) => {
             axios.post('http://localhost:3000/deleteBooking', null, {
                 headers: {
@@ -623,19 +717,90 @@ export class Bookings extends React.Component<any, any> {
                     if (this.props.accountHelper.accountAdmin)
                     {
                         bookingListEditButton[num] = 
-                            <Button 
-                                id={"ticketAddAndDeleteButton"}
-                                style={"flex: 1;"}
-                                text={"Edit"}
-                                on={{clicked: () => { 
-                                    this.setState({
-                                        currentBookingSelected: bookingSelected, 
-                                        editBookingButton: true, 
-                                        bookingCreateOrEditDisplay: 1, 
-                                        editButtonClicked: true,
-                                        completeClickedEdit: true,
-                                        bookingOrCancelButtonText: "Cancel"
-                                    })
+                            <Button id={"ticketAddAndDeleteButton"} style={"flex: 1;"} text={"Edit"} on={{clicked: async () => {
+
+                        // this.setState({
+                        //     addTicketOrEditClicked: true,
+                        //     bookingCreateOrEditDisplay: 1,
+                        //     patientsViewed: singlePatientComboBox,
+                        //     bookingOrCancelButtonText: "Cancel",
+                        //     completeClickedCreate: true
+                        // });
+
+                        this.setState({
+                            currentBookingSelected: bookingSelected,
+                            editBookingButton: true,
+                            //bookingCreateOrEditDisplay: 1,
+                            editButtonClicked: true,
+                            completeClickedEdit: true,
+                            bookingOrCancelButtonText: "Cancel"
+                        })
+
+
+
+                        console.log("VAR 1: " + this.state.bookingID[this.state.currentBookingSelected]);
+                        console.log("VAR 2: " + this.state.NHInum[this.state.currentBookingSelected]);
+                        console.log("VAR 3: " + this.state.patientName[this.state.currentBookingSelected]);
+                        console.log("VAR 4: " + this.state.timeHour[this.state.currentBookingSelected]);
+                        console.log("VAR 5: " + this.state.timeMinute[this.state.currentBookingSelected]);
+                        console.log("VAR 6: " + this.state.timeAM_PM[this.state.currentBookingSelected]);
+                        console.log("VAR 7: " + this.state.dentistName[this.state.currentBookingSelected]);
+                        console.log("VAR 8: " + this.state.procedure[this.state.currentBookingSelected]);
+                        console.log("VAR 9: " + this.state.areasAffected[this.state.currentBookingSelected]);
+                        console.log("VAR 10: " + this.state.patientNotes[this.state.currentBookingSelected]);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                                 }}}
                             />
 
@@ -658,21 +823,21 @@ export class Bookings extends React.Component<any, any> {
 
                                         this.setState({
                                             currentBookingSelected: bookingSelected
-                                        }),
+                                        });
 
-                                        viewBooking(
-                                        this.state.bookingID[this.state.currentBookingSelected],
-                                        this.state.NHInum[this.state.currentBookingSelected],
-                                        this.state.patientName[this.state.currentBookingSelected],
-                                        dateFull,
-                                        //Time is sent together so it is easier to handle on the other end
-                                        addLeadingZeros(this.state.timeHour[this.state.currentBookingSelected], 2) + ":" +
-                                        addLeadingZeros(this.state.timeMinute[this.state.currentBookingSelected], 2) + "" +
-                                        this.state.timeAM_PM[this.state.currentBookingSelected],
-                                        this.state.dentistName[this.state.currentBookingSelected],
-                                        this.state.procedure[this.state.currentBookingSelected],
-                                        this.state.areasAffected[this.state.currentBookingSelected],
-                                        this.state.patientNotes[this.state.currentBookingSelected])
+                                        // viewBooking(
+                                        // this.state.bookingID[this.state.currentBookingSelected],
+                                        // this.state.NHInum[this.state.currentBookingSelected],
+                                        // this.state.patientName[this.state.currentBookingSelected],
+                                        // dateFull,
+                                        // //Time is sent together so it is easier to handle on the other end
+                                        // addLeadingZeros(this.state.timeHour[this.state.currentBookingSelected], 2) + ":" +
+                                        // addLeadingZeros(this.state.timeMinute[this.state.currentBookingSelected], 2) + "" +
+                                        // this.state.timeAM_PM[this.state.currentBookingSelected],
+                                        // this.state.dentistName[this.state.currentBookingSelected],
+                                        // this.state.procedure[this.state.currentBookingSelected],
+                                        // this.state.areasAffected[this.state.currentBookingSelected],
+                                        // this.state.patientNotes[this.state.currentBookingSelected])
                                     }}} />
 
                                     {/*TODO: Have the info button bring up a window (or change the screen) to view detailed version of selected booking*/}
@@ -728,11 +893,6 @@ export class Bookings extends React.Component<any, any> {
                 hasBookings = true
             }
 
-            //console.log("DATE WAS CHANGED IN THE BOOKINGS SECTION...");
-
-            //1 Date selected but no bookings
-            //0 No date selected
-
             //Will set the message selected index to display no booking selected
             if (bookingDate == "0/1/0")
             {
@@ -749,8 +909,6 @@ export class Bookings extends React.Component<any, any> {
             {
                 bookingList = [];
 
-                //console.log("BOOKING CHOSEN, NO BOOKINGS...");
-
                 this.setState({
                     bookingSpare: bookingDate,
                     bookingMessageSelected: 1,
@@ -760,8 +918,6 @@ export class Bookings extends React.Component<any, any> {
             //Will set the message selected index to display no message (will be replaced by actual bookings or ticket list)
             else if ((bookingDate != "0/1/0" && hasBookings))
             {
-                //console.log("BOOKING CHOSEN, WITH BOOKINGS...");
-
                 this.setState({
                     bookingSpare: bookingDate,
                     bookingMessageSelected: 2,
@@ -1119,6 +1275,8 @@ export class Bookings extends React.Component<any, any> {
                     }
                 }}/>
 
+                <Button on={editExistingBookingClicked} text={"Test button"}></Button>
+
             </View>
         }
 
@@ -1134,7 +1292,10 @@ export class Bookings extends React.Component<any, any> {
 
         pageDiplayMessage[0] = (
             <View id={"bookingPlaceholderMessageContainer"}>
-                <Text>{"No date selected"}</Text>
+                <View style={"position: 'absolute';"}>
+                    <Text id={"messageTextStandard"}>{"Select a date"}</Text>
+                    <Text id={"messageTextStandard"}>{"to get started"}</Text>
+                </View>
             </View>
         );
         
