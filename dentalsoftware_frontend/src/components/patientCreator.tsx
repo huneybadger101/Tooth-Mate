@@ -3,6 +3,7 @@ import { NHIcorrectFormatCheck } from "./Calendarhelpers/textFormatFunctions";
 import React from "react";
 import axios from 'axios';
 import Alert from "./alert";
+import Loading from "./loading";
 
 export class PatientDataViewer extends React.Component<any, any> {
 
@@ -54,7 +55,7 @@ export class PatientDataViewer extends React.Component<any, any> {
     render() {
 
         if (this.state.patients == null) {
-            return (<View/>)
+            return (<Loading/>)
         }
 
         let alertView = <View/>;

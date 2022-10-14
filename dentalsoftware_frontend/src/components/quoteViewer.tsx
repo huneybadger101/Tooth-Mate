@@ -4,6 +4,7 @@ import axios from 'axios';
 import { createPDF } from './quotePDFGenerator';
 import { generateEmailReferral } from "./emailRefferal";
 import {  QFileDialog, FileMode, WidgetEventTypes } from "@nodegui/nodegui";
+import Loading from "./loading";
 
 export class QuoteViewer extends React.Component<any, any> {
 
@@ -51,7 +52,7 @@ export class QuoteViewer extends React.Component<any, any> {
     render() {
 
         if (this.state.quotes == null) {
-            return (<View/>)
+            return (<Loading/>)
         }
 
         const createEmailButtonHandler = (id:number) => {

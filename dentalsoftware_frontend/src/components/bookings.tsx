@@ -13,6 +13,7 @@ import PerioChart from "./perioChart";
 import { toothNames } from "./Calendarhelpers/comboBoxVariables";
 import { style } from "../styles/style";
 import Calendar from "./calendar";
+import Loading from "./loading";
 
 const { MongoClient, ServerApiVersion } = require('mongodb');
 
@@ -196,7 +197,9 @@ export class Bookings extends React.Component<any, any> {
     // Function that returns a component to be drawn, can have children components if the parent component supports it
     render() {
 
-        
+        if (this.state.patients == null) {
+            return (<Loading/>)
+        }
 
         var dentalChartTotal: any;
 

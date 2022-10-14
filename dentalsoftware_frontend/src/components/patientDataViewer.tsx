@@ -3,6 +3,7 @@ import {  WidgetEventTypes } from "@nodegui/nodegui";
 import TicketCreator from "./TicketCreator";
 import React from "react";
 import axios from 'axios';
+import Loading from "./loading";
 
 export class PatientDataViewer extends React.Component<any, any> {
 
@@ -116,7 +117,7 @@ export class PatientDataViewer extends React.Component<any, any> {
     render() {
 
         if (this.state.patients == null) {
-            return (<View/>)
+            return (<Loading/>)
         }
 
         const patientList = this.state.patients;

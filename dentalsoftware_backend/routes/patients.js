@@ -217,7 +217,7 @@ function createNewPatient(res = null, patientData) {
 
                 let patientID = result[0]['ID'];
 
-                for (let i = 0; i < 32; i++) {
+                for (let i = 0; i < 52; i++) {
                     sql = "INSERT INTO patient_tooth_data (Patient, ToothID, Notes, leftLowerPocketGap, leftMiddlePocketGap, leftUpperPocketGap, rightLowerPocketGap, rightMiddlePocketGap, rightUpperPocketGap) " +
                     "VALUES (" + patientID + ", " + (i + 1) + ", 'TOOTH_NOTES_HERE', 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);"
                     pClient.query(sql, function (err) {
