@@ -96,7 +96,7 @@ export class BookingPageDentalChart extends React.Component<any, any> {
             });
 
             //Will happen if the create booking button is clicked
-            if (this.props.data[0] == true)
+            if (this.props.data[0] == true || this.props.data[0] == false)
             {
                 //Will prep multiple variables for a new booking...
                 this.setState({
