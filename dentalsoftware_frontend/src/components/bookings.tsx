@@ -189,16 +189,16 @@ export class Bookings extends React.Component<any, any> {
                             AffectedAreas: resBooking.data.result[i]['AffectedAreas'],
                             notes: patient['Notes'],
                         });
-
-                        this.setState({
-                            patients: patients,
-                            patientsData: res.data.result,
-                            dentistsData: resAccount.data.result,
-                            dentists: dentists,
-                            bookings: bookingDisplayed,
-                            bookingsRaw: resBooking.data.result
-                        })
                     }
+
+                    this.setState({
+                        patients: patients,
+                        patientsData: res.data.result,
+                        dentistsData: resAccount.data.result,
+                        dentists: dentists,
+                        bookings: bookingDisplayed,
+                        bookingsRaw: resBooking.data.result
+                    })
 
                 })
                 .catch((err) => {
@@ -220,8 +220,6 @@ export class Bookings extends React.Component<any, any> {
         //Will send the index to the dental chart component
         this.state.bookingDentalChartString[1] = this.state.currentIndex + "." + this.state.totalIndex;
 
-        var dentalChartTotal: any;
-
         //Creates a callback for the booking dental chart .tsx file
         const bookingsDentalChartCallback = (
             //Variables that are being sent back with the callback function:
@@ -235,7 +233,7 @@ export class Bookings extends React.Component<any, any> {
 
             //Wipes the data before recreating it
             //This is so when the user removes a dental chart it does not remain in the following
-            for (var i = 0; i < this.state.dentalChartDataHolderOne.length; i++)
+            for (var i = 0; i < this.state.totalIndex + 1; i++)
             {
                 this.state.procedure[i] = [];
                 this.state.procedureCostStored[i] = [];
@@ -1023,6 +1021,10 @@ export class Bookings extends React.Component<any, any> {
                 //Activates when the complete button was clicked during a booking creation
                 else if (this.state.completeClickedCreate == true)
                 {
+                    this.setState({
+                        bookingDentalChartString: this.state.bookingDentalChartString
+                    });
+
                     //Calls a function to determine if the booking was valid or not...
                     this.setState({
                         bookingCreateOrEditDisplay: await createBooking(
@@ -1366,76 +1368,20 @@ export class Bookings extends React.Component<any, any> {
                 <View>
                 <View style="flex: 1;">
 
-                <View style="margin: 10px;"></View>
-
                 <View style={"flex-direction: 'column';"}>
-
-                    <View style="margin: 0px; flex-direction: 'row';">
-                        <Button style={"flex: 1;"} text="-" on={indexDecrease}></Button>
-                        <Button style={"flex: 1;"} text="+" on={indexIncrease}></Button>
+                    <View style="flex-direction: 'row';">
+                        <Button id={"bookingPageButton_roundedTopLeft"} style={"flex: 1;"} text="-" on={indexDecrease}></Button>
+                        <Button id={"bookingPageButton_roundedTopRight"} style={"flex: 1;"} text="+" on={indexIncrease}></Button>
                     </View>
 
-                    <View style="margin: 0px; flex-direction: 'row';">
-                        <Text style={"flex: 1; border: 1px solid black; background: 'LightGrey';"}>{bookingDate}</Text>
-                        <SpinBox style={"flex: 2;"} value={this.state.timeHour[this.state.currentBookingSelected]} on={textHandlerTimeHour} range={timeHourRange()}/>
-                        <SpinBox style={"flex: 2;"} value={this.state.timeMinute[this.state.currentBookingSelected]} on={textHandlerTimeMinute} range={timeMinuteRange()}/>
-                        <ComboBox style={"flex: 2;"} items={timeAMorPM()} currentText={this.state.timeAM_PM[this.state.currentBookingSelected]} on={textHandlerTimeA_P} />
+                    <View style="flex-direction: 'row';">
+                        <Button id={"bookingPageButton_roundedBottomLeft"} style={"flex: 1;"} text="<" on={indexSelectedDecrease}></Button>
+                            <View style={"text-align: 'center';"}>
+                                <Text id={"bookingPageText"}>{(this.state.currentIndex + 1) + "/" + (this.state.totalIndex + 1)}</Text>
+                            </View>
+                        <Button id={"bookingPageButton_roundedBottomRight"} style={"flex: 1;"} text=">" on={indexSelectedIncrease}></Button>
                     </View>
-
-                    <View style="margin: 0px; flex-direction: 'row';">
-                        <Button style={"flex: 1;"} text="<" on={indexSelectedDecrease}></Button>
-                        <Text style={"flex: 1; border: 1px solid black; background: 'LightGrey';"}>{(this.state.currentIndex + 1) + "/" + (this.state.totalIndex + 1)}</Text>
-                        <Button style={"flex: 1;"} text=">" on={indexSelectedIncrease}></Button>
-                    </View>
-
                 </View>
-
-                <View style="margin: 10px;"></View>
-
-                <View style="margin: 0px; flex-direction: 'row';">
-                    <Text style={"flex: 1; border: 1px solid black; background: 'LightGrey';"}>Search patient</Text>
-                    <LineEdit style={"flex: 2;"} text={this.state.patientContactNumberSearch} on={textHandlerPatientSearch} />
-                </View>
-
-                <View style="margin: 0px; flex-direction: 'row';">
-                    <Text style={"flex: 1; border: 1px solid black; background: 'LightGrey';"}>Patient</Text>
-                    <ComboBox style={"flex: 2;"} items={this.state.patientsViewed} on={textHandlerPatientSelected} />
-
-                </View>
-
-                {/* <View style="margin: 10px;"></View>
-
-                <View style="margin: 0px; flex-direction: 'row';">
-                    <Text style={"flex: 1; border: 1px solid black; background: 'LightGrey';"}>Date</Text>
-                    <LineEdit style={"flex: 2;"} text={bookingDate} enabled={false} />
-                </View>
-
-                <View style="margin: 0px; flex-direction: 'row';">
-                    <Text style={"flex: 3; border: 1px solid black; background: 'LightGrey';"}>Time</Text>
-                    <SpinBox style={"flex: 2;"} value={this.state.timeHour[this.state.currentBookingSelected]} on={textHandlerTimeHour} range={timeHourRange()}/>
-                    <SpinBox style={"flex: 2;"} value={this.state.timeMinute[this.state.currentBookingSelected]} on={textHandlerTimeMinute} range={timeMinuteRange()}/>
-                    <ComboBox style={"flex: 2;"} items={timeAMorPM()} currentText={this.state.timeAM_PM[this.state.currentBookingSelected]} on={textHandlerTimeA_P} />
-                </View> */}
-
-                <View style="margin: 10px;"></View>
-
-                {/* this.state.timeHour[this.state.currentBookingSelected]
-                this.state.timeMinute[this.state.currentBookingSelected]
-                this.state.timeAM_PM[this.state.currentBookingSelected] */}
-
-                <View style="margin: 0px; flex-direction: 'row';">
-                    <Text style={"flex: 1; border: 1px solid black; background: 'LightGrey';"}>Dentist</Text>
-                    <ComboBox style={"flex: 2;"} items={this.state.dentists} currentText={"Please select a dentist"} on={textHandlerDentistSelected} />
-                </View>
-                    
-                </View>
-                
-                </View>
-
-
-
-
-                <PlainTextEditWrapper callback={console.log}></PlainTextEditWrapper>
 
 
 
@@ -1443,16 +1389,59 @@ export class Bookings extends React.Component<any, any> {
 
                 <View style="margin: 10px;"></View>
 
+                <View style="flex-direction: 'row';">
+                    <Text id={"bookingPageTextRoundedLeft"} style={"flex: 1; border: 1px solid black; background: 'LightGrey';"}>{"Date: " + bookingDate}</Text>
+                    <SpinBox id={"bookingTimeSelectors"} style={"flex: 2;"} value={this.state.timeHour[this.state.currentBookingSelected]} on={textHandlerTimeHour} range={timeHourRange()}/>
+                    <SpinBox id={"bookingTimeSelectors"} style={"flex: 2;"} value={this.state.timeMinute[this.state.currentBookingSelected]} on={textHandlerTimeMinute} range={timeMinuteRange()}/>
+                    <ComboBox id={"bookingAM_PMSelector"} style={"flex: 2;"} items={timeAMorPM()} currentText={this.state.timeAM_PM[this.state.currentBookingSelected]} on={textHandlerTimeA_P} />
+                </View>
+
+                <View style="margin: 10px;"></View>
+
+
+
+
+
+
+
+
+
+                <View style={"flex-direction: 'row';"}>
+
+                    <View style={"flex-direction: 'column'; flex: 1; margin: 1px"}>
+                        <View style="margin: 0px; flex-direction: 'row';">
+                            <Text id={"bookingPageTextRoundedLeftTop"}>Search patient</Text>
+                            <LineEdit id={"bookingPatientAndDentistSearch"} text={this.state.patientContactNumberSearch} on={textHandlerPatientSearch} />
+                        </View>
+
+                        <View style="margin: 0px; flex-direction: 'row';">
+                            <Text id={"bookingPageTextRoundedLeftBottom"} >Patient</Text>
+                            <ComboBox id={"bookingPatientAndDentistDropdown"} items={this.state.patientsViewed} on={textHandlerPatientSelected} />
+                        </View>
+                    </View>
+
+                    <View style={"flex-direction: 'column'; flex: 1; margin: 1px"}>
+                        <View style="margin: 0px; flex-direction: 'row';">
+                            <Text id={"bookingPageTextRoundedLeftTop"} >Search dentist</Text>
+                            <LineEdit id={"bookingPatientAndDentistSearch"} text={this.state.patientContactNumberSearch} on={textHandlerPatientSearch} />
+                        </View>
+
+                        <View style="margin: 0px; flex-direction: 'row';">
+                            <Text id={"bookingPageTextRoundedLeftBottom"}>Dentist</Text>
+                            <ComboBox id={"bookingPatientAndDentistDropdown"} items={this.state.dentists} on={textHandlerDentistSelected} />
+                        </View>
+                    </View>
+
+                </View>  
+                </View>               
+                </View>
+
+                <View style="margin: 10px;"></View>
+
                 <View style="margin: 0px; flex-direction: 'row';">
-                    {/*textHandlerAreasAffected*/}
-                    {/* <BookingPageDentalChart></BookingPageDentalChart> */}
 
-                    <BookingPageDentalChart 
-                    data={
+                    <BookingPageDentalChart data={this.state.bookingDentalChartString} callback={bookingsDentalChartCallback} />
 
-                        this.state.bookingDentalChartString
-                    }
-                    callback={bookingsDentalChartCallback} />
                 </View>
 
                 <View style="margin: 10px;"></View>
