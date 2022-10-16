@@ -131,6 +131,9 @@ function createNewBooking(res = null, bookingData) {
         errorMessage += "Dentist ID, "
         numMissing++
     }
+    if (bookingData.dentistID === null) {
+        bookingData.dentistID = 1;
+    }
     if (bookingData.procedure === undefined) {
         bookingData.procedure = "Initial Examination"
     }
@@ -139,7 +142,7 @@ function createNewBooking(res = null, bookingData) {
         numMissing++
     }
 
-    let newDate = bookingData.date;
+    let newDate = new Date(bookingData.date);
 
     let splitTime = bookingData.time.split(":");
     let newTime = splitTime[0] + ":" + splitTime[1].slice(0, -2) + ":00";
