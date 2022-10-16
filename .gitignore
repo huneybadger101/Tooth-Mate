@@ -16,3 +16,4 @@ package-lock.json
 dentalsoftware_frontend/src/app.tsx
 dentalsoftware_frontend/src/components/homepage.tsx
 dentalsoftware_frontend/src/components/setting.tsx
+dentalsoftware_backend/env

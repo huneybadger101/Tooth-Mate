@@ -9,7 +9,7 @@ React.useEffect(() => {
   );
 });
 return (
-    <PlainTextEdit ref={plainTextRef} />
+    <PlainTextEdit ref={plainTextRef}/>
  );
 };
 export default PlainTextEditWrapper

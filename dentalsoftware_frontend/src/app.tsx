@@ -17,6 +17,8 @@ class App extends React.Component<any, any> {
       windows: null,
       screenWidth: 0,
       screenHeight: 0,
+      screenWidthFixed: 0,
+      screenHeightFixed: 0,
       style: null
     }
     
@@ -32,8 +34,20 @@ class App extends React.Component<any, any> {
           this.setState({
             screenWidth: result.width,
             screenHeight: result.height,
-            style: style(result.width, result.height)
+            screenWidthFixed: result.width,
+            screenHeightFixed: result.height,
+            //style: style(result.width, result.height, result.width, result.height)
           });
+
+          this.setState({
+            style: style(
+              this.state.screenWidth, 
+              this.state.screenHeight, 
+              this.state.screenWidthFixed, 
+              this.state.screenHeightFixed
+              )
+          });
+          
       }
 
       let screens = [];
@@ -69,14 +83,14 @@ class App extends React.Component<any, any> {
     this.setState({
       screenWidth: width,
       screenHeight: height,
-      style: style(width, height)
+      style: style(width, height, this.state.screenWidthFixed, this.state.screenHeightFixed)
     })
 
     for (let i = 0; i < this.state.windows.length; i++) {
       let tempWindow = <Window
       windowTitle="ToothMate Dental Software"
       minSize={minSize}
-      styleSheet={style(width, height)}
+      styleSheet={style(width, height, this.state.screenWidthFixed, this.state.screenHeightFixed)}
       >
         {this.state.windows[i].props.children}
       </Window>

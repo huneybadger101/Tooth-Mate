@@ -1,4 +1,4 @@
-export const style = (width:any, height:any) =>
+export const style = (width:any, height:any, widthFixed:any, heightFixed:any) =>
 `
     #mainView {
         background-color: qlineargradient(x1:0, y1:0, x2:1, y2:1, stop: 0 #9ccbe6, stop:1 #589EC7);
@@ -89,8 +89,8 @@ export const style = (width:any, height:any) =>
         color: 'black'; 
         border-radius: 2px;
         margin: 1px;
-        height: ` + Math.round((width * 5.20833333) / 100) + ` px;
-        width: ` + Math.round((height * 9.25925926) / 100) + ` px;
+        height: ` + Math.round((heightFixed * 9.25925926) / 100) + ` px;
+        width: ` + Math.round((widthFixed * 5.20833333) / 100) + ` px;
         outline: 'none';
     }
     #buttonCalanderDate:hover {
@@ -106,8 +106,8 @@ export const style = (width:any, height:any) =>
         color: 'black';
         border-radius: 2px;
         margin: 1px;
-        height: ` + Math.round((width * 5.20833333) / 100) + ` px;
-        width: ` + Math.round((height * 9.25925926) / 100) + ` px;
+        height: ` + Math.round((heightFixed * 9.25925926) / 100) + ` px;
+        width: ` + Math.round((widthFixed * 5.20833333) / 100) + ` px;
         outline: 'none';
     }
     #weekdaysCalander {
@@ -118,8 +118,10 @@ export const style = (width:any, height:any) =>
         font-size: 15px;
         border-radius: 2px;
         margin: 1px;
-        height: ` + (Math.round((width * 5.20833333) / 100) / 4) + ` px;
-        width: ` + Math.round((height * 9.25925926) / 100) + ` px;
+
+
+        height: ` + Math.round(((heightFixed * 9.25925926) / 100) / 4) + ` px;
+        width: ` + (Math.round((widthFixed * 5.20833333) / 100)) + ` px;
         outline: 'none';
     }
     #monthSelectedCalander {
@@ -130,8 +132,8 @@ export const style = (width:any, height:any) =>
         font-size: 15px;
         border-radius: 2px;
         margin: 1px;
-        height: ` + (Math.round((width * 5.20833333) / 100) / 4) + ` px;
-        width: ` + ((Math.round((height * 9.25925926) / 100) * 3) + 4) + ` px;
+        height: ` + (Math.round((widthFixed * 5.20833333) / 100) / 4) + ` px;
+        width: ` + ((Math.round((heightFixed * 9.25925926) / 100) * 3) + 4) + ` px;
         outline: 'none';
     }
     #monthChangeButtonsCalander {
@@ -142,8 +144,8 @@ export const style = (width:any, height:any) =>
         font-size: 15px;
         border-radius: 2px;
         margin: 1px;
-        height: ` + (Math.round((width * 5.20833333) / 100) / 4) + ` px;
-        width: ` + ((Math.round((height * 9.25925926) / 100) * 2) + 2) + ` px;
+        height: ` + (Math.round((widthFixed * 5.20833333) / 100) / 4) + ` px;
+        width: ` + ((Math.round((heightFixed * 9.25925926) / 100) * 2) + 2) + ` px;
         outline: 'none';
     }
     #monthChangeButtonsCalander:hover {
@@ -159,7 +161,7 @@ export const style = (width:any, height:any) =>
         color: 'black'; 
         border-radius: 2px;
         margin: 1px;
-        height: ` + (Math.round((width * 5.20833333) / 100) / 4) + ` px;
+        height: ` + (Math.round((heightFixed * 9.25925926) / 100) / 4) + ` px;
         flex: 1;
         flex-direction: 'row';
         outline: 'none';
@@ -178,7 +180,7 @@ export const style = (width:any, height:any) =>
         color: 'black'; 
         border-radius: 2px;
         margin: 1px;
-        height: ` + (Math.round((width * 5.20833333) / 100) / 4) + ` px;
+        height: ` + (Math.round((heightFixed * 9.25925926) / 100) / 4) + ` px;
         flex: 4;
         flex-direction: 'row';
         outline: 'none';
@@ -197,7 +199,7 @@ export const style = (width:any, height:any) =>
         color: 'black'; 
         border-radius: 2px;
         margin: 1px;
-        height: ` + (Math.round((width * 5.20833333) / 100) / 4) + ` px;
+        height: ` + (Math.round((heightFixed * 9.25925926) / 100) / 4) + ` px;
         outline: 'none';
     }
     #createBookingButton:hover {
@@ -208,13 +210,14 @@ export const style = (width:any, height:any) =>
     }
     #ticketText {
         background-color: #FFFFFF;
+        border: 1px solid black;
         border-width: 1px;
         border-style: solid;
         color: 'black';
         font-size: 15px;
         border-radius: 2px;
         margin: 1px;
-        height: ` + (Math.round((width * 5.20833333) / 100)) + ` px;
+        height: ` + (Math.round((heightFixed * 9.25925926) / 100)) + ` px;
         flex: 6;
         flex-direction: 'row';
         outline: 'none';
@@ -227,7 +230,7 @@ export const style = (width:any, height:any) =>
         color: 'black'; 
         border-radius: 2px;
         margin: 1px;
-        height: ` + (Math.round((width * 5.20833333) / 100)) + ` px;
+        height: ` + (Math.round((heightFixed * 9.25925926) / 100)) + ` px;
         flex: 2;
         flex-direction: 'row';
         outline: 'none';
@@ -239,4 +242,32 @@ export const style = (width:any, height:any) =>
         background-color: #BBBBBB;
     }
     
+    #bookingPlaceholderMessageContainer {
+        flex-direction: 'column';
+        background-color: #7A7A7A;
+        border: 1px solid black;
+        display: 'flex';
+        justify-content: 'center';
+        align-items: 'center';
+        outline: 'none';
+        margin: 1px;
+        border-radius: 10px;
+        height: ` + 
+        
+        ((Math.round((heightFixed * 9.25925926) / 100) * 6) + 10)
+
+        + `px;
+    }
+
+    #messageTextStandard {
+        font-size: 40px;
+        color: black;
+        align-self: 'center';
+    }
+    #messageTextColor {
+        font-size: 40px;
+        color: cyan;
+        align-self: 'center';
+    }
+
 `
