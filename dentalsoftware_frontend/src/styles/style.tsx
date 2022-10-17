@@ -1,5 +1,7 @@
 export const style = (width:any, height:any, widthFixed:any, heightFixed:any) =>
 `
+
+
     #mainView {
         background-color: qlineargradient(x1:0, y1:0, x2:1, y2:1, stop: 0 #9ccbe6, stop:1 #589EC7);
     }
@@ -411,6 +413,9 @@ export const style = (width:any, height:any, widthFixed:any, heightFixed:any) =>
         flex-direction: 'row';
         outline: 'none';
     }
+    #bookingAM_PMSelector::drop-down {
+        width: 0px;
+    }
 
     /* ------------------------------------------------------------------------------------------------------------------------------------------------------- */
     /* Patient/ dentist search and select--------------------------------------------------------------------------------------------------------------------- */
@@ -464,6 +469,9 @@ export const style = (width:any, height:any, widthFixed:any, heightFixed:any) =>
         flex: 2;
         flex-direction: 'row';
         outline: 'none';
+    }
+    #bookingPatientAndDentistDropdown::drop-down {
+        width: 0px;
     }
 
     #bookingPatientAndDentistSearch {
@@ -519,6 +527,9 @@ export const style = (width:any, height:any, widthFixed:any, heightFixed:any) =>
         flex-direction: 'row';
         outline: 'none';
     }
+    #bookingToothAndProcedureSelectDropdown::drop-down {
+        width: 0px;
+    }
 
     #bookingPriceAndTimeTextFields {
         border-width: 1px;
@@ -553,6 +564,28 @@ export const style = (width:any, height:any, widthFixed:any, heightFixed:any) =>
     }
     #bookingDefaultCostAndTimeButton:pressed {
         background-color: #BBBBBB;
+    }
+
+    /* ------------------------------------------------------------------------------------------------------------------------------------------------------- */
+    /* Patient/ dentist search and select--------------------------------------------------------------------------------------------------------------------- */
+
+    #bookingNotesText {
+        background: 'LightGrey';
+        border-width: 1px;
+        border-style: solid;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        color: 'black';
+        font-size: 15px;
+        margin: 1px;
+        align-self: 'center';
+        justify-content: 'center';
+        align-items: 'center';
+
+        height: ` + (Math.round((heightFixed * 9.25925926) / 100) / 3) + ` px;
+        flex: 1;
+        flex-direction: 'row';
+        outline: 'none';
     }
 
 `

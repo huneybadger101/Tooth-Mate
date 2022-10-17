@@ -195,10 +195,8 @@ export class BookingPageDentalChart extends React.Component<any, any> {
             }
         }
 
-        const temp = {
-            clicked: () =>{
-                console.log(this.state.patientNotes[this.state.currentlySelectedIndex]);
-            }
+        const getText = (text:String) => {
+            console.log(text)
         }
 
         const containerStyle = `
@@ -242,12 +240,6 @@ export class BookingPageDentalChart extends React.Component<any, any> {
                                         on={indexHanlderProcedure} />
                                 </View>
 
-                                {/* <View style="flex-direction: 'row';">
-                                    <Text style={"flex: 1; border: 1px solid black; background: 'LightGrey';"}>Procedure</Text>
-                                    <ComboBox style={"flex: 2;"} items={treatmentList()} currentIndex={this.state.currentlySelectedProcedureIndex[this.state.currentlySelectedIndex]}
-                                    on={indexHanlderProcedure} />
-                                </View> */}
-
                                 <View style="flex-direction: 'row';">
                                     <Text id={"bookingTextToothAndProcedure"}>Procedure cost</Text>
                                     <LineEdit id={"bookingPriceAndTimeTextFields"} on={textHandlerCost} text={this.state.procedureCostStored[this.state.currentlySelectedIndex]} />
@@ -257,21 +249,20 @@ export class BookingPageDentalChart extends React.Component<any, any> {
                                 </View>
                                 
                                 <View style="flex-direction: 'row';">
-                                    <Button id={"bookingDefaultCostAndTimeButton"} on={setProcedurePriceAndTime} text={"Default procedure cost & time"}></Button>
+                                    <Button id={"bookingDefaultCostAndTimeButton"} on={setProcedurePriceAndTime} text={"Default Cost and Time"}></Button>
                                     
                                 </View>
 
                                 <View style="margin: 10px;"></View>
 
                                 <View style="flex-direction: 'row';">
-                                    <Text style={"flex: 1; border: 1px solid black; background: 'LightGrey';"}>Notes</Text>
+                                    <Text id={"bookingNotesText"}>Notes</Text>
                                     
                                 </View>
 
                                 
                                 {/* <LineEdit style={"flex: 2;"} on={textHandlerNotes} text={this.state.patientNotes[this.state.currentlySelectedIndex]} /> */}
-                                <PlainTextEditWrapper callback={console.log} style={"flex: 1;"}></PlainTextEditWrapper>
-                                <Button on={temp}></Button>
+                                <PlainTextEditWrapper callback={getText} style={"width: 100px; height: 100px;"}></PlainTextEditWrapper>
                                 
                                 
                             </View>
