@@ -348,112 +348,112 @@ export const toothComboBox = () =>{
             text: toothNames(0)
         },
         {
-            text: "Upper Left Quadrant"
+            text: toothNames(1)
         },
         {
-            text: "Upper Right Quadrant"
+            text: toothNames(2)
         },
         {
-            text: "Lower Left Quadrant"
+            text: toothNames(3)
         },
         {
-            text: "Lower Right Quadrant"
+            text: toothNames(4)
         },
         {
-            text: "01 - " + toothNames(1)
+            text: "01 - " + toothNames(5)
         },
         {
-            text: "02 - " + toothNames(2)
+            text: "02 - " + toothNames(6)
         },
         {
-            text: "03 - " + toothNames(3)
+            text: "03 - " + toothNames(7)
         },
         {
-            text: "04 - " + toothNames(4)
+            text: "04 - " + toothNames(8)
         },
         {
-            text: "05 - " + toothNames(5)
+            text: "05 - " + toothNames(9)
         },
         {
-            text: "06 - " + toothNames(6)
+            text: "06 - " + toothNames(10)
         },
         {
-            text: "07 - " + toothNames(7)
+            text: "07 - " + toothNames(11)
         },
         {
-            text: "08 - " + toothNames(8)
+            text: "08 - " + toothNames(12)
         },
         {
-            text: "09 - " + toothNames(9)
+            text: "09 - " + toothNames(13)
         },
         {
-            text: "10 - " + toothNames(10)
+            text: "10 - " + toothNames(14)
         },
         {
-            text: "11 - " + toothNames(11)
+            text: "11 - " + toothNames(15)
         },
         {
-            text: "12 - " + toothNames(12)
+            text: "12 - " + toothNames(16)
         },
         {
-            text: "13 - " + toothNames(13)
+            text: "13 - " + toothNames(17)
         },
         {
-            text: "14 - " + toothNames(14)
+            text: "14 - " + toothNames(18)
         },
         {
-            text: "15 - " + toothNames(15)
+            text: "15 - " + toothNames(19)
         },
         {
-            text: "16 - " + toothNames(16)
+            text: "16 - " + toothNames(20)
         },
         {
-            text: "17 - " + toothNames(17)
+            text: "17 - " + toothNames(21)
         },
         {
-            text: "18 - " + toothNames(18)
+            text: "18 - " + toothNames(22)
         },
         {
-            text: "19 - " + toothNames(19)
+            text: "19 - " + toothNames(23)
         },
         {
-            text: "20 - " + toothNames(20)
+            text: "20 - " + toothNames(24)
         },
         {
-            text: "21 - " + toothNames(21)
+            text: "21 - " + toothNames(25)
         },
         {
-            text: "22 - " + toothNames(22)
+            text: "22 - " + toothNames(26)
         },
         {
-            text: "23 - " + toothNames(23)
+            text: "23 - " + toothNames(27)
         },
         {
-            text: "24 - " + toothNames(24)
+            text: "24 - " + toothNames(28)
         },
         {
-            text: "25 - " + toothNames(25)
+            text: "25 - " + toothNames(29)
         },
         {
-            text: "26 - " + toothNames(26)
+            text: "26 - " + toothNames(30)
         },
         {
-            text: "27 - " + toothNames(27)
+            text: "27 - " + toothNames(31)
         },
         {
-            text: "28 - " + toothNames(28)
+            text: "28 - " + toothNames(32)
         },
         {
-            text: "29 - " + toothNames(29)
+            text: "29 - " + toothNames(33)
         },
         {
-            text: "30 - " + toothNames(30)
+            text: "30 - " + toothNames(34)
         },
         {
-            text: "31 - " + toothNames(31)
+            text: "31 - " + toothNames(35)
         },
         {
-            text: "32 - " + toothNames(32)
+            text: "32 - " + toothNames(36)
         },
         
     ]
@@ -470,105 +470,118 @@ export const toothNames = (selectedTreatment:any) =>{
         return "All Quadrants - Entire mouth";
         break;
         case 1:
-        return "Upper Right Quadrant - Wisdom Tooth (3rd Molar)";
+        return "Upper Left Quadrant";
         break;
         case 2:
-        return "Upper Right Quadrant - Molar (2nd Molar)";
+        return "Upper Right Quadrant";
         break;
         case 3:
-        return "Upper Right Quadrant - Molar (1st Molar)";
+        return "Lower Left Quadrant";
         break;
         case 4:
-        return "Upper Right Quadrant - Bicuspid (2nd)";
+        return "Lower Right Quadrant";
         break;
+
         case 5:
-        return "Upper Right Quadrant - Bicuspid (1st)";
+        return "Upper Right Quadrant - Wisdom Tooth (3rd Molar)";
         break;
         case 6:
-        return "Upper Right Quadrant - Canine (Eye tooth / Cuspid)";
+        return "Upper Right Quadrant - Molar (2nd Molar)";
         break;
         case 7:
-        return "Upper Right Quadrant - Incisor (Lateral)";
+        return "Upper Right Quadrant - Molar (1st Molar)";
         break;
         case 8:
+        return "Upper Right Quadrant - Bicuspid (2nd)";
+        break;
+        case 9:
+        return "Upper Right Quadrant - Bicuspid (1st)";
+        break;
+        case 10:
+        return "Upper Right Quadrant - Canine (Eye tooth / Cuspid)";
+        break;
+        case 11:
+        return "Upper Right Quadrant - Incisor (Lateral)";
+        break;
+        case 12:
         return "Upper Right Quadrant - Incisor (Central)";
         break;
 
         //Upper left quadrant teeth
-        case 9:
+        case 13:
         return "Upper Left Quadrant - Incisor (Central)";
         break;
-        case 10:
+        case 14:
         return "Upper Left Quadrant - Incisor (Lateral)";
         break;
-        case 11:
+        case 15:
         return "Upper Left Quadrant - Canine (Eye tooth / Cuspid)";
         break;
-        case 12:
+        case 16:
         return "Upper Left Quadrant - Bicuspid (1st)";
         break;
-        case 13:
+        case 17:
         return "Upper Left Quadrant - Bicuspid (2nd)";
         break;
-        case 14:
+        case 18:
         return "Upper Left Quadrant - Molar (1st Molar)";
         break;
-        case 15:
+        case 19:
         return "Upper Left Quadrant - Molar (2nd Molar)";
         break;
-        case 16:
+        case 20:
         return "Upper Left Quadrant - Wisdom Tooth (3rd Molar)";
         break;
 
         //lower left quadrant teeth
-        case 17:
+        case 21:
         return "Lower Left Quadrant - Wisdom Tooth (3rd Molar)";
         break;
-        case 18:
+        case 22:
         return "Lower Left Quadrant - Molar (2nd Molar)";
         break;
-        case 19:
+        case 23:
         return "Lower Left Quadrant - Molar (1st Molar)";
         break;
-        case 20:
+        case 24:
         return "Lower Left Quadrant - Bicuspid (2nd)";
         break;
-        case 21:
+        case 25:
         return "Lower Left Quadrant - Bicuspid (1st)";
         break;
-        case 22:
+        case 26:
         return "Lower Left Quadrant - Canine (Eye tooth / Cuspid)";
         break;
-        case 23:
+        case 27:
         return "Lower Left Quadrant - Incisor (Lateral)";
         break;
-        case 24:
+        case 28:
         return "Lower Left Quadrant - Incisor (Central)";
         break;
 
         //Lower right quadrant teeth
-        case 25:
+        case 29:
         return "Lower Right Quadrant - Incisor (Central)";
         break;
-        case 26:
+        case 30:
         return "Lower Right Quadrant - Incisor (Lateral)";
         break;
-        case 27:
+        case 31:
         return "Lower Right Quadrant - Canine (Eye tooth / Cuspid)";
         break;
-        case 28:
+        case 32:
         return "Lower Right Quadrant - Bicuspid (1st)";
         break;
-        case 29:
+        case 33:
         return "Lower Right Quadrant - Bicuspid (2nd)";
         break;
-        case 30:
+        case 34:
         return "Lower Right Quadrant - Molar (1st Molar)";
         break;
-        case 31:
+        case 35:
         return "Lower Right Quadrant - Molar (2nd Molar)";
         break;
-        case 32:
+        case 36:
         return "Lower Right Quadrant - Wisdom Tooth (3rd Molar)";
         break;
 

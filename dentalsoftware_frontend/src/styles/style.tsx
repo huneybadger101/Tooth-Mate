@@ -1,5 +1,7 @@
 export const style = (width:any, height:any, widthFixed:any, heightFixed:any) =>
 `
+
+
     #mainView {
         background-color: qlineargradient(x1:0, y1:0, x2:1, y2:1, stop: 0 #9ccbe6, stop:1 #589EC7);
     }
@@ -258,7 +260,6 @@ export const style = (width:any, height:any, widthFixed:any, heightFixed:any) =>
 
         + `px;
     }
-
     #messageTextStandard {
         font-size: 40px;
         color: black;
@@ -268,6 +269,327 @@ export const style = (width:any, height:any, widthFixed:any, heightFixed:any) =>
         font-size: 40px;
         color: cyan;
         align-self: 'center';
+    }
+
+    /* ------------------------------------------------------------------------------------------------------------------------------------------------------- */
+    /* bookings increase/ decrease on bookings page----------------------------------------------------------------------------------------------------------- */
+
+    #bookingPageButton_roundedTopLeft {
+        background-color: #DDDDDD;
+        border-width: 1px;
+        border-style: solid;
+        color: 'black'; 
+        border-top-left-radius: 10px;
+        margin: 1px;
+        height: ` + (Math.round((heightFixed * 9.25925926) / 100) / 3) + ` px;
+        flex: 4;
+        flex-direction: 'row';
+        outline: 'none';
+    }
+    #bookingPageButton_roundedTopLeft:hover {
+        background-color: #FFFFFF;
+    }
+    #bookingPageButton_roundedTopLeft:pressed {
+        background-color: #BBBBBB;
+    }
+    #bookingPageButton_roundedTopRight {
+        background-color: #DDDDDD;
+        border-width: 1px;
+        border-style: solid;
+        color: 'black'; 
+        border-top-right-radius: 10px;
+        margin: 1px;
+        height: ` + (Math.round((heightFixed * 9.25925926) / 100) / 3) + ` px;
+        flex: 4;
+        flex-direction: 'row';
+        outline: 'none';
+    }
+    #bookingPageButton_roundedTopRight:hover {
+        background-color: #FFFFFF;
+    }
+    #bookingPageButton_roundedTopRight:pressed {
+        background-color: #BBBBBB;
+    }
+    #bookingPageButton_roundedBottomLeft {
+        background-color: #DDDDDD;
+        border-width: 1px;
+        border-style: solid;
+        color: 'black'; 
+        border-bottom-left-radius: 10px;
+        margin: 1px;
+        height: ` + (Math.round((heightFixed * 9.25925926) / 100) / 3) + ` px;
+        flex: 4;
+        flex-direction: 'row';
+        outline: 'none';
+    }
+    #bookingPageButton_roundedBottomLeft:hover {
+        background-color: #FFFFFF;
+    }
+    #bookingPageButton_roundedBottomLeft:pressed {
+        background-color: #BBBBBB;
+    }
+    #bookingPageButton_roundedBottomRight {
+        background-color: #DDDDDD;
+        border-width: 1px;
+        border-style: solid;
+        color: 'black'; 
+        border-bottom-right-radius: 10px;
+        margin: 1px;
+        height: ` + (Math.round((heightFixed * 9.25925926) / 100) / 3) + ` px;
+        flex: 4;
+        flex-direction: 'row';
+        outline: 'none';
+    }
+    #bookingPageButton_roundedBottomRight:hover {
+        background-color: #FFFFFF;
+    }
+    #bookingPageButton_roundedBottomRight:pressed {
+        background-color: #BBBBBB;
+    }
+    #bookingPageText {
+        background-color: #FFFFFF;
+        border-width: 1px;
+        border-style: solid;
+        color: 'black';
+        font-size: 15px;
+        margin: 1px;
+        align-self: 'center';
+        justify-content: 'center';
+        align-items: 'center';
+
+        height: ` + (Math.round((heightFixed * 9.25925926) / 100) / 3) + ` px;
+        flex: 1;
+        flex-direction: 'row';
+        outline: 'none';
+    }
+
+    /* ------------------------------------------------------------------------------------------------------------------------------------------------------- */
+    /* Date and time displayed on bookings page--------------------------------------------------------------------------------------------------------------- */
+
+    #bookingPageTextRoundedLeft {
+        background-color: #FFFFFF;
+        border-width: 1px;
+        border-style: solid;
+        border-top-left-radius: 10px;
+        border-bottom-left-radius: 10px;
+        color: 'black';
+        font-size: 15px;
+        margin: 1px;
+        align-self: 'center';
+        justify-content: 'center';
+        align-items: 'center';
+
+        height: ` + (Math.round((heightFixed * 9.25925926) / 100) / 3) + ` px;
+        flex: 1;
+        flex-direction: 'row';
+        outline: 'none';
+    }
+
+    #bookingTimeSelectors {
+        border-width: 1px;
+        border-style: solid;
+        color: 'black';
+        font-size: 15px;
+        margin: 1px;
+        align-self: 'center';
+
+        height: ` + (Math.round((heightFixed * 9.25925926) / 100) / 3) + ` px;
+        flex: 1;
+        flex-direction: 'row';
+        outline: 'none';
+    }
+
+    #bookingAM_PMSelector {
+        background-color: #FFFFFF;
+        border-width: 1px;
+        border-style: solid;
+        border-top-right-radius: 10px;
+        border-bottom-right-radius: 10px;
+        color: 'black';
+        font-size: 15px;
+        margin: 1px;
+        align-self: 'center';
+        justify-content: 'center';
+        align-items: 'center';
+
+        height: ` + (Math.round((heightFixed * 9.25925926) / 100) / 3) + ` px;
+        flex: 1;
+        flex-direction: 'row';
+        outline: 'none';
+    }
+    #bookingAM_PMSelector::drop-down {
+        width: 0px;
+    }
+
+    /* ------------------------------------------------------------------------------------------------------------------------------------------------------- */
+    /* Patient/ dentist search and select--------------------------------------------------------------------------------------------------------------------- */
+
+    
+    #bookingPageTextRoundedLeftTop {
+        background: 'LightGrey';
+        border-width: 1px;
+        border-style: solid;
+        border-top-left-radius: 10px;
+        color: 'black';
+        font-size: 15px;
+        margin: 1px;
+        align-self: 'center';
+        justify-content: 'center';
+        align-items: 'center';
+
+        height: ` + (Math.round((heightFixed * 9.25925926) / 100) / 3) + ` px;
+        flex: 1;
+        flex-direction: 'row';
+        outline: 'none';
+    }
+    #bookingPageTextRoundedLeftBottom {
+        background: 'LightGrey';
+        border-width: 1px;
+        border-style: solid;
+        border-bottom-left-radius: 10px;
+        color: 'black';
+        font-size: 15px;
+        margin: 1px;
+        align-self: 'center';
+        justify-content: 'center';
+        align-items: 'center';
+
+        height: ` + (Math.round((heightFixed * 9.25925926) / 100) / 3) + ` px;
+        flex: 1;
+        flex-direction: 'row';
+        outline: 'none';
+    }
+
+    #bookingPatientAndDentistDropdown {
+        border-width: 1px;
+        border-style: solid;
+        border-bottom-right-radius: 10px;
+        color: 'black';
+        font-size: 15px;
+        margin: 1px;
+        align-self: 'center';
+
+        height: ` + (Math.round((heightFixed * 9.25925926) / 100) / 3) + ` px;
+        flex: 2;
+        flex-direction: 'row';
+        outline: 'none';
+    }
+    #bookingPatientAndDentistDropdown::drop-down {
+        width: 0px;
+    }
+
+    #bookingPatientAndDentistSearch {
+        border-width: 1px;
+        border-style: solid;
+        border-top-right-radius: 10px;
+        color: 'black';
+        font-size: 15px;
+        margin: 1px;
+        align-self: 'center';
+
+        height: ` + (Math.round((heightFixed * 9.25925926) / 100) / 3) + ` px;
+        flex: 2;
+        flex-direction: 'row';
+        outline: 'none';
+    }
+
+    /* ------------------------------------------------------------------------------------------------------------------------------------------------------- */
+    /* Patient/ dentist search and select--------------------------------------------------------------------------------------------------------------------- */
+
+    
+    #bookingTextToothAndProcedure {
+        background: 'LightGrey';
+        border-width: 1px;
+        border-style: solid;
+        border-top-left-radius: 10px;
+        border-bottom-left-radius: 10px;
+        color: 'black';
+        font-size: 15px;
+        margin: 1px;
+        align-self: 'center';
+        justify-content: 'center';
+        align-items: 'center';
+
+        height: ` + (Math.round((heightFixed * 9.25925926) / 100) / 3) + ` px;
+        flex: 1;
+        flex-direction: 'row';
+        outline: 'none';
+    }
+
+    #bookingToothAndProcedureSelectDropdown {
+        border-width: 1px;
+        border-style: solid;
+        border-top-right-radius: 10px;
+        border-bottom-right-radius: 10px;
+        color: 'black';
+        font-size: 15px;
+        margin: 1px;
+        align-self: 'center';
+
+        height: ` + (Math.round((heightFixed * 9.25925926) / 100) / 3) + ` px;
+        flex: 3;
+        flex-direction: 'row';
+        outline: 'none';
+    }
+    #bookingToothAndProcedureSelectDropdown::drop-down {
+        width: 0px;
+    }
+
+    #bookingPriceAndTimeTextFields {
+        border-width: 1px;
+        border-style: solid;
+        border-top-right-radius: 10px;
+        border-bottom-right-radius: 10px;
+        color: 'black';
+        font-size: 15px;
+        margin: 1px;
+        align-self: 'center';
+
+        height: ` + (Math.round((heightFixed * 9.25925926) / 100) / 3) + ` px;
+        flex: 2;
+        flex-direction: 'row';
+        outline: 'none';
+    }
+
+    #bookingDefaultCostAndTimeButton {
+        background-color: #DDDDDD;
+        border-width: 1px;
+        border-style: solid;
+        color: 'black'; 
+        border-radius: 10px;
+        margin: 1px;
+        height: ` + (Math.round((heightFixed * 9.25925926) / 100) / 3) + ` px;
+        flex: 1;
+        flex-direction: 'row';
+        outline: 'none';
+    }
+    #bookingDefaultCostAndTimeButton:hover {
+        background-color: #FFFFFF;
+    }
+    #bookingDefaultCostAndTimeButton:pressed {
+        background-color: #BBBBBB;
+    }
+
+    /* ------------------------------------------------------------------------------------------------------------------------------------------------------- */
+    /* Patient/ dentist search and select--------------------------------------------------------------------------------------------------------------------- */
+
+    #bookingNotesText {
+        background: 'LightGrey';
+        border-width: 1px;
+        border-style: solid;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        color: 'black';
+        font-size: 15px;
+        margin: 1px;
+        align-self: 'center';
+        justify-content: 'center';
+        align-items: 'center';
+
+        height: ` + (Math.round((heightFixed * 9.25925926) / 100) / 3) + ` px;
+        flex: 1;
+        flex-direction: 'row';
+        outline: 'none';
     }
 
 `

@@ -8,8 +8,9 @@ React.useEffect(() => {
     props.callback(plainTextRef.current.toPlainText())
   );
 });
+
 return (
-    <PlainTextEdit ref={plainTextRef}/>
+    <PlainTextEdit ref={plainTextRef} style={(props.style != undefined ? props.style : "")}/>
  );
 };
 export default PlainTextEditWrapper
