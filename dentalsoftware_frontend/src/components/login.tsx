@@ -2,7 +2,7 @@ import { Text, LineEdit, View, Button } from "@nodegui/react-nodegui";
 import {  WidgetEventTypes, EchoMode } from "@nodegui/nodegui";
 import React from "react";
 import axios from 'axios';
-import Alert from "./alert";
+import Alert from "./alert";;
 
 export class Login extends React.Component<any, any> {
 
@@ -20,7 +20,7 @@ export class Login extends React.Component<any, any> {
             dob: null,
             email: null,
             phone: null,
-            alertView: null
+            alertView: null,
         }
     }
 

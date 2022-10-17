@@ -80,6 +80,10 @@ export const style = (width:any, height:any, widthFixed:any, heightFixed:any) =>
         border-style: solid;
         border-radius: 15px;
     }
+    #loading {
+        left: ` + ((width / 2) - 50) + `px;
+        top: '45%';
+    }
     #buttonCalanderDate {
         background-color: #DDDDDD;
         border-width: 1px;

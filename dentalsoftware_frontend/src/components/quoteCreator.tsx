@@ -3,6 +3,7 @@ import React from "react";
 import axios from 'axios';
 import Alert from "./alert";
 import QuoteHelper from './quoteHelper';
+import Loading from "./loading";
 
 declare type ComboBoxItem = {
     text: string;
@@ -84,7 +85,7 @@ export class QuoteCreator extends React.Component<any, any> {
     render() {
 
         if (this.state.quotes == null) {
-            return (<View/>)
+            return (<Loading/>)
         }
 
         let alertView = <View/>;
