@@ -181,25 +181,24 @@ export class Bookings extends React.Component<any, any> {
                         bookingDisplayed[i] = (
                         {
                             index: i,
+                            id: resBooking.data.result[i]['ID'],
                             nhi: patient['NHI'],
                             patientName: patient["FirstName"] + " " + patient["LastName"],
                             date: resBooking.data.result[i]['Date'],
                             time: resBooking.data.result[i]['Time'],
-                            location: resBooking.data.result[i]['Location'],
                             Procedure: resBooking.data.result[i]['ProcedureName'],
-                            AffectedAreas: resBooking.data.result[i]['AffectedAreas'],
                             notes: patient['Notes'],
                         });
-
-                        this.setState({
-                            patients: patients,
-                            patientsData: res.data.result,
-                            dentistsData: resAccount.data.result,
-                            dentists: dentists,
-                            bookings: bookingDisplayed,
-                            bookingsRaw: resBooking.data.result
-                        })
                     }
+                    
+                    this.setState({
+                        patients: patients,
+                        patientsData: res.data.result,
+                        dentistsData: resAccount.data.result,
+                        dentists: dentists,
+                        bookings: bookingDisplayed,
+                        bookingsRaw: resBooking.data.result
+                    })
 
                 })
                 .catch((err) => {
@@ -218,7 +217,12 @@ export class Bookings extends React.Component<any, any> {
     // Function that returns a component to be drawn, can have children components if the parent component supports it
     render() {
 
-        
+        this.state.bookingDentalChartString[1] = this.state.currentIndex + "." + this.state.totalIndex;
+
+        if (this.state.patients == null) {
+            console.log(this.state)
+            return (<Loading/>)
+        }
 
         var dentalChartTotal: any;
 
@@ -227,7 +231,7 @@ export class Bookings extends React.Component<any, any> {
             //Variables that are being sent back with the callback function:
             
             callProcedure: [],
-            callProcedurePrice: [],
+            callProcedureTime: [],
             callProcedureCost: [],
             callNotes: [],
             tooth: []
@@ -248,8 +252,8 @@ export class Bookings extends React.Component<any, any> {
             for (var i = 0; i < this.state.totalIndex + 1; i++)
             {
                 this.state.procedure[i] = callProcedure[i];
-                this.state.procedureCostStored[i] = callProcedurePrice[i];
-                this.state.procedureTimeStored[i] = callProcedureCost[i];
+                this.state.procedureCostStored[i] = callProcedureCost[i];
+                this.state.procedureTimeStored[i] = callProcedureTime[i];
                 this.state.patientNotes[i] = callNotes[i];
                 this.state.toothSelected[i] = toothNames(tooth[i]);
 
@@ -517,18 +521,18 @@ export class Bookings extends React.Component<any, any> {
                         //This is to ensure that fields are not prefilled with data that should not be there...
                     this.state.bookingDentalChartString[0] = true;
 
-                    this.setState({
-                        bookingMessageSelected: 2,
-                        bookingDateSelectorDateCount: 1
-                    });
+                    console.log(this.state)
 
                     //Changes settings so the page is the create booking page and resets the patient name combo box
                     this.setState({
                         bookingCreateOrEditDisplay: 1,
                         bookingOrCancelButtonText: "Cancel",
                         completeClickedCreate: true,
-                        patientsViewed: this.state.patientsViewedPermanent
+                        patientsViewed: this.state.patientsViewedPermanent,
+                        bookingMessageSelected: 2,
+                        bookingDateSelectorDateCount: 1
                     });
+                    console.log(this.state)
                 } 
             }
         }
@@ -738,8 +742,9 @@ export class Bookings extends React.Component<any, any> {
 
                     if (this.state.editButtonClicked == false)
                     {
+                        console.log(this.state.bookings[num])
                         //Sets all the variables to allow for editing the booking
-                        this.state.bookingID[num] = num;
+                        this.state.bookingID[num] = this.state.bookings[num]['id'];
                         this.state.NHInum[num] = this.state.bookings[num]['nhi'];
                         this.state.patientName[num] = this.state.bookings[num]['patientName'];
                             //NOTE: Date is not required as it will be changed via the calendar
@@ -774,82 +779,28 @@ export class Bookings extends React.Component<any, any> {
                         bookingListEditButton[num] = 
                             <Button id={"ticketAddAndDeleteButton"} style={"flex: 1;"} text={"Edit"} on={{clicked: async () => {
 
-                        let singlePatientComboBox: ComboBoxItem[] = [];
-                        singlePatientComboBox.push({text: this.state.patientName[bookingSelected]});
-                        
-                        this.setState({
-                            patientsViewed: singlePatientComboBox
-                        });
+                                    let singlePatientComboBox: ComboBoxItem[] = [];
+                                    singlePatientComboBox.push({text: this.state.patientName[bookingSelected]});
+                                    
+                                    this.setState({
+                                        patientsViewed: singlePatientComboBox
+                                    });
 
-                        this.setState({
-                            //patientsViewed: singlePatientComboBox,
-                            currentBookingSelected: bookingSelected,
-                            editBookingButton: true,
-                            bookingCreateOrEditDisplay: 1,
-                            editButtonClicked: true,
-                            completeClickedEdit: true,
-                            bookingOrCancelButtonText: "Cancel"
-                        })
-
-
-
-
-
-
-
-
-
-
-
-
-
-                        
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                        
+                                    this.setState({
+                                        //patientsViewed: singlePatientComboBox,
+                                        currentBookingSelected: bookingSelected,
+                                        editBookingButton: true,
+                                        bookingCreateOrEditDisplay: 1,
+                                        editButtonClicked: true,
+                                        completeClickedEdit: true,
+                                        bookingOrCancelButtonText: "Cancel"
+                                    })
                                 }}}
                             />
 
                             bookingListDeleteButton[num] =
                             <Button id={"ticketAddAndDeleteButton"} style={"flex: 1;"} text={"Delete"} on={{clicked: ()=>{deleteBookingFromDatabase(bookingSelected)}}}/>
                         }
-
                         //Creates the bookings to view
                         //will also create an edit button for each booking, an info button to get more details, and a delete button to remove the selected booking
                         //NOTE: Will only add the edit and delete buttons if the user type has said abilities
@@ -857,7 +808,7 @@ export class Bookings extends React.Component<any, any> {
                             <View style="flex-direction: 'column';">
 
                                 <View style="flex-direction: 'row';">
-                                    <Text id={"ticketText"}>{"Booking ID: " + (this.state.bookingID[num] + 1) + ", Booking date: " + dateFull}</Text>
+                                    <Text id={"ticketText"}>{"Booking ID: " + (this.state.bookingID[num]) + ", Booking date: " + dateFull}</Text>
 
                                     <Button id={"ticketAddAndDeleteButton"} style={"flex: 1;"} text={"Info"} on={{clicked: ()=>{
 
@@ -916,6 +867,25 @@ export class Bookings extends React.Component<any, any> {
                                         </View> 
                                     </View>: null)}
                         </View>   
+                } else {
+                    this.state.bookingID[num] = null;
+                    this.state.NHInum[num] =  null;
+                    this.state.patientName[num] = null;
+                    this.state.timeHour[num] = null;
+                    this.state.timeMinute[num] = null;
+                    this.state.timeAM_PM[num] = null;
+                    this.state.dentistName[num] = null;
+                    this.state.areasAffected[num] = null;
+                    this.state.patientNotes[num] = null;
+                    this.state.oldValuesBookingID[num] = null;
+                    this.state.oldValuesNHInumber[num] = null;
+                    this.state.oldValuesDate[num] = null;
+                    this.state.oldValuesPatientName[num] = null;
+                    this.state.oldValuesTime[num] = null;
+                    this.state.oldValuesDentistName[num] = null;
+                    this.state.oldValuesProcedure[num] = null;
+                    this.state.oldValuesAreasAffected[num] = null;
+                    this.state.oldValuesPatientNotes[num] = null;
                 }
             }
         }
@@ -924,16 +894,15 @@ export class Bookings extends React.Component<any, any> {
         if (bookingDate != this.state.bookingSpare)
         {
 
-            let hasBookings = false;
+            // let hasBookings = false;
 
-            bookingList = bookingList.filter(function( element:any ) {
-                return element !== undefined;
-            });
+            // bookingList = bookingList.filter(function( element:any ) {
+            //     return element !== undefined;
+            // });
 
-            if (bookingList.length > 0) {
-                console.log(bookingList[0].props.children[0].props.children)
-                hasBookings = true
-            }
+            // if (bookingList.length > 0) {
+            //     hasBookings = true
+            // }
 
             //Will set the message selected index to display no booking selected
             if (bookingDate == "0/1/0")
@@ -947,7 +916,7 @@ export class Bookings extends React.Component<any, any> {
                 });
             }
             //Will set the message selected index to display a booking selected with no bookings
-            else if ((bookingDate != "0/1/0" && !hasBookings))
+            else if ((bookingDate != "0/1/0" && bookingList[0] == undefined))
             {
                 bookingList = [];
 
@@ -958,7 +927,7 @@ export class Bookings extends React.Component<any, any> {
                 });
             }
             //Will set the message selected index to display no message (will be replaced by actual bookings or ticket list)
-            else if ((bookingDate != "0/1/0" && hasBookings))
+            else if ((bookingDate != "0/1/0" && bookingList[0] != undefined))
             {
                 this.setState({
                     bookingSpare: bookingDate,
@@ -1377,8 +1346,8 @@ export class Bookings extends React.Component<any, any> {
 
                     <View style="margin: 0px; flex-direction: 'row';">
                         <Text style={"flex: 1; border: 1px solid black; background: 'LightGrey';"}>{bookingDate}</Text>
-                        <SpinBox style={"flex: 2;"} value={this.state.timeHour[this.state.currentBookingSelected]} on={textHandlerTimeHour} range={timeHourRange()}/>
-                        <SpinBox style={"flex: 2;"} value={this.state.timeMinute[this.state.currentBookingSelected]} on={textHandlerTimeMinute} range={timeMinuteRange()}/>
+                        <SpinBox id="spin" style={"flex: 2;"} value={this.state.timeHour[this.state.currentBookingSelected]} on={textHandlerTimeHour} range={timeHourRange()}/>
+                        <SpinBox id="spin" style={"flex: 2;"} value={this.state.timeMinute[this.state.currentBookingSelected]} on={textHandlerTimeMinute} range={timeMinuteRange()}/>
                         <ComboBox style={"flex: 2;"} items={timeAMorPM()} currentText={this.state.timeAM_PM[this.state.currentBookingSelected]} on={textHandlerTimeA_P} />
                     </View>
 
@@ -1463,9 +1432,9 @@ export class Bookings extends React.Component<any, any> {
             </View>
         );
 
-        bookingList = bookingList.filter(function( element:any ) {
-            return element !== undefined;
-        });
+        // bookingList = bookingList.filter(function( element:any ) {
+        //     return element !== undefined;
+        // });
 
         //Will display the booking list
         pageDiplay[0] = (
@@ -1482,7 +1451,7 @@ export class Bookings extends React.Component<any, any> {
                     {pageDiplayMessage[this.state.bookingMessageSelected]}
                     
                     {/* Displays the booking class */}
-                    {bookingList[this.state.bookingsBeingDisplayed]}
+                    {bookingList[this.state.bookingsBeingDisplayed + 0]}
 
                 </View>
             </View>
