@@ -589,3 +589,132 @@ export const toothNames = (selectedTreatment:any) =>{
         return "All Quadrants - Entire mouth";
       }
 }
+
+export const toothIndex = (selectedTreatment:any) =>{
+    
+    //TODO: BEFORE TWO WEEK BEFORE DUE DATE
+    switch(selectedTreatment) {
+        //Uper right quadrant teeth
+        case "All Quadrants - Entire mouth":
+        return 0;
+        break;
+        case "Upper Left Quadrant":
+        return 1;
+        break;
+        case "Upper Right Quadrant":
+        return 2;
+        break;
+        case "Lower Left Quadrant":
+        return 3;
+        break;
+        case "Lower Right Quadrant":
+        return 4;
+        break;
+
+        case "Upper Right Quadrant - Wisdom Tooth (3rd Molar)":
+        return 5;
+        break;
+        case "Upper Right Quadrant - Molar (2nd Molar)":
+        return 6;
+        break;
+        case "Upper Right Quadrant - Molar (1st Molar)":
+        return 7;
+        break;
+        case "Upper Right Quadrant - Bicuspid (2nd)":
+        return 8;
+        break;
+        case "Upper Right Quadrant - Bicuspid (1st)":
+        return 9;
+        break;
+        case "Upper Right Quadrant - Canine (Eye tooth / Cuspid)":
+        return 10;
+        break;
+        case "Upper Right Quadrant - Incisor (Lateral)":
+        return 11;
+        break;
+        case "Upper Right Quadrant - Incisor (Central)":
+        return 12;
+        break;
+
+        //Upper left quadrant teeth
+        case "Upper Left Quadrant - Incisor (Central)":
+        return 13;
+        break;
+        case "Upper Left Quadrant - Incisor (Lateral)":
+        return 14;
+        break;
+        case "Upper Left Quadrant - Canine (Eye tooth / Cuspid)":
+        return 15;
+        break;
+        case "Upper Left Quadrant - Bicuspid (1st)":
+        return 16;
+        break;
+        case "Upper Left Quadrant - Bicuspid (2nd)":
+        return 17;
+        break;
+        case "Upper Left Quadrant - Molar (1st Molar)":
+        return 18;
+        break;
+        case "Upper Left Quadrant - Molar (2nd Molar)":
+        return 19;
+        break;
+        case "Upper Left Quadrant - Wisdom Tooth (3rd Molar)":
+        return 20;
+        break;
+
+        //lower left quadrant teeth
+        case "Lower Left Quadrant - Wisdom Tooth (3rd Molar)":
+        return 21;
+        break;
+        case "Lower Left Quadrant - Molar (2nd Molar)":
+        return 22;
+        break;
+        case "Lower Left Quadrant - Molar (1st Molar)":
+        return 23;
+        break;
+        case "Lower Left Quadrant - Bicuspid (2nd)":
+        return 24;
+        break;
+        case "Lower Left Quadrant - Bicuspid (1st)":
+        return 25;
+        break;
+        case "Lower Left Quadrant - Canine (Eye tooth / Cuspid)":
+        return 26;
+        break;
+        case "Lower Left Quadrant - Incisor (Lateral)":
+        return 27;
+        break;
+        case "Lower Left Quadrant - Incisor (Central)":
+        return 28;
+        break;
+
+        //Lower right quadrant teeth
+        case "Lower Right Quadrant - Incisor (Central)":
+        return 29;
+        break;
+        case "Lower Right Quadrant - Incisor (Lateral)":
+        return 30;
+        break;
+        case "Lower Right Quadrant - Canine (Eye tooth / Cuspid)":
+        return 31;
+        break;
+        case "Lower Right Quadrant - Bicuspid (1st)":
+        return 32;
+        break;
+        case "Lower Right Quadrant - Bicuspid (2nd)":
+        return 33;
+        break;
+        case "Lower Right Quadrant - Molar (1st Molar)":
+        return 34;
+        break;
+        case "Lower Right Quadrant - Molar (2nd Molar)":
+        return 35;
+        break;
+        case "Lower Right Quadrant - Wisdom Tooth (3rd Molar)":
+        return 36;
+        break;
+
+        default:
+        return 0;
+      }
+}

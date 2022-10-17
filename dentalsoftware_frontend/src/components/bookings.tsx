@@ -54,20 +54,16 @@ export class Bookings extends React.Component<any, any> {
             patients: null,
             patientsViewed: null,
             patientsViewedPermanent: null,
+            dentistsViewed: null,
+            dentistsViewedPermanent: null,
             dentists: null,
             patientsData: null,
             dentistsData: null,
             bookings: null,
-            oldValuesBookingID: [],
-            oldValuesNHInumber: [],
-            oldValuesDate: [],
-            oldValuesPatientName: [],
-            oldValuesTime: [],
-            oldValuesDentistName: [],
-            oldValuesProcedure: [],
-            oldValuesAreasAffected: [],
-            oldValuesPatientNotes: [],
-            patientContactNumberSearch: "",
+
+            patientSearchValue: "",
+            dentsitSearchValue: "",
+
             patientNHINumberSearch: "",
             ticketListTextDisplayedArray: [],
             ticketVisitTableCatagory: [],
@@ -114,7 +110,14 @@ export class Bookings extends React.Component<any, any> {
 
             timeHourArray: [],
             timeMinuteArray: [],
-            timeAM_PMArray: []
+            timeAM_PMArray: [],
+
+
+
+
+
+            patientInfo: null,
+            dentistInfo: null
         }
 
         //Gets all of the tickets currently created
@@ -147,23 +150,60 @@ export class Bookings extends React.Component<any, any> {
         axios.post('http://localhost:3000/patients/getAllPatientData')
         .then((res) => {
             axios.post('http://localhost:3000/accounts/getAllAccounts')
-            .then((resAccount) => {
+            .then(async (resAccount) => {
                 let patients: ComboBoxItem[] = [];
+
+                var patientInfo: any = [];
 
                 for (let i = 0; i < res.data.result.length; i++) {
                     patients.push({text: res.data.result[i]['FirstName'] + " " + res.data.result[i]['LastName']})
+                    
+                    patientInfo[i] = ({
+                        ID: res.data.result[i]['FirstName'],
+                        NHI: res.data.result[i]['FirstName'],
+                        FirstName: res.data.result[i]['FirstName'],
+                        LastName: res.data.result[i]['FirstName'],
+                        MiddleName: res.data.result[i]['FirstName'],
+                        DOB: res.data.result[i]['FirstName'],
+                        ContactNumber: res.data.result[i]['FirstName'],
+                        Email: res.data.result[i]['FirstName'],
+                        Notes: res.data.result[i]['FirstName'],
+                        ExistingConditions: res.data.result[i]['FirstName']
+                    });
                 }
 
                 this.setState({
                     patientsViewed: patients,
-                    patientsViewedPermanent: patients
+                    patientsViewedPermanent: patients,
+                    patientInfo: patientInfo
                 });
 
                 let dentists: ComboBoxItem[] = [];
 
+                var dentistInfo: any = [];
+
                 for (let i = 0; i < resAccount.data.result.length; i++) {
                     dentists.push({text: resAccount.data.result[i]['AccountName']})
+                    
+                    console.log(resAccount.data.result[i]);
+
+                    dentistInfo[i] = ({
+                        ID: resAccount.data.result[i]['ID'],
+                        AccountName: resAccount.data.result[i]['AccountName'],
+                        AccountAccessLevel: resAccount.data.result[i]['AccountAccessLevel'],
+                        DentistNumber: resAccount.data.result[i]['DentistNumber'],
+                        DOB: resAccount.data.result[i]['DOB'],
+                        Email: resAccount.data.result[i]['Email'],
+                        PhoneNumber: resAccount.data.result[i]['PhoneNumber'],
+                        DentistName: resAccount.data.result[i]['DentistName']
+                    });
                 }
+
+                this.setState({
+                    dentistsViewed: dentists,
+                    dentistsViewedPermanent: dentists,
+                    dentistInfo: dentistInfo
+                });
 
                 axios.post('http://localhost:3000/bookings/getAllBookings')
                 .then((resBooking) => {
@@ -182,12 +222,17 @@ export class Bookings extends React.Component<any, any> {
                         {
                             index: i,
                             id: resBooking.data.result[i]['ID'],
-                            nhi: patient['NHI'],
-                            patientName: patient["FirstName"] + " " + patient["LastName"],
                             date: resBooking.data.result[i]['Date'],
                             time: resBooking.data.result[i]['Time'],
-                            Procedure: resBooking.data.result[i]['ProcedureName'],
+                            patient: resBooking.data.result[i]['Patient'],
+                            dentist: resBooking.data.result[i]['Dentist'],
+                            feeDollars: resBooking.data.result[i]['FeeDollars'],
+                            feeCents: resBooking.data.result[i]['FeeCents'],
                             notes: patient['Notes'],
+                            Procedure: resBooking.data.result[i]['ProcedureName'],
+                            ProcedureTime: resBooking.data.result[i]['ProcedureTime'],
+                            patientAttended: resBooking.data.result[i]['PatientAttended'],
+                            tooth: resBooking.data.result[i]['Tooth'],
                         });
                     }
                     
@@ -199,16 +244,6 @@ export class Bookings extends React.Component<any, any> {
                         bookings: bookingDisplayed,
                         bookingsRaw: resBooking.data.result
                     })
-
-                    this.setState({
-                        patients: patients,
-                        patientsData: res.data.result,
-                        dentistsData: resAccount.data.result,
-                        dentists: dentists,
-                        bookings: bookingDisplayed,
-                        bookingsRaw: resBooking.data.result
-                    })
-
                 })
                 .catch((err) => {
                     console.log(err)
@@ -232,8 +267,6 @@ export class Bookings extends React.Component<any, any> {
             console.log(this.state)
             return (<Loading/>)
         }
-
-        var dentalChartTotal: any;
 
         //Creates a callback for the booking dental chart .tsx file
         const bookingsDentalChartCallback = (
@@ -423,7 +456,7 @@ export class Bookings extends React.Component<any, any> {
             textChanged: (textValue:any) =>{
 
                 this.setState({
-                    patientContactNumberSearch: textValue
+                    patientSearchValue: textValue
                 })
 
                 let patientsViewedTemp: ComboBoxItem[] = [];
@@ -471,6 +504,44 @@ export class Bookings extends React.Component<any, any> {
             }
         }
 
+        //Handles when a patient is searched for
+        const textHandlerDentistSearch = {
+            textChanged: (textValue:any) =>{
+
+                this.setState({
+                    dentsitSearchValue: textValue
+                })
+
+                let dentistViewedTemp: ComboBoxItem[] = [];
+
+                //Will loop through the patient table and check if the text provided matches several patient records
+                //If it does, it will be saved into a combobox item to display as an avalaible patient to select
+                for (let i = 0; i < this.state.dentistsData.length; i++)
+                {
+                    if (this.state.dentistsData[i]['AccountName'].toLowerCase().includes(textValue.toLowerCase()) == true)
+                    {
+                        dentistViewedTemp.push({text: this.state.dentistsData[i]["AccountName"]})
+                    }
+                    else if (this.state.dentistsData[i]['Email'].toLowerCase().includes(textValue.toLowerCase()) == true)
+                    {
+                        dentistViewedTemp.push({text: this.state.dentistsData[i]["AccountName"]})
+                    }
+                    else if (this.state.dentistsData[i]['PhoneNumber'].toLowerCase().includes(textValue.toLowerCase()) == true)
+                    {
+                        dentistViewedTemp.push({text: this.state.dentistsData[i]["AccountName"]})
+                    }
+                    else if (this.state.dentistsData[i]['DentistName'].toLowerCase().includes(textValue.toLowerCase()) == true)
+                    {
+                        dentistViewedTemp.push({text: this.state.dentistsData[i]["AccountName"]})
+                    }
+                }
+
+                this.setState({
+                    dentistsViewed: dentistViewedTemp
+                })
+            }
+        }
+
         const textHandlerDentistSelected = {
             currentTextChanged: (currentText:any) => {
                 let dentistID = null;
@@ -489,8 +560,7 @@ export class Bookings extends React.Component<any, any> {
         const buttonHandlerBookingOrCancel = {
             clicked: () => {
 
-                //Resets many of the variables after clicking cancel
-                    //This is to ensure that the settings to not remain after clicking create booking again
+                //Cancel booking clicked, this will reset many of the variables
                 if (this.state.bookingCreateOrEditDisplay == 1)
                 {
                     this.state.bookingID[this.state.currentBookingSelected] = "";
@@ -517,20 +587,26 @@ export class Bookings extends React.Component<any, any> {
                         completeClickedCreate: false
                     });
                 }
+                //Create booking clicked
                 else
                 {
-                    //Resets the time
+                    this.setState({bookingMessageSelected: 2});
+
+                    //Sets all the variables to allow for editing the booking
+                    this.state.NHInum[this.state.currentBookingSelected] = this.state.patientInfo[0]['nhi'];
+                    this.state.patientName[this.state.currentBookingSelected] = this.state.patientInfo[0]['FirstName'];
+                        
                     this.state.timeHour[this.state.currentBookingSelected] = "10";
                     this.state.timeMinute[this.state.currentBookingSelected] = "00";
                     this.state.timeAM_PM[this.state.currentBookingSelected] = "AM";
 
-                    this.state.patientName[this.state.currentBookingSelected] = 1;
+                    this.state.dentistName[this.state.currentBookingSelected] = this.state.dentistInfo[0]['AccountName'];
+                    this.state.procedure[this.state.currentBookingSelected] = "Initial Examination";
+                    this.state.patientNotes[this.state.currentBookingSelected] = "";
 
                     //This will be sent to the booking display chart to tell it the new booking button was clicked
                         //This is to ensure that fields are not prefilled with data that should not be there...
                     this.state.bookingDentalChartString[0] = true;
-
-                    console.log(this.state)
 
                     //Changes settings so the page is the create booking page and resets the patient name combo box
                     this.setState({
@@ -538,105 +614,10 @@ export class Bookings extends React.Component<any, any> {
                         bookingOrCancelButtonText: "Cancel",
                         completeClickedCreate: true,
                         patientsViewed: this.state.patientsViewedPermanent,
-                        bookingMessageSelected: 2,
-                        bookingDateSelectorDateCount: 1
+                        bookingDateSelectorDateCount: 1,
+                        dentistsViewed: this.state.dentistsViewedPermanent,
                     });
-                    console.log(this.state)
                 } 
-            }
-        }
-
-        const editExistingBookingClicked = {//------------------------------------------------------------------------------------------------------------------------------------
-            clicked: async () => {
-
-                //Deletes arrays contents in preperation to reset the arrays contents
-                //This will stop the arrays size from remaining the size it was prior to the reset
-                    //In other words, if you just used this variable for storing 20 dental charts and
-                    //then try to use it for storing 3 dental charts, it will still contain the 17
-                    //dental charts that were used before...
-                for (var num = 0; num < this.state.bookingDentalChartString.length + 2; num++)
-                {
-                    this.state.bookingDentalChartString[num] = null;
-                }
-
-                //Gets all of the tickets currently created
-                await axios.post('http://localhost:3000/bookings/getBookingDataByID', null, {
-                    headers: {
-                        'ID': 9
-                    }
-                })
-                .then((resTicketsVisit) => {
-
-                    
-
-                    // //TODO: have the booking dental charts load into the below variables...
-                    // for (var num = 0; num < resTicketsVisit.data.result['ticketVisitTooth'].length; num++)
-                    // {
-                    //     this.state.dentalChartDataHolderOne[num] = resTicketsVisit.data.result['ticketVisitTooth'][num]['ToothData1'];
-                    //     this.state.dentalChartDataHolderTwo[num] = resTicketsVisit.data.result['ticketVisitTooth'][num]['ToothData2'];
-                    //     this.state.dentalChartDataHolderThree[num] = resTicketsVisit.data.result['ticketVisitTooth'][num]['ToothData3'];
-                    //     this.state.dentalChartDataHolderFour[num] = resTicketsVisit.data.result['ticketVisitTooth'][num]['ToothData4'];
-                    //     this.state.dentalChartDataHolderFive[num] = resTicketsVisit.data.result['ticketVisitTooth'][num]['ToothData5'];
-                    //     this.state.dentalChartDataHolderSix[num] = resTicketsVisit.data.result['ticketVisitTooth'][num]['ToothData6'];
-                    //     this.state.dentalChartDataHolderSeven[num] = resTicketsVisit.data.result['ticketVisitTooth'][num]['ToothData7'];
-                    //     this.state.dentalChartDataHolderEight[num] = resTicketsVisit.data.result['ticketVisitTooth'][num]['ToothData8'];
-                    //     this.state.dentalChartDataHolderNine[num] = resTicketsVisit.data.result['ticketVisitTooth'][num]['ToothData9'];
-                    //     this.state.procedure[num] = resTicketsVisit.data.result['ticketVisitTooth'][num]['ProcedureName'];
-                    //     this.state.procedureCostStored[num] = resTicketsVisit.data.result['ticketVisitTooth'][num]['ProcedureCostDollars'];
-                    //     //this.state.procedureTimeStored[num] = resTicketsVisit.data.result['ticketVisitTooth'][num]['VisitTime']; TODO: CHANGE HOW TIME IS STORED--------------------------------------------------
-                    //     this.state.patientNotes[num] = resTicketsVisit.data.result['ticketVisitTooth'][num]['Notes'];
-                    //     this.state.toothSelected[num] = resTicketsVisit.data.result['ticketVisitTooth'][num]['Tooth'];
-
-                    //     this.state.bookingDentalChartString[num] = (
-                    //         this.state.dentalChartDataHolderOne[num] + "-" +
-                    //         this.state.dentalChartDataHolderTwo[num] + "-" +
-                    //         this.state.dentalChartDataHolderThree[num] + "-" +
-                    //         this.state.dentalChartDataHolderFour[num] + "-" +
-                    //         this.state.dentalChartDataHolderFive[num] + "-" +
-                    //         this.state.dentalChartDataHolderSix[num] + "-" +
-                    //         this.state.dentalChartDataHolderSeven[num] + "-" +
-                    //         this.state.dentalChartDataHolderEight[num] + "-" +
-                    //         this.state.dentalChartDataHolderNine[num] + "-" +
-                    //         this.state.procedure[num] + "-" +
-                    //         this.state.procedureCostStored[num] + "-" +
-                    //         this.state.procedureTimeStored[num] + "-" +
-                    //         this.state.patientNotes[num] + "-" +
-                    //         this.state.toothSelected[num] + "-" +
-                    //         resTicketsVisit.data.result['ticketVisitTooth'].length);
-
-                    //     console.log("SAVED TEXT... " + this.state.bookingDentalChartString[num]);
-                    // }
-                })
-                .catch((err) => {
-                    console.log(err)
-                });
-
-                // //Sets all the variables to allow for editing the booking
-                // this.state.NHInum[this.state.currentBookingSelected] = this.state.ticketPatientNHIStored[ticketSelected]['NHI'];
-                // this.state.patientName[this.state.currentBookingSelected] = this.state.ticketPatientNHIStored[ticketSelected]['FirstName'];
-                //     //NOTE: Date is not required as it will be changed via the calendar
-                // this.state.timeHour[this.state.currentBookingSelected] = 9;
-                // this.state.timeMinute[this.state.currentBookingSelected] = 0;
-                // this.state.timeAM_PM[this.state.currentBookingSelected] = "AM";
-                // this.state.dentistName[this.state.currentBookingSelected] = "NEED TO ADD";
-                // this.state.procedure[this.state.currentBookingSelected] = this.state.bookings[0]['Procedure'];
-                // this.state.areasAffected[this.state.currentBookingSelected] = this.state.bookings[0]['AffectedAreas'];
-                // this.state.patientNotes[this.state.currentBookingSelected] = this.state.bookings[0]['notes'];
-                    
-                
-                // console.log("NUMBER OF VISIT COUNT: " + this.state.numberOfVisitsCount[ticketSelected]);
-
-
-                // let singlePatientComboBox: ComboBoxItem[] = [];
-                // singlePatientComboBox.push({text: this.state.patientName[this.state.currentBookingSelected]});
-
-                // this.setState({
-                //     addTicketOrEditClicked: true,
-                //     bookingCreateOrEditDisplay: 1,
-                //     patientsViewed: singlePatientComboBox,
-                //     bookingOrCancelButtonText: "Cancel",
-                //     completeClickedCreate: true
-                // });
             }
         }
 
@@ -751,60 +732,56 @@ export class Bookings extends React.Component<any, any> {
 
                     if (this.state.editButtonClicked == false)
                     {
-                        console.log(this.state.bookings[num])
                         //Sets all the variables to allow for editing the booking
                         this.state.bookingID[num] = this.state.bookings[num]['id'];
-                        this.state.NHInum[num] = this.state.bookings[num]['nhi'];
-                        this.state.patientName[num] = this.state.bookings[num]['patientName'];
-                            //NOTE: Date is not required as it will be changed via the calendar
+                        this.state.NHInum[num] = this.state.patientInfo[this.state.bookings[num]['patient']]['nhi'];//Works
+                        this.state.patientName[num] = this.state.patientInfo[this.state.bookings[num]['patient']]['FirstName'];//WORKS
+                            
                         this.state.timeHour[num] = this.state.bookings[num]['time'].split(":")[0];
                         this.state.timeMinute[num] = this.state.bookings[num]['time'].split(":")[1];
                         this.state.timeAM_PM[num] = (Number(this.state.timeHour[num]) > 12 ? "PM" : "AM");
-                        this.state.dentistName[num] = "NEED TO ADD";
+
+                        this.state.dentistName[num] = this.state.dentistInfo[this.state.bookings[num]['dentist']]['AccountName'];//WORKS
                         this.state.procedure[num] = this.state.bookings[num]['Procedure'];
-                        this.state.areasAffected[num] = this.state.bookings[num]['AffectedAreas'];
-                        this.state.patientNotes[num] = this.state.bookings[num]['notes'];
+                        this.state.patientNotes[num] = this.state.bookings[num]['notes'];//WORKS
 
-                        //Sets the old variables to be used when the edit is complete for comparison
-                        this.state.oldValuesBookingID[num] = this.state.bookingID[num];
-                        this.state.oldValuesNHInumber[num] = this.state.NHInum[num];
-                        this.state.oldValuesDate[num] = this.state.bookings[num]['date'];
-                        this.state.oldValuesPatientName[num] = this.state.patientName[num];
-                        //Mixes time together for easier handling when being sent to other functions
-                        this.state.oldValuesTime[num] = (
-                            this.state.timeHour[num] + ":" +
-                            this.state.timeMinute[num] + "" +
-                            this.state.timeAM_PM[num]);
-                        this.state.oldValuesDentistName[num] = this.state.dentistName[num];
-                        this.state.oldValuesProcedure[num] = this.state.procedure[num];
-                        this.state.oldValuesAreasAffected[num] = this.state.areasAffected[num];
-                        this.state.oldValuesPatientNotes[num] = this.state.patientNotes[num];
-
-                        this.state.bookingDentalChartString[0] = false;
+                        this.state.bookingDentalChartString[0] = false;  
                     }
 
                     if (this.props.accountHelper.accountAdmin)
                     {
                         bookingListEditButton[num] = 
                             <Button id={"ticketAddAndDeleteButton"} style={"flex: 1;"} text={"Edit"} on={{clicked: async () => {
+                            
+                                this.state.bookingDentalChartString[0] = false;
+                                this.state.bookingDentalChartString[1]; //This is already sorted at the top of the file
+                                this.state.bookingDentalChartString[2] = this.state.procedure[bookingSelected];
+                                this.state.bookingDentalChartString[3] = this.state.bookings[bookingSelected]['feeDollars'] + "." + this.state.bookings[bookingSelected]['feeCents'];
+                                this.state.bookingDentalChartString[4] = this.state.bookings[bookingSelected]['ProcedureTime'];
+                                this.state.bookingDentalChartString[5] = this.state.patientNotes[bookingSelected];
+                                this.state.bookingDentalChartString[6] = this.state.bookings[bookingSelected]['tooth'];
 
                                     let singlePatientComboBox: ComboBoxItem[] = [];
-                                    singlePatientComboBox.push({text: this.state.patientName[bookingSelected]});
+                                    singlePatientComboBox.push({text: this.state.patientName[bookingSelected].toString()});
+
+                                    let singleDentistComboBox: ComboBoxItem[] = [];
+                                    singleDentistComboBox.push({text: this.state.dentistName[bookingSelected].toString()});
                                     
                                     this.setState({
-                                        patientsViewed: singlePatientComboBox
+                                        patientsViewed: singlePatientComboBox,
+                                        dentistsViewed: singleDentistComboBox,
+                                        bookingDentalChartString: this.state.bookingDentalChartString
                                     });
 
                                     this.setState({
-                                        //patientsViewed: singlePatientComboBox,
                                         currentBookingSelected: bookingSelected,
-                                        editBookingButton: true,
                                         bookingCreateOrEditDisplay: 1,
                                         editButtonClicked: true,
                                         completeClickedEdit: true,
                                         bookingOrCancelButtonText: "Cancel"
                                     })
                                 }}}
+                                
                             />
 
                             bookingListDeleteButton[num] =
@@ -826,20 +803,6 @@ export class Bookings extends React.Component<any, any> {
                                         this.setState({
                                             currentBookingSelected: bookingSelected
                                         });
-
-                                        // viewBooking(
-                                        // this.state.bookingID[this.state.currentBookingSelected],
-                                        // this.state.NHInum[this.state.currentBookingSelected],
-                                        // this.state.patientName[this.state.currentBookingSelected],
-                                        // dateFull,
-                                        // //Time is sent together so it is easier to handle on the other end
-                                        // addLeadingZeros(this.state.timeHour[this.state.currentBookingSelected], 2) + ":" +
-                                        // addLeadingZeros(this.state.timeMinute[this.state.currentBookingSelected], 2) + "" +
-                                        // this.state.timeAM_PM[this.state.currentBookingSelected],
-                                        // this.state.dentistName[this.state.currentBookingSelected],
-                                        // this.state.procedure[this.state.currentBookingSelected],
-                                        // this.state.areasAffected[this.state.currentBookingSelected],
-                                        // this.state.patientNotes[this.state.currentBookingSelected])
                                     }}} />
 
                                     {/*TODO: Have the info button bring up a window (or change the screen) to view detailed version of selected booking*/}
@@ -886,15 +849,6 @@ export class Bookings extends React.Component<any, any> {
                     this.state.dentistName[num] = null;
                     this.state.areasAffected[num] = null;
                     this.state.patientNotes[num] = null;
-                    this.state.oldValuesBookingID[num] = null;
-                    this.state.oldValuesNHInumber[num] = null;
-                    this.state.oldValuesDate[num] = null;
-                    this.state.oldValuesPatientName[num] = null;
-                    this.state.oldValuesTime[num] = null;
-                    this.state.oldValuesDentistName[num] = null;
-                    this.state.oldValuesProcedure[num] = null;
-                    this.state.oldValuesAreasAffected[num] = null;
-                    this.state.oldValuesPatientNotes[num] = null;
                 }
             }
         }
@@ -1273,10 +1227,13 @@ export class Bookings extends React.Component<any, any> {
                         let singlePatientComboBox: ComboBoxItem[] = [];
                         singlePatientComboBox.push({text: this.state.patientName[this.state.currentBookingSelected]});
 
+
+                        
                         this.setState({
                             addTicketOrEditClicked: true,
                             bookingCreateOrEditDisplay: 1,
                             patientsViewed: singlePatientComboBox,
+                    
                             bookingOrCancelButtonText: "Cancel",
                             completeClickedCreate: true
                         });
@@ -1289,8 +1246,6 @@ export class Bookings extends React.Component<any, any> {
                         console.log("Deleting ticket number: " + ticketSelected + 1);
                     }
                 }}/>
-
-                <Button on={editExistingBookingClicked} text={"Test button"}></Button>
 
             </View>
         }
@@ -1391,7 +1346,7 @@ export class Bookings extends React.Component<any, any> {
                     <View style={"flex-direction: 'column'; flex: 1; margin: 1px"}>
                         <View style="margin: 0px; flex-direction: 'row';">
                             <Text id={"bookingPageTextRoundedLeftTop"}>Search patient</Text>
-                            <LineEdit id={"bookingPatientAndDentistSearch"} text={this.state.patientContactNumberSearch} on={textHandlerPatientSearch} />
+                            <LineEdit id={"bookingPatientAndDentistSearch"} text={this.state.patientSearchValue} on={textHandlerPatientSearch} />
                         </View>
 
                         <View style="margin: 0px; flex-direction: 'row';">
@@ -1403,12 +1358,12 @@ export class Bookings extends React.Component<any, any> {
                     <View style={"flex-direction: 'column'; flex: 1; margin: 1px"}>
                         <View style="margin: 0px; flex-direction: 'row';">
                             <Text id={"bookingPageTextRoundedLeftTop"} >Search dentist</Text>
-                            <LineEdit id={"bookingPatientAndDentistSearch"} text={this.state.patientContactNumberSearch} on={textHandlerPatientSearch} />
+                            <LineEdit id={"bookingPatientAndDentistSearch"} text={this.state.dentsitSearchValue} on={textHandlerDentistSearch} />
                         </View>
 
                         <View style="margin: 0px; flex-direction: 'row';">
                             <Text id={"bookingPageTextRoundedLeftBottom"}>Dentist</Text>
-                            <ComboBox id={"bookingPatientAndDentistDropdown"} items={this.state.dentists} on={textHandlerDentistSelected} />
+                            <ComboBox id={"bookingPatientAndDentistDropdown"} items={this.state.dentistsViewed} on={textHandlerDentistSelected} />
                         </View>
                     </View>
 
