@@ -1,9 +1,10 @@
-import { Button, Text, View } from "@nodegui/react-nodegui";
+import { Button, Text, View, AnimatedImage } from "@nodegui/react-nodegui";
 import React from "react";
 import axios from 'axios';
 import { toothNames } from "./Calendarhelpers/comboBoxVariables";
 import ChartView from "./chartView";
 import Alert from "./alert";
+import Loading from "./loading";
 
 export class DentalChart extends React.Component<any, any> {
 
@@ -86,7 +87,7 @@ export class DentalChart extends React.Component<any, any> {
     render() {
 
         if (this.state.patient == null) {
-            return (<View></View>)
+            return (<Loading/>)
         }
 
         const callback = (number:number) => {
@@ -103,7 +104,6 @@ export class DentalChart extends React.Component<any, any> {
 
             for (let i = 0; i < this.state.patientTeethQuadrant.length; i++) {
                 if (this.state.patientTeethQuadrant[i]['Tooth'] == this.state.selectedTooth + 1) {
-                    console.log(this.state.patientTeethQuadrant[i])
                     selectedToothQuadrants.push(this.state.patientTeethQuadrant[i])
                 }
             }

@@ -115,39 +115,43 @@ bookingsRouter.post('/updateBooking', (req, res) => {
 function createNewBooking(res = null, bookingData) {
     let numMissing = 0
     let errorMessage = "Error: Missing "
-    if (bookingData.patientID === undefined) {
-        errorMessage += "Patient ID, "
-        numMissing++
+    for (let i = 0; i < bookingData.data.length; i++) {
+        if (bookingData.data[i].patientID === undefined) {
+            errorMessage += "Patient ID (" + i + "), "
+            numMissing++
+        }
+        if (bookingData.data[i].date === undefined) {
+            errorMessage += "Date (" + i + "), "
+            numMissing++
+        }
+        if (bookingData.data[i].time === undefined) {
+            errorMessage += "Time (" + i + "), "
+            numMissing++
+        }
+        if (bookingData.data[i].dentistID === undefined) {
+            errorMessage += "Dentist ID (" + i + "), "
+            numMissing++
+        }
+        if (bookingData.data[i].dentistID == null) {
+            bookingData.data[i].dentistID = 1;
+        }
+        if (bookingData.data[i].procedure == undefined) {
+            errorMessage += "Procedure Name (" + i + "), "
+            numMissing++
+        }
+        if (bookingData.data[i].procedureTime == undefined) {
+            errorMessage += "Procedure Time (" + i + "), "
+            numMissing++    
+        }
+        if (bookingData.data[i].procedureCost == undefined) {
+            errorMessage += "Prodecure Cost (" + i + "), "
+            numMissing++    
+        }
+        if (bookingData.data[i].tooth == undefined) {
+            errorMessage += "Tooth (" + i + "), "
+            numMissing++    
+        }
     }
-    if (bookingData.date === undefined) {
-        errorMessage += "Date, "
-        numMissing++
-    }
-    if (bookingData.time === undefined) {
-        errorMessage += "Time, "
-        numMissing++
-    }
-    if (bookingData.dentistID === undefined) {
-        errorMessage += "Dentist ID, "
-        numMissing++
-    }
-    if (bookingData.dentistID === null) {
-        bookingData.dentistID = 1;
-    }
-    if (bookingData.procedure === undefined) {
-        bookingData.procedure = "Initial Examination"
-    }
-    if (bookingData.dentalCharts === undefined) {
-        errorMessage += "Dental Chart(s), "
-        numMissing++
-    }
-
-    let newDate = new Date(bookingData.date);
-
-    let splitTime = bookingData.time.split(":");
-    let newTime = splitTime[0] + ":" + splitTime[1].slice(0, -2) + ":00";
-    let hour = splitTime[0];
-    let minute = splitTime[1].slice(0, -2);
 
     if (numMissing > 0) {
         errorMessage = errorMessage.slice(0, -2) + "."
@@ -155,9 +159,31 @@ function createNewBooking(res = null, bookingData) {
         return
     }
 
-    let sql = "SELECT * FROM bookings WHERE Date='" + newDate + "'"
+    let finalsql = "INSERT INTO `bookings` (`Date`, `Time`, `Patient`, `Dentist`, `Tooth`, `FeeDollars`, `FeeCents`, `Notes`, `ProcedureName`, `ProcedureTime`, `PatientAttended`) "
+    + "VALUES "
+
+    for (let i = 0; i < bookingData.data.length; i++) {
+
+        let newDate = new Date(bookingData.data[i].date).toISOString().split("T")[0];
+
+        let splitTime = bookingData.data[i].time.split(":");
+        let hour = splitTime[0];
+        let minute = splitTime[1].slice(0, -2);
+
+        let newTime = (hour * 60) + minute;
+
+        let dollars = Number(bookingData.data[i].procedureCost.split("$")[1].split(".")[0]);
+        let cents = Number(bookingData.data[i].procedureCost.split("$")[1].split(".")[1]);
+
+        if (bookingData.data[i].dentistID == 0) {bookingData.data[i].dentistID++}
+
+        finalsql += "('" + newDate + "', '" + newTime + "', '" + bookingData.data[i].patientID + "', '" + bookingData.data[i].dentistID + "', '" + bookingData.data[i].tooth + "','" + dollars + "', '" + cents + "', '" + bookingData.data[i].notes + "', '" + bookingData.data[i].procedure + "', '" + bookingData.data[i].procedureTime + "', 'DATEBEFOREBOOKING'), "
+
+    }
+
+    finalsql = finalsql.slice(0, -2);
     try {
-        bClient.query(sql, function (err, result) {
+        bClient.query(finalsql, function (err, result) {
             if (err) {
                 console.log(err)
                 if (res) {
@@ -167,81 +193,13 @@ function createNewBooking(res = null, bookingData) {
                     return {result: 1, error: err}
                 }
             }
-
-            if (Object.keys(result).length > 0) {
-
-                for (let i = 0; i < Object.keys(result).length; i++) {
-                    let tempHour = result[i]['Time'].split(":")[0]
-                    let tempMin = result[i]['Time'].split(":")[1]
-
-                    let tempTime = (tempHour * 60) + tempMin;
-                    let newTime = (hour * 60) + minute;
-
-                    let diff = Math.abs(tempTime - newTime);
-
-                    if (diff < 90) {
-                        if (res) {
-                            res.send({result: 1, error: "Booking already exists within 90 minutes of the given time/date!"})
-                            return
-                        } else {
-                            return {result: 1, error: "Booking already exists within 90 minutes of the given time/date!"}
-                        }
-                    }
-                }
+            if (res) {
+                res.send({result: 0})
+                return
+            } else {
+                return {result: 0}
             }
-
-            let dollars = 0;
-            let cents = 0;
-
-            if (bookingData.dentistID == 0) {bookingData.dentistID++}
-
-            for (let i = 0; i < bookingData.dentalCharts.length; i++) {
-                dollars += Number(bookingData.dentalCharts[i]['procedureCost'].split("$")[1].split(".")[0])
-                cents += Number(bookingData.dentalCharts[i]['procedureCost'].split("$")[1].split(".")[1])
-
-                while (cents >= 100) {
-                    dollars++
-                    cents -= 100
-                }
-            }
-
-            sql = "INSERT INTO `bookings` (`Date`, `Time`, `Patient`, `Dentist`, `FeeDollars`, `FeeCents`, `Location`, `Notes`, `ProcedureName`, `PatientAttended`) "
-            + "VALUES ('" + newDate + "', '" + newTime + "', '" + bookingData.patientID + "', '" + bookingData.dentistID + "', '" + dollars + "', '" + cents + "', 'Default Location', '" + bookingData.notes + "', '" + bookingData.procedure + "', 'DATEBEFOREBOOKING')"
-            bClient.query(sql, function (err, result) {
-                if (err) {
-                    console.log(err)
-                    if (res) {
-                        res.send({result: 1, error: err})
-                        return
-                    } else {
-                        return {result: 1, error: err}
-                    }
-                }
-
-                sql = "SELECT * FROM bookings ORDER BY id DESC LIMIT 1";
-                bClient.query(sql, function (err, result) {
-                    if (err) {
-                        console.log(err)
-                        if (res) {
-                            res.send({result: 1, error: err})
-                            return
-                        } else {
-                            return {result: 1, error: err}
-                        }
-                    }
-                    let bookingID = result[0]['ID'];
-                    sql = "INSERT INTO `dental_charts` (`Booking`, `Data`) VALUES "
-
-                    for (let i = 0; i < bookingData.dentalCharts.length; i++) {
-                        sql += "(" + bookingID + ", '" + JSON.stringify(bookingData.dentalCharts[i]) + "'), ";
-                    }
-                    sql = sql.slice(0, -2)
-                    sql += ";";
-                    databaseQuery(res, sql);
-                })
-                
-            })
-        });
+        })
     } catch (error) {
         console.log(error)
         res.send(error)

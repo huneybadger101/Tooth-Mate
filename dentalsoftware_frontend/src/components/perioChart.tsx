@@ -3,6 +3,7 @@ import React from "react";
 import axios from 'axios';
 import { toothNames } from "./Calendarhelpers/comboBoxVariables";
 import ChartView from "./chartView";
+import Loading from "./loading";
 
 export class PerioChart extends React.Component<any, any> {
 
@@ -66,7 +67,7 @@ export class PerioChart extends React.Component<any, any> {
     render() {
 
         if (this.state.patient == null) {
-            return (<View/>)
+            return (<Loading/>)
         }
 
         const callback = (number:number) => {
