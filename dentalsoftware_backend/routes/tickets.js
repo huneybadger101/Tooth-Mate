@@ -138,10 +138,6 @@ function createNewTicket(res = null, ticketData) {
         errorMessage += "Ticket Visit Data, "
         numMissing++
     }
-    if (ticketData.ticketVisitTeeth === undefined) {
-        errorMessage += "Ticket Visit Teeth Data, "
-        numMissing++
-    }
 
     if (numMissing > 0) {
         errorMessage = errorMessage.slice(0, -2) + "."
@@ -174,46 +170,13 @@ function createNewTicket(res = null, ticketData) {
                     }
                 }
                 ticketID = result[0]['ID'];
-                sql = "INSERT INTO `ticket_visit` (`VisitNumber`, `Ticket`, `Date`, `Time`, `VisitTimeLength`) VALUES ";
+                sql = "INSERT INTO `ticket_visit` (`VisitNumber`, `Ticket`, `Notes`, `Tooth`, `ProcedureName`) VALUES ";
                 for (let i = 0; i < ticketData.ticketVisit.length; i++) {
-                    sql += "(" + ticketData.ticketVisit[i]['VisitNumber'] + ", " + ticketID + ", '" + ticketData.ticketVisit[i]['Date'] + "', '" + ticketData.ticketVisit[i]['Time'] + "', '" + ticketData.ticketVisit[i]['VisitTimeLength'] + "'), "
+                    sql += "(" + ticketData.ticketVisit[i]['VisitNumber'] + ", " + ticketID + ", '" + ticketData.ticketVisit[i]['Notes'] + "', '" + ticketData.ticketVisit[i]['Tooth'] + "', '" + ticketData.ticketVisit[i]['Procedure'] + "'), "
                 }
                 sql = sql.slice(0, -2); 
                 sql += ";";
-                tClient.query(sql, function (err, result) {
-                    if (err) {
-                        console.log(err)
-                        if (res) {
-                            res.send({result: 1, error: err})
-                            return
-                        } else {
-                            return {result: 1, error: err}
-                        }
-                    }
-                    sql = "SELECT * FROM ticket_visit WHERE Ticket = '" + ticketID + "'";
-                    tClient.query(sql, function (err, result) {
-                        if (err) {
-                            console.log(err)
-                            if (res) {
-                                res.send({result: 1, error: err})
-                                return
-                            } else {
-                                return {result: 1, error: err}
-                            }
-                        }
-                        sql = "INSERT INTO `ticket_visit_tooth` (`TicketVisit`, `Tooth`, `ProcedureName`, `ProcedureCostDollars`, `ProcedureCostCents`, `Notes`, `ToothData1`, `ToothData2`, `ToothData3`, `ToothData4`, `ToothData5`, `ToothData6`, `ToothData7`, `ToothData8`, `ToothData9`) VALUES "
-                        for (let i = 0; i < ticketData.ticketVisitTeeth.length; i++) {
-                            for (let k = 0; k < result.length; k++) {
-                                if (ticketData.ticketVisitTeeth[i]['VisitNumber'] == result[k]['VisitNumber']) {
-                                    sql += "(" + result[k]['ID'] + ", " + ticketData.ticketVisitTeeth[i]['Tooth'] + ", '" + ticketData.ticketVisitTeeth[i]['ProcedureName'] + "', " + ticketData.ticketVisitTeeth[i]['ProcedureCostDollars'] + ", " + ticketData.ticketVisitTeeth[i]['ProcedureCostCents'] + ", '" + ticketData.ticketVisitTeeth[i]['Notes'] + "', " + ticketData.ticketVisitTeeth[i]['ToothData'][0] + ", " + ticketData.ticketVisitTeeth[i]['ToothData'][1] + ", " + ticketData.ticketVisitTeeth[i]['ToothData'][2] + ", " + ticketData.ticketVisitTeeth[i]['ToothData'][3] + ", " + ticketData.ticketVisitTeeth[i]['ToothData'][4] + ", " + ticketData.ticketVisitTeeth[i]['ToothData'][5] + ", " + ticketData.ticketVisitTeeth[i]['ToothData'][6] + ", " + ticketData.ticketVisitTeeth[i]['ToothData'][7] + ", " + ticketData.ticketVisitTeeth[i]['ToothData'][8] + "), "
-                                }
-                            }
-                        }
-                        sql = sql.slice(0, -2); 
-                        sql += ";";
-                        databaseQuery(res, sql);
-                    });
-                });
+                databaseQuery(res, sql);
             });
         });
     } catch (error) {

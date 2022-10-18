@@ -108,6 +108,7 @@ bookingsRouter.post('/updateBooking', (req, res) => {
     setString = setString.slice(0,  -2)
 
     let sql = "UPDATE bookings SET " + setString + " WHERE ID = '" + bookingID + "';";
+    
     databaseQuery(res, sql);
 
 })
@@ -164,24 +165,24 @@ function createNewBooking(res = null, bookingData) {
 
     for (let i = 0; i < bookingData.data.length; i++) {
 
-        let newDate = new Date(bookingData.data[i].date).toISOString().split("T")[0];
+        let newDate = new Date(bookingData.data[i].date + "T12:00:00.000Z").toISOString().split("T")[0];
+        
+        let newTime = bookingData.data[i].time;
 
-        let splitTime = bookingData.data[i].time.split(":");
-        let hour = splitTime[0];
-        let minute = splitTime[1].slice(0, -2);
+        let cost = bookingData.data[i].procedureCost.replace(",", "")
 
-        let newTime = (hour * 60) + minute;
-
-        let dollars = Number(bookingData.data[i].procedureCost.split("$")[1].split(".")[0]);
-        let cents = Number(bookingData.data[i].procedureCost.split("$")[1].split(".")[1]);
+        let dollars = Number(cost.split("$")[1].split(".")[0]);
+        let cents = Number(cost.split("$")[1].split(".")[1]);
 
         if (bookingData.data[i].dentistID == 0) {bookingData.data[i].dentistID++}
 
-        finalsql += "('" + newDate + "', '" + newTime + "', '" + bookingData.data[i].patientID + "', '" + bookingData.data[i].dentistID + "', '" + bookingData.data[i].tooth + "','" + dollars + "', '" + cents + "', '" + bookingData.data[i].notes + "', '" + bookingData.data[i].procedure + "', '" + bookingData.data[i].procedureTime + "', 'DATEBEFOREBOOKING'), "
+        finalsql += "(STR_TO_DATE('" + newDate + " 12:00:00', '%Y-%m-%d %H:%i:%s'), '" + newTime + "', '" + bookingData.data[i].patientID + "', '" + bookingData.data[i].dentistID + "', '" + bookingData.data[i].tooth + "','" + dollars + "', '" + cents + "', '" + bookingData.data[i].notes + "', '" + bookingData.data[i].procedure + "', '" + bookingData.data[i].procedureTime + "', 'DATEBEFOREBOOKING'), "
 
     }
 
     finalsql = finalsql.slice(0, -2);
+    finalsql += ";";
+
     try {
         bClient.query(finalsql, function (err, result) {
             if (err) {

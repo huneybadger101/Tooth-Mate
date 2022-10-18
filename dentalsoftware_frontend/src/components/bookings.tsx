@@ -185,8 +185,6 @@ export class Bookings extends React.Component<any, any> {
                 for (let i = 0; i < resAccount.data.result.length; i++) {
                     dentists.push({text: resAccount.data.result[i]['AccountName']})
                     
-                    console.log(resAccount.data.result[i]);
-
                     dentistInfo[i] = ({
                         ID: resAccount.data.result[i]['ID'],
                         AccountName: resAccount.data.result[i]['AccountName'],
@@ -218,11 +216,13 @@ export class Bookings extends React.Component<any, any> {
                             }
                         }
 
+                        let newDate = new Date(resBooking.data.result[i]['Date']).toLocaleString('en-US', { timeZone: 'Pacific/Auckland' }).split(",")[0]
+
                         bookingDisplayed[i] = (
                         {
                             index: i,
                             id: resBooking.data.result[i]['ID'],
-                            date: resBooking.data.result[i]['Date'],
+                            date: newDate,
                             time: resBooking.data.result[i]['Time'],
                             patient: resBooking.data.result[i]['Patient'],
                             dentist: resBooking.data.result[i]['Dentist'],
@@ -236,6 +236,7 @@ export class Bookings extends React.Component<any, any> {
                         });
                     }
                     
+
                     this.setState({
                         patients: patients,
                         patientsData: res.data.result,
@@ -264,7 +265,6 @@ export class Bookings extends React.Component<any, any> {
         this.state.bookingDentalChartString[1] = this.state.currentIndex + "." + this.state.totalIndex;
 
         if (this.state.patients == null) {
-            console.log(this.state)
             return (<Loading/>)
         }
 
@@ -720,10 +720,9 @@ export class Bookings extends React.Component<any, any> {
         {
             for (var num = 0; num < this.state.bookings.length; num++)
             {
-
-                let bookingYear = this.state.bookings[num]['date'].split("T")[0].split("-")[0];
-                let bookingMonth = Number(this.state.bookings[num]['date'].split("T")[0].split("-")[1]).toString();
-                let bookingDay = (Number(this.state.bookings[num]['date'].split("T")[0].split("-")[2]) + 1).toString();
+                let bookingYear = this.state.bookings[num]['date'].split("/")[2];
+                let bookingMonth = Number(this.state.bookings[num]['date'].split("/")[0]).toString();
+                let bookingDay = Number(this.state.bookings[num]['date'].split("/")[1]).toString();
 
                 let bookingDateString = bookingYear + "/" + bookingMonth + "/" + bookingDay;
                 if (bookingDateRev == bookingDateString) {
@@ -752,12 +751,9 @@ export class Bookings extends React.Component<any, any> {
                     {
                         bookingListEditButton[num] = 
                             <Button id={"ticketAddAndDeleteButton"} style={"flex: 1;"} text={"Edit"} on={{clicked: async () => {
-                            
-                                console.log("<----------------------------->");
-                                console.log(this.state.bookingID[bookingSelected]);
 
                                 this.state.bookingDentalChartString[0] = false;
-                                this.state.bookingDentalChartString[1]; //This is already sorted at the top of the file
+                                this.state.bookingDentalChartString[1];
                                 this.state.bookingDentalChartString[2] = this.state.procedure[bookingSelected];
                                 this.state.bookingDentalChartString[3] = this.state.bookings[bookingSelected]['feeDollars'] + "." + this.state.bookings[bookingSelected]['feeCents'];
                                 this.state.bookingDentalChartString[4] = this.state.bookings[bookingSelected]['ProcedureTime'];
@@ -842,16 +838,6 @@ export class Bookings extends React.Component<any, any> {
                                         </View> 
                                     </View>: null)}
                         </View>   
-                } else {
-                    this.state.bookingID[num] = null;
-                    this.state.NHInum[num] =  null;
-                    this.state.patientName[num] = null;
-                    this.state.timeHour[num] = null;
-                    this.state.timeMinute[num] = null;
-                    this.state.timeAM_PM[num] = null;
-                    this.state.dentistName[num] = null;
-                    this.state.areasAffected[num] = null;
-                    this.state.patientNotes[num] = null;
                 }
             }
         }
@@ -862,9 +848,9 @@ export class Bookings extends React.Component<any, any> {
 
             // let hasBookings = false;
 
-            // bookingList = bookingList.filter(function( element:any ) {
-            //     return element !== undefined;
-            // });
+            bookingList = bookingList.filter(function( element:any ) {
+                return element !== undefined;
+            });
 
             // if (bookingList.length > 0) {
             //     hasBookings = true
@@ -873,8 +859,6 @@ export class Bookings extends React.Component<any, any> {
             //Will set the message selected index to display no booking selected
             if (bookingDate == "0/1/0")
             {
-                //console.log("NO BOOKING CHOSEN...");
-
                 this.setState({
                     bookingSpare: bookingDate,
                     bookingMessageSelected: 0,
@@ -907,14 +891,17 @@ export class Bookings extends React.Component<any, any> {
         const buttonHandlerCompleteEditOrCreation = {
             clicked: async () => {
 
+                let patientID = this.state.patientName[this.state.currentBookingSelected];
+
                 //Activates when the complete button was clicked while editing an existing booking
                 if (this.state.completeClickedEdit == true)
                 {
+
                     this.setState({
                         bookingCreateOrEditDisplay: await editFromDB(
                             //Sending the updated variables to compare with at the end of the edit
                             this.state.bookingID[this.state.currentBookingSelected],
-                            this.state.patientName[this.state.currentBookingSelected],
+                            patientID,
                             0, //TODO: Change so actual dentist data is being sent
                             this.state.dateDayArray,
                             this.state.dateMonthArray,
@@ -968,7 +955,7 @@ export class Bookings extends React.Component<any, any> {
                         
                             //Sending the updated variables to compare with at the end of the edit
                             this.state.bookingID[this.state.currentBookingSelected],
-                            this.state.patientName[this.state.currentBookingSelected],
+                            patientID,
                             0, //TODO: Change so actual dentist data is being sent
                             this.state.dateDayArray,
                             this.state.dateMonthArray,
@@ -1336,14 +1323,6 @@ export class Bookings extends React.Component<any, any> {
 
                 <View style="margin: 10px;"></View>
 
-
-
-
-
-
-
-
-
                 <View style={"flex-direction: 'row';"}>
 
                     <View style={"flex-direction: 'column'; flex: 1; margin: 1px"}>
@@ -1390,9 +1369,9 @@ export class Bookings extends React.Component<any, any> {
             </View>
         );
 
-        // bookingList = bookingList.filter(function( element:any ) {
-        //     return element !== undefined;
-        // });
+        bookingList = bookingList.filter(function( element:any ) {
+            return element !== undefined;
+        });
 
         //Will display the booking list
         pageDiplay[0] = (

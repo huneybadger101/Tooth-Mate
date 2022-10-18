@@ -7,13 +7,16 @@ export const editFromDB = async (bookingID:any, newPatientID:any, NewDentistID:a
     timeAM_PM:any, newProcedure: any, newProcedureTime: any, newProcedureCost: any, newPatientNotes: any, newTotalCharts: any, newToothSelected: any) => {
 
     let date = dateYear + '-' + dateMonth + '-' + dateDay;
-    let time = timeHour + ":" + timeMinute + timeAM_PM;
 
-    let dollars = Number(String(newProcedureCost).split("$")[1].split(".")[0]);
-    let cents = Number(String(newProcedureCost).split("$")[1].split(".")[1]);
+    let time = timeHour + ":" + timeMinute;
+
+    let cost = String(newProcedureCost).replace(",", "")
+
+    let dollars = Number(cost.split("$")[1].split(".")[0]);
+    let cents = Number(cost.split("$")[1].split(".")[1]);
 
     let bookingData = {
-        bookingid: String(Number(bookingID) + 1),
+        bookingid: String(Number(bookingID)),
         cols: [
             "Time",
             "Date",

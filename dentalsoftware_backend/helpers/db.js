@@ -46,9 +46,7 @@ function databaseCreateTables(res = null) {
     databaseQuery(res, sql)
     sql = "CREATE TABLE IF NOT EXISTS tickets (ID INT AUTO_INCREMENT PRIMARY KEY, Patient INT NOT NULL, NumberOfVisits INT NOT NULL, FOREIGN KEY (Patient) REFERENCES patient_data(ID))";
     databaseQuery(res, sql)
-    sql = "CREATE TABLE IF NOT EXISTS ticket_visit (ID INT AUTO_INCREMENT PRIMARY KEY, VisitNumber INT NOT NULL, Ticket INT NOT NULL, Date DATE NOT NULL, Time VARCHAR(255) NOT NULL, VisitTimeLength VARCHAR(255) NOT NULL, FOREIGN KEY (Ticket) REFERENCES tickets(ID))";
-    databaseQuery(res, sql)
-    sql = "CREATE TABLE IF NOT EXISTS ticket_visit_tooth (ID INT AUTO_INCREMENT PRIMARY KEY, TicketVisit INT NOT NULL, Tooth INT NOT NULL, ProcedureName VARCHAR(255) NOT NULL, ProcedureCostDollars INT NOT NULL, ProcedureCostCents INT NOT NULL, Notes VARCHAR(255) NOT NULL, ToothData1 BOOLEAN NOT NULL, ToothData2 BOOLEAN NOT NULL, ToothData3 BOOLEAN NOT NULL, ToothData4 BOOLEAN NOT NULL, ToothData5 BOOLEAN NOT NULL, ToothData6 BOOLEAN NOT NULL, ToothData7 BOOLEAN NOT NULL, ToothData8 BOOLEAN NOT NULL, ToothData9 BOOLEAN NOT NULL, FOREIGN KEY (TicketVisit) REFERENCES ticket_visit(ID), FOREIGN KEY (Tooth) REFERENCES patient_tooth_data(ID))";
+    sql = "CREATE TABLE IF NOT EXISTS ticket_visit (ID INT AUTO_INCREMENT PRIMARY KEY, VisitNumber INT NOT NULL, Ticket INT NOT NULL, Notes MEDIUMTEXT, Tooth VARCHAR(255) NOT NULL, ProcedureName VARCHAR(255) NOT NULL, FOREIGN KEY (Ticket) REFERENCES tickets(ID))";
     databaseQuery(res, sql)
     sql = "CREATE TABLE IF NOT EXISTS dental_charts (ID INT AUTO_INCREMENT PRIMARY KEY, Booking INT NOT NULL, Data JSON NOT NULL, FOREIGN KEY (Booking) REFERENCES bookings(ID))";
     databaseQuery(res, sql)
