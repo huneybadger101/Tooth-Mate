@@ -1,74 +1,72 @@
-import { Text, View, Button, LineEdit } from "@nodegui/react-nodegui";
+import { Text, View, Button, LineEdit, ComboBox } from "@nodegui/react-nodegui";
 import {  WidgetEventTypes } from "@nodegui/nodegui";
 import React from "react";
 import ToothCreator from "./ToothCreator";
 import axios from "axios";
+import { toothComboBox, treatmentList, treatmentListTreatments } from "./Calendarhelpers/comboBoxVariables";
+import PlainTextEditWrapper from "./PlainTextEditWrapper";
+
+declare type ComboBoxItem = {
+    text: string;
+};
 
 export class TicketCreator extends React.Component<any, any> {
 
-    ToothCreatorComponent:any;
 
     updateCheck:number;
 
     constructor(props: any) {
         super(props);
 
-        this.ToothCreatorComponent = React.createRef();
-
         this.updateCheck = 0;
+
+        let patients: ComboBoxItem[] = [];
 
         this.state = {
             patientID: props.patient,
             patients: props.patients,
             patient: null,
             editingVisits: [{
-                Date: new Date().toISOString().split('T')[0],
-                Time: new Date().toLocaleTimeString(),
-                LengthOfVisit: "60",
                 VisitNumber: 0,
-                Teeth: []
+                Patient: 0,
+                PatientIndex: 0,
+                Procedure: "",
+                ProcedureIndex: 0,
+                Tooth: "",
+                ToothIndex: 0,
+                Notes: ""
             }],
             editingSelectedVisit: 0,
             editingSelectedTooth: 0,
             currentTeeth: [],
             editingNumVisits: 0,
             editingNumTeeth: 0,
-            selectedIndex: null
+            selectedIndex: null,
+            patientsViewed: patients
         }
 
         for (let i = 0; i < this.state.patients.length; i++) {
             if (this.state.patients[i]['ID'] == this.state.patientID) {
+                patients.push({text: this.state.patients[i]['FirstName'] + " " + this.state.patients[i]['LastName']})
                 this.setState({
                     patient: this.state.patients[i]
                 })
             }
         }
+
     }
 
     createNewTicket = () => {
+
         let visits = [];
         for (let i = 0; i < this.state.editingVisits.length; i++) {
             visits.push({
                 VisitNumber: this.state.editingVisits[i]['VisitNumber'],
-                Date: this.state.editingVisits[i]['Date'],
-                Time: this.state.editingVisits[i]['Time'],
-                VisitTimeLength: this.state.editingVisits[i]['LengthOfVisit']
+                Patient: this.state.patientID,
+                Procedure: this.state.editingVisits[i]['Procedure'],
+                Tooth: this.state.editingVisits[i]['Tooth'],
+                Notes: this.state.editingVisits[i]['Notes']
             })
-        }
-        let visitTeeth = [];
-        for (let i = 0; i < this.state.editingVisits.length; i++) {
-            for (let k = 0; k < this.state.editingVisits[i]['Teeth']['Teeth'].length; k++) {
-                visitTeeth.push({
-                    VisitNumber: this.state.editingVisits[i]['Teeth']['Index'],
-                    Tooth: this.state.editingVisits[i]['Teeth']['TeethIndexes'][k],
-                    ToothData: this.state.editingVisits[i]['Teeth']['Teeth'][k],
-                    ProcedureName: this.state.editingVisits[i]['Teeth']['Procedures'][k],
-                    ProcedureCostDollars: this.state.editingVisits[i]['Teeth']['ProcedureCosts'][k].split("$")[1].split(".")[0],
-                    ProcedureCostCents: this.state.editingVisits[i]['Teeth']['ProcedureCosts'][k].split("$")[1].split(".")[1],
-                    ProcedureTime: this.state.editingVisits[i]['Teeth']['ProcedureTimes'][k],
-                    Notes: this.state.editingVisits[i]['Teeth']['Notes'][k]
-                })
-            }
         }
         let data = {
             ticket: {
@@ -76,8 +74,8 @@ export class TicketCreator extends React.Component<any, any> {
                 NumberOfVisits: this.state.editingVisits.length
             },
             ticketVisit: visits,
-            ticketVisitTeeth: visitTeeth
         }
+
         axios.post('http://localhost:3000/tickets/createNewTicket', null, {
             headers: {
                 'data': JSON.stringify(data)
@@ -110,7 +108,7 @@ export class TicketCreator extends React.Component<any, any> {
         }
     }
 
-    addVisit = (num:number) => {
+    addVisit = () => {
         let currentVisits = this.state.editingVisits;
         let newVisitNumber = 0;
         for (let i = 0; i < currentVisits.length; i++) {
@@ -119,11 +117,14 @@ export class TicketCreator extends React.Component<any, any> {
             }
         }
         currentVisits.push({
-            Date: new Date().toISOString().split('T')[0],
-            Time: new Date().toLocaleTimeString(),
-            LengthOfVisit: "60",
-            VisitNumber: newVisitNumber,
-            Teeth: []
+            VisitNumber: 0,
+            Patient: 0,
+            PatientIndex: 0,
+            Procedure: "",
+            ProcedureIndex: 0,
+            Tooth: "",
+            ToothIndex: 0,
+            Notes: ""
         })
     
         this.setState({
@@ -133,7 +134,6 @@ export class TicketCreator extends React.Component<any, any> {
             editingNumVisits: currentVisits.length - 1,
         })
 
-        this.ToothCreatorComponent.current.updateViaRef();
     }
 
     removeVisit = (index:number) => {
@@ -150,29 +150,10 @@ export class TicketCreator extends React.Component<any, any> {
             editingNumVisits: currentVisits.length - 1,
         })
 
-        this.ToothCreatorComponent.current.resetStateViaRef();
     }
 
     // Function that returns a component to be drawn, can have children components if the parent component supports it
     render() {
-
-        const textHandlerDate = {
-            textChanged: (textValue:any) =>{
-                this.state.editingVisits[this.state.editingSelectedVisit]['Date'] = textValue
-            }
-        }
-
-        const textHandlerTime = {
-            textChanged: (textValue:any) =>{
-                this.state.editingVisits[this.state.editingSelectedVisit]['Time'] = textValue
-            }
-        }
-
-        const textHandlerLengthOfVisit = {
-            textChanged: (textValue:any) =>{
-                this.state.editingVisits[this.state.editingSelectedVisit]['LengthOfVisit'] = textValue
-            } 
-        }
 
         const move = (num:number, oldNum:number) => {
             this.updateCheck = 1;
@@ -183,53 +164,70 @@ export class TicketCreator extends React.Component<any, any> {
                     editingSelectedVisit: num
                 })
                 let data = this.getData(num)
-                this.ToothCreatorComponent.current.setStateWithDataViaRef(data);
             }
             this.updateCheck = 0;
         }
 
-        const textHandlerTooth = {
-            textChanged: (textValue:any) =>{
-                this.state.currentTeeth[this.state.editingSelectedTooth]['Tooth'] = textValue
+
+         //Handles when a patient is selected in the menu
+         const textHandlerPatientSelected = {
+            currentTextChanged: (currentText:any) =>{
+                let patientID = null;
+                for (let i = 0; i < this.state.patients.length; i++) {
+                    let tempName = this.state.patients[i]['FirstName'] + " " + this.state.patients[i]['LastName'];
+                    if (currentText == tempName) {
+                        patientID = this.state.patients[i]['ID'];
+                        this.state.editingVisits[this.state.editingSelectedVisit]['PatientIndex'] = i;
+                        break;
+                    }
+                }
+                this.state.editingVisits[this.state.editingSelectedVisit]['Patient'] = patientID;
+                this.setState({
+                    patientID: patientID
+                })
             }
         }
 
-        const textHandlerProcedureName = {
-            textChanged: (textValue:any) =>{
-                this.state.currentTeeth[this.state.editingSelectedTooth]['ProcedureName'] = textValue
+        //Handles and changes the text for the procedure type during booking edit and creation
+        const indexHanlderProcedure = {
+            currentIndexChanged: (index:any) =>{
+
+                this.state.editingVisits[this.state.editingSelectedVisit]['ProcedureIndex'] = index;
+                this.state.editingVisits[this.state.editingSelectedVisit]['Procedure'] = treatmentListTreatments(index);               
             }
         }
 
-        const textHandlerProcedureCostDollars = {
-            textChanged: (textValue:any) =>{
-                this.state.currentTeeth[this.state.editingSelectedTooth]['ProcedureCostDollars'] = textValue
+        const indexHanlderTooth = {
+            currentIndexChanged: (index:any) =>{
+               
+                this.state.editingVisits[this.state.editingSelectedVisit]['ToothIndex'] = index;
+                this.state.editingVisits[this.state.editingSelectedVisit]['Tooth'] = toothComboBox()[index].text;
             }
         }
 
-        const textHandlerProcedureCostCents = {
-            textChanged: (textValue:any) =>{
-                this.state.currentTeeth[this.state.editingSelectedTooth]['ProcedureCostCents'] = textValue
-            }
+        const textHandlerNotes = (textValue:String) => {
+            this.state.editingVisits[this.state.editingSelectedVisit]['Notes'] = textValue
         }
 
         const editingView = 
         <View style="flex: auto; flex-direction: 'column';">
             <Text style={"flex: 1; border: 1px solid black; background: 'LightGrey';"}>Visit {this.state.editingSelectedVisit + 1}</Text>
             <View style="margin: 0px; flex-direction: 'row';">
-                <Text style={"flex: 1; border: 1px solid black; background: 'LightGrey';"}>Date</Text>
-                <LineEdit style={"flex: 2;"} on={textHandlerDate} text={this.state.editingVisits[this.state.editingSelectedVisit]['Date']} />
+                <Text style={"flex: 1; border: 1px solid black; background: 'LightGrey';"}>Patient</Text>
+                <ComboBox style={"flex: 2;"} enabled={false} editable={false} items={this.state.patientsViewed} currentIndex={this.state.editingVisits[this.state.editingSelectedVisit]['PatientIndex']} on={textHandlerPatientSelected} />
             </View>
-            <View style="margin: 0px; flex-direction: 'row';">
-                <Text style={"flex: 1; border: 1px solid black; background: 'LightGrey';"}>Time</Text>
-                <LineEdit style={"flex: 2;"} on={textHandlerTime} text={this.state.editingVisits[this.state.editingSelectedVisit]['Time']} />
+            <View style="margin-left: 10px; flex-direction: 'row';">
+                <Text style={"flex: 1; border: 1px solid black; background: 'LightGrey';"}>Tooth</Text>
+                <ComboBox style={"flex: 2;"} items={toothComboBox()} currentIndex={this.state.editingVisits[this.state.editingSelectedVisit]['ToothIndex']} on={indexHanlderTooth} />
             </View>
-            <View style="margin: 0px; flex-direction: 'row';">
-                <Text style={"flex: 1; border: 1px solid black; background: 'LightGrey';"}>Length of Visit</Text>
-                <LineEdit style={"flex: 2;"} on={textHandlerLengthOfVisit} text={this.state.editingVisits[this.state.editingSelectedVisit]['LengthOfVisit']} />
+            <View style="margin-left: 10px; flex-direction: 'row';">
+                <Text style={"flex: 1; border: 1px solid black; background: 'LightGrey';"}>Procedure</Text>
+                <ComboBox style={"flex: 2;"} items={treatmentList()} currentIndex={this.state.editingVisits[this.state.editingSelectedVisit]['ProcedureIndex']} on={indexHanlderProcedure} />
             </View>
-
-            <ToothCreator style="flex: auto;" ref={this.ToothCreatorComponent} passbackTeeth={this.getTeeth} getData={this.getData} getVisitIndex={this.getVisitIndex}/>
-        
+            <View style="margin-left: 10px; flex-direction: 'row';">
+                <Text style={"flex: 1; border: 1px solid black; background: 'LightGrey';"}>Notes</Text>
+                <PlainTextEditWrapper callback={textHandlerNotes} style={"flex: 2;"}/>
+            </View>
         </View>
 
         return (
@@ -259,7 +257,7 @@ export class TicketCreator extends React.Component<any, any> {
                     <Button style="flex: auto;" text={"+"} on={
                         {
                             // Only trigger when left click is released
-                            [WidgetEventTypes.MouseButtonRelease]: () => this.addVisit(this.state.editingNumVisits + 1),
+                            [WidgetEventTypes.MouseButtonRelease]: () => this.addVisit(),
                         }
                     }/>
                 </View>

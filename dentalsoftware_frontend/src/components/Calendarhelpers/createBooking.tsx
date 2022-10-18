@@ -12,7 +12,7 @@ export const createBooking = async (bookingID:any, newPatientID:any, NewDentistI
             bookingArray.push({
                 patientID: newPatientID,
                 date: date,
-                time: timeHour[i] + ":" + timeMinute[i] + "" + timeAM_PM[i],
+                time: timeHour[i] + ":" + timeMinute[i] + timeAM_PM[i],
                 dentistID: NewDentistID,
                 procedure: newProcedure[i],
                 procedureTime: newProcedureTime[i],
