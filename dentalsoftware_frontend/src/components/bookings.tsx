@@ -742,10 +742,10 @@ export class Bookings extends React.Component<any, any> {
                         this.state.timeAM_PM[num] = (Number(this.state.timeHour[num]) > 12 ? "PM" : "AM");
 
                         this.state.dentistName[num] = this.state.dentistInfo[this.state.bookings[num]['dentist']]['AccountName'];//WORKS
-                        this.state.procedure[num] = this.state.bookings[num]['Procedure'];
+                        this.state.procedure[num] = this.state.bookings[num]['Procedure'];//WORKS
                         this.state.patientNotes[num] = this.state.bookings[num]['notes'];//WORKS
 
-                        this.state.bookingDentalChartString[0] = false;  
+                        this.state.bookingDentalChartString[0] = false;
                     }
 
                     if (this.props.accountHelper.accountAdmin)
@@ -753,6 +753,9 @@ export class Bookings extends React.Component<any, any> {
                         bookingListEditButton[num] = 
                             <Button id={"ticketAddAndDeleteButton"} style={"flex: 1;"} text={"Edit"} on={{clicked: async () => {
                             
+                                console.log("<----------------------------->");
+                                console.log(this.state.bookingID[bookingSelected]);
+
                                 this.state.bookingDentalChartString[0] = false;
                                 this.state.bookingDentalChartString[1]; //This is already sorted at the top of the file
                                 this.state.bookingDentalChartString[2] = this.state.procedure[bookingSelected];
