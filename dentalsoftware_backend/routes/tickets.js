@@ -13,7 +13,6 @@ function getTicketDataByID(id, res) {
 
     let ticketData;
     let ticketVisitData;
-    let ticketVisitToothData;
 
     let sql = "SELECT * FROM tickets WHERE ID = '" + ticketID + "';"
     try {
@@ -42,35 +41,12 @@ function getTicketDataByID(id, res) {
         
                 ticketVisitData = result;
 
-                sql = "SELECT * FROM ticket_visit_tooth WHERE";
-
-                for (let i = 0; i < ticketVisitData.length; i++) {
-                    if (sql.endsWith("'")) {
-                        sql += " OR";
+                res.send({result: {
+                    ticket: ticketData,
+                    ticketVisit: ticketVisitData
                     }
-                    sql += " TicketVisit = '" + ticketVisitData[i]['ID'] + "'";
-                }
+                })
 
-                sql += ";"
-
-                tClient.query(sql, function (err, result) {
-                    if (err) {
-                        console.log(err)
-                        if (res) {
-                            res.send({result: 1, error: err})
-                        } else {
-                            return {result: 1}
-                        }
-                    }
-                    ticketVisitToothData = result;
-
-                    res.send({result: {
-                        ticket: ticketData,
-                        ticketVisit: ticketVisitData,
-                        ticketVisitTooth: ticketVisitToothData
-                        }
-                    })
-                });
             });
         });
     } catch (error) {
