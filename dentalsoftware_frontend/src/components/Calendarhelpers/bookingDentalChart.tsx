@@ -1,7 +1,7 @@
 import { Text, View, Button, ComboBox, LineEdit } from "@nodegui/react-nodegui";
 import React from "react";
 import { disableDentalChartButton } from "../Calendarhelpers/calendarDayButtonDisable";
-import { treatmentList, treatmentListPrices, treatmentListTimes, treatmentListTreatments, toothComboBox } from "./comboBoxVariables";
+import { treatmentList, treatmentListPrices, treatmentListTimes, treatmentListTreatments, toothComboBox, toothIndex } from "./comboBoxVariables";
 import DentalChartIniniteLoopFix from "../Calendarhelpers/loopPreventer";
 import { bookingDentalChartTrueOrFalseInverted } from "../Calendarhelpers/textFormatFunctions";
 import PlainTextEditWrapper from "../PlainTextEditWrapper";
@@ -53,7 +53,7 @@ export class BookingPageDentalChart extends React.Component<any, any> {
             });
 
             //Will happen if the create booking button is clicked
-            if (this.props.data[0] == true || this.props.data[0] == false)
+            if (this.props.data[0] == true)
             {
                 //Will prep multiple variables for a new booking...
                 this.setState({
@@ -74,7 +74,20 @@ export class BookingPageDentalChart extends React.Component<any, any> {
             //Will happen if edit booking is selected
             else if (this.props.data[0] == false)
             {
-                console.log("EDIT BOOKING");
+                //state checker (create, edit, ticket)
+                //Current index   .   total index
+                //FREEEEEE...
+
+                console.log(this.props.data);
+
+                this.state.currentlySelectedProcedureIndex[0] = 0;
+                this.state.currentlySelectedToothIndex[0] = toothIndex(this.props.data[6]);
+
+                //Will prep multiple variables for a new booking...
+                this.state.procedure[0] = this.props.data[2];
+                this.state.procedurePrice[0] = this.props.data[3];
+                this.state.procedureTime[0] = this.props.data[4];
+                this.state.patientNotes[0] = this.props.data[5];
             }
             //Will happen when the edit button or add ticket button is clicked...
             else

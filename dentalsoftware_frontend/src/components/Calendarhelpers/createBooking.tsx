@@ -8,11 +8,11 @@ export const createBooking = async (bookingID:any, newPatientID:any, NewDentistI
         let bookingArray = [];
 
         for (let i = 0; i < newTotalCharts + 1; i++) {
-            let date = dateYear[i] + '\\' + dateMonth[i] + '\\' + dateDay[i];
+            let date = dateYear[i] + '-' + dateMonth[i] + '-' + dateDay[i];
             bookingArray.push({
                 patientID: newPatientID,
-                date: new Date(date),
-                time: timeHour[i] + ":" + timeMinute[i] + timeAM_PM[i],
+                date: date,
+                time: timeHour[i] + ":" + timeMinute[i] + "" + timeAM_PM[i],
                 dentistID: NewDentistID,
                 procedure: newProcedure[i],
                 procedureTime: newProcedureTime[i],

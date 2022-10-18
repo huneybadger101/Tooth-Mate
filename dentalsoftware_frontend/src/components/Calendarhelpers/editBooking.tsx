@@ -6,8 +6,7 @@ import Alert from "../alert";
 export const editFromDB = async (bookingID:any, newPatientID:any, NewDentistID:any, dateDay:any, dateMonth:any, dateYear:any, timeHour:any, timeMinute:any,
     timeAM_PM:any, newProcedure: any, newProcedureTime: any, newProcedureCost: any, newPatientNotes: any, newTotalCharts: any, newToothSelected: any) => {
 
-    let date = dateYear + '\\' + dateMonth + '\\' + dateDay;
-
+    let date = dateYear + '-' + dateMonth + '-' + dateDay;
     let time = timeHour + ":" + timeMinute + timeAM_PM;
 
     let dollars = Number(String(newProcedureCost).split("$")[1].split(".")[0]);
