@@ -89,26 +89,63 @@ export class BookingPageDentalChart extends React.Component<any, any> {
                 this.state.procedureTime[0] = this.props.data[4];
                 this.state.patientNotes[0] = this.props.data[5];
             }
-            //Will happen when the edit button or add ticket button is clicked...
+            //Will happen when add ticket button is clicked...
             else
             {
                 //Will take the data sent from bookings file and set the buttons
                 this.setState({
-
+                    totalIndex: this.props.data[1].split(".")[1],
+                    currentlySelectedIndex: this.props.data[1].split(".")[0]
                 });
 
                 //Will iterate through the booking file variables and create specified amount of dental charts
-                for (var num = 0 + 2; num < this.props.data.length + 2; num++)
+                for (var num = 0; num < this.props.data.length; num++)
                 {
-                    //Creates an array of the strings sent from bookings file as to access each one
-                    var splitBookingString = this.props.data[num].split("-");
+                    
+                    this.state.currentlySelectedProcedureIndex[0] = 0;
+                    
 
-                    //Sets the state of the dental chart buttons displayed based on stored db variables
-                    this.state.currentlySelectedProcedureIndex[num] = splitBookingString[9];
-                    this.state.currentlySelectedToothIndex[num] = splitBookingString[13];
-                    this.state.procedureCostStored[num] = splitBookingString[10];
-                    this.state.procedureTimeStored[num] = splitBookingString[11];
+                    //Will prep multiple variables for a new booking...
+                    this.state.procedure[num] = this.props.data[2].split('*')[num];
+                    this.state.procedurePrice[num] = this.props.data[3].split('*')[num];
+                    this.state.procedureTime[num] = this.props.data[4].split('*')[num];
+                    this.state.patientNotes[num] = this.props.data[5].split('*')[num];
+
+                    this.state.currentlySelectedToothIndex[num] = toothIndex(this.props.data[6].split('*')[num]);
                 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                // this.state.bookingDentalChartString[0] = "ticket";
+                // this.state.bookingDentalChartString[1];//HANDLED AT THE TOP OF SCREEN -> INDEX & CURRENT INDEX
+                // this.state.bookingDentalChartString[2] = this.state.bookingDentalChartString[2] + "." + ProcedureTemp;//PROCEDURE
+                // this.state.bookingDentalChartString[3] = this.state.bookingDentalChartString[3] + "." + treatmentListPrices(procedureIndex);//PROCEDURE COST
+                // this.state.bookingDentalChartString[4] = this.state.bookingDentalChartString[4] + "." + treatmentListPrices(procedureIndex);//PROCEDURE TIME
+                // this.state.bookingDentalChartString[5] = this.state.bookingDentalChartString[5] + "." + NotesTemp;//NOTES
+                // this.state.bookingDentalChartString[6] = this.state.bookingDentalChartString[6] + "." + ToothTemp;//TOOTH
+
+
+
+
+
+
+
+
+
+
             }
         }
 

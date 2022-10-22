@@ -39,6 +39,8 @@ export class Calendar extends React.Component<any, any> {
         calendarDisabledButtons: false,
         calendarDisabledButtonText: "",
 
+        dateChangedCount: 0
+
     }
   }
 
@@ -82,7 +84,7 @@ export class Calendar extends React.Component<any, any> {
 
         const bookingsCallback = (alert: any) => {
           this.setState({
-            bookingsAlert: alert
+            bookingsAlert: alert,
           })
         }
 
@@ -153,7 +155,8 @@ export class Calendar extends React.Component<any, any> {
                     rightHandMessage: false,
                     currentMonthSelected: this.state.monthSelected,
                     currentYearSelected: this.state.year,
-                    currentWeekdaySelected: getWeekdaySelected(this.state.monthSelected, this.state.year, buttonName_0)}
+                    currentWeekdaySelected: getWeekdaySelected(this.state.monthSelected, this.state.year, buttonName_0),
+                    dateChangedCount: this.state.dateChangedCount + 1}
                   )}}} />
               )
           }
@@ -179,7 +182,8 @@ export class Calendar extends React.Component<any, any> {
                   rightHandMessage: false,
                   currentMonthSelected: this.state.monthSelected,
                   currentYearSelected: this.state.year,
-                  currentWeekdaySelected: getWeekdaySelected(this.state.monthSelected, this.state.year, buttonName_1)}
+                  currentWeekdaySelected: getWeekdaySelected(this.state.monthSelected, this.state.year, buttonName_1),
+                  dateChangedCount: this.state.dateChangedCount + 1}
                 )}} />
           )
 
@@ -194,7 +198,8 @@ export class Calendar extends React.Component<any, any> {
                   rightHandMessage: false,
                   currentMonthSelected: this.state.monthSelected,
                   currentYearSelected: this.state.year,
-                  currentWeekdaySelected: getWeekdaySelected(this.state.monthSelected, this.state.year, buttonName_2)}
+                  currentWeekdaySelected: getWeekdaySelected(this.state.monthSelected, this.state.year, buttonName_2),
+                  dateChangedCount: this.state.dateChangedCount + 1}
                 )}} />
           )
 
@@ -210,7 +215,8 @@ export class Calendar extends React.Component<any, any> {
                     rightHandMessage: false,
                     currentMonthSelected: this.state.monthSelected,
                     currentYearSelected: this.state.year,
-                    currentWeekdaySelected: getWeekdaySelected(this.state.monthSelected, this.state.year, buttonName_3)}
+                    currentWeekdaySelected: getWeekdaySelected(this.state.monthSelected, this.state.year, buttonName_3),
+                    dateChangedCount: this.state.dateChangedCount + 1}
                   )}} />
             )
           }
@@ -228,13 +234,14 @@ export class Calendar extends React.Component<any, any> {
                   rightHandMessage: false,
                   currentMonthSelected: this.state.monthSelected,
                   currentYearSelected: this.state.year,
-                  currentWeekdaySelected: getWeekdaySelected(this.state.monthSelected, this.state.year, buttonName_4)}
+                  currentWeekdaySelected: getWeekdaySelected(this.state.monthSelected, this.state.year, buttonName_4),
+                  dateChangedCount: this.state.dateChangedCount + 1}
                   )}} />
             )
           }
           else
           {
-            calendar5.push( 
+            calendar5.push(
               <Button
                 id={"buttonCalanderDateDisabled"}
                 //style={this.state.calendarButtonStyle}
@@ -257,7 +264,8 @@ export class Calendar extends React.Component<any, any> {
                     rightHandMessage: false,
                     currentMonthSelected: this.state.monthSelected,
                     currentYearSelected: this.state.year,
-                    currentWeekdaySelected: getWeekdaySelected(this.state.monthSelected, this.state.year, buttonName_5)}
+                    currentWeekdaySelected: getWeekdaySelected(this.state.monthSelected, this.state.year, buttonName_5),
+                    dateChangedCount: this.state.dateChangedCount + 1}
                   )}} />
             )
           }
@@ -339,12 +347,13 @@ export class Calendar extends React.Component<any, any> {
 
                 {/*Will call the bookings component to be diplayed on the calendar page and send several variables for use in the bookings page*/}
                 
-                <Bookings 
+                <Bookings
                 data={
                   this.state.daySelected + "." + 
                   (this.state.currentMonthSelected + 1) + "." +
                   this.state.currentYearSelected + "." +
-                  this.state.day[this.state.currentWeekdaySelected]
+                  this.state.day[this.state.currentWeekdaySelected] + "." +
+                  this.state.dateChangedCount
                 } callback={bookingsCallback} newTab={this.props.newTab} accountHelper={this.props.accountHelper}/>
                 
 
