@@ -161,7 +161,78 @@ export const treatmentListTreatments = (selectedTreatment:any) =>{
         return "Sailography";
         break;
         default:
-        return "0.00";
+        return "Initial examination";
+      }
+}
+
+export const treatmentListIndexToTreatmentString = (selectedTreatment:any) =>{
+    
+    switch(selectedTreatment) {
+        case "Initial examination":
+        return 0;
+        break;
+        case "Annual examination":
+        return 1;
+        break;
+        case "Post operative examination":
+        return 2;
+        break;
+        case "Filling treatment":
+        return 3;
+        break;
+        case "Crown":
+        return 4;
+        break;
+        case "Traditional fixed bridge":
+        return 5;
+        break;
+        case "Cantilever bridge":
+        return 6;
+        break;
+        case "Maryland bridge":
+        return 7;
+        break;
+        case "Implant supported bridge":
+        return 8;
+        break;
+        case "Implant":
+        return 9;
+        break;
+        case "Extraction":
+        return 10;
+        break;
+        case "Root canal treatment initial":
+        return 11;
+        break;
+        case "Root canal treatment follow up":
+        return 12;
+        break;
+        case "Hygiene clean":
+        return 13;
+        break;
+        case "Impressions":
+        return 14;
+        break;
+        case "X-Ray":
+        return 15;
+        break;
+        case "Periapical":
+        return 16;
+        break;
+        case "Panoramic":
+        return 17;
+        break;
+        case "Cephalometic":
+        return 18;
+        break;
+        case "Computed temography":
+        return 19;
+        break;
+        case "Sailography":
+        return 20;
+        break;
+        default:
+        return 0;
       }
 }
 
