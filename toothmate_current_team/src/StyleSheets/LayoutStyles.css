@@ -1,0 +1,71 @@
+body {
+    overflow: hidden;
+}
+
+.GridLayout {
+    display: grid;
+    height: 98vh;
+    width: 98vw;
+    padding: 2%;
+    /*98 vh plus the 2% padding makes it fit the view like 100% but keeps components away from edges. */
+    grid-template-columns: repeat(20, 1fr);
+    grid-template-rows: repeat(20, 1fr);
+    background-color: #2196F3;
+    gap: 2px;
+}
+
+/*
+.GridLayout>div {
+    background-color: #f7f4f4;
+    border: 1px solid #5b20af;
+}*/
+
+.SearchBar {
+    grid-row: 1;
+    grid-column: 6 / 14;
+}
+
+.PatientWarning {
+    grid-row: 2/4;
+    grid-column: 3/15;
+}
+
+.PatientInfo {
+    grid-row: 16/20;
+    grid-column: 3/15;
+}
+
+.TeethModel {
+    grid-row: 4 / 15;
+    grid-column: 3/15;
+}
+
+.NotesField {
+    grid-row: 3 / 15;
+    grid-column: 16/20;
+}
+
+.BasePlanButton {
+    grid-row: 4;
+    grid-column: 1;
+}
+
+.TreatmentPlanButton {
+    grid-row: 6;
+    grid-column: 1;
+}
+
+.PeriPlanButton {
+    grid-row: 8;
+    grid-column: 1;
+}
+
+.SubmitButton {
+    grid-row: 16;
+    grid-column: 16;
+}
+
+.CancelButton {
+    grid-row: 18;
+    grid-column: 16;
+}
