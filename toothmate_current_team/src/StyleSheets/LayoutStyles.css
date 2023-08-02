@@ -33,11 +33,13 @@ body {
 .PatientInfo {
     grid-row: 16/20;
     grid-column: 3/15;
+
 }
 
 .TeethModel {
     grid-row: 4 / 15;
     grid-column: 3/15;
+
 }
 
 .NotesField {
