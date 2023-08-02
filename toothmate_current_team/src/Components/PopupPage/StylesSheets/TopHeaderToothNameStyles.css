@@ -1,0 +1,10 @@
+body{
+    background-color: #D9D9D9;
+    margin: 0;
+}
+.toothName{
+    width: 100vw;
+    font-size: 30px;
+    font-weight: bold;
+    padding: 20px;
+}
