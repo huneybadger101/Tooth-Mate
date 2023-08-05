@@ -13,8 +13,6 @@ function TeethModel() {
              //   height: '600px',
              width: '100%',
              height: '100%',
-                border: '1px solid black',
-                background: 'blue'
             }}>
             {null}
             <Tooth />

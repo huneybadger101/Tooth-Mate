@@ -10,39 +10,43 @@ import PeriPlanButton from './Components/MainWindow/PeriPlanButton';
 import PatientInfo from './Components/MainWindow/PatientInfo';
 import SubmitButton from './Components/MainWindow/SubmitButton';
 import CancelButton from './Components/MainWindow/CancelButton';
+import Menu from './Components/MainWindow/Menu';
 
 function App() {
   return (
     <div className="App">
       <div className="GridLayout">
-        <div className="SearchBar">
+      <div className="MenuContainer">
+          <Menu />
+        </div>
+        <div className="SearchBarContainer">
           <SearchBar />
         </div>
-        <div className="PatientWarning">
+        <div className="PatientWarningContainer">
           <PatientWarning />
         </div>
-        <div className="PatientInfo">
+        <div className="PatientInfoContainer">
           <PatientInfo />
         </div>
-        <div className="TeethModel">
+        <div className="TeethModelContainer">
           <TeethModel />
         </div>
-        <div className="NotesField">
+        <div className="NotesFieldContainer">
           <NotesField />
         </div>
-        <div className="BasePlanButton">
+        <div className="BasePlanButtonContainer">
           <BasePlanButton />
         </div>
-        <div className="TreatmentPlanButton">
+        <div className="TreatmentPlanButtonContainer">
           <TreatmentPlanButton />
         </div>
-        <div className="PeriPlanButton">
+        <div className="PeriPlanButtonContainer">
           <PeriPlanButton />
         </div>
-        <div className="SubmitButton">
+        <div className="SubmitButtonContainer">
           <SubmitButton />
         </div>
-        <div className="CancelButton">
+        <div className="CancelButtonContainer">
           <CancelButton />
         </div>
       </div>

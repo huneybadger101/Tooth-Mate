@@ -1,11 +1,6 @@
 function PatientWarning() {
     return (
-        <div style={{
-            width: '100%',
-            height: '100%',
-            background: 'red',
-            border: '1px solid black',
-        }}>
+        <div>
             <form>
                 <label> "Name"
                     <input tupe="textarea" value="Name, NHI, allergies..."
