@@ -1,17 +1,12 @@
+import '../../StyleSheets/MainWindow/TreatmentPlanButton.css';
+
 function TreatmentPlanButton() {
     return (
-        <form>
-            <input type="button" value="T"
-            style={{
-                width:'50px',
-                height:'50px',
-                fontSize: '35px',
-
-                backgroundColor: '#efefef',
-                borderRadius: '5px',
-                borderWidth: '1px',
-            }}></input>
-        </form>
+        <div className='GridLayout'>
+            <div className="TreatmentPlanButtonContainer">
+                <button  className="TreatmentPlanButton">T</button>
+            </div>
+        </div>
 
     );
 }

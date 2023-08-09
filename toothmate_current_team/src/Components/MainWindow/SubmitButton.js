@@ -1,17 +1,12 @@
+import '../../StyleSheets/MainWindow/SubmitButton.css';
+
 function SubmitButton() {
     return (
-        <form>
-            <input type="button" value="Submit"
-                style={{
-                    width: '80px',
-                    height: '30px',
-                    fontSize: '20px',
-
-                    backgroundColor: '#efefef',
-                    borderRadius: '5px',
-                    borderWidth: '1px',
-                }}></input>
-        </form>
+        <div className='GridLayout'>
+            <div className="SubmitButtonContainer">
+            <button  className="SubmitButton">Submit</button>
+            </div>
+        </div>
     );
 }
 

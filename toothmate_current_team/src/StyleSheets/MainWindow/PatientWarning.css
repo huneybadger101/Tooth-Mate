@@ -1,0 +1,31 @@
+.GridLayout {
+    display: grid;
+    height: 98vh;
+    width: 98vw;
+    padding: 2%;
+    /*98 vh plus the 2% padding makes it fit the view like 100% but keeps components away from edges. */
+    grid-template-columns: repeat(20, 1fr);
+    grid-template-rows: repeat(20, 1fr);
+    /*background-color: #FAF9F6;
+    Opacity: 0.6;*/
+    /*Background requires rgba values to control the background opacity
+    (each component has it's own layout layer.)*/
+    background: rgba(5, 5, 5, 0);
+    position: absolute;
+    gap: 2px;
+}
+
+.PatientWarningContainer {
+    grid-row: 2/4;
+    grid-column: 3/15;
+    background-color: #ff0000;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+    border-radius: 10px;
+}
+
+.Warnings {
+    width: 98%;
+    border: none;
+    height: 100%;
+    background: red;
+}

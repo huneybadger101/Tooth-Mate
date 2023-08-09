@@ -1,3 +1,4 @@
+import '../../StyleSheets/MainWindow/TeethModel.css';
 import Tooth from './Tooth.js';
 
 /**
@@ -7,15 +8,11 @@ import Tooth from './Tooth.js';
  */
 function TeethModel() {
     return (
-        <div
-            style={{
-              //  width: '800px',
-             //   height: '600px',
-             width: '100%',
-             height: '100%',
-            }}>
-            {null}
-            <Tooth />
+        <div className='GridLayout'>
+            <div className="TeethModelContainer">
+                {null}
+                <Tooth />
+            </div>
         </div>
 
     );

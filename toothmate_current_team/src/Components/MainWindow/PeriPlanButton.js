@@ -1,18 +1,12 @@
+import '../../StyleSheets/MainWindow/PeriPlanButton.css';
+
 function PeriPlanButton() {
     return (
-        <form>
-            <input type="button" value="Peri"
-            style={{
-                width:'50px',
-                height:'50px',
-                fontSize: '20px',
-                fontWeight: 'bold',
-
-                backgroundColor: '#efefef',
-                borderRadius: '5px',
-                borderWidth: '1px',
-            }}></input>
-        </form>
+        <div className='GridLayout'>
+            <div className="PeriPlanButtonContainer">
+                <button className="PeriPlanButton">Peri</button>
+            </div>
+        </div>
 
     );
 }
