@@ -19,7 +19,9 @@
     grid-row: 4 / 15;
     grid-column: 3/15;
     background-color: #FFFFFF;
-	box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+  /* Main window component shadow >>> box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1), 0 1px 4px rgba(0, 0, 0, 0.2);*/
+  
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1), 0 1px 4px rgba(0, 0, 0, 0.2);
 	border-radius: 10px;
     pointer-events: auto;
 }
