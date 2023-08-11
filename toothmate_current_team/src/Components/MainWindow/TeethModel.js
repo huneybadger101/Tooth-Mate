@@ -1,5 +1,6 @@
 import '../../StyleSheets/MainWindow/TeethModel.css';
 import Tooth from './Tooth.js';
+import PeriPopup from '../PeridontalPopup/PeriPopup';
 
 /**
  * This is an empty container to house the 3D Model.
@@ -12,6 +13,7 @@ function TeethModel() {
             <div className="TeethModelContainer">
                 {null}
                 <Tooth />
+                <PeriPopup />
             </div>
         </div>
 

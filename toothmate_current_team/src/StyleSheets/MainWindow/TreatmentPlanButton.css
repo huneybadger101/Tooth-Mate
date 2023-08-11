@@ -10,7 +10,7 @@
     Opacity: 0.6;*/
     /*Background requires rgba values to control the background opacity
     (each component has it's own layout layer.)*/
-    background: rgba(5, 5, 5, 0);
+    pointer-events: none;
     position: absolute;
     gap: 2px;
 }
@@ -18,6 +18,7 @@
 .TreatmentPlanButtonContainer {
     grid-row: 6;
     grid-column: 1;
+    pointer-events: auto;
 }
 
 .TreatmentPlanButton {
