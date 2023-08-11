@@ -6,10 +6,6 @@
     /*98 vh plus the 2% padding makes it fit the view like 100% but keeps components away from edges. */
     grid-template-columns: repeat(20, 1fr);
     grid-template-rows: repeat(20, 1fr);
-    /*background-color: #FAF9F6;
-    Opacity: 0.6;*/
-    /*Background requires rgba values to control the background opacity
-    (each component has it's own layout layer.)*/
     pointer-events: none;
     position: absolute;
     gap: 2px;
@@ -30,4 +26,6 @@
     background-color: #efefef;
     border-radius: 5px;
     border-width: 1px;
+    
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1), 0 1px 4px rgba(0, 0, 0, 0.2);
 }

@@ -18,13 +18,13 @@ function App() {
           <SearchBar />
           <PatientWarning />
           <PatientInfo />
-          <TeethModel />
           <NotesField />
           <BasePlanButton />
           <TreatmentPlanButton />
           <PeriPlanButton />
           <SubmitButton />
           <CancelButton />
+          <TeethModel />
     </div>
   );
   // Below code was used to see the grid cells
