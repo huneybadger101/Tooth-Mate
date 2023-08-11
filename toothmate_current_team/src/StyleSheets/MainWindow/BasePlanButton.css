@@ -10,15 +10,17 @@
     Opacity: 0.6;*/
     /*Background requires rgba values to control the background opacity
     (each component has it's own layout layer.)*/
-    background: rgba(96, 243, 98, 0);
+    pointer-events: none;
     position: absolute;
     gap: 2px;
     border-color: aqua;
+    
 }
 
 .BasePlanButtonContainer {
     grid-row: 4;
     grid-column: 1;
+    pointer-events: auto;
 }
 
 .BasePlanButton {

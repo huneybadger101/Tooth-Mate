@@ -4,7 +4,7 @@ function CancelButton() {
     return (
         <div className='GridLayout'>
             <div className="CancelButtonContainer">
-                <button className="CancelButton">Cancel</button>
+                <button type='button' className="CancelButton">Cancel</button>
             </div>
         </div>
     );
