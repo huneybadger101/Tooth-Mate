@@ -11,20 +11,14 @@ function PeriPopup() {
 
             {/* && works the same as if statement in jsx*/}
             {isPopupVisible && (
-                <div className="PeriPopupContainer">
+                <div className="peri-popup-container">
                     <Draggable>
-                        <div className="PeriPopupContent">
+                        <div className="peri-popup-content">
                             <p>Peridontal View - Toothname</p>
-                            <div className="popup">
-                                <div className="flex-item-left">
-                                    <div className="PeriModel">Peri Model</div>
-                                </div>
-                                <div className="flex-item-right">
-                                    <div className="PeriInfo">Peri History</div>
-                                    <div className="PeriHistory">Peri Info</div>
-                                </div>
-                            </div>
-                            <img src='icons/x-square.svg' alt="Close Icon" onClick={() => setPopupVisible(false)} className='Close' />
+                            <div className="peri-model">Peri Model</div>
+                            <div className="peri-info">Peri History</div>
+                            <div className="peri-history">Peri Info</div>
+                            <img src='icons/x-square.svg' alt="Close Icon" onClick={() => setPopupVisible(false)} className='close' />
                         </div>
                     </Draggable>
                 </div>

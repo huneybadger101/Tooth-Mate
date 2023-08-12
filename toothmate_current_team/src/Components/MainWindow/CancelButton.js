@@ -2,9 +2,9 @@ import '../../StyleSheets/MainWindow/CancelButton.css';
 
 function CancelButton() {
     return (
-        <div className='GridLayout'>
-            <div className="CancelButtonContainer">
-                <button type='button' className="CancelButton">Cancel</button>
+        <div className='grid-layout'>
+            <div className="cancel-button-container">
+                <button type='button' className="cancel-button">Cancel</button>
             </div>
         </div>
     );

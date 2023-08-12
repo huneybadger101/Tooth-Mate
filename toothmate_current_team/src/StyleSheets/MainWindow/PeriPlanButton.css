@@ -1,9 +1,8 @@
-.GridLayout {
+.grid-layout {
     display: grid;
-    height: 98vh;
-    width: 98vw;
+    height: 96vh;
+    width: 96vw;
     padding: 2%;
-    /*98 vh plus the 2% padding makes it fit the view like 100% but keeps components away from edges. */
     grid-template-columns: repeat(20, 1fr);
     grid-template-rows: repeat(20, 1fr);
     pointer-events: none;
@@ -11,21 +10,19 @@
     gap: 2px;
 }
 
-.PeriPlanButtonContainer {
+.periplan-button-container {
     grid-row: 8;
     grid-column: 1;
     pointer-events: auto;
 }
 
-.PeriPlanButton {
+.periplan-button {
     width: 50px;
     height: 50px;
     font-size: 20px;
     font-weight: bold;
-
     background-color: #efefef;
     border-radius: 5px;
     border-width: 1px;
-    
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1), 0 1px 4px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1), 0 1px 4px rgba(0, 0, 0, 0.2);
 }

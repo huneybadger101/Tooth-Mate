@@ -1,9 +1,8 @@
-.GridLayout {
+.grid-layout {
     display: grid;
-    height: 98vh;
-    width: 98vw;
+    height: 96vh;
+    width: 96vw;
     padding: 2%;
-    /*98 vh plus the 2% padding makes it fit the view like 100% but keeps components away from edges. */
     grid-template-columns: repeat(20, 1fr);
     grid-template-rows: repeat(20, 1fr);
     pointer-events: none;
@@ -11,7 +10,7 @@
     gap: 2px;
 }
 
-.NotesFieldContainer {
+.notes-field-container {
     grid-row: 3 / 15;
     grid-column: 16/20;
     background-color: #FFFFFF;
@@ -22,25 +21,20 @@
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1), 0 1px 4px rgba(0, 0, 0, 0.2);
 }
 
-.NotesField {
+.notes-field {
     -ms-flex-item-align: center;
     -ms-flex-align: center;
     padding-bottom: 45%;
 }
 
-.form {
-    height: 50%;
-    border: yellow;
-}
-
-.Notes {
+.notes {
     width: 98%;
     border: none;
     height: 150%;
     text-align: left;
 }
 
-.HistoryButton {
+.history-button {
     vertical-align: baseline;
     margin: 1%;
     background-color: #efefef;
@@ -48,7 +42,7 @@
     border-width: 1px;
 }
 
-.TodoButton {
+.todo-button {
     vertical-align: baseline;
     margin: 1%;
     background-color: #efefef;

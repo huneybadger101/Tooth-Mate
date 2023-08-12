@@ -3,15 +3,15 @@ import '../../StyleSheets/MainWindow/NotesField.css';
 //This field is for History and To Do List
 function NotesField() {
     return (
-        <div className='GridLayout'>
-            <div className="NotesFieldContainer">
-                <form className="NotesField">
+        <div className="grid-layout">
+            <div className="notes-field-container">
+                <form className="notes-field ">
                     <label> History/ToDo
-                        <br></br><input type="text" value="notes..." className="Notes"/>
+                        <br></br><input type="text" value="notes..." className="notes"/>
                     </label>
                     <br></br>
-                    <input type="button" value="History" className="HistoryButton"/>
-                    <input type="button" value="To Do" className="TodoButton" />
+                    <input type="button" value="History" className="history-button"/>
+                    <input type="button" value="To Do" className="todo-button" />
                 </form>
             </div>
         </div>

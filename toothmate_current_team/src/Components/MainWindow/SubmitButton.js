@@ -2,9 +2,9 @@ import '../../StyleSheets/MainWindow/SubmitButton.css';
 
 function SubmitButton() {
     return (
-        <div className='GridLayout'>
-            <div className="SubmitButtonContainer">
-            <button type='button' className="SubmitButton">Submit</button>
+        <div className="grid-layout">
+            <div className="submit-button-container">
+            <button type="button" className="submit-button">Submit</button>
             </div>
         </div>
     );

@@ -9,14 +9,13 @@ import PeriPopup from '../PeridontalPopup/PeriPopup';
  */
 function TeethModel() {
     return (
-        <div className='GridLayout'>
-            <div className="TeethModelContainer">
+        <div className='grid-layout'>
+            <div className="teeth-model-container">
                 {null}
                 <Tooth />
                 <PeriPopup />
             </div>
         </div>
-
     );
 }
 

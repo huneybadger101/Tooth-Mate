@@ -1,9 +1,8 @@
-.GridLayout {
+.grid-layout {
     display: grid;
-    height: 98vh;
-    width: 98vw;
+    height: 96vh;
+    width: 96vw;
     padding: 2%;
-    /*98 vh plus the 2% padding makes it fit the view like 100% but keeps components away from edges. */
     grid-template-columns: repeat(20, 1fr);
     grid-template-rows: repeat(20, 1fr);
     pointer-events: none;
@@ -11,7 +10,7 @@
     gap: 2px;
 }
 
-.MenuContainer {
+.menu-container {
     grid-row: 1;
     grid-column: 1;
     pointer-events: auto;

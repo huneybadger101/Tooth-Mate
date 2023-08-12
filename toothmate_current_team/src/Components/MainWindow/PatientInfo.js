@@ -2,11 +2,11 @@ import '../../StyleSheets/MainWindow/PatientInfo.css';
 
 function PatientInfo() {
     return (
-        <div className='GridLayout'>
-            <div className="PatientInfoContainer">
+        <div className="grid-layout">
+            <div className="patient-info-container">
                 <form>
                     <label> Patient Info
-                        <input tupe="text" value="info..." className="InfoField" />
+                        <input tupe="text" value="info..." className="info-field" />
                     </label>
                 </form>
             </div>
