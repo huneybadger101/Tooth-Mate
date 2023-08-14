@@ -1,0 +1,27 @@
+.grid-layout {
+    display: grid;
+    height: 96vh;
+    width: 96vw;
+    padding: 2%;
+    grid-template-columns: repeat(20, 1fr);
+    grid-template-rows: repeat(20, 1fr);
+    pointer-events: none;
+    position: absolute;
+    gap: 2px;
+}
+
+.submit-button-container {
+    grid-row: 16;
+    grid-column: 16;
+    pointer-events: auto;
+}
+
+.submit-button {
+    width: 80px;
+    height: 30px;
+    font-size: 20px;
+    background-color: #efefef;
+    border-radius: 5px;
+    border-width: 1px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1), 0 1px 4px rgba(0, 0, 0, 0.2);
+}

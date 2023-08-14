@@ -1,0 +1,51 @@
+.grid-layout {
+    display: grid;
+    height: 96vh;
+    width: 96vw;
+    padding: 2%;
+    grid-template-columns: repeat(20, 1fr);
+    grid-template-rows: repeat(20, 1fr);
+    pointer-events: none;
+    position:absolute;
+    gap: 2px;
+}
+
+.notes-field-container {
+    grid-row: 3 / 15;
+    grid-column: 16/20;
+    background-color: #FFFFFF;
+	box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+	border-radius: 10px; 
+    display: '';
+    pointer-events: auto;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1), 0 1px 4px rgba(0, 0, 0, 0.2);
+}
+
+.notes-field {
+    -ms-flex-item-align: center;
+    -ms-flex-align: center;
+    padding-bottom: 45%;
+}
+
+.notes {
+    width: 98%;
+    border: none;
+    height: 150%;
+    text-align: left;
+}
+
+.history-button {
+    vertical-align: baseline;
+    margin: 1%;
+    background-color: #efefef;
+    border-radius: 5px;
+    border-width: 1px;
+}
+
+.todo-button {
+    vertical-align: baseline;
+    margin: 1%;
+    background-color: #efefef;
+    border-radius: 5px;
+    border-width: 1px;
+}

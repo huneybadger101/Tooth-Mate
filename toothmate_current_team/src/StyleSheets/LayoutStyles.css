@@ -1,0 +1,100 @@
+/* DEPRECATED */
+/*NO LONGER IN USE*/
+
+body {
+    overflow: hidden;
+    background-color: #f7f9fc;
+
+}
+
+.GridLayout {
+    display: grid;
+    height: 98vh;
+    width: 98vw;
+    padding: 2%;
+    /*98 vh plus the 2% padding makes it fit the view like 100% but keeps components away from edges. */
+    grid-template-columns: repeat(20, 1fr);
+    grid-template-rows: repeat(20, 1fr);
+    /*background-color: #FAF9F6;
+    Opacity: 0.6;*/
+    /*Background requires rgba values to control the background opacity
+    (each component has it's own layout layer.)*/
+    background: rgba(5, 5, 5, 0);
+    position:absolute;
+    gap: 2px;
+}
+
+/* Used to give filled grid cells colour
+.GridLayout>div {
+    background-color: #f7f4f4;
+    border: 1px solid #5b20af;
+}*/
+
+.MenuContainer {
+    grid-row: 1;
+    grid-column: 1;
+}
+
+.SearchBarContainer {
+    grid-row: 1;
+    grid-column: 6 / 14;
+}
+
+.PatientWarningContainer {
+    grid-row: 2/4;
+    grid-column: 3/15;
+    background-color: #ff0000;
+	box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+	border-radius: 10px;
+}
+
+.PatientInfoContainer {
+    grid-row: 16/20;
+    grid-column: 3/15;
+    background-color: #FFFFFF;
+	box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+	border-radius: 10px;
+
+}
+
+.TeethModelContainer {
+    grid-row: 4 / 15;
+    grid-column: 3/15;
+    background-color: #FFFFFF;
+	box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+	border-radius: 10px;
+}
+
+.NotesFieldContainer {
+    grid-row: 3 / 15;
+    grid-column: 16/20;
+    /*
+    background-color: #FFFFFF;
+	box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+	border-radius: 10px;*/
+}
+
+.BasePlanButtonContainer {
+    grid-row: 4;
+    grid-column: 1;
+}
+
+.TreatmentPlanButtonContainer {
+    grid-row: 6;
+    grid-column: 1;
+}
+
+.PeriPlanButtonContainer {
+    grid-row: 8;
+    grid-column: 1;
+}
+
+.SubmitButtonContainer {
+    grid-row: 16;
+    grid-column: 16;
+}
+
+.CancelButtonContainer {
+    grid-row: 18;
+    grid-column: 16;
+}

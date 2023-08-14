@@ -1,0 +1,27 @@
+.grid-layout {
+    display: grid;
+    height: 96vh;
+    width: 96vw;
+    padding: 2%;
+    grid-template-columns: repeat(20, 1fr);
+    grid-template-rows: repeat(20, 1fr);
+    pointer-events: none;
+    position: absolute;
+    gap: 2px;
+}
+
+.treatmentplan-button-container {
+    grid-row: 6;
+    grid-column: 1;
+    pointer-events: auto;
+}
+
+.treatmentplan-button {
+    width: 50px;
+    height: 50px;
+    font-size: 35px;
+    background-color: #efefef;
+    border-radius: 5px;
+    border-width: 1px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1), 0 1px 4px rgba(0, 0, 0, 0.2);
+}

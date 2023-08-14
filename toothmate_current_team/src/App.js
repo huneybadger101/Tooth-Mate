@@ -1,25 +1,45 @@
-import logo from './logo.svg';
 import './App.css';
+import SearchBar from './Components/MainWindow/SearchBar';
+import TeethModel from './Components/MainWindow/TeethModel';
+import NotesField from './Components/MainWindow/NotesField';
+import PatientWarning from './Components/MainWindow/PatientWarning';
+import BasePlanButton from './Components/MainWindow/BasePlanButton';
+import TreatmentPlanButton from './Components/MainWindow/TreatmentPlanButton';
+import PeriPlanButton from './Components/MainWindow/PeriPlanButton';
+import PatientInfo from './Components/MainWindow/PatientInfo';
+import SubmitButton from './Components/MainWindow/SubmitButton';
+import CancelButton from './Components/MainWindow/CancelButton';
+import Menu from './Components/MainWindow/Menu';
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+          <Menu />
+          <SearchBar />
+          <PatientWarning />
+          <PatientInfo />
+          <NotesField />
+          <BasePlanButton />
+          <TreatmentPlanButton />
+          <PeriPlanButton />
+          <SubmitButton />
+          <CancelButton />
+          <TeethModel />
     </div>
   );
+  // Below code was used to see the grid cells
+  /*return (
+    <div className="App">
+      <div className="GridLayout">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
+    </div>
+  );*/
 }
 
 export default App;

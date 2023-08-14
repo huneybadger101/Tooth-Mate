@@ -1,0 +1,20 @@
+.grid-layout {
+    display: grid;
+    height: 96vh;
+    width: 96vw;
+    padding: 2%;
+    grid-template-columns: repeat(20, 1fr);
+    grid-template-rows: repeat(20, 1fr);
+    pointer-events: none;
+    position: absolute;
+    gap: 2px;
+}
+
+.teeth-model-container {
+    grid-row: 4 / 15;
+    grid-column: 3/15;
+    background-color: #FFFFFF;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1), 0 1px 4px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    pointer-events: auto;
+}

@@ -1,0 +1,17 @@
+.grid-layout {
+    display: grid;
+    height: 96vh;
+    width: 96vw;
+    padding: 2%;
+    grid-template-columns: repeat(20, 1fr);
+    grid-template-rows: repeat(20, 1fr);
+    pointer-events: none;
+    position:absolute;
+    gap: 2px;
+}
+
+.menu-container {
+    grid-row: 1;
+    grid-column: 1;
+    pointer-events: auto;
+}
