@@ -1,3 +1,4 @@
 .planningContainer{
     display: flex;
+    justify-content: center;
 }
