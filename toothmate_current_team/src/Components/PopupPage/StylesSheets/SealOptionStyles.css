@@ -1,34 +1,64 @@
-.SealOption-Container{
+.SealOption-Container {
     margin-top: 5vh;
     margin-left: 2vw;
     width: 20vw;
     height: 50vh;
     background-color: #fff;
-    justify-content: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     font-size: 30px;
 }
 
-.SealOption-Container a{
+.SealOption-Container a {
     margin-top: 2vh;
     font-size: 30px;
     font-weight: bold;
 }
 
-.options{
-    display: block;
+.options {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;  /* Center align items horizontally */
+    align-content: center;    /* Center align items vertically */
     height: 90%;
+    width: 90%;
+
 }
 
-
-.options button{
-    width: 60%;
-    height: 10%;
-    margin: 3%;
-    border-radius: 10px;
+/* Adjust the general button styles for the new layout */
+.options button {
+           
     box-shadow: 3px 3px 5px #4d4c4c;
 }
 
-.options button:hover{
+/* Override the middle three button styles to fit 3 in a row */
+.options button:nth-child(1){
+    height: 10%;
+    width: 100%;
+}
+
+.options button:nth-child(2){
+    width: 20%;
+    height: 30%;
+}
+
+.options button:nth-child(3){
+    width: 60%;
+    height: 30%;
+}
+
+.options button:nth-child(4) {
+    width: 20%; 
+    height: 30%; /* This ensures three buttons fit in the row minus their margins */
+}
+
+.options button:nth-child(5){
+    height: 10%;
+    width: 100%;
+}
+
+.options button:hover {
     background: #50FF4D;
 }
 
@@ -37,7 +67,8 @@
 }
 
 
-.options .addToList{
+
+.options .addToList {
     margin-top: 10vh;
     width: 90%;
     height: 10%;
@@ -47,8 +78,6 @@
     background-color: #7A97FF;
 }
 
-.options .addToList:hover{
+.options .addToList:hover {
     background-color: #3a63f8;
 }
-
-
