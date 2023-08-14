@@ -1,0 +1,52 @@
+.TreatmentSummaryContainer {
+    margin-top: 5vh;
+    margin-left: 2vw;
+    width: 20vw;
+    height: 50vh;
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 30px;
+    overflow-y: auto; /* Makes it vertically scrollable when content overflows */
+}
+
+.TreatmentSummaryContainer a {
+    margin-top: 2vh;
+    font-size: 30px;
+    font-weight: bold;
+}
+
+.TreatmentSummaryContainer ul {
+    margin-top: 10%;
+    width: 90%;
+    padding-left: 0;
+}
+
+.TreatmentSummaryContainer ul li {
+    list-style-type: none;
+    text-align: left;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 20px;
+    background-color: #D9D9D9;
+    border-radius: 10px;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.TreatmentSummaryContainer ul li button {
+    /* Style for your delete button */
+    background-color: #f44336; /* Red background color for emphasis */
+    color: white;              /* White text color */
+    border: none;              /* Remove default borders */
+    padding: 5px 10px;         /* Some padding for space */
+    cursor: pointer;           /* Make it obvious it's clickable */
+    border-radius: 5px;        /* Rounded corners for aesthetics */
+    
+}
+
+button{
+    cursor: pointer; 
+}
