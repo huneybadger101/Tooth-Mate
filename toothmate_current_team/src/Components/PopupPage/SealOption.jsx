@@ -4,9 +4,9 @@ import './StylesSheets/SealOptionStyles.css';
 const SealOption = ({buttonOrder,handleButtonClick,handleAddToList}) => {
     return (
         <div className="SealOption-Container">
-            <a>Seal</a>
+            <a>Tooth surface</a>
             <div className='options'>
-                {['M', 'O', 'D', 'B', 'L'].map(char => (
+                {['B', 'D', 'O', 'M', 'P'].map(char => (
                     <button
                         key={char}
                         className={buttonOrder.includes(char) ? "button-active" : "button"}
