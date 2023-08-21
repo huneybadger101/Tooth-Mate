@@ -3,9 +3,6 @@ import SearchBar from './Components/MainWindow/SearchBar';
 import TeethModel from './Components/MainWindow/TeethModel';
 import NotesField from './Components/MainWindow/NotesField';
 import PatientWarning from './Components/MainWindow/PatientWarning';
-import BasePlanButton from './Components/MainWindow/BasePlanButton';
-import TreatmentPlanButton from './Components/MainWindow/TreatmentPlanButton';
-import PeriPlanButton from './Components/MainWindow/PeriPlanButton';
 import PatientInfo from './Components/MainWindow/PatientInfo';
 import SubmitButton from './Components/MainWindow/SubmitButton';
 import CancelButton from './Components/MainWindow/CancelButton';
@@ -19,9 +16,6 @@ function App() {
           <PatientWarning />
           <PatientInfo />
           <NotesField />
-          <BasePlanButton />
-          <TreatmentPlanButton />
-          <PeriPlanButton />
           <SubmitButton />
           <CancelButton />
           <TeethModel />
