@@ -1,5 +1,4 @@
 import './App.css';
-import SearchBar from './Components/MainWindow/SearchBar';
 import TeethModel from './Components/MainWindow/TeethModel';
 import NotesField from './Components/MainWindow/NotesField';
 import PatientWarning from './Components/MainWindow/PatientWarning';
@@ -12,7 +11,6 @@ function App() {
   return (
     <div className="App">
           <Menu />
-          <SearchBar />
           <PatientWarning />
           <PatientInfo />
           <NotesField />
@@ -21,19 +19,6 @@ function App() {
           <TeethModel />
     </div>
   );
-  // Below code was used to see the grid cells
-  /*return (
-    <div className="App">
-      <div className="GridLayout">
-        <div></div>
-        <div></div>
-        <div></div>
-        <div></div>
-        <div></div>
-        <div></div>
-      </div>
-    </div>
-  );*/
 }
 
 export default App;
