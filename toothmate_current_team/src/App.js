@@ -26,14 +26,8 @@ function App() {
   return (
     <div className="App">
           <Menu />
-<<<<<<< Updated upstream
-          <PatientWarning />
-          <PatientInfo />
-=======
-          <SearchBar />
           {patientData&&patientData.info&&<PatientWarning patientData={patientData}/>}
           {patientData&&patientData.info&&<PatientInfo patientData={patientData} />}
->>>>>>> Stashed changes
           <NotesField />
           <SubmitButton />
           <CancelButton />
