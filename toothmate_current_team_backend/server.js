@@ -27,7 +27,7 @@ app.get('/:nhi', (req,res) =>{
         console.log('Connected to the database with ID', connection.threadId);
     });
     
-    connection.query("SELECT id_c FROM contacts_cstm WHERE nhi_c = ?",[req.params.nhi], (error, firstResults, fields) => {
+    connection.query("SELECT * FROM contacts_cstm WHERE nhi_c = ?",[req.params.nhi], (error, firstResults, fields) => {
         if (error) throw error;
     
         if (firstResults.length > 0) {
@@ -36,7 +36,7 @@ app.get('/:nhi', (req,res) =>{
             connection.query("SELECT * FROM contacts WHERE id = ?", [contactId], (error, secondResults, fields) => {
                 if (error) throw error;
                 console.log(secondResults);
-                res.json({status:"Success", info: secondResults})
+                res.json({status:"Success", info: secondResults, otherInfo: firstResults})
             });
         }
         else{
