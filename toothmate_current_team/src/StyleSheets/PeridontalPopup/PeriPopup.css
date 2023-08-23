@@ -10,6 +10,39 @@
   background-color: rgba(0, 0, 0, 0.4);
 }
 
+.handle-top {
+  width: 99.5%;
+  height: 4%;
+  margin-top: -20px;
+  margin-left: -20px;
+}
+.handle-bottom {
+  bottom: 0px;
+  width: 99.5%;
+  height: 4%;
+  margin-left: -20px;
+}
+.handle-left {
+  width: 4%;
+  height: 99%;
+  margin-top: -20px;
+  margin-left: -20px;
+}
+.handle-right {
+  right: 0px;
+  width: 4%;
+  height: 99%;
+  margin-top: -20px;
+  margin-left: -20px;
+}
+
+.handle {
+  position: absolute;
+  caret-color: transparent;
+}
+
+
+
 .peri-popup-content {
   position: relative;
   background-color: #f8f8f8;
