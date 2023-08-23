@@ -8,30 +8,44 @@ import PatientWarning from './Components/MainWindow/PatientWarning';
 import PatientInfo from './Components/MainWindow/PatientInfo';
 import SubmitButton from './Components/MainWindow/SubmitButton';
 import CancelButton from './Components/MainWindow/CancelButton';
+import PlanSwitchButtons from './Components/MainWindow/PlanSwitchButtons';
 import Menu from './Components/MainWindow/Menu';
 
 function App() {
-  const [patientData,setPatientData] = useState({})
-  const {id} = useParams()
+  /* TeethModel Content change functions*/
+  const [activeContent, setActiveContent] = useState('contentBase');  // This is the default content that will be set as active.
+  const handleContentChange = (contentKey) => {
+    setActiveContent(contentKey);
+  };
 
-  useEffect(()=>{
-    axios.get(`https://5f34ab754164.ngrok.app/${id}`).then((res=>{
+  const [patientData, setPatientData] = useState({})
+  const { id } = useParams()
+
+  useEffect(() => {
+    axios.get(`https://5f34ab754164.ngrok.app/${id}`).then((res => {
       console.log(res.data)
       setPatientData(res.data)
-    })).catch((err) =>{
+    })).catch((err) => {
       console.log(err)
     })
-  },[id])
+  }, [id])
 
   return (
     <div className="App">
-          <Menu />
-          {patientData&&patientData.info&&<PatientWarning patientData={patientData}/>}
-          {patientData&&patientData.info&&<PatientInfo patientData={patientData} />}
-          <NotesField />
-          <SubmitButton />
-          <CancelButton />
-          <TeethModel />
+      <Menu />
+      {patientData && patientData.info && <PatientWarning patientData={patientData} />}
+      {patientData && patientData.info && <PatientInfo patientData={patientData} />}
+      <NotesField />
+      <SubmitButton />
+      <CancelButton />
+      <PlanSwitchButtons
+        handleContentChange={setActiveContent}
+      />
+      <TeethModel
+        activeContent={activeContent}
+      />
+
+
     </div>
   );
 }
