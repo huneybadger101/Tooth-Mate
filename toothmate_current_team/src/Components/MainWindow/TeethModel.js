@@ -32,18 +32,18 @@ function TeethModel() {
                 </div>
             </div>
             <div className="grid-layout">
-                <div className="base-plan-button-container">
-                    <button className="base-plan-button" onClick={() => handleContentChange('contentBase')}>B</button>
+                <div className="baseplan-button-container">
+                    <button className="baseplan-button" onClick={() => handleContentChange('contentBase')}>B</button>
                 </div>
             </div>
             <div className="grid-layout">
                 <div className="treatmentplan-button-container">
                     <button className="treatmentplan-button" onClick={() => handleContentChange('contentTreatment')}>T</button>
                 </div>
-                <div className="grid-layout">
-                    <div className="periplan-button-container">
-                        <button className="periplan-button" onClick={() => handleContentChange('contentPeri')}>Peri</button>
-                    </div>
+            </div>
+            <div className="grid-layout">
+                <div className="periplan-button-container">
+                    <button className="periplan-button" onClick={() => handleContentChange('contentPeri')}>Peri</button>
                 </div>
             </div>
         </>

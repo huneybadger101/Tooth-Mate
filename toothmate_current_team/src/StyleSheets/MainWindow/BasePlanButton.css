@@ -12,13 +12,13 @@
 
 }
 
-.base-plan-button-container {
+.baseplan-button-container {
     grid-row: 4;
     grid-column: 1;
     pointer-events: auto;
 }
 
-.base-plan-button {
+.baseplan-button {
     width: 50px;
     height: 50px;
     font-size: 35px;
