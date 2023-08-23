@@ -1,8 +1,5 @@
 import React, { useState } from 'react';
 import '../../StyleSheets/MainWindow/TeethModel.css';
-import '../../StyleSheets/MainWindow/BasePlanButton.css';
-import '../../StyleSheets/MainWindow/TreatmentPlanButton.css';
-import '../../StyleSheets/MainWindow/PeriPlanButton.css';
 import Tooth from './Tooth.js';
 import PeriPopup from '../PeridontalPopup/PeriPopup';
 
@@ -11,12 +8,8 @@ import PeriPopup from '../PeridontalPopup/PeriPopup';
  * 
  * @returns Teeth Model
  */
-function TeethModel() {
-    const [activeContent, setActiveContent] = useState('contentBase');  // This is the default content that will be set as active.
-
-    const handleContentChange = (contentKey) => {
-        setActiveContent(contentKey);
-    };
+function TeethModel(props) {
+    const {activeContent} = props
 
     const contentMap = {
         contentBase: <div><Tooth /></div>,
@@ -25,28 +18,14 @@ function TeethModel() {
     };
 
     return (
-        <>
+        <div>
+            
             <div className='grid-layout'>
                 <div className="teeth-model-container">
                     {contentMap[activeContent]}
                 </div>
             </div>
-            <div className="grid-layout">
-                <div className="baseplan-button-container">
-                    <button className="baseplan-button" onClick={() => handleContentChange('contentBase')}>B</button>
-                </div>
-            </div>
-            <div className="grid-layout">
-                <div className="treatmentplan-button-container">
-                    <button className="treatmentplan-button" onClick={() => handleContentChange('contentTreatment')}>T</button>
-                </div>
-            </div>
-            <div className="grid-layout">
-                <div className="periplan-button-container">
-                    <button className="periplan-button" onClick={() => handleContentChange('contentPeri')}>Peri</button>
-                </div>
-            </div>
-        </>
+        </div>
     );
 }
 
