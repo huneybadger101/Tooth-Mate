@@ -27,7 +27,7 @@ function TeethModel() {
     return (
         <>
             <div className='grid-layout'>
-                <div className="teeth-model-container" activeContent={activeContent} handleContentChange={handleContentChange}>
+                <div className="teeth-model-container">
                     {contentMap[activeContent]}
                 </div>
             </div>
