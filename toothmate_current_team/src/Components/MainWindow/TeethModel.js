@@ -1,32 +1,91 @@
-import React, { useState } from 'react';
 import '../../StyleSheets/MainWindow/TeethModel.css';
-import Tooth from './Tooth.js';
+import { Canvas, useLoader } from '@react-three/fiber';
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
+import React, { Suspense, useRef, useState } from 'react';
+import { Html, Loader } from '@react-three/drei';
 import PeriPopup from '../PeridontalPopup/PeriPopup';
 
-/**
- * This is an empty container to house the 3D Model.
- * 
- * @returns Teeth Model
- */
-function TeethModel(props) {
-    const {activeContent} = props
+const ToothComponent = ({ position, url }) => {
+    const gltf = useLoader(GLTFLoader, url);
+    const scale = [2.5, 2.5, 2.5]; 
+    const mesh = useRef();
+    const [rotation, setRotation] = useState({ x: 0, y: 0 });
+    const [isDragging, setIsDragging] = useState(false);
+    const [startX, setStartX] = useState(0);
+    const [startY, setStartY] = useState(0);
 
-    const contentMap = {
-        contentBase: <div><Tooth /></div>,
-        contentTreatment: <div>Treatment Plan</div>,
-        contentPeri: <div><PeriPopup /></div>,
+    const handleMouseDown = (e) => {
+        setIsDragging(true);
+        setStartX(e.clientX);
+        setStartY(e.clientY);
+    };
+
+    const handleMouseMove = (e) => {
+        if (isDragging) {
+            const dx = (e.clientX - startX) * 0.0005;
+            const dy = (e.clientY - startY) * 0.0005;
+            setRotation((prev) => ({ x: prev.x + dy, y: prev.y + dx }));
+        }
+    };
+
+    const handleMouseUp = () => {
+        setIsDragging(false);
+        setRotation({ x: 0, y: 0 });  // Reset rotation
     };
 
     return (
-        <div>
-            
+        <primitive
+            ref={mesh}
+            position={position}
+            rotation={[rotation.x, rotation.y, 0]}
+            object={gltf.scene}
+            scale={scale}
+            onPointerDown={handleMouseDown}
+            onPointerMove={handleMouseMove}
+            onPointerUp={handleMouseUp}
+            onDoubleClick={() => {
+                window.location.href = "/new-url";
+            }}
+        />
+    );
+};
+
+      const teethData = {
+          upper: {
+            left: ['/3Dmodel/Left_Upper_Wisdom.glb', '/3Dmodel/Left_Upper_Second_Molar.glb', '/3Dmodel/Left_Upper_First_Molar.glb', '/3Dmodel/Left_Upper_Second_Premolar.glb', '/3Dmodel/Left_Upper_First_Premolar.glb', '/3Dmodel/Left_Upper_Canine.glb', '/3Dmodel/Left_Upper_Lateral_Incisor.glb', '/3Dmodel/Left_Upper_Central_Incisor.glb'],
+            right: ['/3Dmodel/Right_Upper_Central_Incisor.glb', '/3Dmodel/Right_Upper_Lateral_Incisor.glb', '/3Dmodel/Right_Upper_Canine.glb', '/3Dmodel/Right_Upper_First_Premolar.glb', '/3Dmodel/Right_Upper_Second_Premolar.glb', '/3Dmodel/Right_Upper_First_Molar.glb', '/3Dmodel/Right_Upper_Second_Molar.glb', '/3Dmodel/Right_Upper_Wisdom.glb']
+          },
+          lower: {
+            left: ['/3Dmodel/Left_Lower_Wisdom.glb', '/3Dmodel/Left_Lower_Second_Molar.glb', '/3Dmodel/Left_Lower_First_Molar.glb', '/3Dmodel/Left_Lower_Second_Premolar.glb', '/3Dmodel/Left_Lower_First_Premolar.glb', '/3Dmodel/Left_Lower_Canine.glb', '/3Dmodel/Left_Lower_Lateral_Incisor.glb', '/3Dmodel/Left_Lower_Central_Incisor.glb'],
+            right: ['/3Dmodel/Right_Lower_Central_Incisor.glb', '/3Dmodel/Right_Lower_Lateral_Incisor.glb', '/3Dmodel/Right_Lower_Canine.glb', '/3Dmodel/Right_Lower_First_Premolar.glb', '/3Dmodel/Right_Lower_Second_Premolar.glb', '/3Dmodel/Right_Lower_First_Molar.glb', '/3Dmodel/Right_Lower_Second_Molar.glb', '/3Dmodel/Right_Lower_Wisdom.glb']
+          }
+      };
+
+      function TeethModel() {
+        return (
             <div className='grid-layout'>
-                <div className="teeth-model-container">
-                    {contentMap[activeContent]}
+                <div className="teeth-model-container" style={{ width: '57.5vw', height: '50vh' }}>
+                    <Canvas camera={{ position: [0, 0, 30] }}>
+                        <ambientLight />
+                        <pointLight position={[10, 10, 10]} />
+                        <Suspense fallback={<Html center><Loader /></Html>}>
+                            {['upper', 'lower'].map((jaw, jawIndex) => (
+                                ['left', 'right'].map((side, sideIndex) => (
+                                    teethData[jaw][side].map((tooth, index) => {
+                                        const positionX = (index - 4) * 5 + (sideIndex * 40) - 20;
+                                        const positionY = jawIndex === 0 ? 10 : -10; // Separate upper and lower jaws
+                                        const positionZ = 0;
+                                        const position = [positionX, positionY, positionZ];
+                                        return <ToothComponent key={`${jaw}-${side}-${index}`} position={position} url={tooth} />;
+                                    })
+                                ))
+                            ))}
+                        </Suspense>
+                    </Canvas>
+                    <PeriPopup />
                 </div>
             </div>
-        </div>
-    );
-}
-
-export default TeethModel;
+        );
+    }
+    
+    export default TeethModel;
