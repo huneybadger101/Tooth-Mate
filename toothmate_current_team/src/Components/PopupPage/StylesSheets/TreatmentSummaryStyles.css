@@ -37,13 +37,13 @@
 }
 
 .TreatmentSummaryContainer ul li button {
-    /* Style for your delete button */
-    background-color: #f44336; /* Red background color for emphasis */
-    color: white;              /* White text color */
-    border: none;              /* Remove default borders */
-    padding: 5px 10px;         /* Some padding for space */
-    cursor: pointer;           /* Make it obvious it's clickable */
-    border-radius: 5px;        /* Rounded corners for aesthetics */
+
+    background-color: #f44336; 
+    color: white;           
+    border: none;           
+    padding: 5px 10px;       
+    cursor: pointer;           
+    border-radius: 5px;        
     
 }
 

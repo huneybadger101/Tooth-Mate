@@ -35,7 +35,7 @@ function App() {
       <Menu />
       {patientData && patientData.info && <PatientWarning patientData={patientData} />}
       {patientData && patientData.info && <PatientInfo patientData={patientData} />}
-      <NotesField />
+      {patientData && <NotesField patientHistory={patientData.history}/>}
       <SubmitButton />
       <CancelButton />
       <PlanSwitchButtons
