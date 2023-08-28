@@ -22,6 +22,11 @@
 
 .info-field {
     width: 98%;
+    height: 70%;
+    padding: 1%;
+    font-size: small;
     border: none;
-    height: 100%;
+    text-align: left;
+    line-height: 1.5;
+    overflow: auto;
 }
