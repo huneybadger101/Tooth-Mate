@@ -4,6 +4,7 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import React, { Suspense, useRef, useState } from 'react';
 import { Html, Loader } from '@react-three/drei';
 import PeriPopup from '../PeridontalPopup/PeriPopup';
+import DataOfTeeth from './TeethData';
 
 const ToothComponent = ({ position, url }) => {
     const gltf = useLoader(GLTFLoader, url);
@@ -50,16 +51,13 @@ const ToothComponent = ({ position, url }) => {
     );
 };
 
-      const teethData = {
-          upper: {
-            left: ['/3Dmodel/Left_Upper_Wisdom.glb', '/3Dmodel/Left_Upper_Second_Molar.glb', '/3Dmodel/Left_Upper_First_Molar.glb', '/3Dmodel/Left_Upper_Second_Premolar.glb', '/3Dmodel/Left_Upper_First_Premolar.glb', '/3Dmodel/Left_Upper_Canine.glb', '/3Dmodel/Left_Upper_Lateral_Incisor.glb', '/3Dmodel/Left_Upper_Central_Incisor.glb'],
-            right: ['/3Dmodel/Right_Upper_Central_Incisor.glb', '/3Dmodel/Right_Upper_Lateral_Incisor.glb', '/3Dmodel/Right_Upper_Canine.glb', '/3Dmodel/Right_Upper_First_Premolar.glb', '/3Dmodel/Right_Upper_Second_Premolar.glb', '/3Dmodel/Right_Upper_First_Molar.glb', '/3Dmodel/Right_Upper_Second_Molar.glb', '/3Dmodel/Right_Upper_Wisdom.glb']
-          },
-          lower: {
-            left: ['/3Dmodel/Left_Lower_Wisdom.glb', '/3Dmodel/Left_Lower_Second_Molar.glb', '/3Dmodel/Left_Lower_First_Molar.glb', '/3Dmodel/Left_Lower_Second_Premolar.glb', '/3Dmodel/Left_Lower_First_Premolar.glb', '/3Dmodel/Left_Lower_Canine.glb', '/3Dmodel/Left_Lower_Lateral_Incisor.glb', '/3Dmodel/Left_Lower_Central_Incisor.glb'],
-            right: ['/3Dmodel/Right_Lower_Central_Incisor.glb', '/3Dmodel/Right_Lower_Lateral_Incisor.glb', '/3Dmodel/Right_Lower_Canine.glb', '/3Dmodel/Right_Lower_First_Premolar.glb', '/3Dmodel/Right_Lower_Second_Premolar.glb', '/3Dmodel/Right_Lower_First_Molar.glb', '/3Dmodel/Right_Lower_Second_Molar.glb', '/3Dmodel/Right_Lower_Wisdom.glb']
-          }
-      };
+const getToothPosition = (jawIndex, sideIndex, index) => {
+    const positionX = (index - 4) * 5 + (sideIndex * 40) - 20;
+    const positionY = jawIndex === 0 ? 10 : -10;
+    const positionZ = 0;
+    
+    return [positionX, positionY, positionZ];
+ };
 
       function TeethModel() {
         return (
@@ -67,15 +65,12 @@ const ToothComponent = ({ position, url }) => {
                 <div className="teeth-model-container" style={{ width: '57.5vw', height: '50vh' }}>
                     <Canvas camera={{ position: [0, 0, 30] }}>
                         <ambientLight />
-                        <pointLight position={[10, 10, 10]} />
+                        <hemisphereLight skyColor={0xffffff} groundColor={0x444444} intensity={2.5} />
                         <Suspense fallback={<Html center><Loader /></Html>}>
                             {['upper', 'lower'].map((jaw, jawIndex) => (
                                 ['left', 'right'].map((side, sideIndex) => (
-                                    teethData[jaw][side].map((tooth, index) => {
-                                        const positionX = (index - 4) * 5 + (sideIndex * 40) - 20;
-                                        const positionY = jawIndex === 0 ? 10 : -10; // Separate upper and lower jaws
-                                        const positionZ = 0;
-                                        const position = [positionX, positionY, positionZ];
+                                    DataOfTeeth[jaw][side].map((tooth, index) => {
+                                        const position = getToothPosition(jawIndex, sideIndex, index);
                                         return <ToothComponent key={`${jaw}-${side}-${index}`} position={position} url={tooth} />;
                                     })
                                 ))
@@ -88,4 +83,4 @@ const ToothComponent = ({ position, url }) => {
         );
     }
     
-    export default TeethModel;
+    export default React.memo(TeethModel);
