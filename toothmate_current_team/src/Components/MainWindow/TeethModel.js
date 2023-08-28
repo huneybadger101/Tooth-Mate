@@ -8,7 +8,7 @@ import DataOfTeeth from './TeethData';
 
 const ToothComponent = ({ position, url }) => {
     const gltf = useLoader(GLTFLoader, url);
-    const scale = [2.5, 2.5, 2.5]; 
+    const scale = [2.5, 2.5, 2.5];
     const mesh = useRef();
     const [rotation, setRotation] = useState({ x: 0, y: 0 });
     const [isDragging, setIsDragging] = useState(false);
@@ -55,32 +55,45 @@ const getToothPosition = (jawIndex, sideIndex, index) => {
     const positionX = (index - 4) * 5 + (sideIndex * 40) - 20;
     const positionY = jawIndex === 0 ? 10 : -10;
     const positionZ = 0;
-    
-    return [positionX, positionY, positionZ];
- };
 
-      function TeethModel() {
+    return [positionX, positionY, positionZ];
+};
+
+function TeethModel(props) {
+    const ThreeDModel = () => {
         return (
-            <div className='grid-layout'>
-                <div className="teeth-model-container" style={{ width: '57.5vw', height: '50vh' }}>
-                    <Canvas camera={{ position: [0, 0, 30] }}>
-                        <ambientLight />
-                        <hemisphereLight skyColor={0xffffff} groundColor={0x444444} intensity={2.5} />
-                        <Suspense fallback={<Html center><Loader /></Html>}>
-                            {['upper', 'lower'].map((jaw, jawIndex) => (
-                                ['left', 'right'].map((side, sideIndex) => (
-                                    DataOfTeeth[jaw][side].map((tooth, index) => {
-                                        const position = getToothPosition(jawIndex, sideIndex, index);
-                                        return <ToothComponent key={`${jaw}-${side}-${index}`} position={position} url={tooth} />;
-                                    })
-                                ))
-                            ))}
-                        </Suspense>
-                    </Canvas>
-                    <PeriPopup />
-                </div>
-            </div>
+            <Canvas camera={{ position: [0, 0, 30] }} style={{ width: '57.5vw', height: '50vh' }}>
+                <ambientLight />
+                <hemisphereLight skyColor={0xffffff} groundColor={0x444444} intensity={2.5} />
+                <Suspense fallback={<Html center><Loader /></Html>}>
+                    {['upper', 'lower'].map((jaw, jawIndex) => (
+                        ['left', 'right'].map((side, sideIndex) => (
+                            DataOfTeeth[jaw][side].map((tooth, index) => {
+                                const position = getToothPosition(jawIndex, sideIndex, index);
+                                return <ToothComponent key={`${jaw}-${side}-${index}`} position={position} url={tooth} />;
+                            })
+                        ))
+                    ))}
+                </Suspense>
+            </Canvas>
         );
-    }
+    };
     
-    export default React.memo(TeethModel);
+    const { activeContent } = props
+    const contentMap = {
+        contentBase: <div><ThreeDModel />Base Plan</div>,
+        contentTreatment: <div><ThreeDModel />Treatment Plan</div>,
+        contentPeri: <div><ThreeDModel /><PeriPopup /></div>,
+
+    };
+
+    return (
+        <div className='grid-layout' >
+            <div className="teeth-model-container">
+                {contentMap[activeContent]}
+            </div>
+        </div >
+    );
+}
+
+export default React.memo(TeethModel);
