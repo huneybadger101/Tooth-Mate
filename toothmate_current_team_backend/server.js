@@ -36,6 +36,11 @@ app.get('/:nhi', (req,res) =>{
             connection.query("SELECT * FROM contacts WHERE id = ?", [contactId], (error, secondResults, fields) => {
                 if (error) throw error;
                 console.log(secondResults);
+                connection.query("SELECT * FROM appointments WHERE NHI = ? ORDER BY appointment_date ASC", [req.params.nhi], (error, thirdResults, fields) => {
+                    if (error) throw error;
+                    console.log(secondResults);
+                    res.json({status:"Success", info: secondResults, otherInfo: firstResults, history: thirdResults})
+                });                
                 res.json({status:"Success", info: secondResults, otherInfo: firstResults})
             });
         }
