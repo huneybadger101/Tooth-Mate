@@ -8,14 +8,22 @@ function PatientInfo({patientData}) {
     */
     const patientInfo = patientData && patientData.info && patientData.info[0];
     const otherInfo = patientData && patientData.otherInfo && patientData.otherInfo[0];
+    console.log(otherInfo);
     return (
         <div className="grid-layout">
             <div className="patient-info-container">
-                <form>
                     <label> Patient Info
-                        <input tupe="text" value="info..." className="info-field" />
+                        <div className="info-field" >
+                            <p>Name: {patientInfo.salutation} {patientInfo.first_name} {patientInfo.last_name}</p>
+                            <p>Address: {patientInfo.primary_address_street}, {patientInfo.primary_address_city}, {patientInfo.primary_address_country}</p>
+                            <p>Contact: {patientInfo.phone_mobile}</p>
+                            <p>Medical History:</p>
+                            <p>Dental History:</p>
+                            <p>Oral Health Info:</p>
+                            <p>Medical History:</p>
+                            <p>Medical Preferences:</p>
+                        </div>
                     </label>
-                </form>
             </div>
         </div>
     );
