@@ -10,7 +10,7 @@ const ToothComponent = ({ position, url }) => {
     const gltf = useLoader(GLTFLoader, url);
     const scale = [2.5, 2.5, 2.5];
     const mesh = useRef();
-    const [rotation, setRotation] = useState({ x: 0, y: 0 });
+    const [rotation, setRotation] = useState({ x: 0, y: 0, z: 0 });
     const [isDragging, setIsDragging] = useState(false);
     const [startX, setStartX] = useState(0);
     const [startY, setStartY] = useState(0);
@@ -25,27 +25,31 @@ const ToothComponent = ({ position, url }) => {
         if (isDragging) {
             const dx = (e.clientX - startX) * 0.0005;
             const dy = (e.clientY - startY) * 0.0005;
-            setRotation((prev) => ({ x: prev.x + dy, y: prev.y + dx }));
+            setRotation((prev) => ({
+                x: prev.x + dy,
+                y: prev.y,
+                z: prev.z + dx
+            }));
         }
     };
 
     const handleMouseUp = () => {
         setIsDragging(false);
-        setRotation({ x: 0, y: 0 });  // Reset rotation
+        setRotation({ x: 0, y: 0, z: 0 });  // Reset rotation for all axes
     };
 
     return (
         <primitive
             ref={mesh}
             position={position}
-            rotation={[rotation.x, rotation.y, 0]}
+            rotation={[rotation.x, rotation.y, rotation.z]}
             object={gltf.scene}
             scale={scale}
             onPointerDown={handleMouseDown}
             onPointerMove={handleMouseMove}
             onPointerUp={handleMouseUp}
             onDoubleClick={() => {
-                window.location.href = "/new-url";
+                window.location.href = "/new-url"; // Ensure this URL is correct or dynamically set.
             }}
         />
     );
@@ -79,20 +83,19 @@ function TeethModel(props) {
         );
     };
     
-    const { activeContent } = props
+    const { activeContent } = props;
     const contentMap = {
         contentBase: <div><ThreeDModel />Base Plan</div>,
         contentTreatment: <div><ThreeDModel />Treatment Plan</div>,
         contentPeri: <div><ThreeDModel /><PeriPopup /></div>,
-
     };
 
     return (
-        <div className='grid-layout' >
+        <div className='grid-layout'>
             <div className="teeth-model-container">
                 {contentMap[activeContent]}
             </div>
-        </div >
+        </div>
     );
 }
 
