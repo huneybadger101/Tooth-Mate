@@ -34,18 +34,24 @@ function App() {
     <div className="App">
       <Menu />
       {patientData && patientData.info && <PatientWarning patientData={patientData} />}
-      {patientData && patientData.info && <PatientInfo patientData={patientData} />}
+      <div className='bodyContainer'>
+        <PlanSwitchButtons
+          handleContentChange={setActiveContent}
+        />
+        
+        <TeethModel
+          activeContent={activeContent}
+        />
       {patientData && <NotesField patientHistory={patientData.history}/>}
+      </div>
+      <div className='bottomContainer'>
+        {patientData && patientData.info && <PatientInfo patientData={patientData} />}
+        <div className='buttonContainer'>
+
       <SubmitButton />
       <CancelButton />
-      <PlanSwitchButtons
-        handleContentChange={setActiveContent}
-      />
-      <TeethModel
-        activeContent={activeContent}
-      />
-
-
+        </div>
+      </div>
     </div>
   );
 }

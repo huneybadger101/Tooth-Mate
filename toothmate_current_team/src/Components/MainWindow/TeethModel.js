@@ -88,11 +88,11 @@ function TeethModel(props) {
     };
 
     return (
-        <div className='grid-layout' >
+
             <div className="teeth-model-container">
                 {contentMap[activeContent]}
             </div>
-        </div >
+
     );
 }
 

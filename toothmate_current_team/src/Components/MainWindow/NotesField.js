@@ -39,7 +39,7 @@ function NotesField({patientHistory}) {
     const history = () => (
         <>
             <form className="notes-field">
-                <label>History
+                <h3>History</h3>
                     <ul>
                         {patientHistory && patientHistory.map((info) => (
                             <li key={info.appointmentID} onClick={() => handleAppointmentClick(info)}>
@@ -47,7 +47,6 @@ function NotesField({patientHistory}) {
                             </li>
                         ))}
                     </ul>
-                </label>
             </form>
         </>
     )
@@ -60,10 +59,10 @@ function NotesField({patientHistory}) {
     const todo = () => (
         <>
             <form className="notes-field">
-                <label>To Do
+                <h3>To Do</h3>
                     <br></br>
                     <input type="text" value="Todo notes..." className="notes" />
-                </label>
+                
             </form>
         </>
     )
@@ -81,7 +80,7 @@ function NotesField({patientHistory}) {
 
 
     return (
-        <div className="grid-layout">
+        <div>
             <div className="notes-field-container">
                 {contentMap[activeContent]()}
                 <input type="button" value="History" className="history-button" onClick={() => handleContentChange('contentHistory')} />

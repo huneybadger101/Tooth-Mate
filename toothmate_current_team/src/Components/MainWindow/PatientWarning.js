@@ -6,7 +6,7 @@ function PatientWarning({patientData}) {
 
     console.log(patientInfo);
     return (
-        <div className="grid-layout">
+
             <div className="patient-warning-container">
                 <form>
                     <label> {patientInfo.salutation+patientInfo.first_name+" "+patientInfo.last_name+"("+otherInfo.nhi_c+")"}
@@ -15,7 +15,7 @@ function PatientWarning({patientData}) {
                     </label>
                 </form>
             </div>
-        </div>
+
     )
 }
 
