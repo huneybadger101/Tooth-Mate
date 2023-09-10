@@ -1,99 +1,124 @@
 import '../../StyleSheets/MainWindow/TeethModel.css';
 import { Canvas, useLoader } from '@react-three/fiber';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
-import React, { Suspense, useRef, useState } from 'react';
+import React, { Suspense, useRef, useState, useEffect, useCallback } from 'react';
 import { Html, Loader } from '@react-three/drei';
 import PeriPopup from '../PeridontalPopup/PeriPopup';
 import DataOfTeeth from './TeethData';
+import TreatmentPlan from '../../TreatmentPlan';
 
-const ToothComponent = ({ position, url }) => {
+const DAMPING = 0.05;
+const LERP_FACTOR = 0.1;
+const DEFAULT_ROTATION = { x: 0, y: 0 };
+
+const ToothComponent = ({ position, url, onToothDblClick, resetRotation }) => {
     const gltf = useLoader(GLTFLoader, url);
-    const scale = [2.5, 2.5, 2.5];
     const mesh = useRef();
-    const [rotation, setRotation] = useState({ x: 0, y: 0, z: 0 });
-    const [isDragging, setIsDragging] = useState(false);
-    const [startX, setStartX] = useState(0);
-    const [startY, setStartY] = useState(0);
+    const [state, setState] = useState({
+        rotation: DEFAULT_ROTATION,
+        isDragging: false,
+        start: { x: 0, y: 0 }
+    });
+
+    useEffect(() => {
+        setState(prevState => ({ ...prevState, rotation: DEFAULT_ROTATION }));
+    }, [resetRotation]);
 
     const handleMouseDown = (e) => {
-        setIsDragging(true);
-        setStartX(e.clientX);
-        setStartY(e.clientY);
+        setState({
+            ...state,
+            isDragging: true,
+            start: { x: e.clientX, y: e.clientY }
+        });
     };
 
     const handleMouseMove = (e) => {
-        if (isDragging) {
-            const dx = (e.clientX - startX) * 0.0005;
-            const dy = (e.clientY - startY) * 0.0005;
-            setRotation((prev) => ({
-                x: prev.x + dy,
-                y: prev.y,
-                z: prev.z + dx
-            }));
+        if (state.isDragging) {
+            const dx = (e.clientX - state.start.x) * DAMPING;
+            const dy = (e.clientY - state.start.y) * DAMPING;
+            const targetRotation = {
+                x: state.rotation.x - dy,
+                y: state.rotation.y + dx
+            };
+
+            requestAnimationFrame(() => {
+                const lerpX = state.rotation.x + LERP_FACTOR * (targetRotation.x - state.rotation.x);
+                const lerpY = state.rotation.y + LERP_FACTOR * (targetRotation.y - state.rotation.y);
+
+                setState(prevState => ({
+                    ...prevState,
+                    rotation: { x: lerpX, y: lerpY }
+                }));
+            });
         }
     };
 
     const handleMouseUp = () => {
-        setIsDragging(false);
-        setRotation({ x: 0, y: 0, z: 0 });  // Reset rotation for all axes
+        setState(prevState => ({ ...prevState, isDragging: false }));
     };
 
     return (
         <primitive
             ref={mesh}
             position={position}
-            rotation={[rotation.x, rotation.y, rotation.z]}
+            rotation={[state.rotation.x, state.rotation.y, 0]}
             object={gltf.scene}
-            scale={scale}
+            scale={[2.5, 2.5, 2.5]}
             onPointerDown={handleMouseDown}
             onPointerMove={handleMouseMove}
             onPointerUp={handleMouseUp}
-            onDoubleClick={() => {
-                window.location.href = "/new-url"; // Ensure this URL is correct or dynamically set.
-            }}
+            onDoubleClick={onToothDblClick}
         />
     );
 };
 
+
 const getToothPosition = (jawIndex, sideIndex, index) => {
     const positionX = (index - 4) * 5 + (sideIndex * 40) - 20;
-    const positionY = jawIndex === 0 ? 10 : -10;
-    const positionZ = 0;
-
-    return [positionX, positionY, positionZ];
+    return [positionX, jawIndex === 0 ? 10 : -10, 0];
 };
 
-function TeethModel(props) {
-    const ThreeDModel = () => {
-        return (
-            <Canvas camera={{ position: [0, 0, 30] }} style={{ width: '57.5vw', height: '50vh' }}>
-                <ambientLight />
-                <hemisphereLight skyColor={0xffffff} groundColor={0x444444} intensity={2.5} />
-                <Suspense fallback={<Html center><Loader /></Html>}>
-                    {['upper', 'lower'].map((jaw, jawIndex) => (
-                        ['left', 'right'].map((side, sideIndex) => (
-                            DataOfTeeth[jaw][side].map((tooth, index) => {
-                                const position = getToothPosition(jawIndex, sideIndex, index);
-                                return <ToothComponent key={`${jaw}-${side}-${index}`} position={position} url={tooth} />;
-                            })
-                        ))
-                    ))}
-                </Suspense>
-            </Canvas>
-        );
-    };
-    
-    const { activeContent } = props;
+function TeethModel({ activeContent }) {
+    const [showTreatmentPlan, setShowTreatmentPlan] = useState(false);
+    const [resetCounter, setResetCounter] = useState(0);
+
+    const handleResetRotation = useCallback(() => {
+        setResetCounter(prevCount => prevCount + 1);
+    }, []);
+
+    const handleToothDblClick = useCallback(() => {
+        window.location.href = "/new-url";
+        setShowTreatmentPlan(true);
+    }, []);
+
+    const renderTooth = useCallback((tooth, index, jaw, side) => {
+        const position = getToothPosition(['upper', 'lower'].indexOf(jaw), ['left', 'right'].indexOf(side), index);
+        return <ToothComponent key={`${jaw}-${side}-${index}`} position={position} url={tooth} onToothDblClick={handleToothDblClick} resetRotation={resetCounter} />;
+    }, [resetCounter, handleToothDblClick]);
+
+    const ThreeDModel = useCallback(() => (
+        <Canvas camera={{ position: [0, 0, 30] }} style={{ width: '57.5vw', height: '50vh' }}>
+            <ambientLight />
+            <hemisphereLight skyColor={0xffffff} groundColor={0x444444} intensity={2.5} />
+            <Suspense fallback={<Html center><Loader /></Html>}>
+                {Object.entries(DataOfTeeth).map(([jaw, sides]) => (
+                    Object.entries(sides).map(([side, teeth]) => teeth.map((tooth, index) => renderTooth(tooth, index, jaw, side)))
+                ))}
+            </Suspense>
+        </Canvas>
+    ), [renderTooth]);
+
     const contentMap = {
-        contentBase: <div><ThreeDModel />Base Plan</div>,
-        contentTreatment: <div><ThreeDModel />Treatment Plan</div>,
-        contentPeri: <div><ThreeDModel /><PeriPopup /></div>,
+        contentBase: <><ThreeDModel />Base Plan</>,
+        contentTreatment: <><ThreeDModel />Treatment Plan</>,
+        contentPeri: <><ThreeDModel /><PeriPopup /></>
     };
 
     return (
         <div className='grid-layout'>
             <div className="teeth-model-container">
-                {contentMap[activeContent]}
+                <button onClick={handleResetRotation}>Reset Rotation</button>
+                {showTreatmentPlan ? <TreatmentPlan /> : contentMap[activeContent]}
             </div>
         </div>
     );
