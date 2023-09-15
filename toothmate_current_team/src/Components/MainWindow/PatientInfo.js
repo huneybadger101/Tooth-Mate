@@ -10,7 +10,7 @@ function PatientInfo({patientData}) {
     const otherInfo = patientData && patientData.otherInfo && patientData.otherInfo[0];
     console.log(otherInfo);
     return (
-        <div className="grid-layout">
+
             <div className="patient-info-container">
                     <label> Patient Info
                         <div className="info-field" >
@@ -25,7 +25,6 @@ function PatientInfo({patientData}) {
                         </div>
                     </label>
             </div>
-        </div>
     );
 }
 

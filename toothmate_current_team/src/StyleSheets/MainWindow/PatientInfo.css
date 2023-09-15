@@ -1,32 +1,6 @@
-.grid-layout {
-    display: grid;
-    height: 96vh;
-    width: 96vw;
-    padding: 2%;
-    grid-template-columns: repeat(20, 1fr);
-    grid-template-rows: repeat(20, 1fr);
-    pointer-events: none;
-    position: absolute;
-    gap: 2px;
-}
-
-.patient-info-container {
-    grid-row: 16/20;
-    grid-column: 3/15;
-    background-color: #FFFFFF;
-    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+.patient-info-container{
+    margin-top: 2.5%;
+    background-color: white;
+    width: 68.5%;
     border-radius: 10px;
-    pointer-events: auto;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1), 0 1px 4px rgba(0, 0, 0, 0.2);
-}
-
-.info-field {
-    width: 98%;
-    height: 70%;
-    padding: 1%;
-    font-size: small;
-    border: none;
-    text-align: left;
-    line-height: 1.5;
-    overflow: auto;
 }
