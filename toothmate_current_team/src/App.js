@@ -17,9 +17,7 @@ import Menu from './Components/MainWindow/Menu';
 function App() {
   /* TeethModel Content change functions*/
   const [activeContent, setActiveContent] = useState('contentBase');  // This is the default content that will be set as active.
-  const handleContentChange = (contentKey) => {
-    setActiveContent(contentKey);
-  };
+
 
   const [patientData, setPatientData] = useState({})
   const { id } = useParams()
@@ -35,14 +33,13 @@ function App() {
 
   return (
     <div className="App">
-      
-      <NHISearch/>
+      <div className="MenuBar">
+      <NHISearch setActiveContent={setActiveContent}/>
+      </div>
       {patientData && patientData.info && <PatientWarning patientData={patientData} />}
       
       <div className='bodyContainer'>
-        <PlanSwitchButtons
-          handleContentChange={setActiveContent}
-        />
+        
         
         <TeethModel
           activeContent={activeContent}
