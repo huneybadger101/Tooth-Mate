@@ -5,8 +5,12 @@ import UmbrellaTreatment from "./Components/PopupPage/UmbrellaTreatment"
 import './TreatmentPlanStyles.css'
 import SealOption from "./Components/PopupPage/SealOption"
 import TreatmentSummary from './Components/PopupPage/TreatmentSummary';
+import { useLocation } from 'react-router-dom';
 
-const TreatmentPlan=()=>{
+const TreatmentPlan = () => {
+    const location = useLocation();
+    const toothUrl = location.state?.toothUrl;
+
     const [surfaceOrder, setSurfaceOrder] = useState([]);
     const [treatmentList, settreatmentList] = useState([]);
 
@@ -34,6 +38,7 @@ const TreatmentPlan=()=>{
         }
     
         console.log(treatmentList);
+        console.log(toothUrl);
     }
     
 
@@ -41,7 +46,7 @@ const TreatmentPlan=()=>{
         <div className="App">
             <TopHeaderToothName/>
             <div className="planningContainer">
-                <IndividualModel/>
+                <IndividualModel toothUrl={toothUrl} /> 
                 <UmbrellaTreatment/>
                 <SealOption handleButtonClick={handleSurfaceClick} buttonOrder={surfaceOrder} handleAddToList={handleAddToList}/>
                 <TreatmentSummary treatmentList={treatmentList} onDelete={handleDeleteTreatment}/>
