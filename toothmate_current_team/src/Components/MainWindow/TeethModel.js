@@ -6,10 +6,12 @@ import { Html, Loader } from '@react-three/drei';
 import PeriPopup from '../PeridontalPopup/PeriPopup';
 import DataOfTeeth from './TeethData';
 import TreatmentPlan from '../../TreatmentPlan';
+import { useNavigate } from 'react-router-dom';
 
 const DAMPING = 0.05;
 const LERP_FACTOR = 0.1;
 const DEFAULT_ROTATION = { x: 0, y: 0 };
+
 
 const ToothComponent = ({ position, url, onToothDblClick, resetRotation }) => {
     const gltf = useLoader(GLTFLoader, url);
@@ -67,7 +69,7 @@ const ToothComponent = ({ position, url, onToothDblClick, resetRotation }) => {
             onPointerDown={handleMouseDown}
             onPointerMove={handleMouseMove}
             onPointerUp={handleMouseUp}
-            onDoubleClick={onToothDblClick}
+            onDoubleClick={() => onToothDblClick(url)}
         />
     );
 };
@@ -80,17 +82,22 @@ const getToothPosition = (jawIndex, sideIndex, index) => {
 
 function TeethModel({ activeContent }) {
     const [showTreatmentPlan, setShowTreatmentPlan] = useState(false);
+    const [selectedTooth, setSelectedTooth] = useState(null);
     const [resetCounter, setResetCounter] = useState(0);
 
     const handleResetRotation = useCallback(() => {
         setResetCounter(prevCount => prevCount + 1);
     }, []);
 
-    const handleToothDblClick = useCallback(() => {
-        window.location.href = "/new-url";
-        setShowTreatmentPlan(true);
-    }, []);
+    const navigate = useNavigate();
 
+    const handleToothDblClick = useCallback((toothUrl) => {
+        setSelectedTooth(toothUrl);
+        navigate({
+            pathname: '/treatmentplan',
+            state: { toothUrl: toothUrl }
+        });
+    }, [navigate]);
     const renderTooth = useCallback((tooth, index, jaw, side) => {
         const position = getToothPosition(['upper', 'lower'].indexOf(jaw), ['left', 'right'].indexOf(side), index);
         return <ToothComponent key={`${jaw}-${side}-${index}`} position={position} url={tooth} onToothDblClick={handleToothDblClick} resetRotation={resetCounter} />;
@@ -118,7 +125,8 @@ function TeethModel({ activeContent }) {
         <div className='grid-layout'>
             <div className="teeth-model-container">
                 <button onClick={handleResetRotation}>Reset Rotation</button>
-                {showTreatmentPlan ? <TreatmentPlan /> : contentMap[activeContent]}
+                {selectedTooth ? <TreatmentPlan selectedTooth={selectedTooth} onClose={() => { setShowTreatmentPlan(false); setSelectedTooth(null); }} /> : contentMap[activeContent]}
+
             </div>
         </div>
     );
