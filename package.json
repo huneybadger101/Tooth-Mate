@@ -1,5 +1,9 @@
 {
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11"
+  },
+  "dependencies": {
+    "@google/model-viewer": "^3.2.1",
+    "react-router-dom": "^6.15.0"
   }
 }
