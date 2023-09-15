@@ -9,7 +9,10 @@ import PatientInfo from './Components/MainWindow/PatientInfo';
 import SubmitButton from './Components/MainWindow/SubmitButton';
 import CancelButton from './Components/MainWindow/CancelButton';
 import PlanSwitchButtons from './Components/MainWindow/PlanSwitchButtons';
+import NHISearch from './Components/MainWindow/PatientSearch';
+import EntryField from './Components/MainWindow/AppointmentEntry';
 import Menu from './Components/MainWindow/Menu';
+
 
 function App() {
   /* TeethModel Content change functions*/
@@ -32,8 +35,10 @@ function App() {
 
   return (
     <div className="App">
-      <Menu />
+      
+      <NHISearch/>
       {patientData && patientData.info && <PatientWarning patientData={patientData} />}
+      
       <div className='bodyContainer'>
         <PlanSwitchButtons
           handleContentChange={setActiveContent}
@@ -46,11 +51,7 @@ function App() {
       </div>
       <div className='bottomContainer'>
         {patientData && patientData.info && <PatientInfo patientData={patientData} />}
-        <div className='buttonContainer'>
-
-      <SubmitButton />
-      <CancelButton />
-        </div>
+       <EntryField/>
       </div>
     </div>
   );

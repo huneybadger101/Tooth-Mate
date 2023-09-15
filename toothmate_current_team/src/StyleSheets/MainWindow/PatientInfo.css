@@ -1,6 +1,9 @@
 .patient-info-container{
-    margin-top: 2.5%;
+    margin-top: 1%;
     background-color: white;
-    width: 68.5%;
+    width: 49.5%;
+    height:100%;
     border-radius: 10px;
+    margin-right: 0.5%;
+    border: 1px solid #000;
 }
