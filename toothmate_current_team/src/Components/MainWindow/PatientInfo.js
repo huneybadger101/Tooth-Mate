@@ -17,11 +17,8 @@ function PatientInfo({patientData}) {
                             <p>Name: {patientInfo.salutation} {patientInfo.first_name} {patientInfo.last_name}</p>
                             <p>Address: {patientInfo.primary_address_street}, {patientInfo.primary_address_city}, {patientInfo.primary_address_country}</p>
                             <p>Contact: {patientInfo.phone_mobile}</p>
-                            <p>Medical History:</p>
-                            <p>Dental History:</p>
                             <p>Oral Health Info:</p>
                             <p>Medical History:</p>
-                            <p>Medical Preferences:</p>
                         </div>
                     </label>
             </div>

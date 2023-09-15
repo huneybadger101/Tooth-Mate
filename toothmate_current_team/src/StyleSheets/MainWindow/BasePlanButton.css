@@ -2,15 +2,15 @@
     display: flex;
     width: 7.5%;
     height: 50vh;
-    flex-direction: column;
+    flex-direction: row;
     justify-content: center;
     align-items: center;
 }
 
 .planSwitchContainer button{
     margin: 10%;
-    width: 40%;
+    width: 80%;
     height: 10%;
-    border-radius: 10px;
+    border-radius: 5px;
     box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
 }

@@ -11,6 +11,7 @@
 }
 
 .treatmentplan-button-container {
+    background-color:  rgb(10, 193, 239);
     grid-row: 6;
     grid-column: 1;
     pointer-events: auto;

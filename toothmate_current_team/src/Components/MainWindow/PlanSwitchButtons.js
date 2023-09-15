@@ -8,16 +8,16 @@ function PlanSwitchButtons(props) {
         <div className="planSwitchContainer">
 
 
-                    <button className="baseplan-button" onClick={() => handleContentChange('contentBase')}>B</button>
+                    <button className="baseplan-button" onClick={() => handleContentChange('contentBase')}>Current</button>
 
 
 
 
-                    <button className="treatmentplan-button" onClick={() => handleContentChange('contentTreatment')}>T</button>
+                    <button className="treatmentplan-button" onClick={() => handleContentChange('contentTreatment')}>Treatment</button>
 
 
 
-                    <button className="periplan-button" onClick={() => handleContentChange('contentPeri')}>Peri</button>
+                    <button className="periplan-button" onClick={() => handleContentChange('contentPeri')}>Periodontal</button>
 
 
         </div>
