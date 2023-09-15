@@ -33,7 +33,7 @@ function App() {
 
   return (
     <div className="App">
-      <div className="MenuBar">
+      <div className="menu-bar">
       <NHISearch setActiveContent={setActiveContent}/>
       </div>
       {patientData && patientData.info && <PatientWarning patientData={patientData} />}
