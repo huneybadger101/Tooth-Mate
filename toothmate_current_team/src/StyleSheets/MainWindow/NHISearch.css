@@ -6,8 +6,7 @@
     flex-direction: row;
     border-radius: 10px;
     width: 100%;
-    justify-content: center;
-    align-items: center;   
+    
 }
 
 .nhi-search input {
