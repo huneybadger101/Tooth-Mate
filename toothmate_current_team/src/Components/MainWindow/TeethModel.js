@@ -123,7 +123,7 @@ function TeethModel({ activeContent }) {
 
     return (
 
-        <div className='grid-layout'>
+        <div className='teeth-model-container'>
 
                 <button onClick={handleResetRotation}>Reset Rotation</button>
                 {selectedTooth ? <TreatmentPlan selectedTooth={selectedTooth} onClose={() => { setShowTreatmentPlan(false); setSelectedTooth(null); }} /> : contentMap[activeContent]}
