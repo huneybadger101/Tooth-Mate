@@ -7,6 +7,7 @@ import PeriPopup from '../PeridontalPopup/PeriPopup';
 import DataOfTeeth from './TeethData';
 import TreatmentPlan from '../../TreatmentPlan';
 import { useNavigate } from 'react-router-dom';
+import TreatmentPopup from '../PopupPage/TreatmentPopup';
 
 const DAMPING = 0.05;
 const LERP_FACTOR = 0.1;
@@ -117,7 +118,7 @@ function TeethModel({ activeContent }) {
 
     const contentMap = {
         contentBase: <><ThreeDModel />Base Plan</>,
-        contentTreatment: <><ThreeDModel />Treatment Plan</>,
+        contentTreatment: <><ThreeDModel /><TreatmentPopup /></>,
         contentPeri: <><ThreeDModel /><PeriPopup /></>
     };
 
@@ -125,10 +126,10 @@ function TeethModel({ activeContent }) {
 
         <div className='teeth-model-container'>
 
-                <button onClick={handleResetRotation}>Reset Rotation</button>
-                {selectedTooth ? <TreatmentPlan selectedTooth={selectedTooth} onClose={() => { setShowTreatmentPlan(false); setSelectedTooth(null); }} /> : contentMap[activeContent]}
+            <button onClick={handleResetRotation}>Reset Rotation</button>
+            {selectedTooth ? <TreatmentPlan selectedTooth={selectedTooth} onClose={() => { setShowTreatmentPlan(false); setSelectedTooth(null); }} /> : contentMap[activeContent]}
 
-            </div>
+        </div>
 
     );
 }

@@ -1,10 +1,10 @@
-import './StylesSheets/individualModelStyles.css';
+import './StyleSheets/IndividualModelStyles.css';
 
 const IndividualModel = ({ toothUrl }) => {
     console.log("Tooth URL:", toothUrl);
 
     return (
-        <div className="individualModel">
+        <div className="IndividualModel">
             <model-viewer
                 src={toothUrl}
                 alt="A 3D model of a tooth"

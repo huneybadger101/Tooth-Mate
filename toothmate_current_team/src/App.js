@@ -34,21 +34,20 @@ function App() {
   return (
     <div className="App">
       <div className="menu-bar">
-      <NHISearch setActiveContent={setActiveContent}/>
+        <NHISearch setActiveContent={setActiveContent} />
       </div>
       {patientData && patientData.info && <PatientWarning patientData={patientData} />}
-      
+
       <div className='bodyContainer'>
-        
-        
         <TeethModel
           activeContent={activeContent}
         />
-      {patientData && <NotesField patientHistory={patientData.history}/>}
+        {patientData && <NotesField patientHistory={patientData.history} />}
       </div>
+
       <div className='bottomContainer'>
         {patientData && patientData.info && <PatientInfo patientData={patientData} />}
-       <EntryField/>
+        <EntryField />
       </div>
     </div>
   );
