@@ -67,9 +67,7 @@ function TreatmentPopup() {
                                 <UmbrellaTreatment />
                                 <SealOption handleButtonClick={handleSurfaceClick} buttonOrder={surfaceOrder} handleAddToList={handleAddToList} />
                                 <TreatmentSummary treatmentList={treatmentList} onDelete={handleDeleteTreatment} />
-                                <div className="submit-cancel-button-container">
-                                    <SubmitCancelButtons />
-                                </div>
+                                <SubmitCancelButtons />
                             </div>
                             <img src={isRed ? "icons/x-square-red.svg" : "icons/x-square-black.svg"} alt="Close Icon" className="close"
                                 onClick={() => handleCloseClick()}

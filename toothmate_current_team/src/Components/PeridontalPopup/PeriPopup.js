@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Draggable from 'react-draggable';
+import SubmitCancelButtons from './SubmitCancelButtons';
 import '../../StyleSheets/PeridontalPopup/PeriPopup.css';
 
 function PeriPopup() {
@@ -26,9 +27,14 @@ function PeriPopup() {
                             <div className="handle handle-left"></div>
                             {/* Draggable Handles End*/}
                             <p>Peridontal View - Toothname</p>
-                            <div className="peri-model">Peri Model</div>
-                            <div className="peri-history">Peri History</div>
-                            <div className="peri-info">Peri Info</div>
+                            <div className="peri-popup-components">
+                                <div className="peri-model">Peri Model</div>
+                                <div className="peri-text-content">
+                                    <div className="peri-info">Peri Info</div>
+                                    <div className="peri-history">Peri History</div>
+                                </div>
+                                <SubmitCancelButtons />
+                            </div>
                             <img src={isRed ? "icons/x-square-red.svg" : "icons/x-square-black.svg"} alt="Close Icon" className="close"
                                 onClick={() => handleCloseClick()}
                                 onMouseEnter={() => setIsRed(true)}
