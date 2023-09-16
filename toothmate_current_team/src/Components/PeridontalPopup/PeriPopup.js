@@ -4,6 +4,11 @@ import '../../StyleSheets/PeridontalPopup/PeriPopup.css';
 
 function PeriPopup() {
     const [isPopupVisible, setPopupVisible] = useState(false);
+    const [isRed, setIsRed] = useState(false);
+    const handleCloseClick = () => {
+        setPopupVisible(false);
+        setIsRed(false);
+    }
 
     return (
         <>
@@ -24,7 +29,10 @@ function PeriPopup() {
                             <div className="peri-model">Peri Model</div>
                             <div className="peri-history">Peri History</div>
                             <div className="peri-info">Peri Info</div>
-                            <img src='icons/x-square.svg' alt="Close Icon" onClick={() => setPopupVisible(false)} className='close' />
+                            <img src={isRed ? "icons/x-square-red.svg" : "icons/x-square-black.svg"} alt="Close Icon" className="close"
+                                onClick={() => handleCloseClick()}
+                                onMouseEnter={() => setIsRed(true)}
+                                onMouseLeave={() => setIsRed(false)} />
                         </div>
                     </Draggable>
                 </div>

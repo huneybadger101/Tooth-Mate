@@ -9,9 +9,15 @@ import TreatmentSummary from './TreatmentSummary';
 import SubmitCancelButtons from './SubmitCancelButtons';
 
 function TreatmentPopup() {
-    const [isPopupVisible, setPopupVisible] = useState(false);
     const [surfaceOrder, setSurfaceOrder] = useState([]);
     const [treatmentList, settreatmentList] = useState([]);
+    const [isPopupVisible, setPopupVisible] = useState(false);
+    const [isRed, setIsRed] = useState(false);
+
+    const handleCloseClick = () => {
+        setPopupVisible(false);
+        setIsRed(false);
+    }
 
 
     const handleSurfaceClick = (char) => {
@@ -46,29 +52,31 @@ function TreatmentPopup() {
             <button onClick={() => setPopupVisible(true)}>Treatment Tooth Popup</button>
 
             {isPopupVisible && (
-                    <div className="treatment-popup-container">
-                        <Draggable handle=".handle">
-                            <div className="treatment-popup-content">
-                                {/* Draggable Handles Start*/}
-                                <div className="handle handle-top"></div>
-                                <div className="handle handle-bottom"></div>
-                                <div className="handle handle-right"></div>
-                                <div className="handle handle-left"></div>
-                                {/* Draggable Handles End*/}
-                                <TopHeaderToothName />
-                                <div className="content-container">
-                                    <IndividualModel />
-                                    <UmbrellaTreatment />
-                                    <SealOption handleButtonClick={handleSurfaceClick} buttonOrder={surfaceOrder} handleAddToList={handleAddToList} />
-                                    <TreatmentSummary treatmentList={treatmentList} onDelete={handleDeleteTreatment} />
-                                    <div className="submit-cancel-button-container">
+                <div className="treatment-popup-container">
+                    <Draggable handle=".handle">
+                        <div className="treatment-popup-content">
+                            {/* Draggable Handles Start*/}
+                            <div className="handle handle-top"></div>
+                            <div className="handle handle-bottom"></div>
+                            <div className="handle handle-right"></div>
+                            <div className="handle handle-left"></div>
+                            {/* Draggable Handles End*/}
+                            <TopHeaderToothName />
+                            <div className="content-container">
+                                <IndividualModel />
+                                <UmbrellaTreatment />
+                                <SealOption handleButtonClick={handleSurfaceClick} buttonOrder={surfaceOrder} handleAddToList={handleAddToList} />
+                                <TreatmentSummary treatmentList={treatmentList} onDelete={handleDeleteTreatment} />
+                                <div className="submit-cancel-button-container">
                                     <SubmitCancelButtons />
-                                    </div>
                                 </div>
-                                <img src='icons/x-square.svg' alt="Close Icon" onClick={() => setPopupVisible(false)} className='close' />
                             </div>
-                        </Draggable>
-                    </div>
+                            <img src={isRed ? "icons/x-square-red.svg" : "icons/x-square-black.svg"} alt="Close Icon" className="close"
+                                onClick={() => handleCloseClick()}
+                                onMouseEnter={() => setIsRed(true)}
+                                onMouseLeave={() => setIsRed(false)} />                            </div>
+                    </Draggable>
+                </div>
             )}
 
         </>
