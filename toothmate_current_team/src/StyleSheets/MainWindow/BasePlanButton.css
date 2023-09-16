@@ -1,18 +1,23 @@
-.planSwitchContainer{
+.planSwitchContainer {
     display: flex;
     width: 20%;
     flex-direction: row;
-    justify-content: center;
-    align-items: left;
-    border: 1px solid red;
-    margin-right: 10%;
+    justify-content: flex-start; /* Align items to the right horizontally */
+    align-items: center; /* Center items vertically */
+    margin-right: 45%;
 }
 
 .planSwitchContainer button {
     width: 80%;
     height: 100%;
-    border: none; /* Remove the border */
-    background-color: transparent; /* Make the background transparent */
+    border: none; 
+    background-color: transparent; 
     border-radius: 5px;
-    box-shadow: none; /* Remove the box shadow */
+    box-shadow: none;
+    transition: background-color 0.3s ease; /* Add a smooth transition effect */
 }
+
+.planSwitchContainer button:hover {
+    background-color: rgb(3, 114, 142); /* Change to your desired hover color */
+}
+

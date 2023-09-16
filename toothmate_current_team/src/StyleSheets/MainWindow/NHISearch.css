@@ -1,20 +1,25 @@
 .nhi-search-container {
-    background-color: aqua;
-    margin-top: 0.5%;
+    background-color: rgb(10, 193, 239);
     display: flex;
-    height: 5%;
+    height: 50px;
     flex-direction: row;
     border-radius: 10px;
     width: 100%;
-    
+    justify-content: flex-end;
+}
+
+.nhi-search {
+    display: flex;
+    align-items: center;
+    width: 700px;
 }
 
 .nhi-search input {
     border-radius: 5px;
-    margin-right: 10px; 
-    margin-bottom: 10px; 
+    margin-right: 1%;
 }
 
 .nhi-search button {
 border-radius: 5px;
+margin-right: 1%;
 }

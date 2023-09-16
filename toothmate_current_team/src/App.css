@@ -1,16 +1,17 @@
 body{
-  background-color: #fa0303;
   margin: 0;
 }
 
 .bodyContainer{
-  background-color: rgb(10, 193, 239);
+  min-height: 10%;
+  max-height: 10%;
+
   display: flex;
 }
 
 .bottomContainer{
-  background-color: rgb(239, 109, 10);
-  height: 100%;
+ 
+  min-height: 30%;
   display: flex;
   align-items: center;
 }
@@ -19,4 +20,14 @@ body{
   background-color:  rgb(10, 239, 25);
   margin-left: 9%;
   margin-top: 2%;
+}
+
+.menu-bar{
+  display: flex;
+  flex-direction: column;
+  height: 50px;
+  border-radius: 10px;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
 }
