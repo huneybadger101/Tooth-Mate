@@ -1,4 +1,14 @@
-
+.notes-field-wider-container{
+    margin-left: 1%;
+    width: 20%;
+    background-color: #cecece;
+    border-radius: 10px;
+    height: 410px;
+    display: flex;
+    line-height: 1;
+    justify-content: center;
+    flex-direction: column;
+}
 
 .notes-field-container {
     margin-left: 1%;

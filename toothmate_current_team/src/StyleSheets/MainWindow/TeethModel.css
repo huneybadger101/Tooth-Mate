@@ -1,7 +1,6 @@
 .teeth-model-container{
-    border-radius: 5px;
-    width: 60%;
+    border-radius: 10px;
+    width: 80%;
     background-color:  rgb(144, 144, 144);
     text-align: center;
-    margin-left: 5%;
 }

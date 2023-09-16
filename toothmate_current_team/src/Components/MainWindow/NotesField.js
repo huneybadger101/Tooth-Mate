@@ -80,7 +80,7 @@ function NotesField({patientHistory}) {
 
 
     return (
-        <div>
+        <div className ="notes-field-wider-container">
             <div className="notes-field-container">
                 {contentMap[activeContent]()}
                 <input type="button" value="Patient History" className="history-button" onClick={() => handleContentChange('contentHistory')} />
