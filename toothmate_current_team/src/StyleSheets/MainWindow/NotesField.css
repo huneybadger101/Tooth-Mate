@@ -1,7 +1,7 @@
 .notes-field-wider-container{
     margin-left: 1%;
     width: 20%;
-    background-color: #cecece;
+    background-color: rgb(203, 203, 203);
     border-radius: 10px;
     min-height: 100%;
     display: flex;
@@ -13,7 +13,7 @@
 .notes-field-container {
     margin-left: 1%;
     width: 100%;
-    background-color: #cecece;
+    background-color:  rgb(203, 203, 203);
     border-radius: 10px;
     height: 100%;
     display: flex;

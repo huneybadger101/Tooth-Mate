@@ -1,5 +1,5 @@
 .nhi-search-container {
-    background-color: rgb(10, 193, 239);
+    background-color: rgb(98, 218, 248);
     display: flex;
     height: 50px;
     flex-direction: row;
@@ -11,7 +11,7 @@
 .nhi-search {
     display: flex;
     align-items: center;
-    width: 700px;
+    justify-content: flex-end;
 }
 
 .nhi-search input {
@@ -20,6 +20,15 @@
 }
 
 .nhi-search button {
+    height: 100%;
 border-radius: 5px;
 margin-right: 1%;
+background-color: transparent; 
+border: none;
+box-shadow: none;
+transition: background-color 0.3s ease; /* Add a smooth transition effect */
+}
+
+.nhi-search button:hover {
+    background-color: #cecece;
 }

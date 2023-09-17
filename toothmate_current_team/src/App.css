@@ -3,15 +3,14 @@ body{
 }
 
 .bodyContainer{
-  min-height: 10%;
-  max-height: 10%;
-
+  margin-left: 1%;
+  margin-right: 1%;
   display: flex;
 }
 
 .bottomContainer{
- 
-  min-height: 30%;
+  margin-left: 1%;
+  margin-right: 1%;
   display: flex;
   align-items: center;
 }

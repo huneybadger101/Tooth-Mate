@@ -4,7 +4,7 @@
     flex-direction: row;
     justify-content: flex-start; /* Align items to the right horizontally */
     align-items: center; /* Center items vertically */
-    margin-right: 45%;
+    margin-right: 70%;
 }
 
 .planSwitchContainer button {
@@ -18,6 +18,6 @@
 }
 
 .planSwitchContainer button:hover {
-    background-color: rgb(3, 114, 142); /* Change to your desired hover color */
+    background-color: #cecece;
 }
 

@@ -1,7 +1,7 @@
 .xray-container{
     margin-left: 1%;
     width: 20%;
-    background-color: #cecece;
+    background-color:  rgb(203, 203, 203);
     border-radius: 10px;
     height: 200px;
     display: flex;
@@ -13,7 +13,7 @@
 .notes-field-container {
     margin-left: 1%;
     width: 100%;
-    background-color: #cecece;
+    background-color:  rgb(203, 203, 203);
     border-radius: 10px;
     height: 100%;
     display: flex;
@@ -50,7 +50,13 @@
     padding: 10px;
     margin-bottom: 10px;
     width: 100%;
+    transition: background-color 0.3s ease; /* Add a smooth transition effect */
 }
+
+.notes-field ul li:hover {
+    background-color: rgb(98, 218, 248); /* Change to your desired hover color */
+}
+
 
 .notes {
     border: none;

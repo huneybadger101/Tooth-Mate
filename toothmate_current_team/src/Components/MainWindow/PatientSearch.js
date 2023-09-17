@@ -10,8 +10,6 @@ function NHISearch({setActiveContent}) {
 
             <form className="nhi-search" id="NHI">
                 <input type="text" placeholder="NHI"/>
-                <input type="text" placeholder = "Name"/>
-                <input type="text" placeholder = "D.o.B"/>
                  {/* Add the input field */}
                 <button type="Search">Search</button>
             </form>
