@@ -11,6 +11,7 @@ import CancelButton from './Components/MainWindow/CancelButton';
 import PlanSwitchButtons from './Components/MainWindow/PlanSwitchButtons';
 import NHISearch from './Components/MainWindow/PatientSearch';
 import EntryField from './Components/MainWindow/AppointmentEntry';
+import XrayList from './Components/MainWindow/XrayHistory';
 import Menu from './Components/MainWindow/Menu';
 
 
@@ -47,7 +48,8 @@ function App() {
 
       <div className='bottomContainer'>
         {patientData && patientData.info && <PatientInfo patientData={patientData} />}
-        <EntryField />
+       <EntryField/>
+        {patientData && <XrayList patientHistory={patientData.history}/>}
       </div>
     </div>
   );
