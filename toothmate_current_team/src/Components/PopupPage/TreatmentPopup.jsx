@@ -8,7 +8,7 @@ import SealOption from "./SealOption"
 import TreatmentSummary from './TreatmentSummary';
 import SubmitCancelButtons from './SubmitCancelButtons';
 
-function TreatmentPopup() {
+function TreatmentPopup({ toothUrl }) {
     const [surfaceOrder, setSurfaceOrder] = useState([]);
     const [treatmentList, settreatmentList] = useState([]);
     const [isPopupVisible, setPopupVisible] = useState(false);
@@ -63,7 +63,7 @@ function TreatmentPopup() {
                             {/* Draggable Handles End*/}
                             <TopHeaderToothName />
                             <div className="content-container">
-                                <IndividualModel />
+                                <IndividualModel  toothUrl={toothUrl}/>
                                 <UmbrellaTreatment />
                                 <SealOption handleButtonClick={handleSurfaceClick} buttonOrder={surfaceOrder} handleAddToList={handleAddToList} />
                                 <TreatmentSummary treatmentList={treatmentList} onDelete={handleDeleteTreatment} />
