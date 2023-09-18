@@ -5,8 +5,7 @@ import React, { Suspense, useRef, useState, useEffect, useCallback } from 'react
 import { Html, Loader } from '@react-three/drei';
 import PeriPopup from '../PeridontalPopup/PeriPopup';
 import DataOfTeeth from './TeethData';
-import TreatmentPlan from '../../TreatmentPlan';
-import { useNavigate } from 'react-router-dom';
+import TreatmentPopup from '../PopupPage/TreatmentPopup';
 
 const DAMPING = 0.05;
 const LERP_FACTOR = 0.1;
@@ -76,35 +75,55 @@ const ToothComponent = ({ position, url, onToothDblClick, resetRotation }) => {
 
 
 const getToothPosition = (jawIndex, sideIndex, index) => {
-    const positionX = (index - 4) * 5 + (sideIndex * 40) - 20;
+    const positionX = (index - 3.5) * 5 + (sideIndex * 40) - 20;
     return [positionX, jawIndex === 0 ? 10 : -10, 0];
 };
 
 function TeethModel({ activeContent }) {
-    const [showTreatmentPlan, setShowTreatmentPlan] = useState(false);
+    const [showTreatmentPopup, setshowTreatmentPopup] = useState(false);
     const [selectedTooth, setSelectedTooth] = useState(null);
     const [resetCounter, setResetCounter] = useState(0);
+
+    //adjust the half screen
+    const computeFOV = () => {
+        const viewportWidth = window.innerWidth;
+        const baseFOV = 75;
+        const scalingFactor = 900;
+        return baseFOV + (viewportWidth * scalingFactor);
+    };
+
+    const [fov, setFOV] = useState(computeFOV());  // Now, computeFOV is declared before it's used
+
+    useEffect(() => {
+        const handleResize = () => {
+            setFOV(computeFOV());
+        };
+
+        window.addEventListener('resize', handleResize);
+
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+    }, []);
+    //
 
     const handleResetRotation = useCallback(() => {
         setResetCounter(prevCount => prevCount + 1);
     }, []);
 
-    const navigate = useNavigate();
-
     const handleToothDblClick = useCallback((toothUrl) => {
         setSelectedTooth(toothUrl);
-        navigate({
-            pathname: '/treatmentplan',
-            state: { toothUrl: toothUrl }
-        });
-    }, [navigate]);
-    const renderTooth = useCallback((tooth, index, jaw, side) => {
+        setshowTreatmentPopup(true);
+    }, []);
+    
+    
+        const renderTooth = useCallback((tooth, index, jaw, side) => {
         const position = getToothPosition(['upper', 'lower'].indexOf(jaw), ['left', 'right'].indexOf(side), index);
         return <ToothComponent key={`${jaw}-${side}-${index}`} position={position} url={tooth} onToothDblClick={handleToothDblClick} resetRotation={resetCounter} />;
     }, [resetCounter, handleToothDblClick]);
 
     const ThreeDModel = useCallback(() => (
-        <Canvas camera={{ position: [0, 0, 30] }} style={{ width: '57.5vw', height: '50vh' }}>
+            <Canvas camera={{ position: [0, 0, 30], fov: fov }} style={{ width: '100%', height: '50vh' }}>
             <ambientLight />
             <hemisphereLight skyColor={0xffffff} groundColor={0x444444} intensity={2.5} />
             <Suspense fallback={<Html center><Loader /></Html>}>
@@ -113,23 +132,23 @@ function TeethModel({ activeContent }) {
                 ))}
             </Suspense>
         </Canvas>
-    ), [renderTooth]);
+    ), [renderTooth, fov]);
 
     const contentMap = {
         contentBase: <><ThreeDModel />Base Plan</>,
-        contentTreatment: <><ThreeDModel />Treatment Plan</>,
+        contentTreatment: <><ThreeDModel /><TreatmentPopup /></>,
         contentPeri: <><ThreeDModel /><PeriPopup /></>
     };
 
     return (
-
         <div className='teeth-model-container'>
+            <button onClick={handleResetRotation}>Reset Rotation</button>
+            
+            {showTreatmentPopup && <TreatmentPopup toothUrl={selectedTooth} onClose={() => setshowTreatmentPopup(false)} />}  
 
-                <button onClick={handleResetRotation}>Reset Rotation</button>
-                {selectedTooth ? <TreatmentPlan selectedTooth={selectedTooth} onClose={() => { setShowTreatmentPlan(false); setSelectedTooth(null); }} /> : contentMap[activeContent]}
-
-            </div>
-
+            {!showTreatmentPopup && contentMap[activeContent]}
+            
+        </div>
     );
 }
 

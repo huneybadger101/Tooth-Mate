@@ -1,4 +1,4 @@
-import './StylesSheets/UmbrellaTreatmentStyles.css'
+import './StyleSheets/UmbrellaTreatmentStyles.css'
 
 const UmbrellaTreatment=()=>{
     return(

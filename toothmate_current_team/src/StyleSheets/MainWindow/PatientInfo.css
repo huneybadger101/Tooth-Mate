@@ -53,3 +53,12 @@
         line-height: 1.6;
     }
 }
+@media screen and (max-height: 600px) {
+    .patient-info-container {
+        height: 150px;
+    }
+    .info-field {
+        font-size: small;
+        line-height: 1.6;
+    }
+}

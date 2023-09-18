@@ -3,7 +3,7 @@ body{
     margin: 0;
 }
 .toothName{
-    width: 100vw;
+    width: 100%;
     font-size: 30px;
     font-weight: bold;
     padding: 20px;

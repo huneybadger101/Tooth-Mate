@@ -60,11 +60,8 @@
 }
 
 .peri-model {
-  position: absolute;
-  top: 100px;
-  left: 50px;
   width: 30%;
-  height: 70%;
+  height: stretch;
   background-color: #ffffff;
   /* Main window component shadow >>> box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1), 0 1px 4px rgba(0, 0, 0, 0.2);*/
   box-shadow: -1px 1px 2px rgba(0, 0, 0, 0.5), -1px 1px 2px rgba(0, 0, 0, 0.5) inset;
@@ -73,11 +70,7 @@
 }
 
 .peri-info {
-  position: absolute;
-  top: 100px;
-  right: 50px;
-  width: 50%;
-  height: 30%;
+  height: stretch;
   background-color: #ffffff;
   box-shadow: -1px 1px 2px rgba(0, 0, 0, 0.5), -1px 1px 2px rgba(0, 0, 0, 0.5) inset;
   border-radius: 10px;
@@ -85,13 +78,28 @@
 }
 
 .peri-history {
-  position: absolute;
-  bottom: 75px;
-  right: 50px;
-  width: 50%;
-  height: 30%;
+  height: stretch;
   background-color: #ffffff;
   box-shadow: -1px 1px 2px rgba(0, 0, 0, 0.5), -1px 1px 2px rgba(0, 0, 0, 0.5) inset;
   border-radius: 10px;
   padding: 1%;
+  margin-bottom: auto;
+}
+
+.peri-text-content {
+  width: 70%;
+  height: stretch;
+  margin-left: 4%;
+  display: flex;
+  flex-direction: column;
+  gap: 5%;
+}
+
+.peri-popup-components {
+  width: auto;
+  height: 80%;
+  margin-top: 3%;
+  margin-left: 2%;
+  display: flex;
+  flex-direction: row;
 }
