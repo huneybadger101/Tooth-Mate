@@ -1,7 +1,7 @@
 .entry-field-container {
     margin-top: 1%;
     background-color: white;
-    width: 49.5%;
+    width: 40%;
     height: 100%;
     border-radius: 10px;
     margin-left: 0.5%;
@@ -9,8 +9,8 @@
 
 .diagnoses-text-area textarea{
         border-radius: 5px;
-        margin-right: 5px; 
-        width: 99%;   
+        margin-right: 0.5%; 
+        width: 100%;   
 }
 
 .diagnoses-text-area button{

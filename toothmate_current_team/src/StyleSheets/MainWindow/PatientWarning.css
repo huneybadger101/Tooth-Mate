@@ -1,8 +1,9 @@
 .patient-warning-container {
-    margin-top: 0.5%;
+    margin-top: 0.25%;
+    margin-bottom: 0.25%;
     display: flex;
     flex-direction: column;
-    height: 5vh;
+    height: 10%;
     border-radius: 10px;
     width: 100%;
     justify-content: center;
@@ -12,9 +13,8 @@
 .patient-warning-container form{
     width: 60%;
     margin-left: -15%;
-    margin-bottom: 10px;
     border-radius: 10px;
-    background-color: rgb(255, 255, 0);
+    background-color: rgb(255, 255, 141);
     height: 100%;
     text-align: center;
 }

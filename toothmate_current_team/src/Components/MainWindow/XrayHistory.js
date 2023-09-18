@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import '../../StyleSheets/MainWindow/NotesField.css';
+import '../../StyleSheets/MainWindow/XrayHistory.css';
 
 //This field is for History and To Do List
-function NotesField({patientHistory}) {
+function XrayList({patientHistory}) {
 
     const [isPopupOpen, setIsPopupOpen] = useState(false);
     const [selectedAppointment, setSelectedAppointment] = useState(null);
@@ -39,7 +39,7 @@ function NotesField({patientHistory}) {
     const history = () => (
         <>
             <form className="notes-field">
-                <h3>Patient History</h3>
+                <h3>XRay History</h3>
                     <ul>
                         {patientHistory && patientHistory.map((info) => (
                             <li key={info.appointmentID} onClick={() => handleAppointmentClick(info)}>
@@ -56,16 +56,6 @@ function NotesField({patientHistory}) {
         setIsPopupOpen(true);
     }
 
-    const todo = () => (
-        <>
-            <form className="notes-field">
-                <h3>Treatment Plan Notes</h3>
-                    <br></br>
-                    <input type="text" value="Todo notes..." className="notes" />
-                
-            </form>
-        </>
-    )
     const [activeContent, setActiveContent] = useState('contentHistory');  // This is the default content that will be set as active.
 
     const handleContentChange = (contentKey) => {
@@ -74,17 +64,15 @@ function NotesField({patientHistory}) {
 
     const contentMap = {
         contentHistory: history,
-        contentToDo: todo,
+        
     };
 
 
 
     return (
-        <div className ="notes-field-wider-container">
+        <div className="xray-container">
             <div className="notes-field-container">
                 {contentMap[activeContent]()}
-                <input type="button" value="Patient History" className="history-button" onClick={() => handleContentChange('contentHistory')} />
-                <input type="button" value="Treatment Plan" className="todo-button" onClick={() => handleContentChange('contentToDo')} />
             </div>
             
             {isPopupOpen && selectedAppointment && 
@@ -95,4 +83,4 @@ function NotesField({patientHistory}) {
     
 }
 
-export default NotesField;
+export default XrayList;
