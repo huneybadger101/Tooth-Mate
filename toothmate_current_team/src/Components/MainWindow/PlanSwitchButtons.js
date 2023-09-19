@@ -1,25 +1,15 @@
 
-import '../../StyleSheets/MainWindow/BasePlanButton.css'
+import '../../StyleSheets/MainWindow/PlanSwitchButtons.css'
 
 
 function PlanSwitchButtons(props) {
-    const { handleContentChange } = props
+    const { handleContentChange } = props;
+
     return (
-        <div className="planSwitchContainer">
-
-
-                    <button className="baseplan-button" onClick={() => handleContentChange('contentBase')}>Current</button>
-
-
-
-
-                    <button className="treatmentplan-button" onClick={() => handleContentChange('contentTreatment')}>Treatment</button>
-
-
-
-                    <button className="periplan-button" onClick={() => handleContentChange('contentPeri')}>Periodontal</button>
-
-
+        <div className="plan-switch-container">
+                    <button onClick={() => handleContentChange('contentBase')}>Current</button>
+                    <button onClick={() => handleContentChange('contentTreatment')}>Treatment</button>
+                    <button onClick={() => handleContentChange('contentPeri')}>Periodontal</button>
         </div>
     );
 }
