@@ -1,5 +1,5 @@
 .nhi-search-container {
-    background-color: rgb(98, 218, 248);
+    background-color: rgb(75, 151, 196);
     display: flex;
     height: 50px;
     flex-direction: row;
@@ -30,5 +30,5 @@ transition: background-color 0.3s ease; /* Add a smooth transition effect */
 }
 
 .nhi-search button:hover {
-    background-color: #cecece;
+    background-color: #3e7291;
 }
