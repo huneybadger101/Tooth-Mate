@@ -1,4 +1,4 @@
-.planSwitchContainer {
+.plan-switch-container {
     display: flex;
     width: 20%;
     flex-direction: row;
@@ -7,7 +7,7 @@
     margin-right: 70%;
 }
 
-.planSwitchContainer button {
+.plan-switch-container button {
     width: 80%;
     height: 100%;
     border: none; 
@@ -17,7 +17,7 @@
     transition: background-color 0.3s ease; /* Add a smooth transition effect */
 }
 
-.planSwitchContainer button:hover {
-    background-color: #cecece;
+.plan-switch-container button:hover {
+    background-color: #3e7291;
 }
 
