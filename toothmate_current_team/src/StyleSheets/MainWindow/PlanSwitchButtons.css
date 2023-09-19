@@ -16,7 +16,7 @@
     box-shadow: none;
     transition: background-color 0.3s ease; /* Add a smooth transition effect */
     color: white;
-
+    font-family: 'Times New Roman', Times, serif;
     
     
 }
