@@ -1,9 +1,9 @@
 .xray-container{
-    margin-left: 1%;
-    width: 20%;
+    margin-left:0.25%;
+    width: 20.5%;
     background-color:  rgb(203, 203, 203);
     border-radius: 10px;
-    height: 200px;
+    height: 28vh;
     display: flex;
     line-height: 1;
     justify-content: center;
@@ -11,7 +11,6 @@
 }
 
 .notes-field-container {
-    margin-left: 1%;
     width: 100%;
     background-color:  rgb(203, 203, 203);
     border-radius: 10px;

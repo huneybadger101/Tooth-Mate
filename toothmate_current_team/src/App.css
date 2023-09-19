@@ -24,7 +24,7 @@ body{
 .menu-bar{
   display: flex;
   flex-direction: column;
-  height: 50px;
+  height: 8vh;
   border-radius: 10px;
   width: 100%;
   justify-content: center;
