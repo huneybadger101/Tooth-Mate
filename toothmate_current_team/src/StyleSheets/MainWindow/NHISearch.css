@@ -1,10 +1,9 @@
 .nhi-search-container {
-    background-color: rgb(98, 218, 248);
-    display: flex;
+    background-color: #4b97c4;
     height: 10vh;
-    flex-direction: row;
-    border-radius: 10px;
     width: 100%;
+    display: flex;
+    flex-direction: row;
     justify-content: flex-end;
 }
 
