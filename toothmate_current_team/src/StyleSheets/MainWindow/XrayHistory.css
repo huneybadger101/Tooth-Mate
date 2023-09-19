@@ -44,11 +44,11 @@
     text-align: left;
     display: flex;
     align-items: center;
-    font-size: 12px;
+    font-size: 2vh;
     background-color: #D9D9D9;
     border-radius: 10px;
-    padding: 10px;
-    margin-bottom: 10px;
+    padding: 1vh;
+    margin-bottom: 1vh;
     width: 100%;
     transition: background-color 0.3s ease; /* Add a smooth transition effect */
 }
@@ -68,7 +68,7 @@
     margin: 1%;
     background-color: #efefef;
     border-radius: 5px;
-    border-width: 1px;
+    border-width: 0.2vh;
 }
 
 .todo-button {
@@ -76,7 +76,7 @@
     margin: 1%;
     background-color: #efefef;
     border-radius: 5px;
-    border-width: 1px;
+    border-width: 0.2vh;
 }
 
 .popup-background {

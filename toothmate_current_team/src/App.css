@@ -23,6 +23,13 @@
   margin-top: 2%;
 }
 
+.warning-submit-cancel-panel{
+  margin-left: 1%;
+  margin-right: 1%;
+  display: flex;
+  align-items: center;
+}
+
 .menu-bar{
   display: flex;
   flex-direction: column;

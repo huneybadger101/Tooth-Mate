@@ -2,9 +2,9 @@
     display: flex;
     width: 20%;
     flex-direction: row;
-    justify-content: flex-start; /* Align items to the right horizontally */
-    align-items: center; /* Center items vertically */
-    margin-right: 70%;
+    justify-content: flex-start;
+    align-items: center; 
+    margin-right: 150vh;
 }
 
 .plan-switch-container button {
@@ -16,7 +16,7 @@
     box-shadow: none;
     transition: background-color 0.3s ease; /* Add a smooth transition effect */
     color: white;
-    font-family: 'Times New Roman', Times, serif;
+
     
     
 }

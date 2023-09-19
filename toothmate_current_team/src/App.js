@@ -37,7 +37,12 @@ function App() {
       <div className="menu-bar">
         <NHISearch setActiveContent={setActiveContent} />
       </div>
-      {patientData && patientData.info && <PatientWarning patientData={patientData} />}
+      <div className = "warning-submit-cancel-panel">
+        {patientData && patientData.info && <PatientWarning patientData={patientData} />}
+        <CancelButton/>
+        <SubmitButton/>
+      </div>
+      
 
       <div className='bodyContainer'>
         <TeethModel
