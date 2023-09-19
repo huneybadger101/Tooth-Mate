@@ -19,17 +19,14 @@
 }
 
 .nhi-search button {
-height: 100%;
-border-radius: 5px;
-margin-right: 1%;
-background-color: transparent; 
-border: none;
-box-shadow: none;
-transition: background-color 0.3s ease;
-color: white;
-font-family: 'Times New Roman', Times, serif;
-
-
+    height: 100%;
+    border-radius: 5px;
+    margin-right: 1%;
+    background-color: transparent;
+    border: none;
+    box-shadow: none;
+    transition: background-color 0.3s ease;
+    color: white;
 }
 
 .nhi-search button:hover {
