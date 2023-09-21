@@ -9,6 +9,7 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <BrowserRouter>
     <Routes>
+      <Route path="/" element={<App/>}/>
       <Route path="/:id" element={<App/>}/>
       <Route path="/treatmentplan" element={<TreatmentPlan/>}></Route>
     </Routes>
