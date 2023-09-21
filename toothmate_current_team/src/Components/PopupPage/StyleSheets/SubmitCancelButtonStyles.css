@@ -1,0 +1,33 @@
+.treatment-submit-cancel-buttons-container {
+    margin-top: 45vh;
+    margin-left: 2vw;
+    width: auto;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20%;
+}
+
+.treatment-submit-button {
+    width: 80px;
+    height: 30px;
+    font-size: 20px;
+    background-color: rgb(20, 230, 55);
+    margin-top: auto;
+
+    border-radius: 5px;
+    border-width: 1px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1), 0 1px 4px rgba(0, 0, 0, 0.2);
+}
+
+.treatment-cancel-button {
+    width: 80px;
+    height: 30px;
+    font-size: 20px;
+    background-color: rgb(240, 45, 45);
+
+    border-radius: 5px;
+    border-width: 1px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1), 0 1px 4px rgba(0, 0, 0, 0.2);
+}

@@ -1,5 +1,5 @@
 
-import './StylesSheets/SealOptionStyles.css';
+import './StyleSheets/SealOptionStyles.css';
 
 const SealOption = ({buttonOrder,handleButtonClick,handleAddToList}) => {
     return (

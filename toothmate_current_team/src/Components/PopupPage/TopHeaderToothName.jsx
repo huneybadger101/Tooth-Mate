@@ -1,4 +1,4 @@
-import'./StylesSheets/TopHeaderToothNameStyles.css'
+import'./StyleSheets/TopHeaderToothNameStyles.css'
 
 const TopHeaderToothName=()=>{
     return(

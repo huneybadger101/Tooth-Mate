@@ -9,14 +9,15 @@ import PatientInfo from './Components/MainWindow/PatientInfo';
 import SubmitButton from './Components/MainWindow/SubmitButton';
 import CancelButton from './Components/MainWindow/CancelButton';
 import PlanSwitchButtons from './Components/MainWindow/PlanSwitchButtons';
+import NHISearch from './Components/MainWindow/PatientSearch';
+import EntryField from './Components/MainWindow/AppointmentEntry';
 import Menu from './Components/MainWindow/Menu';
+
 
 function App() {
   /* TeethModel Content change functions*/
   const [activeContent, setActiveContent] = useState('contentBase');  // This is the default content that will be set as active.
-  const handleContentChange = (contentKey) => {
-    setActiveContent(contentKey);
-  };
+
 
   const [patientData, setPatientData] = useState({})
   const { id } = useParams()
@@ -32,25 +33,21 @@ function App() {
 
   return (
     <div className="App">
-      <Menu />
+      <div className="menu-bar">
+        <NHISearch setActiveContent={setActiveContent} />
+      </div>
       {patientData && patientData.info && <PatientWarning patientData={patientData} />}
+
       <div className='bodyContainer'>
-        <PlanSwitchButtons
-          handleContentChange={setActiveContent}
-        />
-        
         <TeethModel
           activeContent={activeContent}
         />
-      {patientData && <NotesField patientHistory={patientData.history}/>}
+        {patientData && <NotesField patientHistory={patientData.history} />}
       </div>
+
       <div className='bottomContainer'>
         {patientData && patientData.info && <PatientInfo patientData={patientData} />}
-        <div className='buttonContainer'>
-
-      <SubmitButton />
-      <CancelButton />
-        </div>
+        <EntryField />
       </div>
     </div>
   );

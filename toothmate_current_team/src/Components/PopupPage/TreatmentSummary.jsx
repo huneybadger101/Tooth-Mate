@@ -1,5 +1,5 @@
 import React from 'react';
-import './StylesSheets/TreatmentSummaryStyles.css'
+import './StyleSheets/TreatmentSummaryStyles.css'
 
 const TreatmentSummary = ({treatmentList, onDelete}) => {
 
