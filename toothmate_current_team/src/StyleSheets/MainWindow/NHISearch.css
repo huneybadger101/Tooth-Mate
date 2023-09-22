@@ -27,9 +27,6 @@ border: none;
 box-shadow: none;
 transition: background-color 0.3s ease;
 color: white;
-font-family: 'Times New Roman', Times, serif;
-
-
 }
 
 .nhi-search button:hover {
