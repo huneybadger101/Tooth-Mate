@@ -1,6 +1,6 @@
 .patient-info-container {
     margin-top: 0.5%;
-    background-color: white;
+    background-color: #CCCCCC;
     border-radius: 10px;
     display: flex;
     flex-direction: column;
