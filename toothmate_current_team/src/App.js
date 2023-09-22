@@ -37,25 +37,20 @@ function App() {
       <div className="menu-bar">
         <NHISearch setActiveContent={setActiveContent} />
       </div>
-      <div className = "warning-submit-cancel-panel">
-        {patientData && patientData.info && <PatientWarning patientData={patientData} />}
-        <CancelButton/>
-        <SubmitButton/>
-      </div>
-      
+      {patientData && patientData.info && <PatientWarning patientData={patientData} />}
 
       <div className='bodyContainer'>
         <TeethModel
           activeContent={activeContent}
         />
-        {patientData && <NotesField patientHistory={patientData.history} />}
+        <NotesField patientHistory={patientData.history} />
       </div>
 
       <div className='bottomContainer'>
-        {patientData && patientData.info && <PatientInfo patientData={patientData} />}
+        <PatientInfo patientData={patientData} />
 
        <EntryField/>
-        {patientData && <XrayList patientHistory={patientData.history}/>}
+        <XrayList patientHistory={patientData.history}/>
 
       </div>
     </div>

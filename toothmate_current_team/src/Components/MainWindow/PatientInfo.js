@@ -14,9 +14,9 @@ function PatientInfo({ patientData }) {
         <div className="patient-info-container">
             <h3>Patient Info</h3>
             <div className="info-field" >
-                <p>Name: {patientInfo.salutation} {patientInfo.first_name} {patientInfo.last_name}</p>
-                <p>Address: {patientInfo.primary_address_street}, {patientInfo.primary_address_city}, {patientInfo.primary_address_country}</p>
-                <p>Contact: {patientInfo.phone_mobile}</p>
+                <p>Name: {patientInfo!=='N' && patientInfo?patientInfo.salutation+" "+patientInfo.first_name+" "+patientInfo.last_name:""}</p>
+                <p>Address: {patientInfo?patientInfo.primary_address_street:""}, {patientInfo? patientInfo.primary_address_city:""}, {patientInfo? patientInfo.primary_address_country:""}</p>
+                <p>Contact: {patientInfo? patientInfo.phone_mobile:""}</p>
                 <p>Medical History:</p>
                 <p>Dental History:</p>
                 <p>Oral Health Info:</p>

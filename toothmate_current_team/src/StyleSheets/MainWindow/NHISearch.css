@@ -35,3 +35,27 @@ font-family: 'Times New Roman', Times, serif;
 .nhi-search button:hover {
     background-color: #3e7291;
 }
+
+.results {
+    position: absolute;
+    margin-top: 100px;
+    width: 10%;
+    max-height: 120px;
+    overflow-y: auto;
+    border-radius: 4px;
+    z-index: 1;
+
+
+  }
+
+  .results li {
+    padding: 8px 10px;
+    cursor: pointer;
+    list-style-type: none;
+    background-color: #fff;
+    border-radius: 5px;
+  }
+  
+  .results li:hover {
+    background-color: #f5f5f5;
+  }
