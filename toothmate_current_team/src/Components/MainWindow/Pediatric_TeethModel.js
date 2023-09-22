@@ -1,4 +1,4 @@
-import '../../StyleSheets/MainWindow/TeethModel.css';
+/*import '../../StyleSheets/MainWindow/TeethModel.css';
 import { Canvas, useLoader } from '@react-three/fiber';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import React, { Suspense, useRef, useState, useEffect, useCallback } from 'react';
@@ -153,3 +153,4 @@ function TeethModel({ activeContent }) {
 }
 
 export default React.memo(TeethModel);
+*/
