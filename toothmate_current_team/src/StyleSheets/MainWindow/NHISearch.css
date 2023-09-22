@@ -1,10 +1,9 @@
 .nhi-search-container {
-    background-color: rgb(98, 218, 248);
-    display: flex;
-    height: 50px;
-    flex-direction: row;
-    border-radius: 10px;
+    background-color: #4b97c4;
+    height: 10vh;
     width: 100%;
+    display: flex;
+    flex-direction: row;
     justify-content: flex-end;
 }
 
@@ -20,17 +19,18 @@
 }
 
 .nhi-search button {
-    height: 100%;
+height: 100%;
 border-radius: 5px;
 margin-right: 1%;
 background-color: transparent; 
 border: none;
 box-shadow: none;
-transition: background-color 0.3s ease; /* Add a smooth transition effect */
+transition: background-color 0.3s ease;
+color: white;
 }
 
 .nhi-search button:hover {
-    background-color: #cecece;
+    background-color: #3e7291;
 }
 
 .results {

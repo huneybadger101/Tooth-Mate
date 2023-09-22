@@ -135,7 +135,7 @@ function TeethModel({ activeContent }) {
     ), [renderTooth, fov]);
 
     const contentMap = {
-        contentBase: <><ThreeDModel />Base Plan</>,
+        contentBase: <><ThreeDModel /></>,
         contentTreatment: <><ThreeDModel /><TreatmentPopup /></>,
         contentPeri: <><ThreeDModel /><PeriPopup /></>
     };

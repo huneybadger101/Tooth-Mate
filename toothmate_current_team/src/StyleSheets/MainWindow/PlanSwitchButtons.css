@@ -1,13 +1,13 @@
-.planSwitchContainer {
+.plan-switch-container {
     display: flex;
     width: 20%;
     flex-direction: row;
-    justify-content: flex-start; /* Align items to the right horizontally */
-    align-items: center; /* Center items vertically */
-    margin-right: 70%;
+    justify-content: flex-start;
+    align-items: center; 
+    margin-right: 150vh;
 }
 
-.planSwitchContainer button {
+.plan-switch-container button {
     width: 80%;
     height: 100%;
     border: none; 
@@ -15,9 +15,10 @@
     border-radius: 5px;
     box-shadow: none;
     transition: background-color 0.3s ease; /* Add a smooth transition effect */
+    color: white;
 }
 
-.planSwitchContainer button:hover {
-    background-color: #cecece;
+.plan-switch-container button:hover {
+    background-color: #3e7291;
 }
 

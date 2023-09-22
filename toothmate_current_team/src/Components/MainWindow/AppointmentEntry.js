@@ -5,10 +5,8 @@ function EntryField(){
         <>
  <div className="entry-field-container">
             <form className="diagnoses-text-area" id="diagnoses">
-                <textarea type="text" placeholder="NHI" rows="11"/>
+                <textarea type="text" placeholder="NHI" rows="13"/>
                  {/* Add the input field */}
-                 <button type="submit" > Submit </button>
-                 <button type="submit"> Cancel</button>
             </form>
         </div>
         </>);
