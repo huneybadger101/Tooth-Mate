@@ -8,14 +8,13 @@ import SealOption from "./SealOption"
 import TreatmentSummary from './TreatmentSummary';
 import SubmitCancelButtons from './SubmitCancelButtons';
 
-function TreatmentPopup({ toothUrl }) {
+function TreatmentPopup({ toothUrl, onClose }) {
     const [surfaceOrder, setSurfaceOrder] = useState([]);
     const [treatmentList, settreatmentList] = useState([]);
-    const [isPopupVisible, setPopupVisible] = useState(false);
     const [isRed, setIsRed] = useState(false);
 
     const handleCloseClick = () => {
-        setPopupVisible(false);
+        onClose();
         setIsRed(false);
     }
 
@@ -48,10 +47,7 @@ function TreatmentPopup({ toothUrl }) {
 
 
     return (
-        <>
-            <button onClick={() => setPopupVisible(true)}>Treatment Tooth Popup</button>
-
-            {isPopupVisible && (
+        
                 <div className="treatment-popup-container">
                     <Draggable handle=".handle">
                         <div className="treatment-popup-content">
@@ -75,9 +71,7 @@ function TreatmentPopup({ toothUrl }) {
                                 onMouseLeave={() => setIsRed(false)} />                            </div>
                     </Draggable>
                 </div>
-            )}
-
-        </>
+            
     );
 }
 
