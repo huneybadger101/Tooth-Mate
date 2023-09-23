@@ -47,31 +47,32 @@ function TreatmentPopup({ toothUrl, onClose }) {
 
 
     return (
-        
-                <div className="treatment-popup-container">
-                    <Draggable handle=".handle">
-                        <div className="treatment-popup-content">
-                            {/* Draggable Handles Start*/}
-                            <div className="handle handle-top"></div>
-                            <div className="handle handle-bottom"></div>
-                            <div className="handle handle-right"></div>
-                            <div className="handle handle-left"></div>
-                            {/* Draggable Handles End*/}
-                            <TopHeaderToothName />
-                            <div className="content-container">
-                                <IndividualModel  toothUrl={toothUrl}/>
-                                <UmbrellaTreatment />
-                                <SealOption handleButtonClick={handleSurfaceClick} buttonOrder={surfaceOrder} handleAddToList={handleAddToList} />
-                                <TreatmentSummary treatmentList={treatmentList} onDelete={handleDeleteTreatment} />
-                                <SubmitCancelButtons />
-                            </div>
-                            <img src={isRed ? "icons/x-square-red.svg" : "icons/x-square-black.svg"} alt="Close Icon" className="close"
-                                onClick={() => handleCloseClick()}
-                                onMouseEnter={() => setIsRed(true)}
-                                onMouseLeave={() => setIsRed(false)} />                            </div>
-                    </Draggable>
+
+        <div className="treatment-popup-container">
+            <Draggable handle=".handle">
+                <div className="treatment-popup-content">
+                    {/* Draggable Handles Start*/}
+                    <div className="handle handle-top"></div>
+                    <div className="handle handle-bottom"></div>
+                    <div className="handle handle-right"></div>
+                    <div className="handle handle-left"></div>
+                    {/* Draggable Handles End*/}
+                    <TopHeaderToothName />
+                    <div className="content-container">
+                        <IndividualModel toothUrl={toothUrl} />
+                        <UmbrellaTreatment />
+                        <SealOption handleButtonClick={handleSurfaceClick} buttonOrder={surfaceOrder} handleAddToList={handleAddToList} />
+                        <TreatmentSummary treatmentList={treatmentList} onDelete={handleDeleteTreatment} />
+                        <SubmitCancelButtons />
+                    </div>
+                    <img src={isRed ? "icons/x-square-red.svg" : "icons/x-square-black.svg"} alt="Close Icon" className="close"
+                        onClick={() => handleCloseClick()}
+                        onMouseEnter={() => setIsRed(true)}
+                        onMouseLeave={() => setIsRed(false)} />
                 </div>
-            
+            </Draggable>
+        </div>
+
     );
 }
 
