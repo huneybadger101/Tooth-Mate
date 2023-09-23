@@ -2,21 +2,24 @@ import React, { useState } from 'react';
 import Draggable from 'react-draggable';
 import SubmitCancelButtons from './SubmitCancelButtons';
 import '../../StyleSheets/PeridontalPopup/PeriPopup.css';
+import PeriModel from './PeriModel';
+import PeriInfo from './PeriInfo';
+import PeriHistory from './PeriHistory';
 
-function PeriPopup() {
+function PeriPopup({ toothUrl, onClose }) {
     const [isPopupVisible, setPopupVisible] = useState(false);
     const [isRed, setIsRed] = useState(false);
     const handleCloseClick = () => {
-        setPopupVisible(false);
+        //setPopupVisible(false);
+        onClose();
         setIsRed(false);
     }
 
     return (
         <>
-            <button onClick={() => setPopupVisible(true)}>Peri Chart Tooth</button>
-
+        {/*<button onClick={() => setPopupVisible(true)}>PeriPopup</button>*/}
             {/* && works the same as if statement in jsx*/}
-            {isPopupVisible && (
+            {/*isPopupVisible && (*/}
                 <div className="peri-popup-container">
                     <Draggable handle=".handle">
                         <div className="peri-popup-content">
@@ -28,10 +31,10 @@ function PeriPopup() {
                             {/* Draggable Handles End*/}
                             <p>Peridontal View - Toothname</p>
                             <div className="peri-popup-components">
-                                <div className="peri-model">Peri Model</div>
+                                <PeriModel toothUrl={toothUrl}/>
                                 <div className="peri-text-content">
-                                    <div className="peri-info">Peri Info</div>
-                                    <div className="peri-history">Peri History</div>
+                                    <PeriInfo />
+                                    <PeriHistory />
                                 </div>
                                 <SubmitCancelButtons />
                             </div>
@@ -42,7 +45,7 @@ function PeriPopup() {
                         </div>
                     </Draggable>
                 </div>
-            )}
+            {/*( )*/}
 
         </>
     );

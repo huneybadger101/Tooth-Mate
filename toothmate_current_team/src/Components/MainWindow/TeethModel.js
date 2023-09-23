@@ -81,6 +81,7 @@ const getToothPosition = (jawIndex, sideIndex, index) => {
 
 function TeethModel({ activeContent, setChildModeActive, setTreatmentTodo, treatmentTodo}) {
     const [showTreatmentPopup, setshowTreatmentPopup] = useState(false);
+    const [showPeriPopup, setshowPeriPopup] = useState(false);
     const [selectedTooth, setSelectedTooth] = useState(null);
     const [resetCounter, setResetCounter] = useState(0);
 
@@ -114,16 +115,17 @@ function TeethModel({ activeContent, setChildModeActive, setTreatmentTodo, treat
     const handleToothDblClick = useCallback((toothUrl) => {
         setSelectedTooth(toothUrl);
         setshowTreatmentPopup(true);
+        setshowPeriPopup(true);
     }, []);
-    
-    
-        const renderTooth = useCallback((tooth, index, jaw, side) => {
+
+
+    const renderTooth = useCallback((tooth, index, jaw, side) => {
         const position = getToothPosition(['upper', 'lower'].indexOf(jaw), ['left', 'right'].indexOf(side), index);
         return <ToothComponent key={`${jaw}-${side}-${index}`} position={position} url={tooth} onToothDblClick={handleToothDblClick} resetRotation={resetCounter} />;
     }, [resetCounter, handleToothDblClick]);
 
     const ThreeDModel = useCallback(() => (
-            <Canvas camera={{ position: [0, 0, 30], fov: fov }} style={{ width: '100%', height: '50vh' }}>
+        <Canvas camera={{ position: [0, 0, 30], fov: fov }} style={{ width: '100%', height: '50vh' }}>
             <ambientLight />
             <hemisphereLight skyColor={0xffffff} groundColor={0x444444} intensity={2.5} />
             <Suspense fallback={<Html center><Loader /></Html>}>
@@ -136,8 +138,16 @@ function TeethModel({ activeContent, setChildModeActive, setTreatmentTodo, treat
 
     const contentMap = {
         contentBase: <><ThreeDModel /></>,
-        contentTreatment: <><ThreeDModel /><TreatmentPopup /></>,
-        contentPeri: <><ThreeDModel /><PeriPopup /></>
+        contentTreatment:
+            <>
+                <ThreeDModel />
+                {showTreatmentPopup && <TreatmentPopup toothUrl={selectedTooth} onClose={() => setshowTreatmentPopup(false)} />}
+            </>,
+        contentPeri:
+            <>
+                <ThreeDModel />
+                {showPeriPopup && <PeriPopup toothUrl={selectedTooth} onClose={() => setshowPeriPopup(false)} />}
+            </>
     };
 
     return (
