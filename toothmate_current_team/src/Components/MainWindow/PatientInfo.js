@@ -8,7 +8,7 @@ function PatientInfo({ patientData }) {
     */
     const patientInfo = patientData && patientData.info && patientData.info[0];
     const otherInfo = patientData && patientData.otherInfo && patientData.otherInfo[0];
-    console.log(otherInfo);
+    //console.log(otherInfo);
     return (
 
         <div className="patient-info-container">

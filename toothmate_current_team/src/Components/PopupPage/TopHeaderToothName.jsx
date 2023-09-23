@@ -1,9 +1,10 @@
 import'./StyleSheets/TopHeaderToothNameStyles.css'
 
-const TopHeaderToothName=()=>{
+const TopHeaderToothName=({url})=>{
+    const toothName = url.split("3Dmodel/").join("").split(".")
     return(
         <div className="toothName">
-            <a>Tooth Name{'(Tooth CODE)'}</a>
+            <a>{toothName[0].split("_").join(" ")}</a>
         </div>
     )
 }

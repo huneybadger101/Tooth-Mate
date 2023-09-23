@@ -79,7 +79,7 @@ const getToothPosition = (jawIndex, sideIndex, index) => {
     return [positionX, jawIndex === 0 ? 10 : -10, 0];
 };
 
-function TeethModel({ activeContent }) {
+function TeethModel({ activeContent, setChildModeActive, setTreatmentTodo, treatmentTodo}) {
     const [showTreatmentPopup, setshowTreatmentPopup] = useState(false);
     const [selectedTooth, setSelectedTooth] = useState(null);
     const [resetCounter, setResetCounter] = useState(0);
@@ -144,9 +144,12 @@ function TeethModel({ activeContent }) {
         <div className='teeth-model-container'>
             <button onClick={handleResetRotation}>Reset Rotation</button>
             
-            {showTreatmentPopup && <TreatmentPopup toothUrl={selectedTooth} onClose={() => setshowTreatmentPopup(false)} />}  
+            {showTreatmentPopup && <TreatmentPopup setshowTreatmentPopup={setshowTreatmentPopup} toothUrl={selectedTooth} onClose={() => setshowTreatmentPopup(false)}  setTreatmentTodo={setTreatmentTodo} treatmentTodo={treatmentTodo}/>}  
 
             {!showTreatmentPopup && contentMap[activeContent]}
+            <div className='modelOption'>
+                <button onClick={()=>{setChildModeActive(true)}}>Display child model</button>
+            </div>
             
         </div>
     );

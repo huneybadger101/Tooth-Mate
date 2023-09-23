@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import './App.css';
 import TeethModel from './Components/MainWindow/TeethModel';
+import ChildTeethModel from './Components/MainWindow/Pediatric_TeethModel'
 import NotesField from './Components/MainWindow/NotesField';
 import PatientWarning from './Components/MainWindow/PatientWarning';
 import PatientInfo from './Components/MainWindow/PatientInfo';
@@ -17,20 +18,26 @@ import Menu from './Components/MainWindow/Menu';
 
 function App() {
   /* TeethModel Content change functions*/
+  const [showTreatmentPopup, setshowTreatmentPopup] = useState(false);
   const [activeContent, setActiveContent] = useState('contentBase');  // This is the default content that will be set as active.
-
-
+  const [childModelActive, setChildModeActive] = useState(false)
   const [patientData, setPatientData] = useState({})
+  const [treatmentTodo, setTreatmentTodo] = useState({})
   const { id } = useParams()
 
   useEffect(() => {
-    axios.get(`https://5f34ab754164.ngrok.app/${id}`).then((res => {
-      console.log(res.data)
-      setPatientData(res.data)
-    })).catch((err) => {
-      console.log(err)
-    })
-  }, [id])
+    const fetchData = async () => {
+      try {
+        const res = await axios.get(`https://5f34ab754164.ngrok.app/${id}`);
+        setPatientData(res.data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+  
+    fetchData();
+  }, [id]);
+  
 
   return (
     <div className="App">
@@ -45,10 +52,13 @@ function App() {
       
 
       <div className='bodyContainer'>
-        <TeethModel
-          activeContent={activeContent}
-        />
-        <NotesField patientHistory={patientData.history} />
+        {console.log(patientData)}
+        {childModelActive ?
+          <ChildTeethModel activeContent={activeContent} setChildModeActive={setChildModeActive} treatmentTodo={treatmentTodo} setTreatmentTodo={setTreatmentTodo}/>:
+          <TeethModel activeContent={activeContent} setChildModeActive={setChildModeActive} treatmentTodo={treatmentTodo} setTreatmentTodo={setTreatmentTodo}/>
+        }
+        
+        <NotesField patientHistory={patientData.history} setTreatmentTodo={setTreatmentTodo} treatmentTodo={treatmentTodo} showTreatmentPopup={showTreatmentPopup} setshowTreatmentPopup={setshowTreatmentPopup}/>
       </div>
 
       <div className='bottomContainer'>

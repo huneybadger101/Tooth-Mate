@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import '../../StyleSheets/MainWindow/NotesField.css';
-
+import TreatmentPopup from '../PopupPage/TreatmentPopup';
 //This field is for History and To Do List
-function NotesField({patientHistory}) {
-
+function NotesField({patientHistory, treatmentTodo, setTreatmentTodo, showTreatmentPopup,setshowTreatmentPopup}){
     const [isPopupOpen, setIsPopupOpen] = useState(false);
     const [selectedAppointment, setSelectedAppointment] = useState(null);
+    const [url,setUrl] = useState(null)
 
     const handleCloseClick = (e) => {
         console.log("Close button clicked");
@@ -56,16 +56,41 @@ function NotesField({patientHistory}) {
         setIsPopupOpen(true);
     }
 
-    const todo = () => (
-        <>
-            <form className="notes-field">
-                <h3>Treatment Plan Notes</h3>
-                    <br></br>
-                    <input type="text" value="Todo notes..." className="notes" />
-                
-            </form>
-        </>
-    )
+    const todo = () => {
+        // Log to see the content of treatmentTodo
+        const handleEditClick=(key)=>{
+            setshowTreatmentPopup(true)
+            setUrl(key)
+        }
+    
+        // Check if treatmentTodo is an object
+        if (treatmentTodo && typeof treatmentTodo === 'object') {
+            return (
+                <>
+                    <form className="notes-field">
+                        <h3>Treatment Plan todo</h3>
+                        <ul>
+                        {Object.entries(treatmentTodo).map(([key, value], index) => {
+                        // Extract the name from the key
+                        let name = key.split("/").pop().split(".")[0]; // This will give "Left_Lower_Canine"
+
+                        // Replace underscores with spaces
+                        name = name.split("_").join(" ")
+
+                        return (
+                            <li key={index} onClick={()=>handleEditClick(key)}>{name}</li>
+                        );
+                        })}
+                        </ul>
+                    </form>
+                </>
+            )
+        }
+    
+        // Handle the case where treatmentTodo is not an object
+        console.error('treatmentTodo is not an object', treatmentTodo);
+        return null; // or return some fallback UI
+    }
     const [activeContent, setActiveContent] = useState('contentHistory');  // This is the default content that will be set as active.
 
     const handleContentChange = (contentKey) => {
@@ -86,7 +111,8 @@ function NotesField({patientHistory}) {
                 <input type="button" value="Patient History" className="history-button" onClick={() => handleContentChange('contentHistory')} />
                 <input type="button" value="Treatment Plan" className="todo-button" onClick={() => handleContentChange('contentToDo')} />
             </div>
-            
+            {showTreatmentPopup && <TreatmentPopup toothUrl={url} onClose={() => setshowTreatmentPopup(false)} setshowTreatmentPopup={setshowTreatmentPopup}  setTreatmentTodo={setTreatmentTodo} treatmentTodo={treatmentTodo}/>}
+
             {isPopupOpen && selectedAppointment && 
                 <AppointmentPopup appointment={selectedAppointment} onClose={() => setIsPopupOpen(false)} />
             }
