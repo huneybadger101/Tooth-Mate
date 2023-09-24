@@ -31,6 +31,7 @@ function NHISearch({setActiveContent}) {
         setSearchTerm(id)
         setResults([])
         navigate(`/${id}`);
+        window.location.reload();
     }
     return (
         <>
