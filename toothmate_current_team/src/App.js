@@ -24,6 +24,10 @@ function App() {
   const [patientData, setPatientData] = useState({})
   const [treatmentTodo, setTreatmentTodo] = useState({})
   const { id } = useParams()
+    useEffect(() => {
+      console.log('Active Content in App:', activeContent);
+  }, [activeContent]);
+  
 
   useEffect(() => {
     const fetchData = async () => {

@@ -13,7 +13,7 @@ const LERP_FACTOR = 0.1;
 const DEFAULT_ROTATION = { x: 0, y: 0 };
 
 
-const ToothComponent = ({ position, url, onToothDblClick, resetRotation }) => {
+const ToothComponent = ({ position, url, onToothDblClick, resetRotation, activeContent }) => {
     const gltf = useLoader(GLTFLoader, url);
     const mesh = useRef();
     const [state, setState] = useState({
@@ -69,7 +69,7 @@ const ToothComponent = ({ position, url, onToothDblClick, resetRotation }) => {
             onPointerDown={handleMouseDown}
             onPointerMove={handleMouseMove}
             onPointerUp={handleMouseUp}
-            onDoubleClick={() => onToothDblClick(url)}
+            onDoubleClick={() => onToothDblClick(url, activeContent)}
         />
     );
 };
@@ -81,6 +81,7 @@ const getToothPosition = (jawIndex, sideIndex, index) => {
 };
 
 function ChildTeethModel({ activeContent,setChildModeActive, setTreatmentTodo,  treatmentTodo}) {
+    console.log('Active Content in TeethModel:', activeContent);
     const [showTreatmentPopup, setshowTreatmentPopup] = useState(false);
     const [showPeriPopup, setshowPeriPopup] = useState(false);
     const [showBasePopup, setshowBasePopup] = useState(false);
