@@ -3,6 +3,7 @@ import { Canvas, useLoader } from '@react-three/fiber';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import React, { Suspense, useRef, useState, useEffect, useCallback } from 'react';
 import { Html, Loader } from '@react-three/drei';
+import BasePopup from '../BasePopup/BasePopup';
 import PeriPopup from '../PeriodontalPopup/PeriPopup';
 import TreatmentPopup from '../TreatmentPopup/TreatmentPopup';
 import ChildTeethOfData from './ChildTeethData'
@@ -82,6 +83,7 @@ const getToothPosition = (jawIndex, sideIndex, index) => {
 function ChildTeethModel({ activeContent,setChildModeActive, setTreatmentTodo,  treatmentTodo}) {
     const [showTreatmentPopup, setshowTreatmentPopup] = useState(false);
     const [showPeriPopup, setshowPeriPopup] = useState(false);
+    const [showBasePopup, setshowBasePopup] = useState(false);
     const [selectedTooth, setSelectedTooth] = useState(null);
     const [resetCounter, setResetCounter] = useState(0);
 
@@ -125,7 +127,7 @@ function ChildTeethModel({ activeContent,setChildModeActive, setTreatmentTodo,  
                 setshowPeriPopup(true);
                 break;
             default:
-                setshowTreatmentPopup(true);
+                setshowBasePopup(true);
                 break;
         }
     }, []);
@@ -152,7 +154,7 @@ function ChildTeethModel({ activeContent,setChildModeActive, setTreatmentTodo,  
         contentBase:
             <>
                 <ThreeDModel activeContent='contentBase' />
-                {showTreatmentPopup && <TreatmentPopup toothUrl={selectedTooth} onClose={() => setshowTreatmentPopup(false)} setTreatmentTodo={setTreatmentTodo} treatmentTodo={treatmentTodo} />}
+                {showBasePopup && <BasePopup toothUrl={selectedTooth} onClose={() => setshowBasePopup(false)} />}
             </>,
         contentTreatment:
             <>
