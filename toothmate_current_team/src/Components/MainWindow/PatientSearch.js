@@ -28,6 +28,8 @@ function NHISearch({setActiveContent}) {
         }
       };
     const handleClick=(id)=>{
+        setSearchTerm(id)
+        setResults([])
         navigate(`/${id}`);
     }
     return (

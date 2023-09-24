@@ -23,11 +23,8 @@ function App() {
   const [childModelActive, setChildModeActive] = useState(false)
   const [patientData, setPatientData] = useState({})
   const [treatmentTodo, setTreatmentTodo] = useState({})
+  const [note,setNote] = useState('')
   const { id } = useParams()
-    useEffect(() => {
-      console.log('Active Content in App:', activeContent);
-  }, [activeContent]);
-  
 
   useEffect(() => {
     const fetchData = async () => {
@@ -41,6 +38,19 @@ function App() {
   
     fetchData();
   }, [id]);
+
+  const addRecord = async () => {
+    try {
+      const response = await axios.post('https://5f34ab754164.ngrok.app/addRecord', {
+        nhi: id,
+        treatmentSummary: treatmentTodo,
+        notes: note
+      });
+      console.log(response.data); // Record added successfully!
+    } catch (error) {
+      console.error('There was an error adding the record!', error);
+    }
+  };
   
 
   return (
@@ -50,7 +60,7 @@ function App() {
       </div>
       <div className='warning-submit-cancel-panel'>
         {patientData && patientData.info && <PatientWarning patientData={patientData} />}
-        <SubmitButton/>
+        <SubmitButton addRecord={addRecord}/>
         <CancelButton/>
       </div>
       
@@ -68,7 +78,7 @@ function App() {
       <div className='bottomContainer'>
         <PatientInfo patientData={patientData} />
 
-       <EntryField/>
+       <EntryField setNote={setNote}/>
         <XrayList patientHistory={patientData.history}/>
 
       </div>

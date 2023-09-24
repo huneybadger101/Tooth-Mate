@@ -160,7 +160,7 @@ function TeethModel({ activeContent, setChildModeActive, setTreatmentTodo, treat
         contentTreatment:
             <>
                 <ThreeDModel activeContent='contentTreatment' />
-                {showTreatmentPopup && <TreatmentPopup toothUrl={selectedTooth} onClose={() => setshowTreatmentPopup(false)} setTreatmentTodo={setTreatmentTodo} treatmentTodo={treatmentTodo} />}
+                {showTreatmentPopup && <TreatmentPopup toothUrl={selectedTooth} onClose={() => setshowTreatmentPopup(false)} setTreatmentTodo={setTreatmentTodo} treatmentTodo={treatmentTodo} setshowTreatmentPopup={setshowTreatmentPopup}/>}
             </>,
         contentPeri:
             <>
