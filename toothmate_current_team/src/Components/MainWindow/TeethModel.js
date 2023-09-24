@@ -116,6 +116,15 @@ function TeethModel({ activeContent, setChildModeActive, setTreatmentTodo, treat
         setSelectedTooth(toothUrl);
         setshowTreatmentPopup(true);
         setshowPeriPopup(true);
+
+      /*  switch (activeContent) {
+            case 'contentTreatment':
+                setshowTreatmentPopup(true);
+                break;
+            case 'contentPeri':
+                setshowPeriPopup(true);
+                break;
+        }*/
     }, []);
 
 
@@ -141,7 +150,7 @@ function TeethModel({ activeContent, setChildModeActive, setTreatmentTodo, treat
         contentTreatment:
             <>
                 <ThreeDModel />
-                {showTreatmentPopup && <TreatmentPopup toothUrl={selectedTooth} onClose={() => setshowTreatmentPopup(false)} />}
+                {showTreatmentPopup && <TreatmentPopup toothUrl={selectedTooth} onClose={() => setshowTreatmentPopup(false)}  setTreatmentTodo={setTreatmentTodo} treatmentTodo={treatmentTodo} />}
             </>,
         contentPeri:
             <>
@@ -154,9 +163,9 @@ function TeethModel({ activeContent, setChildModeActive, setTreatmentTodo, treat
         <div className='teeth-model-container'>
             <button onClick={handleResetRotation}>Reset Rotation</button>
             
-            {showTreatmentPopup && <TreatmentPopup setshowTreatmentPopup={setshowTreatmentPopup} toothUrl={selectedTooth} onClose={() => setshowTreatmentPopup(false)}  setTreatmentTodo={setTreatmentTodo} treatmentTodo={treatmentTodo}/>}  
+            {contentMap[activeContent]}
+    
 
-            {!showTreatmentPopup && contentMap[activeContent]}
             <div className='modelOption'>
                 <button onClick={()=>{setChildModeActive(true)}}>Display child model</button>
             </div>
