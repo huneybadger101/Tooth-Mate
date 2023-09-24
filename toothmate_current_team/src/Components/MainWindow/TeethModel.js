@@ -3,16 +3,18 @@ import { Canvas, useLoader } from '@react-three/fiber';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import React, { Suspense, useRef, useState, useEffect, useCallback } from 'react';
 import { Html, Loader } from '@react-three/drei';
-import PeriPopup from '../PeridontalPopup/PeriPopup';
+import BasePopup from '../BasePopup/BasePopup';
+import PeriPopup from '../PeriodontalPopup/PeriPopup';
 import DataOfTeeth from './TeethData';
-import TreatmentPopup from '../PopupPage/TreatmentPopup';
+import TreatmentPopup from '../TreatmentPopup/TreatmentPopup';
+import { act } from 'react-dom/test-utils';
 
 const DAMPING = 0.05;
 const LERP_FACTOR = 0.1;
 const DEFAULT_ROTATION = { x: 0, y: 0 };
 
 
-const ToothComponent = ({ position, url, onToothDblClick, resetRotation }) => {
+const ToothComponent = ({ position, url, activeContent, onToothDblClick, resetRotation }) => {
     const gltf = useLoader(GLTFLoader, url);
     const mesh = useRef();
     const [state, setState] = useState({
@@ -68,7 +70,7 @@ const ToothComponent = ({ position, url, onToothDblClick, resetRotation }) => {
             onPointerDown={handleMouseDown}
             onPointerMove={handleMouseMove}
             onPointerUp={handleMouseUp}
-            onDoubleClick={() => onToothDblClick(url)}
+            onDoubleClick={() => onToothDblClick(url, activeContent)}
         />
     );
 };
@@ -79,9 +81,10 @@ const getToothPosition = (jawIndex, sideIndex, index) => {
     return [positionX, jawIndex === 0 ? 10 : -10, 0];
 };
 
-function TeethModel({ activeContent, setChildModeActive, setTreatmentTodo, treatmentTodo}) {
+function TeethModel({ activeContent, setChildModeActive, setTreatmentTodo, treatmentTodo }) {
     const [showTreatmentPopup, setshowTreatmentPopup] = useState(false);
     const [showPeriPopup, setshowPeriPopup] = useState(false);
+    const [showBasePopup, setshowBasePopup] = useState(false);
     const [selectedTooth, setSelectedTooth] = useState(null);
     const [resetCounter, setResetCounter] = useState(0);
 
@@ -112,49 +115,56 @@ function TeethModel({ activeContent, setChildModeActive, setTreatmentTodo, treat
         setResetCounter(prevCount => prevCount + 1);
     }, []);
 
-    const handleToothDblClick = useCallback((toothUrl) => {
+    const handleToothDblClick = useCallback((toothUrl, activeContent) => {
         setSelectedTooth(toothUrl);
-        setshowTreatmentPopup(true);
-        setshowPeriPopup(true);
+        console.log('active Content = ' + activeContent);
+        console.log('tooth Url = ' + toothUrl);
 
-      /*  switch (activeContent) {
+        switch (activeContent) {
             case 'contentTreatment':
                 setshowTreatmentPopup(true);
                 break;
             case 'contentPeri':
                 setshowPeriPopup(true);
                 break;
-        }*/
+            default:
+                setshowBasePopup(true);
+                break;
+        }
     }, []);
 
 
-    const renderTooth = useCallback((tooth, index, jaw, side) => {
+    const renderTooth = useCallback((tooth, index, jaw, side, activeContent) => {
         const position = getToothPosition(['upper', 'lower'].indexOf(jaw), ['left', 'right'].indexOf(side), index);
-        return <ToothComponent key={`${jaw}-${side}-${index}`} position={position} url={tooth} onToothDblClick={handleToothDblClick} resetRotation={resetCounter} />;
+        return <ToothComponent key={`${jaw}-${side}-${index}`} position={position} url={tooth} activeContent={activeContent} onToothDblClick={handleToothDblClick} resetRotation={resetCounter} />;
     }, [resetCounter, handleToothDblClick]);
 
-    const ThreeDModel = useCallback(() => (
+    const ThreeDModel = useCallback((props) => (
         <Canvas camera={{ position: [0, 0, 30], fov: fov }} style={{ width: '100%', height: '50vh' }}>
             <ambientLight />
             <hemisphereLight skyColor={0xffffff} groundColor={0x444444} intensity={2.5} />
             <Suspense fallback={<Html center><Loader /></Html>}>
                 {Object.entries(DataOfTeeth).map(([jaw, sides]) => (
-                    Object.entries(sides).map(([side, teeth]) => teeth.map((tooth, index) => renderTooth(tooth, index, jaw, side)))
+                    Object.entries(sides).map(([side, teeth]) => teeth.map((tooth, index) => renderTooth(tooth, index, jaw, side, props.activeContent)))
                 ))}
             </Suspense>
         </Canvas>
     ), [renderTooth, fov]);
 
     const contentMap = {
-        contentBase: <><ThreeDModel /></>,
+        contentBase:
+            <>
+                <ThreeDModel activeContent='contentBase' />
+                {showBasePopup && <BasePopup toothUrl={selectedTooth} onClose={() => setshowBasePopup(false)}  />}
+            </>,
         contentTreatment:
             <>
-                <ThreeDModel />
-                {showTreatmentPopup && <TreatmentPopup toothUrl={selectedTooth} onClose={() => setshowTreatmentPopup(false)}  setTreatmentTodo={setTreatmentTodo} treatmentTodo={treatmentTodo} />}
+                <ThreeDModel activeContent='contentTreatment' />
+                {showTreatmentPopup && <TreatmentPopup toothUrl={selectedTooth} onClose={() => setshowTreatmentPopup(false)} setTreatmentTodo={setTreatmentTodo} treatmentTodo={treatmentTodo} />}
             </>,
         contentPeri:
             <>
-                <ThreeDModel />
+                <ThreeDModel activeContent='contentPeri' />
                 {showPeriPopup && <PeriPopup toothUrl={selectedTooth} onClose={() => setshowPeriPopup(false)} />}
             </>
     };
@@ -162,14 +172,14 @@ function TeethModel({ activeContent, setChildModeActive, setTreatmentTodo, treat
     return (
         <div className='teeth-model-container'>
             <button onClick={handleResetRotation}>Reset Rotation</button>
-            
+
             {contentMap[activeContent]}
-    
 
             <div className='modelOption'>
-                <button onClick={()=>{setChildModeActive(true)}}>Display child model</button>
+                <button onClick={() => { setChildModeActive(true) }}>Display child model</button>
             </div>
-            
+
+
         </div>
     );
 }

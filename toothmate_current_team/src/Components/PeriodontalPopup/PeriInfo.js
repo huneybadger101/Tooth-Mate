@@ -1,4 +1,4 @@
-import '../../StyleSheets/PeridontalPopup/PeriPopup.css';
+import './StyleSheets/PeriPopupStyles.css';
 
 const PeriInfo = () => {
     return (

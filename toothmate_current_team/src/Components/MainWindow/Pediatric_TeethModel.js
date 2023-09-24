@@ -3,8 +3,8 @@ import { Canvas, useLoader } from '@react-three/fiber';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import React, { Suspense, useRef, useState, useEffect, useCallback } from 'react';
 import { Html, Loader } from '@react-three/drei';
-import PeriPopup from '../PeridontalPopup/PeriPopup';
-import TreatmentPopup from '../PopupPage/TreatmentPopup';
+import PeriPopup from '../PeriodontalPopup/PeriPopup';
+import TreatmentPopup from '../TreatmentPopup/TreatmentPopup';
 import ChildTeethOfData from './ChildTeethData'
 
 const DAMPING = 0.05;
@@ -81,6 +81,7 @@ const getToothPosition = (jawIndex, sideIndex, index) => {
 
 function ChildTeethModel({ activeContent,setChildModeActive, setTreatmentTodo,  treatmentTodo}) {
     const [showTreatmentPopup, setshowTreatmentPopup] = useState(false);
+    const [showPeriPopup, setshowPeriPopup] = useState(false);
     const [selectedTooth, setSelectedTooth] = useState(null);
     const [resetCounter, setResetCounter] = useState(0);
 
@@ -111,42 +112,66 @@ function ChildTeethModel({ activeContent,setChildModeActive, setTreatmentTodo,  
         setResetCounter(prevCount => prevCount + 1);
     }, []);
 
-    const handleToothDblClick = useCallback((toothUrl) => {
+    const handleToothDblClick = useCallback((toothUrl, activeContent) => {
         setSelectedTooth(toothUrl);
-        setshowTreatmentPopup(true);
+        console.log('active Content = ' + activeContent);
+        console.log('tooth Url = ' + toothUrl);
+
+        switch (activeContent) {
+            case 'contentTreatment':
+                setshowTreatmentPopup(true);
+                break;
+            case 'contentPeri':
+                setshowPeriPopup(true);
+                break;
+            default:
+                setshowTreatmentPopup(true);
+                break;
+        }
     }, []);
     
     
-        const renderTooth = useCallback((tooth, index, jaw, side) => {
+        const renderTooth = useCallback((tooth, index, jaw, side, activeContent) => {
         const position = getToothPosition(['upper', 'lower'].indexOf(jaw), ['left', 'right'].indexOf(side), index);
-        return <ToothComponent key={`${jaw}-${side}-${index}`} position={position} url={tooth} onToothDblClick={handleToothDblClick} resetRotation={resetCounter} />;
+        return <ToothComponent key={`${jaw}-${side}-${index}`} position={position} url={tooth} activeContent={activeContent} onToothDblClick={handleToothDblClick} resetRotation={resetCounter} />;
     }, [resetCounter, handleToothDblClick]);
 
-    const ThreeDModel = useCallback(() => (
+    const ThreeDModel = useCallback((props) => (
             <Canvas camera={{ position: [0, 0, 30], fov: fov }} style={{ width: '100%', height: '50vh' }}>
             <ambientLight />
             <hemisphereLight skyColor={0xffffff} groundColor={0x444444} intensity={2.5} />
             <Suspense fallback={<Html center><Loader /></Html>}>
                 {Object.entries(ChildTeethOfData).map(([jaw, sides]) => (
-                    Object.entries(sides).map(([side, teeth]) => teeth.map((tooth, index) => renderTooth(tooth, index, jaw, side)))
+                    Object.entries(sides).map(([side, teeth]) => teeth.map((tooth, index) => renderTooth(tooth, index, jaw, side, props.activeContent)))
                 ))}
             </Suspense>
         </Canvas>
     ), [renderTooth, fov]);
 
     const contentMap = {
-        contentBase: <><ThreeDModel />Base Plan</>,
-        contentTreatment: <><ThreeDModel /><TreatmentPopup /></>,
-        contentPeri: <><ThreeDModel /><PeriPopup /></>
+        contentBase:
+            <>
+                <ThreeDModel activeContent='contentBase' />
+                {showTreatmentPopup && <TreatmentPopup toothUrl={selectedTooth} onClose={() => setshowTreatmentPopup(false)} setTreatmentTodo={setTreatmentTodo} treatmentTodo={treatmentTodo} />}
+            </>,
+        contentTreatment:
+            <>
+                <ThreeDModel activeContent='contentTreatment' />
+                {showTreatmentPopup && <TreatmentPopup toothUrl={selectedTooth} onClose={() => setshowTreatmentPopup(false)} setTreatmentTodo={setTreatmentTodo} treatmentTodo={treatmentTodo} />}
+            </>,
+        contentPeri:
+            <>
+                <ThreeDModel activeContent='contentPeri' />
+                {showPeriPopup && <PeriPopup toothUrl={selectedTooth} onClose={() => setshowPeriPopup(false)} />}
+            </>
     };
 
     return (
         <div className='teeth-model-container'>
             <button onClick={handleResetRotation}>Reset Rotation</button>
             
-            {showTreatmentPopup && <TreatmentPopup toothUrl={selectedTooth} onClose={() => setshowTreatmentPopup(false)} setshowTreatmentPopup={setshowTreatmentPopup} setTreatmentTodo={setTreatmentTodo} treatmentTodo={treatmentTodo}/>}  
+            {contentMap[activeContent]}
 
-            {!showTreatmentPopup && contentMap[activeContent]}
             <div className='modelOption'>
                 <button onClick={()=>{setChildModeActive(false)}}>Display adult model</button>
             </div>

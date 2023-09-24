@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import '../../StyleSheets/MainWindow/NotesField.css';
-import TreatmentPopup from '../PopupPage/TreatmentPopup';
+import TreatmentPopup from '../TreatmentPopup/TreatmentPopup';
 //This field is for History and To Do List
 function NotesField({patientHistory, treatmentTodo, setTreatmentTodo, showTreatmentPopup,setshowTreatmentPopup}){
     const [isPopupOpen, setIsPopupOpen] = useState(false);

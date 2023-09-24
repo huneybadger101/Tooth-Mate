@@ -1,16 +1,16 @@
 import React, { useState, useCallback } from 'react';
-import './StyleSheets/IndividualModelStyles.css';
-import TreatmentPopup from './TreatmentPopup';
+import './StyleSheets/BasePopupStyles.css';
+import BasePopup from './BasePopup';
 
-const IndividualModel = ({ toothUrl }) => {
-    const [showTreatmentPopup, setshowTreatmentPopup] = useState(false);
+const BaseModel = ({ toothUrl }) => {
+    const [showBasePopup, setshowBasePopup] = useState(false);
     
     const handleToothDblClick = useCallback(() => {
-        setshowTreatmentPopup(true);
+        setshowBasePopup(true);
     }, []);
     
     return (
-        <div className="IndividualModel">
+        <div className="base-model">
             <model-viewer
                 src={toothUrl}
                 alt="A 3D model of a tooth"
@@ -20,9 +20,9 @@ const IndividualModel = ({ toothUrl }) => {
                 onDoubleClick={handleToothDblClick}
             ></model-viewer>
             
-            {showTreatmentPopup && <TreatmentPopup toothUrl={toothUrl} onClose={() => setshowTreatmentPopup(false)} />}
+            {showBasePopup && <BasePopup toothUrl={toothUrl} onClose={() => setshowBasePopup(false)} />}
         </div>
     );
 };
 
-export default IndividualModel;
+export default BaseModel;

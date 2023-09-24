@@ -1,4 +1,4 @@
-import '../../StyleSheets/PeridontalPopup/SubmitCancelButtonStyles.css';
+import './StyleSheets/SubmitCancelButtonStyles.css';
 
 function SubmitCancelButtons() {
     return (
