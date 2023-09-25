@@ -1,6 +1,6 @@
 import '../../StyleSheets/MainWindow/PatientInfo.css';
 
-function PatientInfo({ patientData }) {
+function PatientInfo({ patientData, formatDate}) {
     //To to display the information just go to have a look at console in browser then have a look in json
     /*
         then chose the info that u want to pull for example the first_name it in the patientInfo so
@@ -15,13 +15,9 @@ function PatientInfo({ patientData }) {
             <h3>Patient Info</h3>
             <div className="info-field" >
                 <p>Name: {patientInfo!=='N' && patientInfo?patientInfo.salutation+" "+patientInfo.first_name+" "+patientInfo.last_name:""}</p>
+                <p>Date of Birth: {otherInfo? formatDate(otherInfo.dob_c):""}</p>
                 <p>Address: {patientInfo?patientInfo.primary_address_street:""}, {patientInfo? patientInfo.primary_address_city:""}, {patientInfo? patientInfo.primary_address_country:""}</p>
-                <p>Contact: {patientInfo? patientInfo.phone_mobile:""}</p>
-                <p>Medical History:</p>
-                <p>Dental History:</p>
-                <p>Oral Health Info:</p>
-                <p>Medical History:</p>
-                <p>Medical Preferences:</p>
+                <p>Phone: {patientInfo? patientInfo.phone_mobile:""}</p>
             </div>
         </div>
     );
