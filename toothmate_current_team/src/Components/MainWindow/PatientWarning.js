@@ -4,7 +4,6 @@ function PatientWarning({patientData}) {
     const patientInfo = patientData && patientData.info && patientData.info[0];
     const otherInfo = patientData && patientData.otherInfo && patientData.otherInfo[0];
 
-    console.log(patientInfo);
     return (
 
             <div className="patient-warning-container">

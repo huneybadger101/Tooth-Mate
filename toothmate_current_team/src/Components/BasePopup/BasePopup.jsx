@@ -1,25 +1,26 @@
 import React, { useState } from 'react';
 import Draggable from 'react-draggable';
-import SubmitCancelButtons from './SubmitCancelButtons';
-import '../../StyleSheets/PeridontalPopup/PeriPopup.css';
+import './StyleSheets/BasePopupStyles.css';
+import BaseModel from './BaseModel';
+import BaseHistory from './BaseHistory';
 
-function PeriPopup() {
+function BasePopup({ toothUrl, onClose }) {
     const [isPopupVisible, setPopupVisible] = useState(false);
     const [isRed, setIsRed] = useState(false);
     const handleCloseClick = () => {
-        setPopupVisible(false);
+        //setPopupVisible(false);
+        onClose();
         setIsRed(false);
     }
 
     return (
         <>
-            <button onClick={() => setPopupVisible(true)}>Peri Chart Tooth</button>
-
+        {/*<button onClick={() => setPopupVisible(true)}>BasePopup</button>*/}
             {/* && works the same as if statement in jsx*/}
-            {isPopupVisible && (
-                <div className="peri-popup-container">
+            {/*isPopupVisible && (*/}
+                <div className="base-popup-container">
                     <Draggable handle=".handle">
-                        <div className="peri-popup-content">
+                        <div className="base-popup-content">
                             {/* Draggable Handles Start*/}
                             <div className="handle handle-top"></div>
                             <div className="handle handle-bottom"></div>
@@ -27,13 +28,11 @@ function PeriPopup() {
                             <div className="handle handle-left"></div>
                             {/* Draggable Handles End*/}
                             <p>Peridontal View - Toothname</p>
-                            <div className="peri-popup-components">
-                                <div className="peri-model">Peri Model</div>
-                                <div className="peri-text-content">
-                                    <div className="peri-info">Peri Info</div>
-                                    <div className="peri-history">Peri History</div>
+                            <div className="base-popup-components">
+                                <BaseModel toothUrl={toothUrl}/>
+                                <div className="base-text-content">
+                                    <BaseHistory />
                                 </div>
-                                <SubmitCancelButtons />
                             </div>
                             <img src={isRed ? "icons/x-square-red.svg" : "icons/x-square-black.svg"} alt="Close Icon" className="close"
                                 onClick={() => handleCloseClick()}
@@ -42,10 +41,10 @@ function PeriPopup() {
                         </div>
                     </Draggable>
                 </div>
-            )}
+            {/*( )*/}
 
         </>
     );
 }
 
-export default PeriPopup;
+export default BasePopup;

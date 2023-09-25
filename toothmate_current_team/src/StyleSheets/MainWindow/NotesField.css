@@ -7,6 +7,7 @@
     line-height: 1;
     justify-content: center;
     flex-direction: column;
+    
 }
 
 .notes-field-container {
@@ -19,12 +20,14 @@
     line-height: 1;
     justify-content: center;
     flex-direction: column;
+    
 
 }
 
 .notes-field {
     height: 100%;
     padding-bottom: 45%;
+    overflow-y: auto;
 }
 
 .notes-field h3{

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Draggable from 'react-draggable';
 import TopHeaderToothName from "./TopHeaderToothName"
 import IndividualModel from "./IndividualModel"
@@ -8,10 +8,20 @@ import SealOption from "./SealOption"
 import TreatmentSummary from './TreatmentSummary';
 import SubmitCancelButtons from './SubmitCancelButtons';
 
-function TreatmentPopup({ toothUrl, onClose }) {
+function TreatmentPopup({ toothUrl, onClose, setTreatmentTodo, treatmentTodo, setshowTreatmentPopup }) {
     const [surfaceOrder, setSurfaceOrder] = useState([]);
     const [treatmentList, settreatmentList] = useState([]);
     const [isRed, setIsRed] = useState(false);
+    const [option, setOption]= useState([])
+    
+    useEffect(()=>{
+        if(treatmentTodo[toothUrl]){
+            console.log(treatmentTodo[toothUrl]);
+
+            settreatmentList(treatmentTodo[toothUrl].TreatmentSummary)
+        }
+    },[treatmentTodo])
+    
 
     const handleCloseClick = () => {
         onClose();
@@ -37,7 +47,9 @@ function TreatmentPopup({ toothUrl, onClose }) {
 
     const handleAddToList = () => {
         setSurfaceOrder([])
-        const joinedOrder = surfaceOrder.join('');
+        setOption([])
+        const formattedSurfaceOrder = surfaceOrder.length ? `(${surfaceOrder.join('')})` : '';
+        const joinedOrder = `${option.join(', ')} ${formattedSurfaceOrder}`.trim();
         if (joinedOrder.trim() !== "") {
             settreatmentList(prevOrder => [...prevOrder, joinedOrder]);
         }
@@ -57,13 +69,13 @@ function TreatmentPopup({ toothUrl, onClose }) {
                             <div className="handle handle-right"></div>
                             <div className="handle handle-left"></div>
                             {/* Draggable Handles End*/}
-                            <TopHeaderToothName />
+                            <TopHeaderToothName url={toothUrl}/>
                             <div className="content-container">
                                 <IndividualModel  toothUrl={toothUrl}/>
-                                <UmbrellaTreatment />
-                                <SealOption handleButtonClick={handleSurfaceClick} buttonOrder={surfaceOrder} handleAddToList={handleAddToList} />
+                                <UmbrellaTreatment option={option} setOption={setOption}/>
+                                <SealOption handleButtonClick={handleSurfaceClick} buttonOrder={surfaceOrder} handleAddToList={handleAddToList} url={toothUrl}/>
                                 <TreatmentSummary treatmentList={treatmentList} onDelete={handleDeleteTreatment} />
-                                <SubmitCancelButtons />
+                                <SubmitCancelButtons settreatmentList={settreatmentList} setshowTreatmentPopup={setshowTreatmentPopup} treatmentList={treatmentList} option={option} setTreatmentTodo={setTreatmentTodo} url={toothUrl}/>
                             </div>
                             <img src={isRed ? "icons/x-square-red.svg" : "icons/x-square-black.svg"} alt="Close Icon" className="close"
                                 onClick={() => handleCloseClick()}
