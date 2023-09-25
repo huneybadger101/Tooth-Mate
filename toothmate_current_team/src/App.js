@@ -14,6 +14,7 @@ import NHISearch from './Components/MainWindow/PatientSearch';
 import EntryField from './Components/MainWindow/AppointmentEntry';
 import XrayList from './Components/MainWindow/XrayHistory';
 import Menu from './Components/MainWindow/Menu';
+import _ from 'lodash';
 
 
 function App() {
@@ -23,8 +24,12 @@ function App() {
   const [childModelActive, setChildModeActive] = useState(false)
   const [patientData, setPatientData] = useState({})
   const [treatmentTodo, setTreatmentTodo] = useState({})
+  const [oldTreatmentTodo, setOldTreatmentTodo] = useState({})
   const [note,setNote] = useState('')
+  const [oldNote, setOldNote] = useState('')
   const { id } = useParams()
+  const [recordId, setRecordID] = useState()
+  const [save, setSave] = useState(false)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -40,17 +45,50 @@ function App() {
   }, [id]);
 
   const addRecord = async () => {
-    try {
-      const response = await axios.post('https://5f34ab754164.ngrok.app/addRecord', {
-        nhi: id,
-        treatmentSummary: treatmentTodo,
-        notes: note
-      });
-      console.log(response.data); // Record added successfully!
-    } catch (error) {
-      console.error('There was an error adding the record!', error);
+    if(!save){
+      try {
+        const response = await axios.post('https://5f34ab754164.ngrok.app/addRecord', {
+          nhi: id,
+          treatmentSummary: treatmentTodo,
+          notes: note
+        });
+        console.log(response.data); // Record added successfully!
+        setRecordID(response.data.recordId)
+        setOldNote(note)
+        setSave(true)
+        setOldTreatmentTodo(treatmentTodo)
+        alert('Record added successfully!')
+      } catch (error) {
+        console.error('There was an error adding the record!', error);
+      }
     }
+    else{
+      if(_.isEqual(treatmentTodo, oldTreatmentTodo) && note === oldNote){
+        alert("Nothing changes")
+      }
+      else{
+        try {
+          const response = await axios.put('https://5f34ab754164.ngrok.app/updateRecord', {
+              recordId: recordId, // Use the correct record ID here
+              treatmentSummary: treatmentTodo,
+              notes: note
+          });
+          console.log(response.data); // Record updated successfully!
+          setOldTreatmentTodo(treatmentTodo)
+          setOldNote(note)
+          alert('Record updated successfully!')
+      } catch (error) {
+          console.error('There was an error updating the record!', error);
+      }
+      }
+    }
+    
   };
+
+  const handleCancelChnage =()=>{
+    setTreatmentTodo(oldTreatmentTodo)
+    setNote(oldNote)
+  }
   
 
   return (
@@ -61,7 +99,7 @@ function App() {
       <div className='warning-submit-cancel-panel'>
         {patientData && patientData.info && <PatientWarning patientData={patientData} />}
         <SubmitButton addRecord={addRecord}/>
-        <CancelButton/>
+        <CancelButton handleCancelChnage={handleCancelChnage}/>
       </div>
       
 
@@ -78,7 +116,7 @@ function App() {
       <div className='bottomContainer'>
         <PatientInfo patientData={patientData} />
 
-       <EntryField setNote={setNote}/>
+       <EntryField setNote={setNote} note={note}/>
         <XrayList patientHistory={patientData.history}/>
 
       </div>

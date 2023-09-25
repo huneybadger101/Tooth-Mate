@@ -1,17 +1,12 @@
 import '../../StyleSheets/MainWindow/CancelButton.css';
 import { useNavigate } from 'react-router-dom';
 
-function CancelButton() {
-    const navigate = useNavigate();
+function CancelButton({handleCancelChnage}) {
 
-    const handleClick=()=>{
-        navigate(`/`);
-        window.location.reload();
-    }
     return (
 
             <div className="cancel-button-container">
-                <button type='button' className="cancel-button" onClick={()=>handleClick()}>Reset</button>
+                <button type='button' className="cancel-button" onClick={()=>handleCancelChnage()}>Cancel</button>
             </div>
 
     );
