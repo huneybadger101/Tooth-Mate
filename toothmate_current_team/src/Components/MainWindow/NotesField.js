@@ -28,6 +28,7 @@ function NotesField({patientHistory, treatmentTodo, setTreatmentTodo, showTreatm
                 <div className="popup-content">
                     <h2>Treatment Details</h2>
                     <p>Date: {formatDate(appointment.date)}</p>
+                    <hr />
     
                     {/* Iterating over treatment_summary keys and rendering them */}
                     {appointment.treatment_summary && Object.keys(appointment.treatment_summary).map(key => (
@@ -35,7 +36,9 @@ function NotesField({patientHistory, treatmentTodo, setTreatmentTodo, showTreatm
                             <p>Tooth name: {key.replace('3Dmodel/', '').replace('.glb', '').split('_').join(' ')}</p>
                             <p>Treatment plan: {appointment.treatment_summary[key].TreatmentSummary && 
                              appointment.treatment_summary[key].TreatmentSummary.join(', ')}</p>
+                             <hr />
                         </div>
+                        
                     ))}
                     <p>Notes: {appointment.notes}</p>
                     <button onClick={handleCloseClick}>Close</button>
