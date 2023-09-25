@@ -4,9 +4,8 @@
     flex-direction: row;
     justify-content: flex-start;
     align-items: center; 
-    margin-right: 140vh;
-    margin-left: 1vh;
-    flex: 1;
+    margin-right: 65vw;
+    margin-left: 1vw;
 }
 
 .plan-switch-container button {
