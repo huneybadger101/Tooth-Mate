@@ -26,7 +26,6 @@
 
 .notes-field {
     height: 100%;
-    padding-bottom: 45%;
     overflow-y: auto;
 }
 
@@ -94,4 +93,7 @@
     border-radius: 8px;
     width: 80%;
     max-width: 500px;
+    height: 50%;
+    overflow-y: auto;
+
 }

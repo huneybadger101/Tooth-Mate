@@ -11,7 +11,7 @@
     flex-direction: column;
 }
 
-.notes-field-container {
+.xray-field-container {
     width: 100%;
     background-color:  rgb(203, 203, 203);
     border-radius: 10px;
@@ -23,23 +23,23 @@
 
 }
 
-.notes-field {
+.xray-field {
     height: 100%;
     padding-bottom: 1%;
 }
 
-.notes-field h3{
+.xray-field h3{
 
     text-align: center;
 }
 
-.notes-field ul {
+.xray-field ul {
     margin-top: 10%;
     width: 90%;
     padding-left: 0;
 }
 
-.notes-field ul li {
+.xray-field ul li {
     list-style-type: none;
     text-align: left;
     display: flex;
@@ -53,33 +53,17 @@
     transition: background-color 0.3s ease; /* Add a smooth transition effect */
 }
 
-.notes-field ul li:hover {
+.xray-field ul li:hover {
     background-color: rgb(98, 218, 248); /* Change to your desired hover color */
 }
 
 
-.notes {
+.xray {
     border: none;
     text-align: left;
 }
 
-.history-button {
-    vertical-align: baseline;
-    margin: 1%;
-    background-color: #efefef;
-    border-radius: 5px;
-    border-width: 0.2vh;
-}
-
-.todo-button {
-    vertical-align: baseline;
-    margin: 1%;
-    background-color: #efefef;
-    border-radius: 5px;
-    border-width: 0.2vh;
-}
-
-.popup-background {
+.xray-popup-background {
     position: fixed;
     top: 0;
     left: 0;
@@ -92,7 +76,7 @@
     z-index: 999;
 }
 
-.popup-content {
+.xray-popup-content {
     background-color: #fff;
     padding: 20px;
     border-radius: 8px;

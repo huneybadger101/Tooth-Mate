@@ -23,8 +23,8 @@ function XrayList({patientHistory}) {
 
     const AppointmentPopup = ({ appointment }) => {
         return (
-            <div className="popup-background">
-                <div className="popup-content">
+            <div className="xray-popup-background">
+                <div className="xray-popup-content">
                     <h2>Appointment Details</h2>
                     <p>Date: {formatDate(appointment.DateOfAppointment)}</p>
                     <p>Treatment Plan: {appointment.TreatmentPlan}</p>
@@ -38,7 +38,7 @@ function XrayList({patientHistory}) {
 
     const history = () => (
         <>
-            <form className="notes-field">
+            <form className="xray-field">
                 <h3>XRay History</h3>
                     <ul>
                         
@@ -67,7 +67,7 @@ function XrayList({patientHistory}) {
 
     return (
         <div className="xray-container">
-            <div className="notes-field-container">
+            <div className="xray-field-container">
                 {contentMap[activeContent]()}
             </div>
             
