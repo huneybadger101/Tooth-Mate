@@ -1,10 +1,12 @@
 .plan-switch-container {
     display: flex;
-    width: 20%;
+    width: 100vh;
     flex-direction: row;
     justify-content: flex-start;
     align-items: center; 
-    margin-right: 150vh;
+    margin-right: 140vh;
+    margin-left: 1vh;
+    flex: 1;
 }
 
 .plan-switch-container button {
