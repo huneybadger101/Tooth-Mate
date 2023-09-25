@@ -41,11 +41,7 @@ function XrayList({patientHistory}) {
             <form className="notes-field">
                 <h3>XRay History</h3>
                     <ul>
-                        {patientHistory && patientHistory.map((info) => (
-                            <li key={info.appointmentID} onClick={() => handleAppointmentClick(info)}>
-                                {formatDate(info.DateOfAppointment) + " " + info.TreatmentPlan}
-                            </li>
-                        ))}
+                        
                     </ul>
             </form>
         </>

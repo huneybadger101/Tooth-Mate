@@ -6,6 +6,7 @@ function NotesField({patientHistory, treatmentTodo, setTreatmentTodo, showTreatm
     const [isPopupOpen, setIsPopupOpen] = useState(false);
     const [selectedAppointment, setSelectedAppointment] = useState(null);
     const [url,setUrl] = useState(null)
+    console.log(patientHistory)
 
     const handleCloseClick = (e) => {
         console.log("Close button clicked");
@@ -25,16 +26,24 @@ function NotesField({patientHistory, treatmentTodo, setTreatmentTodo, showTreatm
         return (
             <div className="popup-background">
                 <div className="popup-content">
-                    <h2>Appointment Details</h2>
-                    <p>Date: {formatDate(appointment.DateOfAppointment)}</p>
-                    <p>Treatment Plan: {appointment.TreatmentPlan}</p>
-                    <p>Diagnoses: {appointment.Diagnoses}</p>
-                    <p>Notes: {appointment.Notes}</p>
+                    <h2>Treatment Details</h2>
+                    <p>Date: {formatDate(appointment.date)}</p>
+    
+                    {/* Iterating over treatment_summary keys and rendering them */}
+                    {appointment.treatment_summary && Object.keys(appointment.treatment_summary).map(key => (
+                        <div key={key}>
+                            <p>Tooth name: {key.replace('3Dmodel/', '').replace('.glb', '').split('_').join(' ')}</p>
+                            <p>Treatment plan: {appointment.treatment_summary[key].TreatmentSummary && 
+                             appointment.treatment_summary[key].TreatmentSummary.join(', ')}</p>
+                        </div>
+                    ))}
+                    <p>Notes: {appointment.notes}</p>
                     <button onClick={handleCloseClick}>Close</button>
                 </div>
             </div>
-        )
+        );
     }
+    
 
     const history = () => (
         <>
@@ -43,7 +52,7 @@ function NotesField({patientHistory, treatmentTodo, setTreatmentTodo, showTreatm
                     <ul>
                         {patientHistory && patientHistory.map((info) => (
                             <li key={info.appointmentID} onClick={() => handleAppointmentClick(info)}>
-                                {formatDate(info.DateOfAppointment) + " " + info.TreatmentPlan}
+                                {formatDate(info.date)}
                             </li>
                         ))}
                     </ul>
