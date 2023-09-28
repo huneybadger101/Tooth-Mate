@@ -1,7 +1,7 @@
 .patient-warning-container {
     border-radius: 10px;
     width: 80%;
-    background-color: rgb(255, 255, 141);
+    background-color: #a3e5d3;
     text-align: center;
     margin-right: 1%;
     margin-top: 0.25%;
@@ -12,7 +12,7 @@
 .patient-warning-container form{
     width: 100%;
     border-radius: 10px;
-    background-color: rgb(255, 255, 141);
+    background-color: #a3e5d3;
     height: 100%;
     text-align: center;
 }
