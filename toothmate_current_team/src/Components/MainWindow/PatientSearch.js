@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useState } from 'react';
 
-function NHISearch({setActiveContent}) {
+function NHISearch({setActiveContent,formatDate}) {
     const [searchTerm, setSearchTerm] = useState('');
     const [results, setResults] = useState([]);
     const navigate = useNavigate();
@@ -43,14 +43,30 @@ function NHISearch({setActiveContent}) {
                 <input type="text" value={searchTerm} onChange={handleChange} placeholder="NHI"/>
                  {/* Add the input field */}
                 <button type="Search">Search</button>
+                
+
+
                 {results && results.length > 0 && (
-                <ul className="results">
-                {results.map((result, index) => (
-                    <li key={index} onClick={()=>handleClick(result.nhi_c)}>NHI: {result.nhi_c}<br/> Name: {result.salutation+" "+result.first_name+" "+result.last_name}</li>
-                ))}
-                </ul>
-            )}
+                  <ul className="results">
+                      {results.map((result, index) => (
+                          <li key={result.nhi_c} onClick={() => handleClick(result.nhi_c)}>
+                              <div>
+                                  NHI: {result.nhi_c}
+                                  <br />
+                                  Name: {result.salutation + " " + result.first_name + " " + result.last_name}
+                                  <br />
+                                  Phone Number: {result.phone_mobile}
+                                  <br />
+                                  DOB: {formatDate(result.dob_c)}
+                              </div>
+                              {index < results.length - 1 && <hr />}
+                          </li>
+                      ))}
+                  </ul>
+                )}
+
             </div>
+            
             
         </div>
         </>)

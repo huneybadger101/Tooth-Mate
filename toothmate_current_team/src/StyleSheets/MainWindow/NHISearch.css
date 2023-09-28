@@ -35,13 +35,12 @@ color: white;
 
 .results {
     position: absolute;
-    margin-top: 100px;
-    width: 10%;
-    max-height: 120px;
+    top: 5%;
+    width: 20%;
+    max-height: 20%;
     overflow-y: auto;
     border-radius: 4px;
     z-index: 1;
-
 
   }
 

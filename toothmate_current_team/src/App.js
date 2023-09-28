@@ -102,7 +102,7 @@ function App() {
   return (
     <div className="App">
       <div className="menu-bar">
-        <NHISearch setActiveContent={setActiveContent} />
+        <NHISearch setActiveContent={setActiveContent} formatDate={formatDate}/>
       </div>
       <div className='warning-submit-cancel-panel'>
         {patientData && patientData.info && <PatientWarning patientData={patientData} />}
