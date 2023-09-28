@@ -7,6 +7,7 @@ import BasePopup from '../BasePopup/BasePopup';
 import PeriPopup from '../PeriodontalPopup/PeriPopup';
 import TreatmentPopup from '../TreatmentPopup/TreatmentPopup';
 import ChildTeethOfData from './ChildTeethData'
+import LineComponent from './LineComponent';
 
 const DAMPING = 0.05;
 const LERP_FACTOR = 0.1;
@@ -143,6 +144,8 @@ function ChildTeethModel({ activeContent,setChildModeActive, setTreatmentTodo,  
             <Canvas camera={{ position: [0, 0, 30], fov: fov }} style={{ width: '100%', height: '50vh' }}>
             <ambientLight />
             <hemisphereLight skyColor={0xffffff} groundColor={0x444444} intensity={2.5} />
+            <LineComponent orientation='vertical' />
+            <LineComponent orientation='horizontal' y={0} />
             <Suspense fallback={<Html center><Loader /></Html>}>
                 {Object.entries(ChildTeethOfData).map(([jaw, sides]) => (
                     Object.entries(sides).map(([side, teeth]) => teeth.map((tooth, index) => renderTooth(tooth, index, jaw, side, props.activeContent)))
