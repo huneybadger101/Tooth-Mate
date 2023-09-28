@@ -9,13 +9,24 @@ import DataOfTeeth from './TeethData';
 import TreatmentPopup from '../TreatmentPopup/TreatmentPopup';
 import { act } from 'react-dom/test-utils';
 import LineComponent from './LineComponent';
+import {ToothLabel}from './ToothLabel'
 
 const DAMPING = 0.05;
 const LERP_FACTOR = 0.1;
 const DEFAULT_ROTATION = { x: 0, y: 0 };
 
+const fdiNotation = {
+  upper: {
+    left: [18, 17, 16, 15, 14, 13, 12, 11],
+    right: [21, 22, 23, 24, 25, 26, 27, 28]
+  },
+  lower: {
+    left: [48, 47, 46, 45, 44, 43, 42, 41],
+    right: [31, 32, 33, 34, 35, 36, 37, 38]
+  }
+};
 
-const ToothComponent = ({ position, url, activeContent, onToothDblClick, resetRotation }) => {
+const ToothComponent = ({ position, url, jaw, number, activeContent, onToothDblClick, resetRotation, isPopupVisible }) => {
     const gltf = useLoader(GLTFLoader, url);
     const mesh = useRef();
     const [state, setState] = useState({
@@ -60,8 +71,11 @@ const ToothComponent = ({ position, url, activeContent, onToothDblClick, resetRo
     const handleMouseUp = () => {
         setState(prevState => ({ ...prevState, isDragging: false }));
     };
-
+    
+    const labelPosition = [position[0], jaw === 'upper' ? position[1] - 5 : position[1] + 6, position[2]];
+    
     return (
+        <>
         <primitive
             ref={mesh}
             position={position}
@@ -73,8 +87,11 @@ const ToothComponent = ({ position, url, activeContent, onToothDblClick, resetRo
             onPointerUp={handleMouseUp}
             onDoubleClick={() => onToothDblClick(url, activeContent)}
         />
+        { !isPopupVisible && <ToothLabel position={labelPosition} number={number} /> }
+        </>
     );
 };
+
 
 
 const getToothPosition = (jawIndex, sideIndex, index) => {
@@ -88,6 +105,7 @@ function TeethModel({ activeContent, setChildModeActive, setTreatmentTodo, treat
     const [showBasePopup, setshowBasePopup] = useState(false);
     const [selectedTooth, setSelectedTooth] = useState(null);
     const [resetCounter, setResetCounter] = useState(0);
+    const [isPopupVisible, setIsPopupVisible] = useState(false);
 
     //adjust the half screen
     const computeFOV = () => {
@@ -118,6 +136,7 @@ function TeethModel({ activeContent, setChildModeActive, setTreatmentTodo, treat
 
     const handleToothDblClick = useCallback((toothUrl, activeContent) => {
         setSelectedTooth(toothUrl);
+        setIsPopupVisible(true);
         console.log('active Content = ' + activeContent);
         console.log('tooth Url = ' + toothUrl);
 
@@ -137,8 +156,9 @@ function TeethModel({ activeContent, setChildModeActive, setTreatmentTodo, treat
 
     const renderTooth = useCallback((tooth, index, jaw, side, activeContent) => {
         const position = getToothPosition(['upper', 'lower'].indexOf(jaw), ['left', 'right'].indexOf(side), index);
-        return <ToothComponent key={`${jaw}-${side}-${index}`} position={position} url={tooth} activeContent={activeContent} onToothDblClick={handleToothDblClick} resetRotation={resetCounter} />;
-    }, [resetCounter, handleToothDblClick]);
+        const number = fdiNotation[jaw][side][index];
+        return <ToothComponent isPopupVisible={isPopupVisible} key={`${jaw}-${side}-${index}`} position={position} url={tooth} number={number} jaw={jaw} activeContent={activeContent} onToothDblClick={handleToothDblClick} resetRotation={resetCounter} />;
+      }, [resetCounter, handleToothDblClick, isPopupVisible]);
 
     const ThreeDModel = useCallback((props) => (
         <Canvas camera={{ position: [0, 0, 30], fov: fov }} style={{ width: '100%', height: '50vh' }}>
@@ -159,19 +179,20 @@ function TeethModel({ activeContent, setChildModeActive, setTreatmentTodo, treat
         contentBase:
             <>
                 <ThreeDModel activeContent='contentBase' />
-                {showBasePopup && <BasePopup toothUrl={selectedTooth} onClose={() => setshowBasePopup(false)}  />}
+                {showBasePopup && <BasePopup toothUrl={selectedTooth} onClose={() => {setshowBasePopup(false); setIsPopupVisible(false);}}  />}
             </>,
         contentTreatment:
             <>
                 <ThreeDModel activeContent='contentTreatment' />
-                {showTreatmentPopup && <TreatmentPopup toothUrl={selectedTooth} onClose={() => setshowTreatmentPopup(false)} setTreatmentTodo={setTreatmentTodo} treatmentTodo={treatmentTodo} setshowTreatmentPopup={setshowTreatmentPopup}/>}
+                {showTreatmentPopup && <TreatmentPopup toothUrl={selectedTooth} onClose={() => {setshowTreatmentPopup(false); setIsPopupVisible(false);}} setTreatmentTodo={setTreatmentTodo} treatmentTodo={treatmentTodo} setshowTreatmentPopup={setshowTreatmentPopup}/>}
             </>,
         contentPeri:
             <>
                 <ThreeDModel activeContent='contentPeri' />
-                {showPeriPopup && <PeriPopup toothUrl={selectedTooth} onClose={() => setshowPeriPopup(false)} />}
+                {showPeriPopup && <PeriPopup toothUrl={selectedTooth} onClose={() => {setshowPeriPopup(false); setIsPopupVisible(false);}} />}
             </>
     };
+    
 
     return (
         <div className='teeth-model-container'>
@@ -188,4 +209,4 @@ function TeethModel({ activeContent, setChildModeActive, setTreatmentTodo, treat
     );
 }
 
-export default React.memo(TeethModel);
+export default React.memo(TeethModel); 
