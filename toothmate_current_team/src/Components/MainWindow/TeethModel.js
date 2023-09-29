@@ -99,7 +99,7 @@ const getToothPosition = (jawIndex, sideIndex, index) => {
     return [positionX, jawIndex === 0 ? 10 : -10, 0];
 };
 
-function TeethModel({ activeContent, setChildModeActive, setTreatmentTodo, treatmentTodo }) {
+function TeethModel({ activeContent, setChildModeActive, setTreatmentTodo, treatmentTodo, patientHistory, formatDate }) {
     const [showTreatmentPopup, setshowTreatmentPopup] = useState(false);
     const [showPeriPopup, setshowPeriPopup] = useState(false);
     const [showBasePopup, setshowBasePopup] = useState(false);
@@ -179,7 +179,7 @@ function TeethModel({ activeContent, setChildModeActive, setTreatmentTodo, treat
         contentBase:
             <>
                 <ThreeDModel activeContent='contentBase' />
-                {showBasePopup && <BasePopup toothUrl={selectedTooth} onClose={() => {setshowBasePopup(false); setIsPopupVisible(false);}}  />}
+                {showBasePopup && <BasePopup formatDate={formatDate} patientHistory={patientHistory} toothUrl={selectedTooth} onClose={() => {setshowBasePopup(false); setIsPopupVisible(false);}}  />}
             </>,
         contentTreatment:
             <>
