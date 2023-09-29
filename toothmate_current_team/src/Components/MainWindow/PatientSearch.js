@@ -37,7 +37,7 @@ function NHISearch({setActiveContent,formatDate}) {
         <>
         <div className="nhi-search-container">
             
-        <PlanSwitchButtons handleContentChange={setActiveContent}/>
+        <PlanSwitchButtons  handleContentChange={setActiveContent}/>
 
             <div className="nhi-search" id="NHI">
                 <input type="text" value={searchTerm} onChange={handleChange} placeholder="NHI"/>

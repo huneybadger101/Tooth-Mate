@@ -69,7 +69,7 @@ function PatientInfo({ patientData, formatDate }) {
                         <label>First name:</label>
                         <input value={firstName} onChange={(e) => setFirstName(e.target.value)} />
                         <br/>
-                        <label>Last name:</label>
+                        <label>Last Name:</label>
                         <input value={lastName} onChange={(e) => setLastName(e.target.value)} />
                         <br/>
                         <label>DOB:</label>
@@ -78,18 +78,18 @@ function PatientInfo({ patientData, formatDate }) {
                         <label>Address:</label>
                         <input value={street} onChange={(e) => setStreet(e.target.value)} />
                         <br/>
-                        <label>City name:</label>
+                        <label>City Name:</label>
                         <input value={city} onChange={(e) => setCity(e.target.value)} />
                         <br/>
                         <label>Country:</label>
                         <input value={country} onChange={(e) => setCountry(e.target.value)} />
                         <br/>
-                        <label>Phone number:</label>
+                        <label>Phone:</label>
                         <input value={phone} onChange={(e) => setPhone(e.target.value)} />
                     </div>
                     <div className='btn-container'>
-                        <button className='save-btn' onClick={() => { handleSave() }}>SAVE</button>
-                        <button className='edit-btn' onClick={() => { handleCancel() }}>cancel</button>
+                        <button className='save-btn' onClick={() => { handleSave() }}>Save</button>
+                        <button className='edit-btn' onClick={() => { handleCancel() }}>Cancel</button>
                     </div>
                     
                 </div>

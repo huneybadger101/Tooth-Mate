@@ -2,7 +2,8 @@
     margin-left:0.25%;
     margin-top: 0.5%;
     width: 20.5%;
-    background-color:  rgb(203, 203, 203);
+    background-color:  #f1f1f1;
+    border: 1px solid #d0d0d0;
     border-radius: 10px;
     height: 28vh;
     display: flex;
@@ -13,7 +14,6 @@
 
 .xray-field-container {
     width: 100%;
-    background-color:  rgb(203, 203, 203);
     border-radius: 10px;
     height: 100%;
     display: flex;

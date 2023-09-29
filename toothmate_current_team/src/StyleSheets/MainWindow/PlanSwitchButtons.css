@@ -1,6 +1,6 @@
 .plan-switch-container {
     display: flex;
-    width: 100vh;
+    width: stretch;
     flex-direction: row;
     justify-content: flex-start;
     align-items: center; 

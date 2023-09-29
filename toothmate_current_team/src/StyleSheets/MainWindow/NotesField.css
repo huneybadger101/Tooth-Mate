@@ -1,19 +1,18 @@
 .notes-field-wider-container{
     width: 20%;
-    background-color: rgb(203, 203, 203);
+    height: 54vh;
     border-radius: 10px;
-    min-height: 100%;
     display: flex;
     line-height: 1;
     justify-content: center;
     flex-direction: column;
-    
 }
 
 .notes-field-container {
     margin-left: 1%;
     width: 100%;
-    background-color:  rgb(203, 203, 203);
+    background-color:  #f1f1f1;
+    border: 1px solid #d0d0d0;
     border-radius: 10px;
     height: 100%;
     display: flex;
@@ -29,14 +28,13 @@
     overflow-y: auto;
 }
 
-.notes-field h3{
-
+.notes-field-container h3{
     text-align: center;
 }
 
 .notes-field ul {
     margin-top: 10%;
-    width: 90%;
+    width: 100%;
     padding-left: 0;
 }
 
@@ -50,7 +48,9 @@
     border-radius: 10px;
     padding: 10px;
     margin-bottom: 10px;
-    width: 100%;
+    margin-left: 4px;
+    margin-right: 4px;
+    width: stretch;
 }
 
 .notes {
@@ -61,7 +61,10 @@
 .history-button {
     vertical-align: baseline;
     margin: 1%;
-    background-color: #efefef;
+    margin-left: 4px;
+    margin-right: 4px;
+    background-color: #378cbe;
+    color: white;
     border-radius: 5px;
     border-width: 1px;
 }
@@ -69,7 +72,10 @@
 .todo-button {
     vertical-align: baseline;
     margin: 1%;
-    background-color: #efefef;
+    margin-left: 4px;
+    margin-right: 4px;
+    background-color: #378cbe;
+    color: white;
     border-radius: 5px;
     border-width: 1px;
 }
