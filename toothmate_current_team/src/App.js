@@ -114,8 +114,8 @@ function App() {
       <div className='bodyContainer'>
         {console.log(patientData)}
         {childModelActive ?
-          <ChildTeethModel activeContent={activeContent} setChildModeActive={setChildModeActive} treatmentTodo={treatmentTodo} setTreatmentTodo={setTreatmentTodo}/>:
-          <TeethModel activeContent={activeContent} setChildModeActive={setChildModeActive} treatmentTodo={treatmentTodo} setTreatmentTodo={setTreatmentTodo}/>
+          <ChildTeethModel formatDate={formatDate} patientHistory={patientData.history} activeContent={activeContent} setChildModeActive={setChildModeActive} treatmentTodo={treatmentTodo} setTreatmentTodo={setTreatmentTodo}/>:
+          <TeethModel formatDate={formatDate} activeContent={activeContent} setChildModeActive={setChildModeActive} treatmentTodo={treatmentTodo} setTreatmentTodo={setTreatmentTodo} patientHistory={patientData.history}/>
         }
         
         <NotesField patientHistory={patientData.history} setTreatmentTodo={setTreatmentTodo} treatmentTodo={treatmentTodo} showTreatmentPopup={showTreatmentPopup} setshowTreatmentPopup={setshowTreatmentPopup}/>
