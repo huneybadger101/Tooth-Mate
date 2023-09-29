@@ -17,11 +17,11 @@ const UmbrellaTreatment=({option,setOption})=>{
         <div className="UmbrellaTreatment">
             <a>UmbrellaTreatment</a>
             <div className='UmbrellaOption'>
-                <button className={option.includes("Option 1") ? "button-active" : "button"} onClick={()=> handleClick("Option 1")}>Option 1</button>
-                <button className={option.includes("Option 2") ? "button-active" : "button"} onClick={()=> handleClick("Option 2")}>Option 2</button>
-                <button className={option.includes("Option 3") ? "button-active" : "button"} onClick={()=> handleClick("Option 3")}>Option 3</button>
-                <button className={option.includes("Option 4") ? "button-active" : "button"} onClick={()=> handleClick("Option 4")}>Option 4</button>
-                <button className={option.includes("Option 5") ? "button-active" : "button"} onClick={()=> handleClick("Option 5")}>Option 5</button>
+                <button className={option.includes("Filling") ? "button-active" : "button"} onClick={()=> handleClick("Filling")}>Filling</button>
+                <button className={option.includes("Crown") ? "button-active" : "button"} onClick={()=> handleClick("Crown")}>Crown</button>
+                <button className={option.includes("Veneer") ? "button-active" : "button"} onClick={()=> handleClick("Veneer")}>Veneer</button>
+                <button className={option.includes("Root Canal") ? "button-active" : "button"} onClick={()=> handleClick("Root Canal")}>Root Canal</button>
+                <button className={option.includes("Extraction") ? "button-active" : "button"} onClick={()=> handleClick("Extraction")}>Extraction</button>
             </div>
         </div>
     )

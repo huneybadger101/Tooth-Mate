@@ -65,11 +65,11 @@
 }
 
 .options button:hover {
-    background: #50FF4D;
+    background: #3e7291;
 }
 
 .button-active {
-    background-color: #50FF4D;
+    background-color: #00ffd0;
 }
 
 
@@ -85,5 +85,5 @@
 }
 
 .options .addToList:hover {
-    background-color: #3a63f8;
+    background-color: #3e7291;
 }
