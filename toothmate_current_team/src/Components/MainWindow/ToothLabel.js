@@ -3,7 +3,7 @@ import React from 'react';
 
 const ToothLabel = ({ position, number }) => (
     <Html position={position} center>
-        <div style={{color: 'white', fontSize: '12px'}}>
+        <div style={{color: 'black', fontSize: '12px'}}>
             {number}
         </div>
     </Html>

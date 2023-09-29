@@ -1,6 +1,7 @@
 .patient-info-container {
     margin-top: 0.5%;
-    background-color: #CCCCCC;
+    background-color:  #f1f1f1;
+    border: 1px solid #d0d0d0;
     border-radius: 10px;
     display: flex;
     align-items: center;
@@ -43,7 +44,8 @@
 
 .patient-info-container-edit {
     margin-top: 0.5%;
-    background-color: #CCCCCC;
+    background-color:  #f1f1f1;
+    border: 1px solid #d0d0d0;
     border-radius: 10px;
     display: flex;
     align-items: center;
@@ -82,7 +84,6 @@
 }
 
 .patient-info-container-edit .save-btn:hover{
-    margin-top: 3%;
     width: 20%;
     height: 100%;
     border-radius: 5px;
