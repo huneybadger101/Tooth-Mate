@@ -42,7 +42,7 @@ function App() {
     };
   
     fetchData();
-  }, [id]);
+  }, [id,save]);
 
   const formatDate = (isoString) => {
     const date = new Date(isoString);
@@ -106,7 +106,7 @@ function App() {
       </div>
       <div className='warning-submit-cancel-panel'>
         {patientData && patientData.info && <PatientWarning patientData={patientData} />}
-        <SubmitButton addRecord={addRecord}/>
+        <SubmitButton addRecord={addRecord} save={save}/>
         <CancelButton handleCancelChnage={handleCancelChnage}/>
       </div>
       
