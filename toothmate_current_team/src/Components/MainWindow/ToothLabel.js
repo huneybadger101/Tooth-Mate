@@ -1,12 +1,18 @@
-import { Html } from '@react-three/drei';
 import React from 'react';
+import { Text } from '@react-three/drei';
 
-const ToothLabel = ({ position, number }) => (
-    <Html position={position} center>
-        <div style={{color: 'black', fontSize: '12px'}}>
-            {number}
-        </div>
-    </Html>
-);
+const ToothLabel = ({ position, number }) => {
+    return (
+        <Text
+          position={position}
+          fontSize={1.2} 
+          color="black" 
+          anchorX="center" // Center the text horizontally
+          anchorY="middle" // Center the text vertically
+        >
+          {number}
+        </Text>
+      );
+    };
 
-export { ToothLabel };
+export default ToothLabel;

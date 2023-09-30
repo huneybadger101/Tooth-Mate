@@ -9,22 +9,11 @@ import DataOfTeeth from './TeethData';
 import TreatmentPopup from '../TreatmentPopup/TreatmentPopup';
 import { act } from 'react-dom/test-utils';
 import LineComponent from './LineComponent';
-import { ToothLabel } from './ToothLabel'
+import ToothLabel from './ToothLabel'
 
 const DAMPING = 0.05;
 const LERP_FACTOR = 0.1;
 const DEFAULT_ROTATION = { x: 0, y: 0 };
-
-const fdiNotation = {
-    upper: {
-        left: [18, 17, 16, 15, 14, 13, 12, 11],
-        right: [21, 22, 23, 24, 25, 26, 27, 28]
-    },
-    lower: {
-        left: [48, 47, 46, 45, 44, 43, 42, 41],
-        right: [31, 32, 33, 34, 35, 36, 37, 38]
-    }
-};
 
 const ToothComponent = ({ position, url, jaw, number, activeContent, onToothDblClick, resetRotation, isPopupVisible }) => {
     const gltf = useLoader(GLTFLoader, url);
@@ -87,7 +76,6 @@ const ToothComponent = ({ position, url, jaw, number, activeContent, onToothDblC
                 onPointerUp={handleMouseUp}
                 onDoubleClick={() => onToothDblClick(url, activeContent)}
             />
-            {!isPopupVisible && <ToothLabel position={labelPosition} number={number} />}
         </>
     );
 };
@@ -156,9 +144,37 @@ function TeethModel({ activeContent, setChildModeActive, setTreatmentTodo, treat
 
     const renderTooth = useCallback((tooth, index, jaw, side, activeContent) => {
         const position = getToothPosition(['upper', 'lower'].indexOf(jaw), ['left', 'right'].indexOf(side), index);
-        const number = fdiNotation[jaw][side][index];
-        return <ToothComponent isPopupVisible={isPopupVisible} key={`${jaw}-${side}-${index}`} position={position} url={tooth} number={number} jaw={jaw} activeContent={activeContent} onToothDblClick={handleToothDblClick} resetRotation={resetCounter} />;
-    }, [resetCounter, handleToothDblClick, isPopupVisible]);
+        const { model, number } = tooth;
+        let numberYPosition;
+        if (jaw === 'upper') {
+          // For upper teeth, position the number component below the tooth model
+          numberYPosition = position[1] - 6;
+        } else {
+          // For lower teeth, position the number component above the tooth model
+          numberYPosition = position[1] + 6;
+        }
+        
+          return (
+              <group key={`${jaw}-${side}-${index}`}>
+                <ToothComponent
+                  isPopupVisible={isPopupVisible}
+                  position={position}
+                  url={model} // Pass the model path to ToothComponent
+                  number={number} // Pass the number to ToothComponent
+                  jaw={jaw}
+                  activeContent={activeContent}
+                  onToothDblClick={handleToothDblClick}
+                  resetRotation={resetCounter}
+                />
+                { !isPopupVisible && (
+                  <ToothLabel
+                    position={[position[0], numberYPosition, position[2]]}
+                    number={number}
+                  />
+                )}
+              </group>
+            );
+          }, [resetCounter, handleToothDblClick, isPopupVisible]);
 
     const ThreeDModel = useCallback((props) => (
         <Canvas camera={{ position: [0, 0, 30], fov: fov }} style={{ width: '100%', height: '50vh' }}>
