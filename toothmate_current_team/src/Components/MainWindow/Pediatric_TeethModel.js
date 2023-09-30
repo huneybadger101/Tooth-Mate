@@ -146,37 +146,33 @@ function ChildTeethModel({ activeContent,setChildModeActive, setTreatmentTodo,  
         const position = getToothPosition(['upper', 'lower'].indexOf(jaw), ['left', 'right'].indexOf(side), index);
         const { model, number } = tooth; // Destructure the model and number properties from the tooth object
       
-        // Calculate the Y coordinate for the number component based on jaw
-        let numberYPosition;
+        // Calculate the adjusted position for the number component
+        let adjustedNumberPosition = [position[0], position[1], position[2]];
+      
         if (jaw === 'upper') {
-          // For upper teeth, position the number component below the tooth model
-          numberYPosition = position[1] - 6;
+          // For upper teeth, adjust the Y-coordinate to position the number below the tooth
+          adjustedNumberPosition[1] -= 6.0; // Adjust the Y-coordinate as needed
         } else {
-          // For lower teeth, position the number component above the tooth model
-          numberYPosition = position[1] + 6;
+          // For lower teeth, adjust the Y-coordinate to position the number above the tooth
+          adjustedNumberPosition[1] += 6.0; // Adjust the Y-coordinate as needed
         }
       
         return (
-            <group key={`${jaw}-${side}-${index}`}>
-              <ToothComponent
-                isPopupVisible={isPopupVisible}
-                position={position}
-                url={model} // Pass the model path to ToothComponent
-                number={number} // Pass the number to ToothComponent
-                jaw={jaw}
-                activeContent={activeContent}
-                onToothDblClick={handleToothDblClick}
-                resetRotation={resetCounter}
-              />
-              { !isPopupVisible && (
-                <NumberComponent
-                  position={[position[0], numberYPosition, position[2]]}
-                  number={number}
-                />
-              )}
-            </group>
-          );
-        }, [resetCounter, handleToothDblClick, isPopupVisible]);
+          <group key={`${jaw}-${side}-${index}`}>
+            <ToothComponent
+              position={position}
+              url={model} // Pass the model path to ToothComponent
+              number={number} // Pass the number to ToothComponent
+              jaw={jaw}
+              activeContent={activeContent}
+              onToothDblClick={handleToothDblClick}
+              resetRotation={resetCounter}
+            />
+            <NumberComponent position={adjustedNumberPosition} number={number} />
+          </group>
+        );
+      }, [resetCounter, handleToothDblClick, isPopupVisible]);
+      
 
     const ThreeDModel = useCallback((props) => (
             <Canvas camera={{ position: [0, 0, 30], fov: fov }} style={{ width: '100%', height: '50vh' }}>
