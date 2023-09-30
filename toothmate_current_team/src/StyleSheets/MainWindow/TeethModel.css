@@ -1,11 +1,27 @@
 .teeth-model-container{
+    position: relative; /* Added to ensure that the absolute positioning of children is relative to this container */
     border-radius: 10px;
     width: 80%; 
     height: 54vh;
-    background-color:  #f1f1f1;
+    background-color: #f1f1f1;
     border: 1px solid #d0d0d0;
     text-align: center;
     margin-right: 1%;
+    overflow: hidden; /* Added to make sure the content does not overflow the container */
+}
+
+.teeth-model-container::before {
+    content: 'L';
+    position: absolute;
+    bottom: 10px; /* Adjust as needed */
+    left: 10px; /* Adjust as needed */
+}
+
+.teeth-model-container::after {
+    content: 'R';
+    position: absolute;
+    bottom: 10px; /* Adjust as needed */
+    right: 10px; /* Adjust as needed */
 }
 
 .teeth-model-container button{
