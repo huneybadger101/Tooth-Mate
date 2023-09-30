@@ -103,7 +103,7 @@ function ChildTeethModel({ activeContent,setChildModeActive, setTreatmentTodo,  
         return baseFOV + (viewportWidth * scalingFactor);
     };
 
-    const [fov, setFOV] = useState(computeFOV());  // Now, computeFOV is declared before it's used
+    const [fov, setFOV] = useState(computeFOV()); 
 
     useEffect(() => {
         const handleResize = () => {
@@ -144,25 +144,25 @@ function ChildTeethModel({ activeContent,setChildModeActive, setTreatmentTodo,  
     
     const renderTooth = useCallback((tooth, index, jaw, side, activeContent) => {
         const position = getToothPosition(['upper', 'lower'].indexOf(jaw), ['left', 'right'].indexOf(side), index);
-        const { model, number } = tooth; // Destructure the model and number properties from the tooth object
+        const { model, number } = tooth; 
       
-        // Calculate the adjusted position for the number component
+        
         let adjustedNumberPosition = [position[0], position[1], position[2]];
       
         if (jaw === 'upper') {
           // For upper teeth, adjust the Y-coordinate to position the number below the tooth
-          adjustedNumberPosition[1] -= 6.0; // Adjust the Y-coordinate as needed
+          adjustedNumberPosition[1] -= 6.0; 
         } else {
           // For lower teeth, adjust the Y-coordinate to position the number above the tooth
-          adjustedNumberPosition[1] += 6.0; // Adjust the Y-coordinate as needed
+          adjustedNumberPosition[1] += 6.0; 
         }
       
         return (
           <group key={`${jaw}-${side}-${index}`}>
             <ToothComponent
               position={position}
-              url={model} // Pass the model path to ToothComponent
-              number={number} // Pass the number to ToothComponent
+              url={model}
+              number={number}
               jaw={jaw}
               activeContent={activeContent}
               onToothDblClick={handleToothDblClick}

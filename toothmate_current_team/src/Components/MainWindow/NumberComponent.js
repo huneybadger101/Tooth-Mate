@@ -5,8 +5,8 @@ const NumberComponent = ({ position, number }) => {
   return (
     <Text
       position={position}
-      fontSize={1.2} // Adjust the font size as needed
-      color="black" // Text color
+      fontSize={1.2} 
+      color="black"
       anchorX="center" // Center the text horizontally
       anchorY="middle" // Center the text vertically
     >

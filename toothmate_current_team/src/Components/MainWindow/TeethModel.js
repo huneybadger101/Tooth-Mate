@@ -157,7 +157,7 @@ function TeethModel({ activeContent, setChildModeActive, setTreatmentTodo, treat
           return (
               <group key={`${jaw}-${side}-${index}`}>
                 <ToothComponent
-                  isPopupVisible={isPopupVisible}
+                  
                   position={position}
                   url={model} // Pass the model path to ToothComponent
                   number={number} // Pass the number to ToothComponent
@@ -166,15 +166,15 @@ function TeethModel({ activeContent, setChildModeActive, setTreatmentTodo, treat
                   onToothDblClick={handleToothDblClick}
                   resetRotation={resetCounter}
                 />
-                { !isPopupVisible && (
+                 (
                   <ToothLabel
                     position={[position[0], numberYPosition, position[2]]}
                     number={number}
                   />
-                )}
+                )
               </group>
             );
-          }, [resetCounter, handleToothDblClick, isPopupVisible]);
+          }, [resetCounter, handleToothDblClick]);
 
     const ThreeDModel = useCallback((props) => (
         <Canvas camera={{ position: [0, 0, 30], fov: fov }} style={{ width: '100%', height: '50vh' }}>
