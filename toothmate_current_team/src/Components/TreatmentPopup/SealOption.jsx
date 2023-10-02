@@ -4,27 +4,38 @@ import { useState,useEffect } from 'react';
 import './StyleSheets/SealOptionStyles.css';
 
 const SealOption = ({buttonOrder,handleButtonClick,handleAddToList, url}) => {
-    const [sortButton, setSortButton] = useState([])
-    console.log(url)
-    useEffect(()=>{
+    const [sortButton, setSortButton] = useState([]);
+
+    useEffect(() => {
+        let buttons = [];
+
         if(url.includes("Right_Upper")){
-            console.log("yes")
-            setSortButton(['B', 'M', 'O', 'D', 'P'])
+            console.log("yes");
+            buttons = ['B', 'M', 'O', 'D', 'P'];
         }
         if(url.includes("Right_Lower")){
-            console.log("yes")
-            setSortButton(['L', 'M', 'O', 'D', 'B'])
+            console.log("yes");
+            buttons = ['L', 'M', 'O', 'D', 'B'];
         }
         if(url.includes("Left_Upper")){
-            console.log("yes")
-            setSortButton(['B', 'D', 'O', 'M', 'P'])
+            console.log("yes");
+            buttons = ['B', 'D', 'O', 'M', 'P'];
         }
         if(url.includes("Left_Lower")){
-            console.log("yes")
-            setSortButton(['L', 'D', 'O', 'M', 'B'])
+            console.log("yes");
+            buttons = ['L', 'D', 'O', 'M', 'B'];
         }
-    },[])
-    
+
+        const numbers = ['13', '12', '11', '21', '22', '23', '43', '42', '41', '31', '32', '33'];
+        const shouldChangeOtoI = numbers.some(number => url.includes(number));
+
+        if (shouldChangeOtoI) {
+            buttons = buttons.map(button => button === 'O' ? 'I' : button);
+        }
+
+        setSortButton(buttons);
+    }, [url]);
+
 
     return (
         <div className="SealOption-Container">
