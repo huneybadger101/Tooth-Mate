@@ -15,16 +15,19 @@ Use this command to clone:
 `gh repo clone Puttipat-P/Tooth-Mate`
 
 
+
 To run backend:
 
 Firstly, download sql database file then import it to mysql database.
 
 Secondaly, go to vscode terminal using this command:
+
 `cd toothmate_current_team_backend`
 
 then use command to start the server:
 
 `node server.js`
+
 
 
 
@@ -49,6 +52,7 @@ suitCRM:
 
 
 Application usage:
+
 This is the main page. Firstly, search NHI and it will show dropdown result of the similar match from database.
 
  ![image](https://github.com/Puttipat-P/Tooth-Mate/assets/83695784/a33482e7-44b0-4c63-b7e2-8032122eb785)
