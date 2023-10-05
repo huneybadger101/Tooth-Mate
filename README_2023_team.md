@@ -10,13 +10,14 @@ The purpose of this project is to continue developing the Tooth Mate app from la
 
 # Installation:
 
-Use this command to clone:
+- Use this command to clone:
 
 `gh repo clone Puttipat-P/Tooth-Mate`
 
 
 
-To run backend:
+
+- To run backend:
 
 Firstly, download sql database file then import it to mysql database.
 
@@ -32,7 +33,7 @@ then use command to start the server:
 
 
 
-To run front end:
+- To run front end:
 
 `cd toothmate_current_team`
 
@@ -49,10 +50,10 @@ to start the frontend webapp use:
 
 # Usage:
 
-suitCRM:
+- suitCRM:
 
 
-Application usage:
+- Application usage:
 
 This is the main page. Firstly, search NHI and it will show dropdown result of the similar match from database.
 
