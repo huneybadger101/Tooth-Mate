@@ -8,29 +8,43 @@ A brief summary of the project and its purpose:
 The purpose of this project is to continue developing the Tooth Mate app from last year's students, which will facilitate communication between dentists and their patients. This will be particularly helpful for parents with young children as it will help them start an oral healthcare routine with their kids. The app aims to promote oral health in New Zealand, where the oral health system is poorly functioning, causing long wait lists for patients. By providing accessible and understandable dental information and advice through the app, the project aims to minimize the amount of treatment that patients must pay for in the long run, reducing costs and increasing continuity of care. Our role in this project is to continue the development of Tooth Mate to get a workable prototype running that the client can present to potential investors.
 
 Installation:
+
 Use this command to clone:
+
 gh repo clone Puttipat-P/Tooth-Mate
 
+
 To run backend:
+
 Firstly, download sql database file then import it to mysql database.
 
 Secondaly, go to vscode terminal using this command:
 cd toothmate_current_team_backend
 
 then use command to start the server:
+
 node server.js
 
+
+
 To run front end:
+
 cd toothmate_current_team
 
 then use command(used to install all dependencies or devDependencies from a package):
+
 npm install
 
 to start the frontend webapp use:
+
 npm start
 
-Usage
-suitCRM
+
+
+
+Usage:
+
+suitCRM:
 
 
 Application usage:
@@ -39,6 +53,7 @@ This is the main page. Firstly, search NHI and it will show dropdown result of t
  ![image](https://github.com/Puttipat-P/Tooth-Mate/assets/83695784/a33482e7-44b0-4c63-b7e2-8032122eb785)
 
 Example:
+
  ![image](https://github.com/Puttipat-P/Tooth-Mate/assets/83695784/6736ee49-c70c-475b-a066-d6d6d231bf9e)
 
 
