@@ -35,7 +35,9 @@ suitCRM
 
 Application usage:
 This is the main page. Firstly, search NHI and it will show dropdown result of the similar match from database.
- 
+
+ ![image](https://github.com/Puttipat-P/Tooth-Mate/assets/83695784/a33482e7-44b0-4c63-b7e2-8032122eb785)
+
 Example:
  
 
