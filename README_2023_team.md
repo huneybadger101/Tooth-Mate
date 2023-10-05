@@ -12,7 +12,7 @@ The purpose of this project is to continue developing the Tooth Mate app from la
 
 Use this command to clone:
 
-gh repo clone Puttipat-P/Tooth-Mate
+`gh repo clone Puttipat-P/Tooth-Mate`
 
 
 To run backend:
@@ -20,25 +20,25 @@ To run backend:
 Firstly, download sql database file then import it to mysql database.
 
 Secondaly, go to vscode terminal using this command:
-cd toothmate_current_team_backend
+`cd toothmate_current_team_backend`
 
 then use command to start the server:
 
-node server.js
+`node server.js`
 
 
 
 To run front end:
 
-cd toothmate_current_team
+`cd toothmate_current_team`
 
 then use command(used to install all dependencies or devDependencies from a package):
 
-npm install
+`npm install`
 
 to start the frontend webapp use:
 
-npm start
+`npm start`
 
 
 
