@@ -22,6 +22,7 @@ Firstly, download sql database file then import it to mysql database.
 
 Secondaly, go to vscode terminal using this command:
 
+
 `cd toothmate_current_team_backend`
 
 then use command to start the server:
