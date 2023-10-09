@@ -31,16 +31,16 @@ function App() {
   const [recordId, setRecordID] = useState()
   const [save, setSave] = useState(false)
 
+  const fetchData = async () => {
+    try {
+      const res = await axios.get(`https://5f34ab754164.ngrok.app/${id}`);
+      setPatientData(res.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const res = await axios.get(`https://5f34ab754164.ngrok.app/${id}`);
-        setPatientData(res.data);
-      } catch (err) {
-        console.log(err);
-      }
-    };
-  
     fetchData();
   }, [id,save]);
 
@@ -85,6 +85,7 @@ function App() {
           setOldTreatmentTodo(treatmentTodo)
           setOldNote(note)
           alert('Record updated successfully!')
+          fetchData();
       } catch (error) {
           console.error('There was an error updating the record!', error);
       }
@@ -122,7 +123,7 @@ function App() {
       </div>
 
       <div className='bottomContainer'>
-        <PatientInfo patientData={patientData} formatDate={formatDate} />
+        <PatientInfo patientData={patientData} formatDate={formatDate} fetchData={fetchData}/>
 
        <EntryField setNote={setNote} note={note}/>
         <XrayList patientHistory={patientData.history}/>

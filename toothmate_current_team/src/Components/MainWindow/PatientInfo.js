@@ -1,11 +1,13 @@
 import { useState,useEffect } from 'react';
 import axios from 'axios';
+import {useParams} from 'react-router-dom';
 import '../../StyleSheets/MainWindow/PatientInfo.css';
 
-function PatientInfo({ patientData, formatDate }) {
+function PatientInfo({ patientData, formatDate, fetchData}) {
     const patientInfo = patientData?.info?.[0];
     const otherInfo = patientData?.otherInfo?.[0];
     const [edit, setEdit] = useState(false);
+    const { id } = useParams()
 
     // State for input fields
     const [firstName, setFirstName] = useState(patientInfo?.first_name??"");
@@ -40,10 +42,13 @@ function PatientInfo({ patientData, formatDate }) {
               street:street,
               city:city,
               country:country,
-              phone:phone
+              phone:phone,
+              nhi: id
             });
             
             alert('Update patient info successfully!')
+            fetchData()
+            setEdit(false)
           } catch (error) {
             console.error('There was an error adding the record!', error);
           }
