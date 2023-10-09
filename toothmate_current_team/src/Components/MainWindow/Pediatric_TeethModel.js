@@ -209,13 +209,10 @@ function ChildTeethModel({ activeContent,setChildModeActive, setTreatmentTodo,  
     return (
         <div className='teeth-model-container'>
             <button onClick={handleResetRotation}>Reset Rotation</button>
+            <button onClick={()=>{setChildModeActive(false)}}>Display adult model</button>
             
             {contentMap[activeContent]}
 
-            <div className='modelOption'>
-                <button onClick={()=>{setChildModeActive(false)}}>Display adult model</button>
-            </div>
-            
         </div>
     );
 }
