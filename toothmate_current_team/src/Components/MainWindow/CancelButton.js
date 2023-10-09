@@ -1,12 +1,14 @@
 import '../../StyleSheets/MainWindow/CancelButton.css';
+import { useNavigate } from 'react-router-dom';
 
-function CancelButton() {
+function CancelButton({handleCancelChnage}) {
+
     return (
-        <div className='grid-layout'>
+
             <div className="cancel-button-container">
-                <button type='button' className="cancel-button">Cancel</button>
+                <button type='button' className="cancel-button" onClick={()=>handleCancelChnage()}>Cancel</button>
             </div>
-        </div>
+
     );
 }
 

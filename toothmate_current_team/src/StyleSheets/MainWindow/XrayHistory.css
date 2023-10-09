@@ -1,0 +1,85 @@
+.xray-container{
+    margin-left:0.25%;
+    margin-top: 0.5%;
+    width: 20.5%;
+    background-color:  #f1f1f1;
+    border: 1px solid #d0d0d0;
+    border-radius: 10px;
+    height: 28vh;
+    display: flex;
+    line-height: 1;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.xray-field-container {
+    width: 100%;
+    border-radius: 10px;
+    height: 100%;
+    display: flex;
+    line-height: 1;
+    justify-content: center;
+    flex-direction: column;
+
+}
+
+.xray-field {
+    height: 100%;
+    padding-bottom: 1%;
+}
+
+.xray-field h3{
+
+    text-align: center;
+}
+
+.xray-field ul {
+    margin-top: 10%;
+    width: 90%;
+    padding-left: 0;
+}
+
+.xray-field ul li {
+    list-style-type: none;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    font-size: 2vh;
+    background-color: #D9D9D9;
+    border-radius: 10px;
+    padding: 1vh;
+    margin-bottom: 1vh;
+    width: 100%;
+    transition: background-color 0.3s ease; /* Add a smooth transition effect */
+}
+
+.xray-field ul li:hover {
+    background-color: rgb(98, 218, 248); /* Change to your desired hover color */
+}
+
+
+.xray {
+    border: none;
+    text-align: left;
+}
+
+.xray-popup-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+}
+
+.xray-popup-content {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    width: 80%;
+    max-width: 500px;
+}

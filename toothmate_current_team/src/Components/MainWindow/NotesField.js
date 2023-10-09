@@ -1,15 +1,16 @@
 import React, { useState } from 'react';
 import '../../StyleSheets/MainWindow/NotesField.css';
-
+import TreatmentPopup from '../TreatmentPopup/TreatmentPopup';
 //This field is for History and To Do List
-function NotesField({patientHistory}) {
-
+function NotesField({ patientHistory, treatmentTodo, setTreatmentTodo, showTreatmentPopup, setshowTreatmentPopup }) {
     const [isPopupOpen, setIsPopupOpen] = useState(false);
     const [selectedAppointment, setSelectedAppointment] = useState(null);
+    const [url, setUrl] = useState(null)
+    console.log(patientHistory)
 
     const handleCloseClick = (e) => {
         console.log("Close button clicked");
-        e.stopPropagation(); 
+        e.stopPropagation();
         setIsPopupOpen(false);
     }
 
@@ -25,48 +26,83 @@ function NotesField({patientHistory}) {
         return (
             <div className="popup-background">
                 <div className="popup-content">
-                    <h2>Appointment Details</h2>
-                    <p>Date: {formatDate(appointment.DateOfAppointment)}</p>
-                    <p>Treatment Plan: {appointment.TreatmentPlan}</p>
-                    <p>Diagnoses: {appointment.Diagnoses}</p>
-                    <p>Notes: {appointment.Notes}</p>
+                    <h2>Treatment Details</h2>
+                    <p>Date: {formatDate(appointment.date)}</p>
+                    <hr />
+
+                    {/* Iterating over treatment_summary keys and rendering them */}
+                    {appointment.treatment_summary && Object.keys(appointment.treatment_summary).map(key => (
+                        <div key={key}>
+                            <p>Tooth name: {key.replace('3Dmodel/', '').replace('.glb', '').split('_').join(' ')}</p>
+                            <p>Treatment plan: {appointment.treatment_summary[key].TreatmentSummary &&
+                                appointment.treatment_summary[key].TreatmentSummary.join(', ')}</p>
+                            <hr />
+                        </div>
+
+                    ))}
+                    <p>Notes: {appointment.notes}</p>
                     <button onClick={handleCloseClick}>Close</button>
                 </div>
             </div>
-        )
+        );
     }
+
 
     const history = () => (
         <>
+            <h3>Patient History</h3>
             <form className="notes-field">
-                <label>History
-                    <ul>
-                        {patientHistory && patientHistory.map((info) => (
-                            <li key={info.appointmentID} onClick={() => handleAppointmentClick(info)}>
-                                {formatDate(info.DateOfAppointment) + " " + info.TreatmentPlan}
-                            </li>
-                        ))}
-                    </ul>
-                </label>
+                <ul>
+                    {patientHistory && patientHistory.map((info) => (
+                        <li key={info.appointmentID} onClick={() => handleAppointmentClick(info)}>
+                            {formatDate(info.date)}
+                        </li>
+                    ))}
+                </ul>
             </form>
         </>
     )
-    
+
     const handleAppointmentClick = (appointmentInfo) => {
         setSelectedAppointment(appointmentInfo);
         setIsPopupOpen(true);
     }
 
-    const todo = () => (
-        <>
-            <form className="notes-field">
-                <label>To Do
-                    <br></br>
-                    <input type="text" value="Todo notes..." className="notes" />
-                </label>
-            </form>
-        </>
-    )
+    const todo = () => {
+        // Log to see the content of treatmentTodo
+        const handleEditClick = (key) => {
+            setshowTreatmentPopup(true)
+            setUrl(key)
+        }
+
+        // Check if treatmentTodo is an object
+        if (treatmentTodo && typeof treatmentTodo === 'object') {
+            return (
+                <>
+                    <form className="notes-field">
+                        <h3>Treatment Plan todo</h3>
+                        <ul>
+                            {Object.entries(treatmentTodo).map(([key, value], index) => {
+                                // Extract the name from the key
+                                let name = key.split("/").pop().split(".")[0]; // This will give "Left_Lower_Canine"
+
+                                // Replace underscores with spaces
+                                name = name.split("_").join(" ")
+
+                                return (
+                                    <li key={index} onClick={() => handleEditClick(key)}>{name}</li>
+                                );
+                            })}
+                        </ul>
+                    </form>
+                </>
+            )
+        }
+
+        // Handle the case where treatmentTodo is not an object
+        console.error('treatmentTodo is not an object', treatmentTodo);
+        return null; // or return some fallback UI
+    }
     const [activeContent, setActiveContent] = useState('contentHistory');  // This is the default content that will be set as active.
 
     const handleContentChange = (contentKey) => {
@@ -81,19 +117,20 @@ function NotesField({patientHistory}) {
 
 
     return (
-        <div className="grid-layout">
+        <div className="notes-field-wider-container">
             <div className="notes-field-container">
                 {contentMap[activeContent]()}
-                <input type="button" value="History" className="history-button" onClick={() => handleContentChange('contentHistory')} />
-                <input type="button" value="To Do" className="todo-button" onClick={() => handleContentChange('contentToDo')} />
+                <input type="button" value="Patient History" className="history-button" onClick={() => handleContentChange('contentHistory')} />
+                <input type="button" value="Treatment Plan" className="todo-button" onClick={() => handleContentChange('contentToDo')} />
             </div>
-            
-            {isPopupOpen && selectedAppointment && 
+            {showTreatmentPopup && <TreatmentPopup toothUrl={url} onClose={() => setshowTreatmentPopup(false)} setshowTreatmentPopup={setshowTreatmentPopup} setTreatmentTodo={setTreatmentTodo} treatmentTodo={treatmentTodo} />}
+
+            {isPopupOpen && selectedAppointment &&
                 <AppointmentPopup appointment={selectedAppointment} onClose={() => setIsPopupOpen(false)} />
             }
         </div>
     );
-    
+
 }
 
 export default NotesField;

@@ -1,17 +1,36 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto');
+@import url('https://fonts.googleapis.com/css2?family=Lato');
 
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Roboto', 'Segoe UI', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: 'Lato', Arial, Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow: hidden;
-  background-color: #f7f9fc;
+  background-color: #ffffff;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+button {
+  font-family: 'Lato', Arial, Helvetica, sans-serif;
+  background-color: #378cbe;
+  border: none;
+  border-radius: 3px;
+  color: white;
+  caret-color: transparent;
+}
+
+p {
+  caret-color: transparent;
+}
+
+a {
+  caret-color: transparent;
+}
+
+label {
+  caret-color: transparent;
 }

@@ -1,32 +1,116 @@
-.grid-layout {
-    display: grid;
-    height: 96vh;
-    width: 96vw;
-    padding: 2%;
-    grid-template-columns: repeat(20, 1fr);
-    grid-template-rows: repeat(20, 1fr);
-    pointer-events: none;
-    position: absolute;
-    gap: 2px;
-}
-
 .patient-info-container {
-    grid-row: 16/20;
-    grid-column: 3/15;
-    background-color: #FFFFFF;
-    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+    margin-top: 0.5%;
+    background-color:  #f1f1f1;
+    border: 1px solid #d0d0d0;
     border-radius: 10px;
-    pointer-events: auto;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1), 0 1px 4px rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    width: 40%;
+    height: 28vh;
+}
+    
+.patient-info-container h3{
+    text-align: center;
+    font-size: large;
+    font-weight: bold;
+    margin-top: 1%;
 }
 
 .info-field {
     width: 98%;
-    height: 70%;
     padding: 1%;
-    font-size: small;
-    border: none;
+    font-size: medium;
     text-align: left;
-    line-height: 1.5;
+    line-height: 1.6;
     overflow: auto;
+}
+
+.patient-info-container .edit-btn{
+    margin-top: 3%;
+    width: 20%;
+    height: 10%;
+    border-radius: 5px;
+    background: #ff3737;
+}
+
+.patient-info-container .edit-btn:hover{
+    margin-top: 3%;
+    width: 20%;
+    height: 10%;
+    border-radius: 5px;
+    background: #a32424;
+}
+
+.patient-info-container-edit {
+    margin-top: 0.5%;
+    background-color:  #f1f1f1;
+    border: 1px solid #d0d0d0;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    width: 40%;
+    height: 28vh;
+}
+
+.patient-info-container-edit .info-field{
+    width: 98%;
+    padding: 1%;
+    font-size: medium;
+    text-align: left;
+    line-height: 1.6;
+    height: 60%;
+    overflow: auto;
+}
+
+.patient-info-container-edit .info-field label{
+    display: inline-block;
+    width: 15%;
+}
+
+.patient-info-container-edit .info-field input{
+    width: 80%;
+    height: 2vh;
+    margin-top: 1%;
+}
+
+.patient-info-container-edit .save-btn{
+
+    width: 20%;
+    height: 100%;
+    border-radius: 5px;
+    background: #70ff37;
+}
+
+.patient-info-container-edit .save-btn:hover{
+    width: 20%;
+    height: 100%;
+    border-radius: 5px;
+    background: #39911e;
+}
+
+.patient-info-container-edit .btn-container{
+    width: 90%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 10%;
+    padding: 1%;
+}
+
+.patient-info-container-edit .edit-btn{
+    margin-left: 1%;
+    width: 20%;
+    height: 100%;
+    border-radius: 5px;
+    background: #ff3737;
+}
+
+.patient-info-container-edit .edit-btn:hover{
+
+    width: 20%;
+    height: 100%;
+    border-radius: 5px;
+    background: #a32424;
 }
