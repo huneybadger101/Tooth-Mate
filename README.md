@@ -64,6 +64,8 @@ Note: This is assuming that the Vercel link (https://tooth-mate-current-team.ver
 
  
  Open a patient like below: 
+ 
+<img width="757" alt="meow" src="https://github.com/Puttipat-P/Tooth-Mate/assets/83695784/6b1746f8-7222-4471-8524-12caeaf59620">
 
  
 
