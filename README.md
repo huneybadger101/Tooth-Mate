@@ -46,6 +46,30 @@ to start the frontend webapp use:
 `npm start`
 
 
+- Connect Frontend to Backend Configuration 
+
+To connect the Backend to the Frontend, you will need to update the route links in the config file to match where your backend is hosted. This is because we will be turning off our ngrok server. 
+ 
+For example:'https://5f34ab754164.ngrok.app/updateInfo' May be updated to http://localhost:5000/updateInfo. 
+
+We recommend continuing with either a free local hosting service such as ngrok, or reliable cloud hosting service. 
+
+ 
+
+Connect CRM to Medical Page 
+
+To connect the CRM to the Medical Page, you will need to update the connecting link in the CRM. 
+ 
+Note: This is assuming that the Vercel link (https://tooth-mate-current-team.vercel.app/) is no longer working due to the connected GitHub repository’s ownership being transferred. 
+
+ 
+ Open a patient like below: 
+
+ 
+
+ Then change the medicalPage link to the Medical Page’s current link e.g. http://localhost:3000 
+
+We recommend hosting the frontend on Vercel so that the latest updates to Medical Page can be easily viewed without having to run the development version locally.
 
 
 # Usage:
