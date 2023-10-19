@@ -2,7 +2,7 @@ import '../../StyleSheets/MainWindow/NHISearch.css';
 import PlanSwitchButtons from './PlanSwitchButtons';
 import { useNavigate } from 'react-router-dom';
 
-import axios from 'axios';
+import axios from '../../api/axios';
 import { useState } from 'react';
 
 function NHISearch({setActiveContent,formatDate}) {
@@ -16,7 +16,7 @@ function NHISearch({setActiveContent,formatDate}) {
     
         if (searchValue) {
           try {
-            const response = await axios.get(`https://5f34ab754164.ngrok.app/search/${searchValue}`);
+            const response = await axios.get(`/search/${searchValue}`);
             
             setResults(response.data.data);
             console.log(results)

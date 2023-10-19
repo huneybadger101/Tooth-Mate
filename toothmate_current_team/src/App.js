@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from './api/axios';
 import React, { useState, useEffect } from 'react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import './App.css';
@@ -33,7 +33,7 @@ function App() {
 
   const fetchData = async () => {
     try {
-      const res = await axios.get(`https://5f34ab754164.ngrok.app/${id}`);
+      const res = await axios.get(`/${id}`);
       setPatientData(res.data);
     } catch (err) {
       console.log(err);
@@ -55,7 +55,7 @@ function App() {
   const addRecord = async () => {
     if(!save){
       try {
-        const response = await axios.post('https://5f34ab754164.ngrok.app/addRecord', {
+        const response = await axios.post('/addRecord', {
           nhi: id,
           treatmentSummary: treatmentTodo,
           notes: note
@@ -76,7 +76,7 @@ function App() {
       }
       else{
         try {
-          const response = await axios.put('https://5f34ab754164.ngrok.app/updateRecord', {
+          const response = await axios.put('/updateRecord', {
               recordId: recordId, // Use the correct record ID here
               treatmentSummary: treatmentTodo,
               notes: note

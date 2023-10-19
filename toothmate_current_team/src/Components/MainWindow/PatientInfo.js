@@ -1,5 +1,5 @@
 import { useState,useEffect } from 'react';
-import axios from 'axios';
+import axios from '../../api/axios';
 import {useParams} from 'react-router-dom';
 import '../../StyleSheets/MainWindow/PatientInfo.css';
 
@@ -35,7 +35,7 @@ function PatientInfo({ patientData, formatDate, fetchData}) {
 
     const handleSave=async()=>{
         try {
-            const response = await axios.post('https://5f34ab754164.ngrok.app/updateInfo', {
+            const response = await axios.post('/updateInfo', {
               firstName: firstName,
               lastName: lastName,
               dob:dob,
