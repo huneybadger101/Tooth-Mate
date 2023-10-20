@@ -8,12 +8,12 @@ The Tooth Mate project includes the development of comprehensive Customer Relati
 The purpose of this project is to continue developing the Tooth Mate app from last year's students, which will facilitate communication between dentists and their patients. This will be particularly helpful for parents with young children as it will help them start an oral healthcare routine with their kids. The app aims to promote oral health in New Zealand, where the oral health system is poorly functioning, causing long wait lists for patients. By providing accessible and understandable dental information and advice through the app, the project aims to minimize the amount of treatment that patients must pay for in the long run, reducing costs and increasing continuity of care. Our role in this project is to continue the development of Tooth Mate to get a workable prototype running that the client can present to potential investors.
 
 # GitHub Folders:
-Tooth mate team 2023 folders (current):
+Tooth Mate team 2023 folders (current):
 - Frontend: Toothmate_current_team
 - Backend: Toothmate_current_team_backend
 
 
-Tooth mate team 2022 folders (old):
+Tooth Mate team 2022 folders (old):
 - dentalsoftware_backend
 - dentalsoftware_frontend
 
