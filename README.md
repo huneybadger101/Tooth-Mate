@@ -89,7 +89,13 @@ We recommend hosting the frontend on Vercel so that the latest updates to Medica
 
 ### suitCRM:
 The accompanying CRM for ToothMate can be found on this repository 
+
 https://github.com/huneybadger101/SuiteCRM-7.13.2
+
+### 2022 ToothMate Teams Work:
+The github for the 2022 ToothMate Team is listed below. 
+
+https://github.com/royalty37/ToothMateServer-2023/blob/master/README.md
 
 ### Application usage:
 
