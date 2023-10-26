@@ -23,3 +23,7 @@
     background-color: #3e7291;
 }
 
+.plan-switch-container .selected {
+    background-color: #065c8e;
+}
+
