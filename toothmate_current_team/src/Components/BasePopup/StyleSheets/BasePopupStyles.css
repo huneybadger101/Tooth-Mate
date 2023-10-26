@@ -53,6 +53,13 @@
     width: 1200px;
     height: 600px;
   }
+
+  .base-popup-content p {
+    margin-top: 2vh;
+    font-size: 30px;
+    font-weight: bold;
+  }
+  
   
   .close {
     position: absolute;
@@ -87,7 +94,7 @@
     flex-direction: column;
     gap: 5%;
   }
-  
+
   .base-popup-components {
     width: auto;
     height: 80%;

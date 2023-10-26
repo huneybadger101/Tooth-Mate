@@ -27,7 +27,7 @@ function BasePopup({ toothUrl, onClose , patientHistory,formatDate}) {
                             <div className="handle handle-right"></div>
                             <div className="handle handle-left"></div>
                             {/* Draggable Handles End*/}
-                            <p>{toothUrl.replace('3Dmodel/', '').replace('.glb', '').split('_').join(' ')} history</p>
+                            <p>{toothUrl.replace('3Dmodel/', '').replace('.glb', '').split('_').join(' ')}</p>
                             <div className="base-popup-components">
                                 <BaseModel toothUrl={toothUrl}/>
                                 <div className="base-text-content">
