@@ -13,6 +13,11 @@
     padding: 1%;
 }
 
+.UmbrellaTreatment a {
+    font-size: 30px;
+    font-weight: bold;
+}
+
 .UmbrellaOption{
     margin-top: 10%;
     display: flex;
@@ -24,7 +29,7 @@
 .UmbrellaOption button{
     border-radius: 5px;
     height: 10%;
-    margin-bottom: 20%;
+    margin-bottom: 15%;
 }
 
 .UmbrellaOption button:hover{
