@@ -71,8 +71,9 @@
 
 .button-active {
     background-color: #00ffd0;
+    color: #000;
+    font-weight: bold;
 }
-
 
 
 .options .addToList {
